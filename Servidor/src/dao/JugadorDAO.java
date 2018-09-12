@@ -3,7 +3,7 @@ package dao;
 import dto.JugadorDTO;
 import entities.JugadorEntity;
 import interfaces.IJugadorDAO;
-import negocio.JugadorBO;
+import negocio.Jugador;
 
 public class JugadorDAO implements IJugadorDAO{
 
@@ -21,13 +21,14 @@ public class JugadorDAO implements IJugadorDAO{
 		return false;
 	}
 
-	public boolean guardarJugador(JugadorBO p) {
+	public boolean guardarJugador(Jugador p) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	
-	public JugadorBO toNegocio(JugadorEntity jugador){
-		return new JugadorBO(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
+	public Jugador toNegocio(JugadorEntity jugador){
+		//return new Jugador(jugador.getApodo(), jugador.getMail(), jugador.getPassword(), null, 0, 0, 0, false, false, null);
+		return null;
 	}
 
 	public JugadorDTO toDTO(JugadorEntity jugador){

@@ -1,9 +1,9 @@
 package interfaces;
 
-import negocio.JugadorBO;
+import negocio.Jugador;
 
 public interface IJugadorDAO {
 	
-	public boolean guardarJugador(JugadorBO p);
+	public boolean guardarJugador(Jugador p);
 	public boolean existeJugador(String apodo);
 }
