@@ -1,5 +1,8 @@
 package negocio;
 
+import dao.BazaDAO;
+import dao.CartaDAO;
+
 public class Carta {
 	private int numero;
 	private String palo;
@@ -32,5 +35,7 @@ public class Carta {
 	}
 	
 	
-	
+	public boolean guardar(){
+		return CartaDAO.getInstancia().guardar(this);
+	}
 }

@@ -40,7 +40,4 @@ public class Partido {
 	public void setParejaGanadora(Pareja parejaGanadora) {
 		this.parejaGanadora = parejaGanadora;
 	}
-	
-	
-	
 }

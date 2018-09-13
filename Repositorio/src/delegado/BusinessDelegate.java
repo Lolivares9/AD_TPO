@@ -37,16 +37,4 @@ public class BusinessDelegate {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

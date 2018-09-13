@@ -32,6 +32,7 @@ public class JugadorDAO implements IJugadorDAO{
 	}
 
 	public JugadorDTO toDTO(JugadorEntity jugador){
-		return new JugadorDTO(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
+		//return new JugadorDTO(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
+		return null;
 	}
 }

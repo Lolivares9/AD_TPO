@@ -2,6 +2,9 @@ package negocio;
 
 import java.util.Date;
 
+import dao.CartaDAO;
+import dao.ChicoDAO;
+
 public class Chico {
 	private int numero;
 	private Date fecha;
@@ -40,4 +43,7 @@ public class Chico {
 		this.parejaGanadora = parejaGanadora;
 	}
 	
+	public boolean guardar(){
+		return ChicoDAO.getInstancia().guardar(this);
+	}
 }

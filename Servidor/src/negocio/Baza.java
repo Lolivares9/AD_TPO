@@ -1,5 +1,8 @@
 package negocio;
 
+import dao.BazaDAO;
+import dao.JugadorDAO;
+
 public class Baza {
 	private Mano mano;
 	private int numero;
@@ -46,5 +49,7 @@ public class Baza {
 		this.puntajePareja2 = puntajePareja2;
 	}
 
-	
+	public boolean guardar(){
+		return BazaDAO.getInstancia().guardar(this);
+	}
 }

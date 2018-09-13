@@ -2,6 +2,9 @@ package negocio;
 
 import java.util.List;
 
+import dao.CartaDAO;
+import dao.GrupoDAO;
+
 public class Grupo {
 	private String nombre;
 	private Jugador jugadorAdmin;
@@ -34,5 +37,7 @@ public class Grupo {
 		this.jugadores = jugadores;
 	}
 	
-	
+	public boolean guardar(){
+		return GrupoDAO.getInstancia().guardar(this);
+	}
 }

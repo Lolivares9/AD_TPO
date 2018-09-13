@@ -1,5 +1,8 @@
 package negocio;
 
+import dao.CartaDAO;
+import dao.RankingGrupalDAO;
+
 public class RankingGrupal {
 	private Grupo grupo;
 	private Jugador jugador;
@@ -46,4 +49,7 @@ public class RankingGrupal {
 		this.puntaje = puntaje;
 	}
 	
+	public boolean guardar(){
+		return RankingGrupalDAO.getInstancia().guardar(this);
+	}
 }

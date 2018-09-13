@@ -1,5 +1,8 @@
 package negocio;
 
+import dao.CartaDAO;
+import dao.ModalidadDAO;
+
 public class Modalidad {
 	private String descripcion;
 	private boolean individual;
@@ -23,5 +26,7 @@ public class Modalidad {
 		this.individual = individual;
 	}
 	
-	
+	public boolean guardar(){
+		return ModalidadDAO.getInstancia().guardar(this);
+	}
 }

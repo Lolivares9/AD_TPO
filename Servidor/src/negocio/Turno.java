@@ -1,5 +1,8 @@
 package negocio;
 
+import dao.CartaDAO;
+import dao.TurnoDAO;
+
 public class Turno {
 	private Baza baza;
 	private Jugador jugador;
@@ -39,6 +42,8 @@ public class Turno {
 		this.carta = carta;
 	}
 	
-	
+	public boolean guardar(){
+		return TurnoDAO.getInstancia().guardar(this);
+	}
 	
 }

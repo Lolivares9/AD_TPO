@@ -1,5 +1,8 @@
 package negocio;
 
+import dao.CartaDAO;
+import dao.ParejaDAO;
+
 public class Pareja {
 	private Jugador jugador1;
 	private Jugador jugador2;
@@ -32,5 +35,7 @@ public class Pareja {
 		this.puntaje = puntaje;
 	}
 	
-	
+	public boolean guardar(){
+		return ParejaDAO.getInstancia().guardar(this);
+	}
 }

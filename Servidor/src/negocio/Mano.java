@@ -1,5 +1,8 @@
 package negocio;
 
+import dao.CartaDAO;
+import dao.ManoDAO;
+
 public class Mano {
 	private Chico chico;
 	private int numeroMano;
@@ -31,5 +34,7 @@ public class Mano {
 		this.parejaGanadora = parejaGanadora;
 	}
 	
-	
+	public boolean guardar(){
+		return ManoDAO.getInstancia().guardar(this);
+	}
 }
