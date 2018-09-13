@@ -3,5 +3,18 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Repositorio"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/hibernate3.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/javassist-3.4.GA.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/jtds-1.2.5.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="LibreriasHibernate/slf4j-simple-1.5.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
