@@ -2,13 +2,14 @@ package negocio;
 
 import dao.BazaDAO;
 import dao.CartaDAO;
+import enums.PaloCarta;
 
 public class Carta {
 	private int numero;
-	private String palo;
+	private PaloCarta palo;
 	private int valorJuego;
 	
-	public Carta(int numero, String palo, int valorJuego) {
+	public Carta(int numero, PaloCarta palo, int valorJuego) {
 		super();
 		this.numero = numero;
 		this.palo = palo;
@@ -21,10 +22,10 @@ public class Carta {
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
-	public String getPalo() {
+	public PaloCarta getPalo() {
 		return palo;
 	}
-	public void setPalo(String palo) {
+	public void setPalo(PaloCarta palo) {
 		this.palo = palo;
 	}
 	public int getValorJuego() {
