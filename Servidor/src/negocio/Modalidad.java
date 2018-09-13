@@ -1,23 +1,21 @@
 package negocio;
-
-import dao.CartaDAO;
-import dao.ModalidadDAO;
+import enums.TipoModalidad;
 
 public class Modalidad {
-	private String descripcion;
+	private TipoModalidad modalidad;
 	private boolean individual;
 	
-	public Modalidad(String descripcion, boolean individual) {
+	public Modalidad(TipoModalidad modalidad, boolean individual) {
 		super();
-		this.descripcion = descripcion;
+		this.modalidad = modalidad;
 		this.individual = individual;
 	}
 	
-	public String getDescripcion() {
-		return descripcion;
+	public TipoModalidad getModalidad() {
+		return modalidad;
 	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setModalidad(TipoModalidad modalidad) {
+		this.modalidad = modalidad;
 	}
 	public boolean isIndividual() {
 		return individual;
@@ -25,8 +23,5 @@ public class Modalidad {
 	public void setIndividual(boolean individual) {
 		this.individual = individual;
 	}
-	
-	public boolean guardar(){
-		return ModalidadDAO.getInstancia().guardar(this);
-	}
+
 }

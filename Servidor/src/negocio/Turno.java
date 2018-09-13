@@ -2,14 +2,15 @@ package negocio;
 
 import dao.CartaDAO;
 import dao.TurnoDAO;
+import enums.Envite;
 
 public class Turno {
 	private Baza baza;
 	private Jugador jugador;
-	private String envite;
+	private Envite envite;
 	private Carta carta;
 	
-	public Turno(Baza baza, Jugador jugador, String envite, Carta carta) {
+	public Turno(Baza baza, Jugador jugador, Envite envite, Carta carta) {
 		super();
 		this.baza = baza;
 		this.jugador = jugador;
@@ -29,10 +30,10 @@ public class Turno {
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
-	public String getEnvite() {
+	public Envite getEnvite() {
 		return envite;
 	}
-	public void setEnvite(String envite) {
+	public void setEnvite(Envite envite) {
 		this.envite = envite;
 	}
 	public Carta getCarta() {

@@ -1,12 +1,13 @@
 package negocio;
 
 import dao.JugadorDAO;
+import enums.Categoria;
 
 public class Jugador {
 	private String nombre;
 	private String apodo;
 	private String mail;
-	private String categoria;
+	private Categoria categoria;
 	private int puntaje;
 	private int partidosJugados;
 	private int partidosGanados;
@@ -14,7 +15,7 @@ public class Jugador {
 	private boolean jugando;
 	private String password;
 
-	public Jugador(String nombre, String apodo, String mail, String categoria, int puntaje, int partidosJugados,
+	public Jugador(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
 			int partidosGanados, boolean conectado, boolean jugando, String password) {
 		super();
 		this.nombre = nombre;
@@ -54,11 +55,11 @@ public class Jugador {
 		this.mail = mail;
 	}
 
-	public String getCategoria() {
+	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 
