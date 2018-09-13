@@ -24,13 +24,78 @@ public class BusinessDelegate {
 		}
 	}
 	
+
+	public boolean AltaJugador() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean crearGrupo() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean iniciarSesion() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean iniciarPartida() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean iniciarPartidaCerrada() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean buscarJugDisponibles() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean repartirCartas() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean nuevaMano() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean registrarPuntaje() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	public boolean eliminarJugador() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean modificarJugador() throws ComunicacionException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+	/*
 	public int suma(int a, int b) throws ComunicacionException{
 		try {
 			return ir.suma(a, b);
 		} catch (RemoteException e) {
 			throw new ComunicacionException("Error en las comunicaciones");	
 		}
-	}
+	}*/
 	
 	
 	

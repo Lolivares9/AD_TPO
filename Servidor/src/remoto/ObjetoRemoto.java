@@ -13,14 +13,70 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	public ObjetoRemoto() throws RemoteException {}
 
 	@Override
-	public int suma(int a, int b) throws RemoteException {
-		return new Controlador().sumar(a, b);
-	}
-
-	@Override
-	public boolean registrarJugador() throws RemoteException {
+	public boolean AltaJugador() throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	@Override
+	public boolean crearGrupo() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean iniciarSesion() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean iniciarPartida() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean iniciarPartidaCerrada() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean buscarJugDisponibles() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean repartirCartas() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean nuevaMano() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean registrarPuntaje() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean eliminarJugador() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean modificarJugador() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 }

@@ -2,10 +2,9 @@ package dao;
 
 import dto.JugadorDTO;
 import entities.JugadorEntity;
-import interfaces.IJugadorDAO;
 import negocio.Jugador;
 
-public class JugadorDAO implements IJugadorDAO{
+public class JugadorDAO {
 
 	private static JugadorDAO instancia;
 	
