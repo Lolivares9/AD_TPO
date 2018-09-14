@@ -22,8 +22,8 @@ public class HibernateUtil {
 	    {
 	        try
 	        {
-	        	 AnnotationConfiguration config = new AnnotationConfiguration();
-	         	 config.addAnnotatedClass(BazaEntity.class);
+	        	AnnotationConfiguration config = new AnnotationConfiguration();
+	         	config.addAnnotatedClass(BazaEntity.class);
 	         	config.addAnnotatedClass(CartaEntity.class);
 	         	config.addAnnotatedClass(ChicoEntity.class);
 	         	config.addAnnotatedClass(GrupoEntity.class);
