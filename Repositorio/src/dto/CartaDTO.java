@@ -1,12 +1,14 @@
 package dto;
 
+import enums.PaloCarta;
+
 public class CartaDTO {
 
 	private int numero;
-	private String palo;
+	private PaloCarta palo;
 	private int valorJuego;
 	
-	public CartaDTO(int numero, String palo, int valorJuego) {
+	public CartaDTO(int numero, PaloCarta palo, int valorJuego) {
 		super();
 		this.numero = numero;
 		this.palo = palo;
@@ -19,10 +21,10 @@ public class CartaDTO {
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
-	public String getPalo() {
+	public PaloCarta getPalo() {
 		return palo;
 	}
-	public void setPalo(String palo) {
+	public void setPalo(PaloCarta palo) {
 		this.palo = palo;
 	}
 	public int getValorJuego() {

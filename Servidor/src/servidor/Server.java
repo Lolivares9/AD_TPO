@@ -22,7 +22,7 @@ public class Server {
 
 		try {
 			LocateRegistry.createRegistry(1099);
-			Naming.rebind("//127.0.0.1/sumador", or);
+			Naming.rebind("//127.0.0.1/remoto", or);
 			System.out.println("Servidor iniciado Correctamente!");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

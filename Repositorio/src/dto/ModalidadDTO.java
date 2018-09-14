@@ -1,21 +1,23 @@
 package dto;
 
+import enums.TipoModalidad;
+
 public class ModalidadDTO {
 
-	private String descripcion;
+	private TipoModalidad modalidad;
 	private boolean individual;
 	
-	public ModalidadDTO(String descripcion, boolean individual) {
+	public ModalidadDTO(TipoModalidad descripcion, boolean individual) {
 		super();
-		this.descripcion = descripcion;
+		this.modalidad = descripcion;
 		this.individual = individual;
 	}
 	
-	public String getDescripcion() {
-		return descripcion;
+	public TipoModalidad getDescripcion() {
+		return modalidad;
 	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setDescripcion(TipoModalidad descripcion) {
+		this.modalidad = descripcion;
 	}
 	public boolean isIndividual() {
 		return individual;

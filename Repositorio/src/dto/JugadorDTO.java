@@ -1,10 +1,12 @@
 package dto;
 
+import enums.Categoria;
+
 public class JugadorDTO {
 	private String nombre;
 	private String apodo;
 	private String mail;
-	private String categoria;
+	private Categoria categoria;
 	private int puntaje;
 	private int partidosJugados;
 	private int partidosGanados;
@@ -12,7 +14,7 @@ public class JugadorDTO {
 	private boolean jugando;
 	private String password;
 
-	public JugadorDTO(String nombre, String apodo, String mail, String categoria, int puntaje, int partidosJugados,
+	public JugadorDTO(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
 			int partidosGanados, boolean conectado, boolean jugando, String password) {
 		super();
 		this.nombre = nombre;
@@ -52,11 +54,11 @@ public class JugadorDTO {
 		this.mail = mail;
 	}
 
-	public String getCategoria() {
+	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 

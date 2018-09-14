@@ -2,6 +2,7 @@ package negocio;
 
 import dao.JugadorDAO;
 import enums.Categoria;
+import excepciones.JugadorException;
 
 public class Jugador {
 	private String nombre;
@@ -113,6 +114,11 @@ public class Jugador {
 
 	public boolean guardar(){
 		return JugadorDAO.getInstancia().guardarJugador(this);
+	}
+
+	public static Jugador getJugador(String mail) throws JugadorException{
+		Jugador j = JugadorDAO.getInstancia().findByMail(mail);
+		return j;
 	}
 	
 }

@@ -1,13 +1,15 @@
 package dto;
 
+import enums.Envite;
+
 public class TurnoDTO {
 
 	private BazaDTO baza;
 	private JugadorDTO jugador;
-	private String envite;
+	private Envite envite;
 	private CartaDTO carta;
 	
-	public TurnoDTO(BazaDTO baza, JugadorDTO jugador, String envite, CartaDTO carta) {
+	public TurnoDTO(BazaDTO baza, JugadorDTO jugador, Envite envite, CartaDTO carta) {
 		super();
 		this.baza = baza;
 		this.jugador = jugador;
@@ -27,10 +29,10 @@ public class TurnoDTO {
 	public void setJugadorDTO(JugadorDTO jugador) {
 		this.jugador = jugador;
 	}
-	public String getEnvite() {
+	public Envite getEnvite() {
 		return envite;
 	}
-	public void setEnvite(String envite) {
+	public void setEnvite(Envite envite) {
 		this.envite = envite;
 	}
 	public CartaDTO getCartaDTO() {

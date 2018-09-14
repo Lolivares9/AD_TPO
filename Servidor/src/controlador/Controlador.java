@@ -1,17 +1,15 @@
 package controlador;
 
-
-
 public class Controlador {
+	private static Controlador instancia;
 
-	public int sumar (int a, int b){
-		//return Calculadora.getInstancia().sumar(a, b);
-		return 0;
+	private Controlador() {
 	}
-	
-	public int restar(int a, int b){
-		//return Calculadora.getInstancia().restar(a, b);
-		return 0;
+
+	public static Controlador getInstancia() {
+		if (instancia == null)
+			instancia = new Controlador();
+		return instancia;
 	}
 	
 }

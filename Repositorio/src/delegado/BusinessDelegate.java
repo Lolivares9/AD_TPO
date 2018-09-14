@@ -4,85 +4,91 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-
-import excepciones.ComunicacionException;
+import excepciones.ComunicationException;
 import interfaces.InterfaceRemota;
 
 public class BusinessDelegate {
 
 	private InterfaceRemota ir;
-	
-	public BusinessDelegate() throws ComunicacionException{
+	private static BusinessDelegate instancia;
+
+	private BusinessDelegate() throws ComunicationException {
 		try {
-			ir = (InterfaceRemota) Naming.lookup("//127.0.0.1/sumador");
-		} catch (MalformedURLException e) {
-			throw new ComunicacionException("La direccion especificada no es correcta");
-		} catch (RemoteException e) {
-			throw new ComunicacionException("Error en las comunicaciones");
-		} catch (NotBoundException e) {
-			throw new ComunicacionException("El servidor no esta disponible");		
+			ir = (InterfaceRemota) Naming.lookup("//localhost/Remoto");
+		} catch (MalformedURLException e1) {
+			throw new ComunicationException("La ubicacion del seridor es incorrecta");
+		} catch (RemoteException e1) {
+			throw new ComunicationException("Se produjo un error en la comunicación");
+		} catch (NotBoundException e1) {
+			throw new ComunicationException("No encontre a nadie que me responda");
 		}
 	}
+
+	public static BusinessDelegate getInstancia() throws ComunicationException {
+		if (instancia == null)
+			instancia = new BusinessDelegate();
+		return instancia;
+	}
 	
 
-	public boolean AltaJugador() throws ComunicacionException {
+	public boolean AltaJugador() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean crearGrupo() throws ComunicacionException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	public boolean iniciarSesion() throws ComunicacionException {
+	public boolean crearGrupo() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
-	public boolean iniciarPartida() throws ComunicacionException {
+	public boolean iniciarSesion() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
-	public boolean iniciarPartidaCerrada() throws ComunicacionException {
+	public boolean iniciarPartida() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
-	public boolean buscarJugDisponibles() throws ComunicacionException {
+	public boolean iniciarPartidaCerrada() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
-	public boolean repartirCartas() throws ComunicacionException {
+	public boolean buscarJugDisponibles() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
-	public boolean nuevaMano() throws ComunicacionException {
+	public boolean repartirCartas() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean registrarPuntaje() throws ComunicacionException {
+
+	public boolean nuevaMano() throws ComunicationException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean registrarPuntaje() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	
-	public boolean eliminarJugador() throws ComunicacionException {
+	public boolean eliminarJugador() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean modificarJugador() throws ComunicacionException {
+	public boolean modificarJugador() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -95,11 +101,5 @@ public class BusinessDelegate {
 		} catch (RemoteException e) {
 			throw new ComunicacionException("Error en las comunicaciones");	
 		}
-	}*/
-	
-	
-	
-	
-	
-	
+	}*/	
 }

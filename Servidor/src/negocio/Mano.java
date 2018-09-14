@@ -1,6 +1,4 @@
 package negocio;
-
-import dao.CartaDAO;
 import dao.ManoDAO;
 
 public class Mano {

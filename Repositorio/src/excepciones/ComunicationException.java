@@ -1,10 +1,10 @@
 package excepciones;
 
-public class ComunicacionException extends Exception {
+public class ComunicationException extends Exception {
 
 	private static final long serialVersionUID = 3525972443403681595L;
 
-	public ComunicacionException(String mensaje){
+	public ComunicationException(String mensaje){
 		super(mensaje);
 	}
 }

@@ -3,7 +3,7 @@ package view;
 import javax.swing.JOptionPane;
 
 import delegado.BusinessDelegate;
-import excepciones.ComunicacionException;
+import excepciones.ComunicationException;
 
 public class Cliente {
 
@@ -11,8 +11,8 @@ public class Cliente {
 
 		try {
 			//System.out.println(new BusinessDelegate().suma(10, 20));
-			new BusinessDelegate().AltaJugador();
-		} catch (ComunicacionException e) {
+			BusinessDelegate.getInstancia().AltaJugador();
+		} catch (ComunicationException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 
