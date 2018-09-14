@@ -27,8 +27,11 @@ public class JugadorDAO {
 	}
 
 	public boolean guardarJugador(Jugador p) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		
+		
+		
+		return true;
 	}
 	
 	public Jugador toNegocio(JugadorEntity jugador){

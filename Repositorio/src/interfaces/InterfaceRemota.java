@@ -3,9 +3,12 @@ package interfaces;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import dto.JugadorDTO;
+import excepciones.JugadorException;
+
 public interface InterfaceRemota extends Remote {
 	
-	public boolean AltaJugador() throws RemoteException;
+	public boolean AltaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
 	
 	public boolean crearGrupo() throws RemoteException;
 

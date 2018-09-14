@@ -29,6 +29,7 @@ public class JugadorDTO {
 		this.password = password;
 	}
 
+	public JugadorDTO() {}
 
 	public String getNombre() {
 		return nombre;

@@ -4,7 +4,11 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import controlador.Controlador;
+import dto.JugadorDTO;
+import excepciones.JugadorException;
 import interfaces.InterfaceRemota;
+import negocio.Jugador;
+import util.DTOMapper;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota {
 
@@ -13,8 +17,8 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	public ObjetoRemoto() throws RemoteException {}
 
 	@Override
-	public boolean AltaJugador() throws RemoteException {
-		// TODO Auto-generated method stub
+	public boolean AltaJugador(JugadorDTO jugador) throws RemoteException, JugadorException {
+		Controlador.getInstancia().altaJugador(jugador);
 		return false;
 	}
 

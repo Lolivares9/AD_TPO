@@ -4,7 +4,10 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+
+import dto.JugadorDTO;
 import excepciones.ComunicationException;
+import excepciones.JugadorException;
 import interfaces.InterfaceRemota;
 
 public class BusinessDelegate {
@@ -31,8 +34,14 @@ public class BusinessDelegate {
 	}
 	
 
-	public boolean AltaJugador() throws ComunicationException {
-		// TODO Auto-generated method stub
+	public boolean AltaJugador(JugadorDTO jugador) throws ComunicationException {
+		try {
+			ir.AltaJugador(jugador);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (JugadorException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

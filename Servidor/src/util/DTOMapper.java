@@ -24,7 +24,26 @@ public class DTOMapper {
 	}*/
 	
 	public Jugador dtoJugadorToNegocio (JugadorDTO jugDTO) throws JugadorException {
-		Jugador jug = Jugador.getJugador (jugDTO.getMail());
+		Jugador jug = Jugador.getJugador(jugDTO.getMail());
 		return jug;
 	}
+
+	public Jugador jugadorDTOtoNegocio(JugadorDTO jugDTO) {
+			Jugador jugador = new Jugador(jugDTO.getNombre(),jugDTO.getApodo(),jugDTO.getMail(),jugDTO.getCategoria(),jugDTO.getPuntaje(),
+					jugDTO.getPartidosJugados(),jugDTO.getPartidosGanados(),jugDTO.isConectado(),jugDTO.isJugando(),jugDTO.getPassword());
+		return jugador;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

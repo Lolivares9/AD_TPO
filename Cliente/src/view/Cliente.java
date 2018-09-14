@@ -3,20 +3,27 @@ package view;
 import javax.swing.JOptionPane;
 
 import delegado.BusinessDelegate;
+import dto.JugadorDTO;
+import enums.Categoria;
 import excepciones.ComunicationException;
 
 public class Cliente {
 
 	public static void main(String[] args) {
+		
+		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
+		altaJugador();
 
+	}
+
+	private static void altaJugador() {
+		Categoria categ = Categoria.Novato;
+		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,"segu2022");
 		try {
-			//System.out.println(new BusinessDelegate().suma(10, 20));
-			BusinessDelegate.getInstancia().AltaJugador();
+			BusinessDelegate.getInstancia().AltaJugador(jugador);
 		} catch (ComunicationException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
-
-
 	}
 
 }
