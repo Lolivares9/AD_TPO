@@ -1,6 +1,8 @@
 package dto;
 
-public class RankingGrupalDTO {
+import java.io.Serializable;
+
+public class RankingGrupalDTO implements Serializable {
 
 	private GrupoDTO grupo;
 	private JugadorDTO jugador;

@@ -1,8 +1,10 @@
 package dto;
 
+import java.io.Serializable;
+
 import enums.TipoModalidad;
 
-public class ModalidadDTO {
+public class ModalidadDTO implements Serializable {
 
 	private TipoModalidad modalidad;
 	private boolean individual;
