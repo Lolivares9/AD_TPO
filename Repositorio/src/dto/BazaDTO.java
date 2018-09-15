@@ -1,6 +1,8 @@
 package dto;
 
-public class BazaDTO {
+import java.io.Serializable;
+
+public class BazaDTO implements Serializable {
 
 	private ManoDTO mano;
 	private int numero;

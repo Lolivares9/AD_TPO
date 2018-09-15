@@ -1,8 +1,10 @@
 package dto;
 
+import java.io.Serializable;
+
 import enums.Envite;
 
-public class TurnoDTO {
+public class TurnoDTO implements Serializable {
 
 	private BazaDTO baza;
 	private JugadorDTO jugador;

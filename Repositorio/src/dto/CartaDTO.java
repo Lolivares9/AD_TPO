@@ -1,8 +1,10 @@
 package dto;
 
+import java.io.Serializable;
+
 import enums.PaloCarta;
 
-public class CartaDTO {
+public class CartaDTO implements Serializable {
 
 	private int numero;
 	private PaloCarta palo;

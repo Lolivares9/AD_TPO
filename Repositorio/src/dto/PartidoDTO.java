@@ -1,8 +1,9 @@
 package dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PartidoDTO {
+public class PartidoDTO implements Serializable {
 
 	private ChicoDTO chico;
 	private ModalidadDTO modalidad;

@@ -1,6 +1,8 @@
 package dto;
 
-public class ManoDTO {
+import java.io.Serializable;
+
+public class ManoDTO implements Serializable {
 
 	private ChicoDTO chico;
 	private int numeroMano;

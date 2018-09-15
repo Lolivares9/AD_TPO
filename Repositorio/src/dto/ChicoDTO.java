@@ -1,7 +1,8 @@
 package dto;
+import java.io.Serializable;
 import java.util.Date;
 
-public class ChicoDTO {
+public class ChicoDTO implements Serializable {
 
 	private int numero;
 	private Date fecha;

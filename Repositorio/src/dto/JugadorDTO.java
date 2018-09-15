@@ -1,8 +1,10 @@
 package dto;
 
+import java.io.Serializable;
+
 import enums.Categoria;
 
-public class JugadorDTO {
+public class JugadorDTO implements Serializable  {
 	private String nombre;
 	private String apodo;
 	private String mail;
