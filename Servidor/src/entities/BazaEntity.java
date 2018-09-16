@@ -16,7 +16,7 @@ public class BazaEntity {
 	@Id
 	@Column (name="ID_BAZA")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idBaza;
+	private int idBaza;
 	
 	@ManyToOne
 	@JoinColumn(name="ID_MANO")
