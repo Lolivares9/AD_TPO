@@ -12,7 +12,6 @@ public class Controlador {
 	private Controlador() {
 	}
 
-	//Estoy probando
 	public static Controlador getInstancia() {
 		if (instancia == null)
 			instancia = new Controlador();
