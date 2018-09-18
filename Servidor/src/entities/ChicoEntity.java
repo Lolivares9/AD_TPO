@@ -18,7 +18,7 @@ public class ChicoEntity {
 	@Id
 	@Column (name="ID_CHICO")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idChico;
+	private Integer idChico;
 	
 	@Column(name="NUMERO_CHICO")
 	private int numeroChico;
@@ -33,6 +33,10 @@ public class ChicoEntity {
 	@OneToOne
 	@JoinColumn(name="ID_PAREJA_GANADORA")
 	private ParejaEntity parejaGanadora;
+
+	public ChicoEntity() {
+		super();
+	}
 
 	public Integer getIdChico() {
 		return idChico;

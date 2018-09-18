@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class RankingGrupalEntity {
 
 	@EmbeddedId
-	private RankingGrupalPKEntity id;
+	private RankingGrupalPK id;
 	
 	@Column(name="PARTIDOS_JUGADOS")
 	private int partidosJugados;
@@ -20,12 +20,16 @@ public class RankingGrupalEntity {
 	
 	@Column(name="PUNTAJE")
 	private int puntaje;
+	
+	public RankingGrupalEntity() {
+		super();
+	}
 
-	public RankingGrupalPKEntity getId() {
+	public RankingGrupalPK getId() {
 		return id;
 	}
 
-	public void setId(RankingGrupalPKEntity id) {
+	public void setId(RankingGrupalPK id) {
 		this.id = id;
 	}
 

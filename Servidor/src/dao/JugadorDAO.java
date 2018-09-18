@@ -3,6 +3,7 @@ package dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import dto.JugadorDTO;
 import entities.JugadorEntity;
@@ -27,10 +28,15 @@ public class JugadorDAO {
 	}
 
 	public boolean guardarJugador(Jugador p) {
-		
-		
-		
-		
+		JugadorEntity jEntity = toEntity(p);
+		//SessionFactory sf = new Configuration().configure("config\\hibernate.properties").buildSessionFactory();
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(jEntity);
+		s.getTransaction().commit();
+		s.close();
+
 		return true;
 	}
 	
@@ -42,6 +48,14 @@ public class JugadorDAO {
 	public JugadorDTO toDTO(JugadorEntity jugador){
 		//return new JugadorDTO(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
 		return null;
+	}
+	
+	private JugadorEntity toEntity(Jugador jugador){
+		JugadorEntity entity = new JugadorEntity(jugador.getNombre(), jugador.getApodo(), jugador.getMail(),
+				jugador.getPassword(), jugador.getCategoria(), jugador.getPuntaje(), jugador.getPartidosJugados(), jugador.getPartidosGanados(),
+				true, true);
+		entity.setIdJugador(7);
+		return entity;
 	}
 
 	public Jugador findByMail(String mail) throws JugadorException {

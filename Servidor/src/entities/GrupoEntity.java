@@ -16,7 +16,7 @@ public class GrupoEntity {
 	@Id
 	@Column (name="ID_GRUPO")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idGrupo;
+	private Integer idGrupo;
 	
 	@Column(name="NOMBRE")
 	private String nombre;
@@ -24,12 +24,16 @@ public class GrupoEntity {
 	@OneToOne
 	@JoinColumn(name="ID_JUGADOR_ADM")
 	private JugadorEntity jugadorAdmin;
+	
+	public GrupoEntity() {
+		super();
+	}
 
-	public int getIdGrupo() {
+	public Integer getIdGrupo() {
 		return idGrupo;
 	}
 
-	public void setIdGrupo(int idGrupo) {
+	public void setIdGrupo(Integer idGrupo) {
 		this.idGrupo = idGrupo;
 	}
 

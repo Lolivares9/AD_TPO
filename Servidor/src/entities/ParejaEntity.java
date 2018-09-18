@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,22 +16,28 @@ public class ParejaEntity {
 	@Id
 	@Column (name="ID_PAREJA")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idPareja;
+	private Integer idPareja;
 	
-	@Column(name="ID_JUGADOR1")
+	@ManyToOne
+	@JoinColumn(name="ID_JUGADOR1")
 	private JugadorEntity Jugador1;
 	
-	@Column(name="ID_JUGADOR2")
+	@ManyToOne
+	@JoinColumn(name="ID_JUGADOR2")
 	private JugadorEntity jugador2;
 	
 	@Column(name="PUNTAJE")
 	private int puntaje;
+	
+	public ParejaEntity() {
+		super();
+	}
 
-	public int getIdPareja() {
+	public Integer getIdPareja() {
 		return idPareja;
 	}
 
-	public void setIdPareja(int idPareja) {
+	public void setIdPareja(Integer idPareja) {
 		this.idPareja = idPareja;
 	}
 

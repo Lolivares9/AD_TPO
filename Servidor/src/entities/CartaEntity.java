@@ -18,7 +18,7 @@ public class CartaEntity {
 	@Id
 	@Column (name="ID_CARTA")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idCarta;
+	private Integer idCarta;
 	
 	@Column(name="PALO")
 	@Enumerated(EnumType.STRING)
@@ -30,12 +30,16 @@ public class CartaEntity {
 	
 	@Column(name="VALOR_JUEGO")
 	private int valorJuego;
+	
+	public CartaEntity() {
+		super();
+	}
 
-	public int getIdCarta() {
+	public Integer getIdCarta() {
 		return idCarta;
 	}
 
-	public void setIdCarta(int idCarta) {
+	public void setIdCarta(Integer idCarta) {
 		this.idCarta = idCarta;
 	}
 

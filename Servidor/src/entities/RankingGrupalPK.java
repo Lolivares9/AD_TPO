@@ -7,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Embeddable
-public class RankingGrupalPKEntity implements Serializable {
+public class RankingGrupalPK implements Serializable {
 
 	/**
 	 * 
@@ -21,6 +21,26 @@ public class RankingGrupalPKEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="ID_GRUPO", nullable=false)
 	private GrupoEntity grupo;
+
+	public JugadorEntity getJugador() {
+		return jugador;
+	}
+
+	public void setJugador(JugadorEntity jugador) {
+		this.jugador = jugador;
+	}
+
+	public GrupoEntity getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(GrupoEntity grupo) {
+		this.grupo = grupo;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	@Override
 	public int hashCode() {
@@ -39,7 +59,7 @@ public class RankingGrupalPKEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RankingGrupalPKEntity other = (RankingGrupalPKEntity) obj;
+		RankingGrupalPK other = (RankingGrupalPK) obj;
 		if (grupo == null) {
 			if (other.grupo != null)
 				return false;

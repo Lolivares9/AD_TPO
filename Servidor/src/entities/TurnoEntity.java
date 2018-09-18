@@ -17,13 +17,14 @@ public class TurnoEntity {
 	@Id
 	@Column (name="ID_TURNO")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idTurno;
+	private Integer idTurno;
 	
 	@ManyToOne
 	@JoinColumn(name="ID_BAZA")
 	private BazaEntity baza;
 	
-	@Column(name="ID_JUGADOR")
+	@ManyToOne
+	@JoinColumn(name="ID_JUGADOR")
 	private JugadorEntity jugador;
 	
 	//TODO hacer enum para envites?
@@ -33,12 +34,16 @@ public class TurnoEntity {
 	@OneToOne
 	@JoinColumn(name="ID_CARTA")
 	private CartaEntity carta;
+	
+	public TurnoEntity() {
+		super();
+	}
 
-	public int getIdTurno() {
+	public Integer getIdTurno() {
 		return idTurno;
 	}
 
-	public void setIdTurno(int idTurno) {
+	public void setIdTurno(Integer idTurno) {
 		this.idTurno = idTurno;
 	}
 

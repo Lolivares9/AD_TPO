@@ -2,10 +2,14 @@ package entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import enums.Categoria;
 
 @Entity
 @Table(name = "JUGADORES")
@@ -14,10 +18,10 @@ public class JugadorEntity {
 	@Id
 	@Column (name="ID_JUGADOR")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idJugador;
+	private Integer idJugador;
 	
 	@Column(name="NOMBRE")
-	private int nombre;
+	private String nombre;
 	
 	@Column(name="APODO")
 	private String apodo;
@@ -30,10 +34,11 @@ public class JugadorEntity {
 	private String password;
 	
 	@Column(name="CATEGORIA")
-	private String categoria;
+	@Enumerated(EnumType.STRING)
+	private Categoria categoria;
 	
 	@Column(name="PUNTAJE")
-	private String puntaje;
+	private int puntaje;
 	
 	@Column(name="PARTIDOS_JUGADOS")
 	private int partidosJugados;
@@ -50,20 +55,40 @@ public class JugadorEntity {
 	//TODO ¿?¿?¿? cambiar ultimos dos a:
 	//@Column(name="ESTADO")
 	//enum con estados posibles (jugando, conectado...)
+	
+	public JugadorEntity() {
+		super();
+	}
+	
+	public JugadorEntity(String nombre, String apodo, String mail, String password,
+			Categoria categoria, int puntaje, int partidosJugados, int partidosGanados, boolean conectado,
+			boolean jugando) {
+		super();
+		this.nombre = nombre;
+		this.apodo = apodo;
+		this.mail = mail;
+		this.password = password;
+		this.categoria = categoria;
+		this.puntaje = puntaje;
+		this.partidosJugados = partidosJugados;
+		this.partidosGanados = partidosGanados;
+		this.conectado = conectado;
+		this.jugando = jugando;
+	}
 
-	public int getIdJugador() {
+	public Integer getIdJugador() {
 		return idJugador;
 	}
 
-	public void setIdJugador(int idJugador) {
+	public void setIdJugador(Integer idJugador) {
 		this.idJugador = idJugador;
 	}
 
-	public int getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(int nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
@@ -91,19 +116,19 @@ public class JugadorEntity {
 		this.password = password;
 	}
 
-	public String getCategoria() {
+	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 
-	public String getPuntaje() {
+	public int getPuntaje() {
 		return puntaje;
 	}
 
-	public void setPuntaje(String puntaje) {
+	public void setPuntaje(int puntaje) {
 		this.puntaje = puntaje;
 	}
 

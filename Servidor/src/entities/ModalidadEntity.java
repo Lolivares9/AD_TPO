@@ -14,19 +14,23 @@ public class ModalidadEntity {
 	@Id
 	@Column (name="ID_MODALIDAD")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idModalidad;
+	private Integer idModalidad;
 	
 	@Column(name="DESCRIPCION")
 	private int descripcion;
 	
 	@Column(name="INDIVIDUAL")
 	private boolean individual;
+	
+	public ModalidadEntity() {
+		super();
+	}
 
-	public int getIdModalidad() {
+	public Integer getIdModalidad() {
 		return idModalidad;
 	}
 
-	public void setIdModalidad(int idModalidad) {
+	public void setIdModalidad(Integer idModalidad) {
 		this.idModalidad = idModalidad;
 	}
 

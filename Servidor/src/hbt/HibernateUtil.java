@@ -11,6 +11,7 @@ import entities.ModalidadEntity;
 import entities.ParejaEntity;
 import entities.PartidoEntity;
 import entities.RankingGrupalEntity;
+import entities.RankingGrupalPK;
 import entities.TurnoEntity;
 
 
@@ -33,6 +34,7 @@ public class HibernateUtil {
 	         	config.addAnnotatedClass(ParejaEntity.class);
 	         	config.addAnnotatedClass(PartidoEntity.class);
 	         	config.addAnnotatedClass(RankingGrupalEntity.class);
+	         	config.addAnnotatedClass(RankingGrupalPK.class);
 	         	config.addAnnotatedClass(TurnoEntity.class);
 	             sessionFactory = config.buildSessionFactory();
 	        }
