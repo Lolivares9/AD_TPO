@@ -1,4 +1,4 @@
-package view;
+package test;
 
 import delegado.BusinessDelegate;
 import dto.JugadorDTO;
@@ -10,8 +10,18 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
+		cargarCartas();
 		altaJugador();
 
+	}
+
+	private static void cargarCartas() {
+		// TODO Auto-generated method stub
+		try {
+			BusinessDelegate.getInstancia().cargarCartas();
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void altaJugador() {

@@ -101,6 +101,11 @@ public class BusinessDelegate {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public void cargarCartas() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	/*

@@ -16,12 +16,6 @@ public class DTOMapper {
 
 	private DTOMapper() {
 	}
-
-	/*public Articulo dtoArticuloToNegocio(ArticuloDTO artDTO) throws ArticuloException {
-
-		Articulo art = Articulo.getArticulo(artDTO.getCodigoBarra());
-		return art;
-	}*/
 	
 	public Jugador dtoJugadorToNegocio (JugadorDTO jugDTO) throws JugadorException {
 		Jugador jug = Jugador.getJugador(jugDTO.getMail());
