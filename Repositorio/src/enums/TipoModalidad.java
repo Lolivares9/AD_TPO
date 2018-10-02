@@ -1,5 +1,5 @@
 package enums;
 
 public enum TipoModalidad {
-	cerrado, libre;
+	Libre_individual, Libre, Cerrado, ;
 }
