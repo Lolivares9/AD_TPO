@@ -4,13 +4,14 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import dto.JugadorDTO;
+import excepciones.GrupoException;
 import excepciones.JugadorException;
 
 public interface InterfaceRemota extends Remote {
 	
 	public boolean AltaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
 	
-	public boolean crearGrupo() throws RemoteException;
+	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugador) throws RemoteException,GrupoException;
 
 	public boolean iniciarSesion() throws RemoteException;
 	

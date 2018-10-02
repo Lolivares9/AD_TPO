@@ -2,7 +2,6 @@ package negocio;
 
 import java.util.List;
 
-import dao.CartaDAO;
 import dao.GrupoDAO;
 
 public class Grupo {
@@ -10,7 +9,10 @@ public class Grupo {
 	private Jugador jugadorAdmin;
 	private List<Jugador> jugadores;
 	
-	
+	public Grupo() {
+		super();
+	}
+
 	public Grupo(String nombre, Jugador jugadorAdmin, List<Jugador> jugadores) {
 		super();
 		this.nombre = nombre;

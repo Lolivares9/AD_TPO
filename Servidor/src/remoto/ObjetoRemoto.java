@@ -5,10 +5,10 @@ import java.rmi.server.UnicastRemoteObject;
 
 import controlador.Controlador;
 import dto.JugadorDTO;
+import excepciones.GrupoException;
 import excepciones.JugadorException;
 import interfaces.InterfaceRemota;
 import negocio.Jugador;
-import util.DTOMapper;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota {
 
@@ -23,9 +23,8 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	@Override
-	public boolean crearGrupo() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws RemoteException, GrupoException {
+		return Controlador.getInstancia().crearGrupo(nombreGrupo, jugadorAdmin);
 	}
 
 	@Override

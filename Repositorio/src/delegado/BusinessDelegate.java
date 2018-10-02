@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 
 import dto.JugadorDTO;
 import excepciones.ComunicationException;
+import excepciones.GrupoException;
 import excepciones.JugadorException;
 import interfaces.InterfaceRemota;
 
@@ -45,8 +46,14 @@ public class BusinessDelegate {
 		return false;
 	}
 
-	public boolean crearGrupo() throws ComunicationException {
-		// TODO Auto-generated method stub
+	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws ComunicationException {
+		try {
+			ir.crearGrupo(nombreGrupo, jugadorAdmin);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (GrupoException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

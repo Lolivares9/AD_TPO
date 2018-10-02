@@ -1,8 +1,13 @@
 package controlador;
 
+import dao.GrupoDAO;
 import dao.JugadorDAO;
+import dto.GrupoDTO;
 import dto.JugadorDTO;
+import entities.GrupoEntity;
+import excepciones.GrupoException;
 import excepciones.JugadorException;
+import negocio.Grupo;
 import negocio.Jugador;
 import util.DTOMapper;
 
@@ -25,6 +30,21 @@ public class Controlador {
 		}
 			 JugadorDAO.getInstancia().guardarJugador(jug);
 	}
+
+	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws GrupoException{
+		boolean valido = GrupoDAO.getInstancia().nombreGrupoValido(nombreGrupo);
+		if(valido){
+			Grupo g = new Grupo();
+			g.setNombre(nombreGrupo);
+			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugadorAdmin);
+			g.setJugadorAdmin(jug);
+			GrupoDAO.getInstancia().guardar(g);
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 
 	
 }
