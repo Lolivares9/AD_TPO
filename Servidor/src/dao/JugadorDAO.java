@@ -3,7 +3,6 @@ package dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import dto.JugadorDTO;
 import entities.JugadorEntity;
@@ -29,7 +28,6 @@ public class JugadorDAO {
 
 	public boolean guardarJugador(Jugador p) {
 		JugadorEntity jEntity = toEntity(p);
-		//SessionFactory sf = new Configuration().configure("config\\hibernate.properties").buildSessionFactory();
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
