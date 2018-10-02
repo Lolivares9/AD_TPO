@@ -11,8 +11,8 @@ public class Cliente {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
 		cargarCartas();
-		//altaJugador();
 		crearGrupo();
+		altaJugador();
 
 	}
 

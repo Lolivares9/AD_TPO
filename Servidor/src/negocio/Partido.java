@@ -2,30 +2,35 @@ package negocio;
 
 import java.util.List;
 
+import enums.EstadoPartido;
+import enums.TipoModalidad;
+
 public class Partido {
 	private Chico chico;
-	private Modalidad modalidad;
+	private TipoModalidad modalidad;
 	private List<Pareja> parejas;
 	private Pareja parejaGanadora;
+	private EstadoPartido estado;
 	
-	public Partido(Chico chico, Modalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora) {
+	public Partido(Chico chico, TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora,
+			EstadoPartido estado) {
 		super();
 		this.chico = chico;
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
+		this.estado = estado;
 	}
-	
 	public Chico getChico() {
 		return chico;
 	}
 	public void setChico(Chico chico) {
 		this.chico = chico;
 	}
-	public Modalidad getModalidad() {
+	public TipoModalidad getModalidad() {
 		return modalidad;
 	}
-	public void setModalidad(Modalidad modalidad) {
+	public void setModalidad(TipoModalidad modalidad) {
 		this.modalidad = modalidad;
 	}
 	public List<Pareja> getParejas() {
@@ -40,4 +45,12 @@ public class Partido {
 	public void setParejaGanadora(Pareja parejaGanadora) {
 		this.parejaGanadora = parejaGanadora;
 	}
+	public EstadoPartido getEstado() {
+		return estado;
+	}
+	public void setEstado(EstadoPartido estado) {
+		this.estado = estado;
+	}
+	
+
 }
