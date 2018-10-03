@@ -38,9 +38,9 @@ public class JugadorDAO {
 		return true;
 	}
 	
+	//MODIFICAR PARA QUE LO PASE A NEGOCIO POSTA
 	public Jugador toNegocio(JugadorEntity jugador){
-		//return new Jugador(jugador.getApodo(), jugador.getMail(), jugador.getPassword(), null, 0, 0, 0, false, false, null);
-		return null;
+		return new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),null,11,11,1,false,false,jugador.getPassword());
 	}
 
 	public JugadorDTO toDTO(JugadorEntity jugador){
@@ -65,7 +65,7 @@ public class JugadorDAO {
 		JugadorEntity aux;
 		try {
 			aux = (JugadorEntity) s
-					.createQuery("select ae from JugadorEntity je where je.mail = ?")
+					.createQuery("from JugadorEntity je where je.mail = ?")
 					.setString(0, mail).uniqueResult();
 			
 			s.getTransaction().commit();

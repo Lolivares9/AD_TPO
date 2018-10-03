@@ -10,10 +10,26 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		cargarCartas();
-		crearGrupo();
-		altaJugador();
-
+		//cargarCartas();
+		//crearGrupo();
+		//altaJugador();
+		iniciarSesion();
+		
+	}
+	
+	private static void iniciarSesion(){
+		boolean inicioBien = false;
+		JugadorDTO jug = new JugadorDTO();
+		jug.setApodo("Chulo");
+		jug.setPassword("123456");
+		jug.setMail("boccardo2013@gmail.com");
+		try {
+			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Inició bien: "+inicioBien);
 	}
 
 	private static void cargarCartas() {

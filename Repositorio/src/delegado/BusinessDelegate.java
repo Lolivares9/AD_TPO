@@ -58,9 +58,14 @@ public class BusinessDelegate {
 	}
 
 
-	public boolean iniciarSesion() throws ComunicationException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean iniciarSesion(JugadorDTO jugador) throws ComunicationException {
+		boolean inicioBien = false;
+		try {
+			inicioBien = ir.iniciarSesion(jugador);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return inicioBien;
 	}
 
 

@@ -13,7 +13,8 @@ import util.DTOMapper;
 
 public class Controlador {
 	private static Controlador instancia;
-
+	private static Jugador jugadorLogueado;
+	
 	private Controlador() {
 	}
 
@@ -44,7 +45,18 @@ public class Controlador {
 			return false;
 		}
 	}
-	
 
+	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
+		Jugador jugador = DTOMapper.getInstancia().dtoJugadorToNegocio(jug);
+		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
+			jugadorLogueado = jugador;
+			return true;
+		}
+		return false;
+	}
+
+	public static Jugador getJugadorLogueado() {
+		return jugadorLogueado;
+	}
 	
 }

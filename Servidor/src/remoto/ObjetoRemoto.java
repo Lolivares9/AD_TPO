@@ -28,9 +28,14 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	@Override
-	public boolean iniciarSesion() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean iniciarSesion(JugadorDTO jugador) throws RemoteException {
+		boolean inicioBien = false;
+		try {
+			inicioBien = Controlador.getInstancia().iniciarSesion(jugador);
+		} catch (JugadorException e) {
+			e.printStackTrace();
+		}
+		return inicioBien;
 	}
 
 	@Override
