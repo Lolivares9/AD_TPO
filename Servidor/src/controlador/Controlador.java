@@ -46,7 +46,7 @@ public class Controlador {
 	}
 
 	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
-		Jugador jugador = DTOMapper.getInstancia().dtoJugadorToNegocio(jug);
+		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
 		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
 			return true;
 		}

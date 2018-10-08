@@ -45,7 +45,6 @@ public class LoginServlet extends HttpServlet {
 		JugadorDTO jug = new JugadorDTO();
 		jug.setApodo(apodo);
 		jug.setPassword(password);
-		jug.setMail("boccardo2013@gmail.com");
 		try {
 			if (BusinessDelegate.getInstancia().iniciarSesion(jug)) {
 				setUsuarioLogueado(apodo);

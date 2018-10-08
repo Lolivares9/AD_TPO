@@ -21,8 +21,7 @@ public class Cliente {
 		boolean inicioBien = false;
 		JugadorDTO jug = new JugadorDTO();
 		jug.setApodo("Chulo");
-		jug.setPassword("123456");
-		jug.setMail("boccardo2013@gmail.com");
+		jug.setPassword("segu2022");
 		try {
 			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
 		} catch (ComunicationException e) {

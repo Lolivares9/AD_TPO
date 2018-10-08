@@ -38,7 +38,7 @@
 						<span class="input-group-text" id="basic-addon2">Contraseña</span>
 					</div>
 					<input type="password" class="form-control" placeholder="Ingrese contraseña..."
-						name="password" aria-label="Constraseña" aria-describedby="basic-addon2">
+						name="password" aria-label="Contraseña" aria-describedby="basic-addon2">
 				</div>
 				<div class="container d-flex justify-content-center">
 					<input type="submit" value="Log in" class="btn btn-secondary w-100" />

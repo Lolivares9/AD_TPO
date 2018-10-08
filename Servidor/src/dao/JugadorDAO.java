@@ -38,9 +38,9 @@ public class JugadorDAO {
 		return true;
 	}
 	
-	//MODIFICAR PARA QUE LO PASE A NEGOCIO POSTA
 	public Jugador toNegocio(JugadorEntity jugador){
-		return new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),null,11,11,1,false,false,jugador.getPassword());
+		return new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),jugador.getCategoria(),jugador.getPuntaje(),
+				jugador.getPartidosJugados(),jugador.getPartidosGanados(),jugador.isConectado(),jugador.isJugando(),jugador.getPassword());
 	}
 
 	public JugadorDTO toDTO(JugadorEntity jugador){
@@ -52,7 +52,6 @@ public class JugadorDAO {
 		JugadorEntity entity = new JugadorEntity(jugador.getNombre(), jugador.getApodo(), jugador.getMail(),
 				jugador.getPassword(), jugador.getCategoria(), jugador.getPuntaje(), jugador.getPartidosJugados(), jugador.getPartidosGanados(),
 				true, true);
-		entity.setIdJugador(7);
 		return entity;
 	}
 
@@ -75,6 +74,35 @@ public class JugadorDAO {
 				resultado = this.toNegocio(aux);
 			} else {
 				throw new JugadorException("No se encontro el jugador con el mail: '" + mail + "'.");
+			}
+
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return resultado;
+	}
+	
+	public Jugador buscarPorApodo(String apodo) throws JugadorException {
+
+		Jugador resultado = null;
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		JugadorEntity aux;
+		try {
+			aux = (JugadorEntity) s
+					.createQuery("from JugadorEntity je where je.apodo = ?")
+					.setString(0, apodo).uniqueResult();
+			
+			s.getTransaction().commit();
+			s.close();
+			
+			if (aux != null) {
+				resultado = this.toNegocio(aux);
+			} else {
+				throw new JugadorException("No se encontro el jugador con el apodo: '" + apodo + "'.");
 			}
 
 		} catch (HibernateException e) {
