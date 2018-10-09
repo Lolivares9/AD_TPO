@@ -2,6 +2,7 @@ package interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import dto.JugadorDTO;
 import excepciones.GrupoException;
@@ -12,6 +13,8 @@ public interface InterfaceRemota extends Remote {
 	public boolean AltaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
 	
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugador) throws RemoteException,GrupoException;
+	
+	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws RemoteException, GrupoException;
 
 	public boolean iniciarSesion(JugadorDTO jugador) throws RemoteException;
 	
@@ -30,4 +33,6 @@ public interface InterfaceRemota extends Remote {
 	public boolean eliminarJugador() throws RemoteException;
 	
 	public boolean modificarJugador() throws RemoteException;
+
+
 }

@@ -2,6 +2,7 @@ package remoto;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 import controlador.Controlador;
 import dto.JugadorDTO;
@@ -25,6 +26,11 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	@Override
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws RemoteException, GrupoException {
 		return Controlador.getInstancia().crearGrupo(nombreGrupo, jugadorAdmin);
+	}
+	
+	@Override
+	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws RemoteException, GrupoException {
+		return Controlador.getInstancia().llenarGrupo(nombreGrupo, jugadores);
 	}
 
 	@Override

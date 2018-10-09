@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import dto.JugadorDTO;
 import excepciones.ComunicationException;
@@ -56,7 +57,17 @@ public class BusinessDelegate {
 		}
 		return false;
 	}
-
+	
+	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws ComunicationException {
+		try {
+			ir.llenarGrupo(nombreGrupo, jugadores);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (GrupoException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	public boolean iniciarSesion(JugadorDTO jugador) throws ComunicationException {
 		boolean inicioBien = false;

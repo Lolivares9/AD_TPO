@@ -1,10 +1,11 @@
 package controlador;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import dao.GrupoDAO;
 import dao.JugadorDAO;
-import dto.GrupoDTO;
 import dto.JugadorDTO;
-import entities.GrupoEntity;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
 import negocio.Grupo;
@@ -24,11 +25,11 @@ public class Controlador {
 	}
 
 	public void altaJugador(JugadorDTO jugador) throws JugadorException {
-		Jugador jug = null;
-		if(!JugadorDAO.getInstancia().existeJugador(jugador.getApodo())){
+		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(jugador.getApodo());
+		if(jug == null){
 			jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
-		}
-			 JugadorDAO.getInstancia().guardarJugador(jug);
+			JugadorDAO.getInstancia().guardarJugador(jug);
+		}			 
 	}
 
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws GrupoException{
@@ -44,6 +45,17 @@ public class Controlador {
 			return false;
 		}
 	}
+	
+	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws GrupoException{
+		Grupo g = GrupoDAO.getInstancia().buscarGrupo(nombreGrupo);
+		if(g != null){
+			List<Jugador> jugNeg = jugadores.stream().map(j -> DTOMapper.getInstancia().jugadorDTOtoNegocio(j)).collect(Collectors.toList());
+			g.setJugadores(jugNeg);
+			return g.guardar();
+		}else{
+			return false;
+		}
+	}
 
 	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
@@ -52,4 +64,6 @@ public class Controlador {
 		}
 		return false;
 	}
+	
+	
 }

@@ -48,7 +48,7 @@ public class JugadorDAO {
 		return null;
 	}
 	
-	private JugadorEntity toEntity(Jugador jugador){
+	public JugadorEntity toEntity(Jugador jugador){
 		JugadorEntity entity = new JugadorEntity(jugador.getNombre(), jugador.getApodo(), jugador.getMail(),
 				jugador.getPassword(), jugador.getCategoria(), jugador.getPuntaje(), jugador.getPartidosJugados(), jugador.getPartidosGanados(),
 				true, true);

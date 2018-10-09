@@ -1,5 +1,8 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import delegado.BusinessDelegate;
 import dto.JugadorDTO;
 import enums.Categoria;
@@ -11,9 +14,10 @@ public class Cliente {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
 		//cargarCartas();
-		//crearGrupo();
+		//crearGrupo(); TODO 
+		//llenarGrupo(); TODO Grupo-Jugador Entity
 		//altaJugador();
-		iniciarSesion();
+		//iniciarSesion();
 		
 	}
 	
@@ -51,13 +55,27 @@ public class Cliente {
 	}
 	
 	private static void crearGrupo(){
+		//TODO METER AL JUGADOR QUE CREA COMO INTEGRANTE???
 		Categoria categ = Categoria.Novato;
 		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,"segu2022");
 		try {
-			BusinessDelegate.getInstancia().crearGrupo("Grupo", jugador); //TODO Pasar jugador que lo crea (Admin)
+			BusinessDelegate.getInstancia().crearGrupo("Grupo1", jugador); //TODO Pasar jugador que lo crea (Admin)
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
 	}
 
+	private static void llenarGrupo(){
+		Categoria categ = Categoria.Novato;
+		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,"segu2022");
+		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
+		jugadores.add(jugador);
+		JugadorDTO jugador3 = new JugadorDTO("Daniel","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,"segu2022");
+		jugadores.add(jugador3);
+		try {
+			BusinessDelegate.getInstancia().llenarGrupo("Grupo1", jugadores); //TODO Pasar jugador que lo crea (Admin)
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
+	}
 }
