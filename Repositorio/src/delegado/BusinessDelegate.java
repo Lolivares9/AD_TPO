@@ -47,6 +47,16 @@ public class BusinessDelegate {
 		return false;
 	}
 
+	public boolean iniciarSesion(JugadorDTO jugador) throws ComunicationException {
+		boolean inicioBien = false;
+		try {
+			inicioBien = ir.iniciarSesion(jugador);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return inicioBien;
+	}
+	
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws ComunicationException {
 		try {
 			ir.crearGrupo(nombreGrupo, jugadorAdmin);
@@ -69,23 +79,25 @@ public class BusinessDelegate {
 		return false;
 	}
 
-	public boolean iniciarSesion(JugadorDTO jugador) throws ComunicationException {
+	public boolean iniciarPartidaLibreIndividual() throws ComunicationException {
 		boolean inicioBien = false;
 		try {
-			inicioBien = ir.iniciarSesion(jugador);
+			inicioBien = ir.iniciarPartidaLibreIndividual();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		return inicioBien;
 	}
 
-
-	public boolean iniciarPartida() throws ComunicationException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean iniciarPartidaLibre() throws ComunicationException {
+		boolean inicioBien = false;
+		try {
+			inicioBien = ir.iniciarPartidaLibre();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return inicioBien;
 	}
-
-
 	public boolean iniciarPartidaCerrada() throws ComunicationException {
 		// TODO Auto-generated method stub
 		return false;
