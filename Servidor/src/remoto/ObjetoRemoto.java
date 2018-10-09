@@ -39,9 +39,13 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	@Override
-	public boolean iniciarPartida() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean iniciarPartidaLibreIndividual() throws RemoteException {
+		return Controlador.getInstancia().iniciarPartidaLibreIndividual();
+	}
+	
+	@Override
+	public boolean iniciarPartidaLibre() throws RemoteException {
+		return Controlador.getInstancia().iniciarPartidaLibre();
 	}
 
 	@Override

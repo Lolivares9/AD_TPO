@@ -15,7 +15,9 @@ public interface InterfaceRemota extends Remote {
 
 	public boolean iniciarSesion(JugadorDTO jugador) throws RemoteException;
 	
-	public boolean iniciarPartida() throws RemoteException;
+	public boolean iniciarPartidaLibreIndividual() throws RemoteException;
+	
+	public boolean iniciarPartidaLibre() throws RemoteException;
 	
 	public boolean iniciarPartidaCerrada() throws RemoteException;
 	

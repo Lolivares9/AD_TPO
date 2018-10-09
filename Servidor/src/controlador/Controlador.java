@@ -52,4 +52,15 @@ public class Controlador {
 		}
 		return false;
 	}
+
+	public boolean iniciarPartidaLibreIndividual() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+
+	public boolean iniciarPartidaLibre() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
