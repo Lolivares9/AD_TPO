@@ -39,8 +39,10 @@ public class JugadorDAO {
 	}
 	
 	public Jugador toNegocio(JugadorEntity jugador){
-		return new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),jugador.getCategoria(),jugador.getPuntaje(),
+		Jugador j = new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),jugador.getCategoria(),jugador.getPuntaje(),
 				jugador.getPartidosJugados(),jugador.getPartidosGanados(),jugador.isConectado(),jugador.isJugando(),jugador.getPassword());
+		j.setId(jugador.getIdJugador());
+		return j;
 	}
 
 	public JugadorDTO toDTO(JugadorEntity jugador){
@@ -52,6 +54,7 @@ public class JugadorDAO {
 		JugadorEntity entity = new JugadorEntity(jugador.getNombre(), jugador.getApodo(), jugador.getMail(),
 				jugador.getPassword(), jugador.getCategoria(), jugador.getPuntaje(), jugador.getPartidosJugados(), jugador.getPartidosGanados(),
 				true, true);
+		entity.setIdJugador(jugador.getId());
 		return entity;
 	}
 
@@ -102,7 +105,8 @@ public class JugadorDAO {
 			if (aux != null) {
 				resultado = this.toNegocio(aux);
 			} else {
-				throw new JugadorException("No se encontro el jugador con el apodo: '" + apodo + "'.");
+				//throw new JugadorException("No se encontro el jugador con el apodo: '" + apodo + "'.");
+				return resultado;
 			}
 
 		} catch (HibernateException e) {

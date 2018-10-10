@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,6 +12,7 @@ import entities.JugadorEntity;
 import excepciones.GrupoException;
 import hbt.HibernateUtil;
 import negocio.Grupo;
+import negocio.Jugador;
 
 public class GrupoDAO {
 	private static GrupoDAO instancia;
@@ -24,22 +28,27 @@ public class GrupoDAO {
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
-		Grupo g;
+		GrupoEntity g;
+		Grupo grupo = null;
 		try {
-			g = (Grupo) s
+			g = (GrupoEntity) s
 					.createQuery("from GrupoEntity ge where ge.nombre = ?")
 					.setString(0, nombreGrupo).uniqueResult();
 			s.getTransaction().commit();
-			s.close();
 			
-			if (g != null) {
+			
+			if (g == null) {
 				throw new GrupoException("No existe el grupo.");
+			}else {
+				grupo = toNegocio(g);
+				s.close();
 			}
+			
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			return null;
 		}
-		return g;
+		return grupo;
 	}
 	
 	public boolean nombreGrupoValido(String nombreGrupo) throws GrupoException{
@@ -83,6 +92,18 @@ public class GrupoDAO {
 		entity.setNombre(grupo.getNombre());
 		JugadorEntity admin = JugadorDAO.getInstancia().toEntity(grupo.getJugadorAdmin());
 		entity.setJugadorAdmin(admin);
+		List<JugadorEntity> jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
+		entity.setJugadores(jugNeg);
 		return entity;
+	}
+	
+	public Grupo toNegocio(GrupoEntity grupo){
+		Grupo g = new Grupo();
+		Jugador jAdmin = JugadorDAO.getInstancia().toNegocio(grupo.getJugadorAdmin());
+		g.setJugadorAdmin(jAdmin);
+		g.setNombre(grupo.getNombre());
+		List<Jugador> jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toNegocio(j)).collect(Collectors.toList());
+		g.setJugadores(jugNeg);
+		return g;
 	}
 }

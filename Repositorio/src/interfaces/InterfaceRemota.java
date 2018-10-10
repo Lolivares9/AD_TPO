@@ -12,7 +12,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public boolean AltaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
 	
-	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugador) throws RemoteException,GrupoException;
+	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugador) throws RemoteException, GrupoException, JugadorException;
 	
 	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws RemoteException, GrupoException;
 

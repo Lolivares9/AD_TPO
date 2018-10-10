@@ -5,6 +5,8 @@ import java.io.Serializable;
 import enums.Categoria;
 
 public class JugadorDTO implements Serializable  {
+	private Integer id;
+	
 	private String nombre;
 	private String apodo;
 	private String mail;
@@ -111,5 +113,13 @@ public class JugadorDTO implements Serializable  {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}	
 }

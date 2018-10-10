@@ -24,7 +24,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	@Override
-	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws RemoteException, GrupoException {
+	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws RemoteException, GrupoException, JugadorException {
 		return Controlador.getInstancia().crearGrupo(nombreGrupo, jugadorAdmin);
 	}
 	

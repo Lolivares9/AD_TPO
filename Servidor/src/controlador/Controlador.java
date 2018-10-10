@@ -32,12 +32,12 @@ public class Controlador {
 		}			 
 	}
 
-	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws GrupoException{
+	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws GrupoException, JugadorException {
 		boolean valido = GrupoDAO.getInstancia().nombreGrupoValido(nombreGrupo);
 		if(valido){
 			Grupo g = new Grupo();
 			g.setNombre(nombreGrupo);
-			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugadorAdmin);
+			Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(jugadorAdmin.getApodo());
 			g.setJugadorAdmin(jug);
 			GrupoDAO.getInstancia().guardar(g);
 			return true;

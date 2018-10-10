@@ -1,11 +1,16 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,6 +30,18 @@ public class GrupoEntity {
 	@JoinColumn(name="ID_JUGADOR_ADM")
 	private JugadorEntity jugadorAdmin;
 	
+	@ManyToMany (cascade=CascadeType.ALL)
+	private List<JugadorEntity> jugadores = new ArrayList<JugadorEntity>();
+	
+
+	public List<JugadorEntity> getJugadores() {
+		return jugadores;
+	}
+
+	public void setJugadores(List<JugadorEntity> jugadores) {
+		this.jugadores = jugadores;
+	}
+
 	public GrupoEntity() {
 		super();
 	}

@@ -57,12 +57,14 @@ public class BusinessDelegate {
 		return inicioBien;
 	}
 	
-	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws ComunicationException {
+	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws ComunicationException{
 		try {
 			ir.crearGrupo(nombreGrupo, jugadorAdmin);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (GrupoException e) {
+			e.printStackTrace();
+		} catch (JugadorException e) {
 			e.printStackTrace();
 		}
 		return false;

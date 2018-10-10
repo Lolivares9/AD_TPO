@@ -5,6 +5,11 @@ import enums.Categoria;
 import excepciones.JugadorException;
 
 public class Jugador {
+	//El id de jugador lo puse en esta clase porque no se puede guardar si no está acá,
+	//preguntar al profesor si están bien los id que pusimos en la tabla
+	//cuando el id deberia ser el apodo
+	private Integer id;
+		
 	private String nombre;
 	private String apodo;
 	private String mail;
@@ -119,6 +124,16 @@ public class Jugador {
 	public static Jugador getJugador(String mail) throws JugadorException{
 		Jugador j = JugadorDAO.getInstancia().findByMail(mail);
 		return j;
+	}
+
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 }

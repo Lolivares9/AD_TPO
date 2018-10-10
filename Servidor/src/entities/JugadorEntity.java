@@ -1,5 +1,8 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import enums.Categoria;
@@ -51,6 +55,9 @@ public class JugadorEntity {
 	
 	@Column(name="JUGANDO")
 	private boolean jugando;
+	
+	@ManyToMany(mappedBy="jugadores")
+	private List<GrupoEntity> grupos = new ArrayList<GrupoEntity>();
 	
 	//TODO ¿?¿?¿? cambiar ultimos dos a:
 	//@Column(name="ESTADO")
