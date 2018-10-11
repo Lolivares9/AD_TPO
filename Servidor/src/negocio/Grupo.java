@@ -5,6 +5,7 @@ import java.util.List;
 import dao.GrupoDAO;
 
 public class Grupo {
+	private Integer idGrupo;
 	private String nombre;
 	private Jugador jugadorAdmin;
 	private List<Jugador> jugadores;
@@ -39,7 +40,17 @@ public class Grupo {
 		this.jugadores = jugadores;
 	}
 	
+	public Integer getIdGrupo() {
+		return idGrupo;
+	}
+
+	public void setIdGrupo(Integer idGrupo) {
+		this.idGrupo = idGrupo;
+	}
+	
 	public boolean guardar(){
 		return GrupoDAO.getInstancia().guardar(this);
 	}
+
+
 }

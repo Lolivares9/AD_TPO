@@ -5,6 +5,7 @@ import java.util.List;
 
 public class GrupoDTO implements Serializable {
 
+	private Integer idGrupo;
 	private String nombre;
 	private JugadorDTO jugadorAdmin;
 	private List<JugadorDTO> jugadores;
@@ -34,6 +35,14 @@ public class GrupoDTO implements Serializable {
 	}
 	public void setJugadores(List<JugadorDTO> jugadores) {
 		this.jugadores = jugadores;
+	}
+
+	public Integer getIdGrupo() {
+		return idGrupo;
+	}
+
+	public void setIdGrupo(Integer idGrupo) {
+		this.idGrupo = idGrupo;
 	}
 
 }

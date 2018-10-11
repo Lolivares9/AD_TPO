@@ -56,7 +56,7 @@ public class JugadorEntity {
 	@Column(name="JUGANDO")
 	private boolean jugando;
 	
-	@ManyToMany(mappedBy="jugadores")
+	@ManyToMany(mappedBy="jugadores")//Acá va el nombre de la lista de jugadores que tiene GrupoEntity
 	private List<GrupoEntity> grupos = new ArrayList<GrupoEntity>();
 	
 	//TODO ¿?¿?¿? cambiar ultimos dos a:

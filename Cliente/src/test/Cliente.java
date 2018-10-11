@@ -60,7 +60,7 @@ public class Cliente {
 		JugadorDTO jugador = new JugadorDTO();
 		jugador.setApodo("Chulo");
 		try {
-			BusinessDelegate.getInstancia().crearGrupo("Grupo1", jugador); //TODO Pasar jugador que lo crea (Admin)
+			BusinessDelegate.getInstancia().crearGrupo("Grupo5", jugador); //TODO Pasar jugador que lo crea (Admin)
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +76,7 @@ public class Cliente {
 		jugador3.setId(2);
 		jugadores.add(jugador3);
 		try {
-			BusinessDelegate.getInstancia().llenarGrupo("Grupo1", jugadores); //TODO Pasar jugador que lo crea (Admin)
+			BusinessDelegate.getInstancia().llenarGrupo("Grupo5", jugadores); //TODO Pasar jugador que lo crea (Admin)
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}

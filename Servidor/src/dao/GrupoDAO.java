@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,9 +91,13 @@ public class GrupoDAO {
 	private GrupoEntity toEntity(Grupo grupo){
 		GrupoEntity entity = new GrupoEntity();
 		entity.setNombre(grupo.getNombre());
+		entity.setIdGrupo(grupo.getIdGrupo());
 		JugadorEntity admin = JugadorDAO.getInstancia().toEntity(grupo.getJugadorAdmin());
 		entity.setJugadorAdmin(admin);
-		List<JugadorEntity> jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
+		List<JugadorEntity> jugNeg = null;
+		if(grupo.getJugadores() != null) {
+			jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
+		}
 		entity.setJugadores(jugNeg);
 		return entity;
 	}
@@ -102,6 +107,7 @@ public class GrupoDAO {
 		Jugador jAdmin = JugadorDAO.getInstancia().toNegocio(grupo.getJugadorAdmin());
 		g.setJugadorAdmin(jAdmin);
 		g.setNombre(grupo.getNombre());
+		g.setIdGrupo(grupo.getIdGrupo());
 		List<Jugador> jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toNegocio(j)).collect(Collectors.toList());
 		g.setJugadores(jugNeg);
 		return g;
