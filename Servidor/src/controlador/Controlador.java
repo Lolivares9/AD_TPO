@@ -25,11 +25,14 @@ public class Controlador {
 	}
 
 	public void altaJugador(JugadorDTO jugador) throws JugadorException {
-		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(jugador.getApodo());
-		if(jug == null){
-			jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
+		//Valido apodo y mail, ambos deben estar libres
+		boolean datosValidos = JugadorDAO.getInstancia().validarDatos(jugador.getApodo(), jugador.getMail());
+		if(datosValidos){
+			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
 			JugadorDAO.getInstancia().guardarJugador(jug);
-		}			 
+		}else{
+			throw new JugadorException("Apodo y/o mail ya registrado/s.");
+		}
 	}
 
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws GrupoException, JugadorException {
