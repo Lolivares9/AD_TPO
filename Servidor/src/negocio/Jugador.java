@@ -122,7 +122,7 @@ public class Jugador {
 	}
 
 	public static Jugador getJugador(String mail) throws JugadorException{
-		Jugador j = JugadorDAO.getInstancia().findByMail(mail);
+		Jugador j = JugadorDAO.getInstancia().buscarPorMail(mail);
 		return j;
 	}
 

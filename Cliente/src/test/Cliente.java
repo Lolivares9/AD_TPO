@@ -16,8 +16,8 @@ public class Cliente {
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
 		//cargarCartas();
 		//crearGrupo();
-		llenarGrupo();
-		//altaJugador();
+		//llenarGrupo();
+		altaJugador();
 		//iniciarSesion();
 		
 	}
@@ -46,8 +46,7 @@ public class Cliente {
 	}
 
 	private static void altaJugador() {
-		Categoria categ = Categoria.Novato;
-		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","mail@gmail.com",categ,0,0,0,true,false,"123");
+		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
 		try {
 			BusinessDelegate.getInstancia().AltaJugador(jugador);
 		} catch (ComunicationException e) {

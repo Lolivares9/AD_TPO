@@ -62,7 +62,7 @@ public class JugadorDAO {
 		return entity;
 	}
 
-	public Jugador findByMail(String mail) throws JugadorException {
+	public Jugador buscarPorMail(String mail) throws JugadorException {
 
 		Jugador resultado = null;
 		SessionFactory sf = HibernateUtil.getSessionFactory();
@@ -80,7 +80,9 @@ public class JugadorDAO {
 			if (aux != null) {
 				resultado = this.toNegocio(aux);
 			} else {
-				throw new JugadorException("No se encontro el jugador con el mail: '" + mail + "'.");
+				//No puedo tirar una excepcion acá porque lo estoy usando para validar
+				//throw new JugadorException("No se encontro el jugador con el mail: '" + mail + "'.");
+				return resultado;
 			}
 
 		} catch (HibernateException e) {
