@@ -1,12 +1,19 @@
 package dao;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.GrupoEntity;
+import entities.JugadorEntity;
 import excepciones.GrupoException;
 import hbt.HibernateUtil;
 import negocio.Grupo;
+import negocio.Jugador;
 
 public class GrupoDAO {
 	private static GrupoDAO instancia;
@@ -16,6 +23,33 @@ public class GrupoDAO {
 			instancia = new GrupoDAO();
 		}
 		return instancia;
+	}
+	
+	public Grupo buscarGrupo(String nombreGrupo) throws GrupoException{
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		GrupoEntity g;
+		Grupo grupo = null;
+		try {
+			g = (GrupoEntity) s
+					.createQuery("from GrupoEntity ge where ge.nombre = ?")
+					.setString(0, nombreGrupo).uniqueResult();
+			s.getTransaction().commit();
+			
+			
+			if (g == null) {
+				throw new GrupoException("No existe el grupo.");
+			}else {
+				grupo = toNegocio(g);
+				s.close();
+			}
+			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return grupo;
 	}
 	
 	public boolean nombreGrupoValido(String nombreGrupo) throws GrupoException{
@@ -43,7 +77,39 @@ public class GrupoDAO {
 	}
 
 	public boolean guardar(Grupo grupo) {
-		// TODO Auto-generated method stub
-		return false;
+		GrupoEntity jEntity = toEntity(grupo);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(jEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return true;
+	}
+	
+	private GrupoEntity toEntity(Grupo grupo){
+		GrupoEntity entity = new GrupoEntity();
+		entity.setNombre(grupo.getNombre());
+		entity.setIdGrupo(grupo.getIdGrupo());
+		JugadorEntity admin = JugadorDAO.getInstancia().toEntity(grupo.getJugadorAdmin());
+		entity.setJugadorAdmin(admin);
+		List<JugadorEntity> jugNeg = null;
+		if(grupo.getJugadores() != null) {
+			jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
+		}
+		entity.setJugadores(jugNeg);
+		return entity;
+	}
+	
+	public Grupo toNegocio(GrupoEntity grupo){
+		Grupo g = new Grupo();
+		Jugador jAdmin = JugadorDAO.getInstancia().toNegocio(grupo.getJugadorAdmin());
+		g.setJugadorAdmin(jAdmin);
+		g.setNombre(grupo.getNombre());
+		g.setIdGrupo(grupo.getIdGrupo());
+		List<Jugador> jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toNegocio(j)).collect(Collectors.toList());
+		g.setJugadores(jugNeg);
+		return g;
 	}
 }

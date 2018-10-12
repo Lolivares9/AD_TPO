@@ -5,6 +5,13 @@ import java.io.Serializable;
 import enums.Categoria;
 
 public class JugadorDTO implements Serializable  {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3557868331428383755L;
+	
+	private Integer id;
 	private String nombre;
 	private String apodo;
 	private String mail;
@@ -32,6 +39,27 @@ public class JugadorDTO implements Serializable  {
 	}
 
 	public JugadorDTO() {}
+
+	/**
+	 * Constructor con valores por defecto para cuando se da de alta un jugador
+	 * @param nombre
+	 * @param apodo
+	 * @param mail
+	 * @param password
+	 */
+	public JugadorDTO(String nombre, String apodo, String mail, String password) {
+		super();
+		this.nombre = nombre;
+		this.apodo = apodo;
+		this.mail = mail;
+		this.categoria = Categoria.Novato;
+		this.puntaje = 0;
+		this.partidosJugados = 0;
+		this.partidosGanados = 0;
+		this.conectado = false;
+		this.jugando = false;
+		this.password = password;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -111,5 +139,13 @@ public class JugadorDTO implements Serializable  {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}	
 }

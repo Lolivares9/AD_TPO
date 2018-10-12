@@ -19,6 +19,7 @@ public class DTOMapper {
 	public Jugador jugadorDTOtoNegocio(JugadorDTO jugDTO) {
 			Jugador jugador = new Jugador(jugDTO.getNombre(),jugDTO.getApodo(),jugDTO.getMail(),jugDTO.getCategoria(),jugDTO.getPuntaje(),
 					jugDTO.getPartidosJugados(),jugDTO.getPartidosGanados(),jugDTO.isConectado(),jugDTO.isJugando(),jugDTO.getPassword());
+			jugador.setId(jugDTO.getId());
 		return jugador;
 	}
 	
