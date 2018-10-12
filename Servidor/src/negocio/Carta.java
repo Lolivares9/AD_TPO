@@ -1,16 +1,16 @@
 package negocio;
 
-import dao.BazaDAO;
-import dao.CartaDAO;
 import enums.PaloCarta;
 
 public class Carta {
+	private Integer idCarta;
 	private int numero;
 	private PaloCarta palo;
 	private int valorJuego;
 	
-	public Carta(int numero, PaloCarta palo, int valorJuego) {
+	public Carta(Integer idCarta, int numero, PaloCarta palo, int valorJuego) {
 		super();
+		this.idCarta = idCarta;
 		this.numero = numero;
 		this.palo = palo;
 		this.valorJuego = valorJuego;
@@ -35,8 +35,12 @@ public class Carta {
 		this.valorJuego = valorJuego;
 	}
 	
-	
-	public boolean guardar(){
-		return CartaDAO.getInstancia().guardar(this);
+	public Integer getIdCarta() {
+		return idCarta;
 	}
+
+	public void setIdCarta(Integer idCarta) {
+		this.idCarta = idCarta;
+	}
+
 }
