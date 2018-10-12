@@ -1,11 +1,13 @@
 package controlador;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import dao.GrupoDAO;
 import dao.JugadorDAO;
 import dto.JugadorDTO;
+import enums.Categoria;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
 import negocio.Grupo;
@@ -65,10 +67,113 @@ public class Controlador {
 		return false;
 	}
 
-	public boolean iniciarPartidaLibreIndividual() {
-		// TODO Auto-generated method stub
+	public boolean iniciarPartidaLibreIndividual(Categoria categ){
+		/*
+		  
+		 LO ESTOY HACIENDO YO (MATI) 
+		  
+		 
+		List<Jugador> jugDisp = new ArrayList<Jugador>();
+		boolean completo = false;
+		
+		completo = completarJugadores(categ,jugDisp);
+		//SI EN EL PRIMER CASO YA ME DEVOLVIO 0 SIGNIFICA QUE NO HAY NADIE DISPONIBLE
+		if(jugDisp.size() == 0 && completo == false){
+			return false;
+		}
+		else{
+			//ACA HABRIA QUE IR BAJANDO DE CATEGORIA, YA QUE EN EL METODO VAMOS SUBIENDO DE CATEGORIA
+		}
+		
+		return false;
+		*/
 		return false;
 	}
+	
+	private boolean completarJugadores(Categoria categ,List<Jugador> jugDisp) {
+		List<Jugador> jugadores = JugadorDAO.getInstancia().obtenerJugadoresPorCateg(categ);
+		int i = 0;
+		if(jugadores.size() <= 3 || jugadores == null){
+			
+			
+			if((jugadores == null || jugadores.size() <= 3) && categ.equals("Novato")){
+				if(jugadores.size() >= 1){
+					//VOY AÑADIENDO LOS JUGADORES
+					while(i < 3 && !jugadores.isEmpty() && jugDisp.size() < 4){
+						jugDisp.add(jugadores.get(i));
+						jugadores.remove(i);
+						i++;
+					}
+					//YA COMPLETE, ENTONCES NO SIGO
+					if(jugDisp.size() == 4){
+						return true;
+					}
+					i = 0;
+				}
+				jugadores = JugadorDAO.getInstancia().obtenerJugadoresPorCateg(Categoria.Master);
+			}
+			
+			
+			if((jugadores == null || jugadores.size() <= 3) && categ.equals("Master")){
+					if(jugadores.size() >= 1){
+						while(i < 3 && !jugadores.isEmpty() && jugDisp.size() < 4){
+							jugDisp.add(jugadores.get(i));
+							jugadores.remove(i);
+							i++;
+						}
+						if(jugDisp.size() == 4){
+							return true;
+						}
+						i = 0;
+					}
+				jugadores = JugadorDAO.getInstancia().obtenerJugadoresPorCateg(Categoria.Experto);
+			}
+				
+				
+			if((jugadores == null || jugadores.size() <= 3) && categ.equals("Experto")){
+					if(jugadores.size() >= 1){
+						while(i < 3 && !jugadores.isEmpty() && jugDisp.size() < 4){
+							jugDisp.add(jugadores.get(i));
+							jugadores.remove(i);
+							i++;
+						}
+						if(jugDisp.size() == 4){
+							return true;
+						}
+						i = 0;
+					}
+				jugadores = JugadorDAO.getInstancia().obtenerJugadoresPorCateg(Categoria.Calificado);
+			}
+			
+			
+			if((jugadores == null || jugadores.size() <= 3) && categ.equals("Calificado")){
+				if(jugadores.size() >= 1){
+					while(i < 3 && !jugadores.isEmpty() && jugDisp.size() < 4){
+						jugDisp.add(jugadores.get(i));
+						jugadores.remove(i);
+						i++;
+					}
+					if(jugDisp.size() == 4){
+						return true;
+					}
+					i = 0;
+				}
+			}
+			/*SI DESPUES DE TODOS ESTOS CASOS NO LLEGUE A POR LO MENOS UN JUGADOR, DEVUELVO FALSE. PORQUE SI NO ENCONTRE AL MENOS 1, 
+			NO TENDRIA SENTIDO BUSCAR EN CATEGORIAS MAS BAJAS*/
+			if(jugDisp.size() == 1){
+				return false;
+			}
+		}
+		else if(jugadores.size() >= 3){
+			while(i < 3){
+				jugDisp.add(jugadores.get(i));
+				i++;
+				}
+		}
+		return true;
+	}
+	
 	
 
 	public boolean iniciarPartidaLibre() {

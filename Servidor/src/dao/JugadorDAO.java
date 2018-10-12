@@ -1,11 +1,15 @@
 package dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import dto.JugadorDTO;
 import entities.JugadorEntity;
+import enums.Categoria;
 import excepciones.JugadorException;
 import hbt.HibernateUtil;
 import negocio.Jugador;
@@ -115,6 +119,23 @@ public class JugadorDAO {
 		}
 
 		return resultado;
-	
 	}
+	
+	public List <Jugador> obtenerJugadoresPorCateg(Categoria categ){
+		List<Jugador> jugadores = new ArrayList<Jugador>();
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("from JugadorEntity je where je.categoria = ? and je.conectado = true and je.jugando = false").list();
+		for(JugadorEntity jug : jugadoresRecup){
+			jugadores.add(this.toNegocio(jug));
+		}
+		s.getTransaction().commit();
+		s.close();
+		return jugadores;
+	}
+	
+	
+	
 }
