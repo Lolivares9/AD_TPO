@@ -6,6 +6,7 @@ import java.util.List;
 
 import controlador.Controlador;
 import dto.JugadorDTO;
+import excepciones.CartaException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
 import interfaces.InterfaceRemota;
@@ -46,7 +47,8 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 
 	@Override
 	public boolean iniciarPartidaLibreIndividual() throws RemoteException {
-		return Controlador.getInstancia().iniciarPartidaLibreIndividual();
+		//TODO MATI ARREGLA ESTO, BOLUDO! (FIRMA FACU) return Controlador.getInstancia().iniciarPartidaLibreIndividual();
+		return false;
 	}
 	
 	@Override
@@ -68,7 +70,12 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 
 	@Override
 	public boolean repartirCartas() throws RemoteException {
-		// TODO Auto-generated method stub
+		try {
+			return Controlador.getInstancia().repartiCartas();
+		} catch (CartaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -94,6 +101,11 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	public boolean modificarJugador() throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void cargarCartas() throws RemoteException, CartaException {
+		Controlador.getInstancia().cargarCartas();
 	}
 
 	

@@ -7,7 +7,6 @@ import delegado.BusinessDelegate;
 import dto.JugadorDTO;
 import enums.Categoria;
 import excepciones.ComunicationException;
-import excepciones.JugadorException;
 
 public class Cliente {
 
@@ -17,11 +16,21 @@ public class Cliente {
 		//cargarCartas();
 		//crearGrupo();
 		//llenarGrupo();
-		altaJugador();
+		//altaJugador();
 		//iniciarSesion();
-		
+		//repartirCartas(); //TODO Definir como va a funcionar esto 
+		//cargarCartas();	
 	}
 	
+	private static void repartirCartas() {
+		try {
+			BusinessDelegate.getInstancia().repartirCartas();
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
 	private static void iniciarSesion(){
 		boolean inicioBien = false;
 		JugadorDTO jug = new JugadorDTO();
