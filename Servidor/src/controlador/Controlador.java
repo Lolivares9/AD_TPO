@@ -1,6 +1,8 @@
 package controlador;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -78,13 +80,11 @@ public class Controlador {
 		return false;
 	}
 
-	public boolean iniciarPartidaLibreIndividual(Categoria categ){
-		/*
-		  
-		 LO ESTOY HACIENDO YO (MATI) 
-		  
+	public boolean iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
+		
 		 
 		List<Jugador> jugDisp = new ArrayList<Jugador>();
+		jugDisp.add(jug);
 		boolean completo = false;
 		
 		completo = completarJugadores(categ,jugDisp);
@@ -97,92 +97,44 @@ public class Controlador {
 		}
 		
 		return false;
-		*/
-		return false;
+		
 	}
 	
+	@SuppressWarnings({ "unused" })
 	private boolean completarJugadores(Categoria categ,List<Jugador> jugDisp) {
-		List<Jugador> jugadores = JugadorDAO.getInstancia().obtenerJugadoresPorCateg(categ);
-		int i = 0;
-		if(jugadores.size() <= 3 || jugadores == null){
-			
-			
-			if((jugadores == null || jugadores.size() <= 3) && categ.equals("Novato")){
-				if(jugadores.size() >= 1){
-					//VOY AÑADIENDO LOS JUGADORES
-					while(i < 3 && !jugadores.isEmpty() && jugDisp.size() < 4){
-						jugDisp.add(jugadores.get(i));
-						jugadores.remove(i);
-						i++;
-					}
-					//YA COMPLETE, ENTONCES NO SIGO
-					if(jugDisp.size() == 4){
-						return true;
-					}
-					i = 0;
-				}
-				jugadores = JugadorDAO.getInstancia().obtenerJugadoresPorCateg(Categoria.Master);
+		List<Jugador> jugadores = JugadorDAO.getInstancia().getAllJugadores();
+		
+		HashSet<Jugador> novatos = new HashSet<>();
+		HashSet<Jugador> masters = new HashSet<>();
+		HashSet<Jugador> expertos = new HashSet<>();
+		HashSet<Jugador> calificados = new HashSet<>();
+		
+		for(int i = 0;i<jugadores.size();i++){
+			if(jugadores.get(i).getCategoria().equals("Novato")){
+				novatos.add(jugadores.get(i));
 			}
-			
-			
-			if((jugadores == null || jugadores.size() <= 3) && categ.equals("Master")){
-					if(jugadores.size() >= 1){
-						while(i < 3 && !jugadores.isEmpty() && jugDisp.size() < 4){
-							jugDisp.add(jugadores.get(i));
-							jugadores.remove(i);
-							i++;
-						}
-						if(jugDisp.size() == 4){
-							return true;
-						}
-						i = 0;
-					}
-				jugadores = JugadorDAO.getInstancia().obtenerJugadoresPorCateg(Categoria.Experto);
+			if(jugadores.get(i).getCategoria().equals("Master")){
+				novatos.add(jugadores.get(i));
 			}
-				
-				
-			if((jugadores == null || jugadores.size() <= 3) && categ.equals("Experto")){
-					if(jugadores.size() >= 1){
-						while(i < 3 && !jugadores.isEmpty() && jugDisp.size() < 4){
-							jugDisp.add(jugadores.get(i));
-							jugadores.remove(i);
-							i++;
-						}
-						if(jugDisp.size() == 4){
-							return true;
-						}
-						i = 0;
-					}
-				jugadores = JugadorDAO.getInstancia().obtenerJugadoresPorCateg(Categoria.Calificado);
+			if(jugadores.get(i).getCategoria().equals("Experto")){
+				novatos.add(jugadores.get(i));
 			}
-			
-			
-			if((jugadores == null || jugadores.size() <= 3) && categ.equals("Calificado")){
-				if(jugadores.size() >= 1){
-					while(i < 3 && !jugadores.isEmpty() && jugDisp.size() < 4){
-						jugDisp.add(jugadores.get(i));
-						jugadores.remove(i);
-						i++;
-					}
-					if(jugDisp.size() == 4){
-						return true;
-					}
-					i = 0;
-				}
-			}
-			/*SI DESPUES DE TODOS ESTOS CASOS NO LLEGUE A POR LO MENOS UN JUGADOR, DEVUELVO FALSE. PORQUE SI NO ENCONTRE AL MENOS 1, 
-			NO TENDRIA SENTIDO BUSCAR EN CATEGORIAS MAS BAJAS*/
-			if(jugDisp.size() == 1){
-				return false;
+			if(jugadores.get(i).getCategoria().equals("Calificado")){
+				novatos.add(jugadores.get(i));
 			}
 		}
-		else if(jugadores.size() >= 3){
-			while(i < 3){
-				jugDisp.add(jugadores.get(i));
-				i++;
-				}
+		
+		if(novatos.size() >= 3 && categ.equals("Novatos")){
+			Iterator<Jugador> i = novatos.iterator(); 
+			while(!novatos.isEmpty()){
+				jugDisp.add((Jugador) novatos.iterator());
+				novatos.remove(i);
+				i.next();
+			}
 		}
-		return true;
+		
+		
+		return false;
 	}
 	
 	

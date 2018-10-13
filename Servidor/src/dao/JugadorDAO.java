@@ -123,13 +123,13 @@ public class JugadorDAO {
 		return resultado;
 	}
 	
-	public List <Jugador> obtenerJugadoresPorCateg(Categoria categ){
+	public List <Jugador> getAllJugadores(){
 		List<Jugador> jugadores = new ArrayList<Jugador>();
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("from JugadorEntity je where je.categoria = ? and je.conectado = true and je.jugando = false").list();
+		List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("top 1000 from JugadorEntity je where je.conectado = true and je.jugando = false order by je.categoria desc").list();
 		for(JugadorEntity jug : jugadoresRecup){
 			jugadores.add(this.toNegocio(jug));
 		}

@@ -82,10 +82,10 @@ public class BusinessDelegate {
 		return false;
 	}
 
-	public boolean iniciarPartidaLibreIndividual() throws ComunicationException {
+	public boolean iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException {
 		boolean inicioBien = false;
 		try {
-			inicioBien = ir.iniciarPartidaLibreIndividual();
+			inicioBien = ir.iniciarPartidaLibreIndividual(jugador);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

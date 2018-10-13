@@ -45,8 +45,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return inicioBien;
 	}
 
-	@Override
-	public boolean iniciarPartidaLibreIndividual() throws RemoteException {
+	public boolean iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException {
 		//TODO MATI ARREGLA ESTO, BOLUDO! (FIRMA FACU) return Controlador.getInstancia().iniciarPartidaLibreIndividual();
 		return false;
 	}
