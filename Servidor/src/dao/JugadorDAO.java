@@ -138,6 +138,11 @@ public class JugadorDAO {
 		return jugadores;
 	}
 	
-	
+	public boolean validarDatos(String apodo, String mail) throws JugadorException {
+		if(buscarPorMail(mail) == null && buscarPorApodo(apodo) == null) {
+			return true;
+		}
+		return false;
+	}
 	
 }
