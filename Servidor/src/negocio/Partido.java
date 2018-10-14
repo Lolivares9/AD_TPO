@@ -5,6 +5,11 @@ import java.util.List;
 import enums.EstadoPartido;
 import enums.TipoModalidad;
 
+/**
+ * Soy la jugada de 2 o 3 chicos
+ * El partido se gana cuando una de las dos parejas consigue dos chicos. Si hay
+ * empate en los dos primeros chicos, el tercero es el definitivo 
+ */
 public class Partido {
 	private Chico chico;
 	private TipoModalidad modalidad;

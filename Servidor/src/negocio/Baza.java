@@ -1,8 +1,10 @@
 package negocio;
 
 import dao.BazaDAO;
-import dao.JugadorDAO;
 
+/**
+ * Soy la jugada de 1 carta de los 4 jugadores
+ */
 public class Baza {
 	private Mano mano;
 	private int numero;

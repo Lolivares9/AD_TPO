@@ -5,12 +5,12 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import controlador.Controlador;
+import dto.CartaDTO;
 import dto.JugadorDTO;
 import excepciones.CartaException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
 import interfaces.InterfaceRemota;
-import negocio.Jugador;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota {
 
@@ -68,14 +68,14 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	@Override
-	public boolean repartirCartas() throws RemoteException {
+	public List<CartaDTO> repartirCartas() throws RemoteException {
 		try {
 			return Controlador.getInstancia().repartiCartas();
 		} catch (CartaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 
 	@Override
@@ -100,12 +100,5 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	public boolean modificarJugador() throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public void cargarCartas() throws RemoteException, CartaException {
-		Controlador.getInstancia().cargarCartas();
-	}
-
-	
+	}	
 }

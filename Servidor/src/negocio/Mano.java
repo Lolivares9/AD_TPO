@@ -1,6 +1,11 @@
 package negocio;
+
 import dao.ManoDAO;
 
+/**
+ * Soy la jugada de 2 o 3 bazas 
+ * (los 4 jugadores jugaron sus 3 cartas)
+ */
 public class Mano {
 	private Chico chico;
 	private int numeroMano;

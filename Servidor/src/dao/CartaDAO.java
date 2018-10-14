@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,7 @@ public class CartaDAO {
 					throw new CartaException("No se pudo recuperar las cartas.");
 				}else {
 					cartas = c.stream().map(this::toNegocio).collect(Collectors.toList());
+					Collections.shuffle(cartas);
 				}
 				
 			} catch (HibernateException e) {
@@ -49,7 +51,7 @@ public class CartaDAO {
 				s.close();
 			}
 		}
-		return cartas;
+		return new ArrayList<Carta>(cartas);
 	}
 	
 	public CartaEntity toEntity(Carta carta) {

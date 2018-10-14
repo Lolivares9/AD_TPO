@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import delegado.BusinessDelegate;
+import dto.CartaDTO;
 import dto.JugadorDTO;
 import enums.Categoria;
 import excepciones.ComunicationException;
@@ -13,18 +14,17 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		//cargarCartas();
 		//crearGrupo();
 		//llenarGrupo();
 		//altaJugador();
 		//iniciarSesion();
-		//repartirCartas(); //TODO Definir como va a funcionar esto 
-		//cargarCartas();	
+		//repartirCartas();
 	}
 	
 	private static void repartirCartas() {
 		try {
-			BusinessDelegate.getInstancia().repartirCartas();
+			List<CartaDTO> cartas = BusinessDelegate.getInstancia().repartirCartas();
+			cartas.forEach(c -> System.out.println(c.getNumero() + " de " + c.getPalo()));
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,15 +45,6 @@ public class Cliente {
 		System.out.println("Inició bien: "+inicioBien);
 	}
 
-	private static void cargarCartas() {
-		// TODO Auto-generated method stub
-		try {
-			BusinessDelegate.getInstancia().cargarCartas();
-		} catch (ComunicationException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private static void altaJugador() {
 		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
 		try {
@@ -68,7 +59,7 @@ public class Cliente {
 		JugadorDTO jugador = new JugadorDTO();
 		jugador.setApodo("Chulo");
 		try {
-			BusinessDelegate.getInstancia().crearGrupo("Grupo5", jugador); //TODO Pasar jugador que lo crea (Admin)
+			BusinessDelegate.getInstancia().crearGrupo("Grupo5", jugador);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}

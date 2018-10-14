@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
-import dao.CartaDAO;
 import dao.GrupoDAO;
 import dao.JugadorDAO;
+import dto.CartaDTO;
 import dto.JugadorDTO;
 import enums.Categoria;
 import excepciones.CartaException;
@@ -23,15 +22,14 @@ import util.DTOMapper;
 
 public class Controlador {
 	private static Controlador instancia;
-	private static Random random;
+	private static Mazo mazo;
 	
 	private Controlador() {
 	}
 
-	public static Controlador getInstancia() {
+	public static Controlador getInstancia(){
 		if (instancia == null){
 			instancia = new Controlador();
-			random = new Random();
 		}
 		return instancia;
 	}
@@ -143,23 +141,10 @@ public class Controlador {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public void cargarCartas() throws CartaException{
-		Mazo m = new Mazo();
-		m.setCartasDisponibles(CartaDAO.getInstancia().obtenerCartas());
-	}
 
-	public boolean repartiCartas() throws CartaException {
-		//TODO Para qué se usa la clase Mazo? Por qué no se piden 12 cartas cada vez que se reparte?
-		List<Carta> mazo = CartaDAO.getInstancia().obtenerCartas();
-		List<Carta> cartasRepartir = new ArrayList<Carta>();
-		int pos = 0;
-		while(cartasRepartir.size() < 12) {
-			pos = random.nextInt(mazo.size());
-			cartasRepartir.add(mazo.remove(pos));			
-		}
-		// TODO Auto-generated method stub
-		return false;
+	public List<CartaDTO> repartiCartas() throws CartaException {
+		mazo = new Mazo();
+		return (mazo.repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList()));
 	}
 
 }

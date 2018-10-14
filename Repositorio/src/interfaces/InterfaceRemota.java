@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import dto.CartaDTO;
 import dto.JugadorDTO;
 import excepciones.CartaException;
 import excepciones.GrupoException;
@@ -27,7 +28,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public boolean buscarJugDisponibles() throws RemoteException;
 	
-	public boolean repartirCartas() throws RemoteException, CartaException;
+	public List<CartaDTO> repartirCartas() throws RemoteException, CartaException;
 	
 	public boolean nuevaMano() throws RemoteException;
 
@@ -36,6 +37,4 @@ public interface InterfaceRemota extends Remote {
 	public boolean eliminarJugador() throws RemoteException;
 	
 	public boolean modificarJugador() throws RemoteException;
-
-	public void cargarCartas() throws RemoteException, CartaException;
 }

@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import dto.CartaDTO;
 import dto.JugadorDTO;
 import excepciones.CartaException;
 import excepciones.ComunicationException;
@@ -113,15 +114,16 @@ public class BusinessDelegate {
 	}
 
 
-	public void repartirCartas() throws ComunicationException {
+	public List<CartaDTO> repartirCartas() throws ComunicationException {
 		try {
-			ir.repartirCartas();
+			return ir.repartirCartas();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (CartaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 
@@ -145,18 +147,6 @@ public class BusinessDelegate {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public void cargarCartas() {
-		try {
-			ir.cargarCartas();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (CartaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	
 	/*
 	public int suma(int a, int b) throws ComunicacionException{

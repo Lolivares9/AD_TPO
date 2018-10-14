@@ -48,11 +48,6 @@ public class JugadorDAO {
 		j.setId(jugador.getIdJugador());
 		return j;
 	}
-
-	public JugadorDTO toDTO(JugadorEntity jugador){
-		//return new JugadorDTO(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
-		return null;
-	}
 	
 	public JugadorEntity toEntity(Jugador jugador){
 		JugadorEntity entity = new JugadorEntity(jugador.getNombre(), jugador.getApodo(), jugador.getMail(),

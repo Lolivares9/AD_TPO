@@ -1,5 +1,6 @@
 package negocio;
 
+import dto.CartaDTO;
 import enums.PaloCarta;
 
 public class Carta {
@@ -41,6 +42,10 @@ public class Carta {
 
 	public void setIdCarta(Integer idCarta) {
 		this.idCarta = idCarta;
+	}
+	
+	public CartaDTO toDTO() {
+		return new CartaDTO(this.numero, this.palo, this.valorJuego);
 	}
 
 }

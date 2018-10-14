@@ -22,17 +22,4 @@ public class DTOMapper {
 			jugador.setId(jugDTO.getId());
 		return jugador;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
