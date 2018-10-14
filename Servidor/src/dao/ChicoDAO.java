@@ -1,5 +1,15 @@
 package dao;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import entities.ChicoEntity;
+import excepciones.ChicoException;
+import hbt.HibernateUtil;
 import negocio.Chico;
 
 public class ChicoDAO {
@@ -15,5 +25,34 @@ public class ChicoDAO {
 	public boolean guardar(Chico chico) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Chico> buscarChicosPorPartido(Integer idPartido) throws ChicoException{
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		List<ChicoEntity> chicosET = null;
+		try {
+			chicosET = (List<ChicoEntity>) s
+					.createQuery("from ChicoEntity ce where ce.partido = ? OR pe.jugador2 = ?")
+					.setInteger(0, idPartido).list();
+			s.getTransaction().commit();
+			
+			
+			if (chicosET == null) {
+				throw new ChicoException("No se encontraron chicos para ese partido");
+			}else {
+				return chicosET.stream().map(this::toNegocio).collect(Collectors.toList());		
+			}
+			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Chico toNegocio(ChicoEntity ce) {
+		return new Chico(ce.getNumeroChico(), ce.isFinalizado(), ParejaDAO.getInstancia().toNegocio(ce.getParejaGanadora()), ce.getPuntajePareja1(), ce.getPuntajePareja2());
 	}
 }

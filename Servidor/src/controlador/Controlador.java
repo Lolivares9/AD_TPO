@@ -1,25 +1,32 @@
 package controlador;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dao.ChicoDAO;
 import dao.GrupoDAO;
 import dao.JugadorDAO;
-import dao.ParejaDAO;
+import dao.PartidoDAO;
 import dto.CartaDTO;
+import dto.ChicoDTO;
 import dto.JugadorDTO;
-import entities.ParejaEntity;
+import dto.PartidoDTO;
 import enums.Categoria;
+import enums.TipoModalidad;
 import excepciones.CartaException;
+import excepciones.ChicoException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
 import negocio.Carta;
+import negocio.Chico;
 import negocio.Grupo;
 import negocio.Jugador;
 import negocio.Mazo;
+import negocio.Partido;
 import util.DTOMapper;
 
 public class Controlador {
@@ -73,7 +80,14 @@ public class Controlador {
 	}
 
 	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
-		resultadoPartido();
+		try {
+			listarChicosPorPartido(null);
+		} catch (ChicoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//PARA PROBAR METODO
+		
+		
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
 		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
 			return true;
@@ -147,22 +161,59 @@ public class Controlador {
 		mazo = new Mazo();
 		return (mazo.repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList()));
 	}
+
+	/**
+	 * Traer lista de partidos jugados, se puede filtar por modalidad y/o fecha
+	 * En el DTO no van a estar cargados todas las variables, porque luego puede
+	 * ir al detalle de un partido seleccionado (esto reduce la carga de proceso)
+	 * 
+	 * @param jugador
+	 * @param mod
+	 * @param fecha
+	 * @return List<PartidoDTO>
+	 * Los DTO tendrán la modalidad y la pareja ganadora
+	 */
+	public List<PartidoDTO> listarPartidos(JugadorDTO jugador, TipoModalidad mod, Date fecha){
+		List<PartidoDTO> partidosDTO = new ArrayList<PartidoDTO>();
+		if(mod == null && fecha == null) {
+			List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jugador.getId());
+			return partidos.stream().map(Partido::toDTOListar).collect(Collectors.toList());
+		}else {
+			//TODO traer partidos filtrando, validar si eligió modalidad y/o fecha
+		}
+		return partidosDTO;
+	}
 	
-	public void resultadoPartido() {
-		//FACU
-		//Estoy probando con datos insertados a mano traer todos los resultados de un partido
-		//ENCONTRE MUCHOS ERRORES --> LEER COMENTARIO ABAJO
-		List<ParejaEntity> idParejas = ParejaDAO.getInstancia().buscarParejasPorJugador();
-		System.out.println(idParejas.get(0).getPartidos());
+	/**
+	 * Del partido seleccionado, 
+	 * podrá ver quienes participaron y cuál fue el resultado y los puntajes obtenidos en cada una de las partidas que conformaron el juego.
+	 * 
+	 * @param partidoDTO  (recibe el partido que seleccionó del listado)
+	 * @throws ChicoException 
+	 */
+	public List<ChicoDTO> listarChicosPorPartido(PartidoDTO partidoDTO) throws ChicoException {
+		List<Chico> c = ChicoDAO.getInstancia().buscarChicosPorPartido(partidoDTO.getIdPartido());
+		return c.stream().map(Chico::toDTO).collect(Collectors.toList());
+	}
+	
+	/**
+	 * Si lo desea podrá seleccionar una de las partidas y ver su desarrollo completo mano por mano, 
+	 * donde figuraran las cartas jugadas por cada jugador, los envites realizados y su resultado
+	 * 
+	 * @param chicoDTO
+	 * @return
+	 */
+	public ChicoDTO obtenerChicoConDetalle(ChicoDTO chicoDTO) {
+		//TODO buscar las manos -> las bazas  -> los turnos
+		return null;
 	}
 
 	/*
 	 * Modifiqué la tabla de partido_pareja, para poder hacer la relación con hibernate. Subo el script corregido  
 	 *  
-	 * La tabla partidos tiene una columna id_chico que no tiene sentido, se estarian repitiendo los datos por cada chico dentro de la partida,
-	 * propongo poner un id_partido en la tabla id_chico
+	 * Hice varias modificaciones en la base para traer los datos que requeria por pasos sin tener que hacer consultas grandes, actualicé el script
 	 * 
-	 * ManoEntity tenia una lista de chicos, y en realidad una mano esta compuesta por chicos
+	 * ManoEntity tenia una lista de chicos, y en realidad un chico esta compuesto por manos
 	 * 
 	 * Para que esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
 	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
@@ -172,7 +223,7 @@ public class Controlador {
 	 * Como vamos a representar en la tabla de turnos cuando se cante por ejemplo Truco-Re truco- Quiero? 
 	 * (todo sucede en un mismo turno) repetimos el id y despues lo unimos??
 	 * 
-	 * 
+	 * Al enum de modalidad se le podria agregar si es individual o no??
 	 */
 	
 	

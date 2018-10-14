@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import enums.Envite;
+
 @Entity
 @Table(name = "TURNOS")
 public class TurnoEntity {
@@ -27,9 +29,8 @@ public class TurnoEntity {
 	@JoinColumn(name="ID_JUGADOR")
 	private JugadorEntity jugador;
 	
-	//TODO hacer enum para envites?
 	@Column(name="ENVITE")
-	private String envite;
+	private Envite envite;
 	
 	@OneToOne
 	@JoinColumn(name="ID_CARTA")
@@ -63,11 +64,11 @@ public class TurnoEntity {
 		this.jugador = jugador;
 	}
 
-	public String getEnvite() {
+	public Envite getEnvite() {
 		return envite;
 	}
 
-	public void setEnvite(String envite) {
+	public void setEnvite(Envite envite) {
 		this.envite = envite;
 	}
 

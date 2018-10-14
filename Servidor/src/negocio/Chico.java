@@ -1,7 +1,7 @@
 package negocio;
 
-import java.util.Date;
 import dao.ChicoDAO;
+import dto.ChicoDTO;
 
 /**
  * Soy una colección de manos
@@ -10,28 +10,24 @@ import dao.ChicoDAO;
  */
 public class Chico {
 	private int numero;
-	private Date fecha;
 	private boolean finalizado;
 	private Pareja parejaGanadora;
+	private int puntajePareja1;
+	private int puntajePareja2;
 	
-	public Chico(int numero, Date fecha, boolean finaizado, Pareja parejaGanadora) {
+	public Chico(int numero, boolean finaizado, Pareja parejaGanadora, int puntajePareja1, int puntajePareja2) {
 		super();
 		this.numero = numero;
-		this.fecha = fecha;
 		this.finalizado = finaizado;
 		this.parejaGanadora = parejaGanadora;
+		this.puntajePareja1 = puntajePareja1;
+		this.puntajePareja2 = puntajePareja2;
 	}
 	public int getNumero() {
 		return numero;
 	}
 	public void setNumero(int numero) {
 		this.numero = numero;
-	}
-	public Date getFecha() {
-		return fecha;
-	}
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
 	}
 	public boolean isFinaizado() {
 		return finalizado;
@@ -48,5 +44,21 @@ public class Chico {
 	
 	public boolean guardar(){
 		return ChicoDAO.getInstancia().guardar(this);
+	}
+	public int getPuntajePareja1() {
+		return puntajePareja1;
+	}
+	public void setPuntajePareja1(int puntajePareja1) {
+		this.puntajePareja1 = puntajePareja1;
+	}
+	public int getPuntajePareja2() {
+		return puntajePareja2;
+	}
+	public void setPuntajePareja2(int puntajePareja2) {
+		this.puntajePareja2 = puntajePareja2;
+	}
+	
+	public ChicoDTO toDTO() {
+		return new ChicoDTO(numero, finalizado, parejaGanadora.toDTO(), puntajePareja1, puntajePareja2);
 	}
 }

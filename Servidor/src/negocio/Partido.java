@@ -1,8 +1,12 @@
 package negocio;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import enums.EstadoPartido;
+import dto.ModalidadDTO;
+import dto.ParejaDTO;
+import dto.PartidoDTO;
 import enums.TipoModalidad;
 
 /**
@@ -11,25 +15,42 @@ import enums.TipoModalidad;
  * empate en los dos primeros chicos, el tercero es el definitivo 
  */
 public class Partido {
-	private Chico chico;
+	private Integer idPartido;
+	private List<Chico> chico;
 	private TipoModalidad modalidad;
 	private List<Pareja> parejas;
 	private Pareja parejaGanadora;
-	private EstadoPartido estado;
+	private Date fecha;
+	//private EstadoPartido estado; En la base no hay estado
 	
-	public Partido(Chico chico, TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora,
-			EstadoPartido estado) {
+	public Partido(List<Chico> chico, TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha) {
+			//EstadoPartido estado) {
 		super();
 		this.chico = chico;
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
-		this.estado = estado;
+		this.fecha = fecha;
+		//this.estado = estado;
 	}
-	public Chico getChico() {
+	
+	/**
+	 * Constructor usado para traer datos de la base, las parejas se insertaran con el set
+	 * @param chico
+	 * @param modalidad
+	 * @param parejaGanadora
+	 */
+	public Partido(TipoModalidad modalidad, Pareja parejaGanadora, Date fecha) {
+		super();
+		this.modalidad = modalidad;
+		this.parejaGanadora = parejaGanadora;
+		this.fecha = fecha;
+	}
+	
+	public List<Chico> getChico() {
 		return chico;
 	}
-	public void setChico(Chico chico) {
+	public void setChico(List<Chico> chico) {
 		this.chico = chico;
 	}
 	public TipoModalidad getModalidad() {
@@ -50,12 +71,31 @@ public class Partido {
 	public void setParejaGanadora(Pareja parejaGanadora) {
 		this.parejaGanadora = parejaGanadora;
 	}
-	public EstadoPartido getEstado() {
-		return estado;
+//	public EstadoPartido getEstado() {
+//		return estado;
+//	}
+//	public void setEstado(EstadoPartido estado) {
+//		this.estado = estado;
+//	}
+
+	public Date getFecha() {
+		return fecha;
 	}
-	public void setEstado(EstadoPartido estado) {
-		this.estado = estado;
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public Integer getIdPartido() {
+		return idPartido;
+	}
+
+	public void setIdPartido(Integer idPartido) {
+		this.idPartido = idPartido;
 	}
 	
-
+	public PartidoDTO toDTOListar() {
+		List<ParejaDTO> parejasDTO = parejas.stream().map(Pareja::toDTO).collect(Collectors.toList());
+		return new PartidoDTO(new ModalidadDTO(modalidad, true), parejasDTO, parejaGanadora.toDTO());
+	}
 }

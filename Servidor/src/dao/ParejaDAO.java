@@ -7,9 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import entities.ParejaEntity;
-import entities.PartidoEntity;
 import hbt.HibernateUtil;
 import negocio.Pareja;
+import negocio.Partido;
 
 public class ParejaDAO {
 	private static ParejaDAO instancia;
@@ -27,11 +27,10 @@ public class ParejaDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ParejaEntity> buscarParejasPorJugador(){
+	public List<ParejaEntity> buscarParejasPorJugador(Integer idJugador){
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
-		Integer idJugador = 1;
 		List<ParejaEntity> p;
 		try {
 			p = (List<ParejaEntity>) s
@@ -43,7 +42,6 @@ public class ParejaDAO {
 			if (p == null) {
 				//throw new GrupoException("El jugador no tuvo parejas");
 			}else {
-				List<PartidoEntity> partidos = p.get(0).getPartidos();
 				return p;		
 			}
 			
@@ -54,5 +52,49 @@ public class ParejaDAO {
 			s.close();
 		}
 		return null;
+	}
+	
+	public List<Partido> obtenerPartidosPorPareja(Integer idJugador){
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		List<ParejaEntity> parejas = buscarParejasPorJugador(idJugador);
+		try {
+			parejas.forEach(p -> p.getPartidos());			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			s.close();
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ParejaEntity> buscarParejasPorJugador(Integer idJugador, Session s){
+		List<ParejaEntity> p;
+		try {
+			p = (List<ParejaEntity>) s
+					.createQuery("from ParejaEntity pe where pe.jugador1 = ? OR pe.jugador2 = ?")
+					.setInteger(0, idJugador).setInteger(1, idJugador).list();
+			s.getTransaction().commit();
+			
+			
+			if (p == null) {
+				//throw new GrupoException("El jugador no tuvo parejas");
+			}else {
+				return p;		
+			}
+			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
+	public Pareja toNegocio(ParejaEntity pe){
+		return new Pareja(JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), 
+				JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), pe.getPuntaje());
 	}
 }

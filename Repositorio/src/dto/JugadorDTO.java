@@ -23,6 +23,10 @@ public class JugadorDTO implements Serializable  {
 	private boolean jugando;
 	private String password;
 
+	public JugadorDTO() {
+		super();
+	}
+	
 	public JugadorDTO(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
 			int partidosGanados, boolean conectado, boolean jugando, String password) {
 		super();
@@ -38,8 +42,37 @@ public class JugadorDTO implements Serializable  {
 		this.password = password;
 	}
 
-	public JugadorDTO() {}
-
+	/**
+	 * Constructor para DTO completo
+	 * 
+	 * @param id
+	 * @param nombre
+	 * @param apodo
+	 * @param mail
+	 * @param categoria
+	 * @param puntaje
+	 * @param partidosJugados
+	 * @param partidosGanados
+	 * @param conectado
+	 * @param jugando
+	 * @param password
+	 */
+	public JugadorDTO(Integer id, String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
+			int partidosGanados, boolean conectado, boolean jugando, String password) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.apodo = apodo;
+		this.mail = mail;
+		this.categoria = categoria;
+		this.puntaje = puntaje;
+		this.partidosJugados = partidosJugados;
+		this.partidosGanados = partidosGanados;
+		this.conectado = conectado;
+		this.jugando = jugando;
+		this.password = password;
+	}
+	
 	/**
 	 * Constructor con valores por defecto para cuando se da de alta un jugador
 	 * @param nombre

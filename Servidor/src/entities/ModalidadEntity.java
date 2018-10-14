@@ -2,10 +2,14 @@ package entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import enums.TipoModalidad;
 
 @Entity
 @Table(name = "MODALIDAD")
@@ -17,7 +21,8 @@ public class ModalidadEntity {
 	private Integer idModalidad;
 	
 	@Column(name="DESCRIPCION")
-	private String descripcion;
+	@Enumerated(EnumType.STRING)
+	private TipoModalidad descripcion;
 	
 	@Column(name="INDIVIDUAL")
 	private boolean individual;
@@ -34,11 +39,11 @@ public class ModalidadEntity {
 		this.idModalidad = idModalidad;
 	}
 
-	public String getDescripcion() {
+	public TipoModalidad getDescripcion() {
 		return descripcion;
 	}
 
-	public void setDescripcion(String descripcion) {
+	public void setDescripcion(TipoModalidad descripcion) {
 		this.descripcion = descripcion;
 	}
 

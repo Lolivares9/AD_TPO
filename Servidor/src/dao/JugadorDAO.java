@@ -7,9 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import dto.JugadorDTO;
 import entities.JugadorEntity;
-import enums.Categoria;
 import excepciones.JugadorException;
 import hbt.HibernateUtil;
 import negocio.Jugador;

@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,10 +25,6 @@ public class PartidoEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPartido;
 	
-	@OneToMany
-	@JoinColumn(name="ID_CHICO")
-	private List<ChicoEntity> chico;
-	
 	@OneToOne
 	@JoinColumn(name="ID_MODALIDAD")
 	private ModalidadEntity modalidad;
@@ -37,8 +33,28 @@ public class PartidoEntity {
 	@JoinColumn(name="ID_PAREJA_GANADORA")
 	private ParejaEntity parejaGanadora;
 	
+	@Column(name="FECHA")
+	private Date fecha;
+
 	@ManyToMany (cascade=CascadeType.ALL)
 	List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
+
+	public List<ParejaEntity> getParejas() {
+		return parejas;
+	}
+
+	public void setParejas(List<ParejaEntity> parejas) {
+		this.parejas = parejas;
+	}
+	
+	
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
 
 	public PartidoEntity() {
 		super();
@@ -50,14 +66,6 @@ public class PartidoEntity {
 
 	public void setIdPartido(Integer idPartido) {
 		this.idPartido = idPartido;
-	}
-
-	public List<ChicoEntity> getChico() {
-		return chico;
-	}
-
-	public void setChico(List<ChicoEntity> chico) {
-		this.chico = chico;
 	}
 
 	public ModalidadEntity getModalidad() {
@@ -76,7 +84,7 @@ public class PartidoEntity {
 		this.parejaGanadora = parejaGanadora;
 	}
 
-
+	
 
 
 }

@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class ParejaDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8367212573800908537L;
+	
 	private JugadorDTO jugador1;
 	private JugadorDTO jugador2;
 	private int puntaje;

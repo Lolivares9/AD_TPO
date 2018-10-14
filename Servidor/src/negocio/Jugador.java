@@ -1,6 +1,7 @@
 package negocio;
 
 import dao.JugadorDAO;
+import dto.JugadorDTO;
 import enums.Categoria;
 import excepciones.JugadorException;
 
@@ -126,7 +127,6 @@ public class Jugador {
 		return j;
 	}
 
-
 	public Integer getId() {
 		return id;
 	}
@@ -134,6 +134,10 @@ public class Jugador {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public JugadorDTO toDTO() {
+		return new JugadorDTO(id, nombre, apodo, mail, categoria, puntaje, partidosJugados, partidosGanados, conectado, jugando, password);
 	}
 	
 }

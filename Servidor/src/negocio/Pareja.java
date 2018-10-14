@@ -1,7 +1,7 @@
 package negocio;
 
-import dao.CartaDAO;
 import dao.ParejaDAO;
+import dto.ParejaDTO;
 
 public class Pareja {
 	private Jugador jugador1;
@@ -38,4 +38,9 @@ public class Pareja {
 	public boolean guardar(){
 		return ParejaDAO.getInstancia().guardar(this);
 	}
+	
+	public ParejaDTO toDTO() {
+		return new ParejaDTO(jugador1.toDTO(), jugador2.toDTO(), puntaje);
+	}
+	
 }
