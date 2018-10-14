@@ -79,15 +79,7 @@ public class Controlador {
 		}
 	}
 
-	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
-		try {
-			listarChicosPorPartido(null);
-		} catch (ChicoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}//PARA PROBAR METODO
-		
-		
+	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{		
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
 		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
 			return true;
@@ -215,7 +207,7 @@ public class Controlador {
 	 * 
 	 * ManoEntity tenia una lista de chicos, y en realidad un chico esta compuesto por manos
 	 * 
-	 * Para que esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
+	 * Para qué esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
 	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
 	 * 
 	 * Como vamos a marcar un empate en la tabla bazas (tiene una columna ganadores_baza), le ponemos 0?

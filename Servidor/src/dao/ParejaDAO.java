@@ -95,6 +95,6 @@ public class ParejaDAO {
 	
 	public Pareja toNegocio(ParejaEntity pe){
 		return new Pareja(JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), 
-				JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), pe.getPuntaje());
+				JugadorDAO.getInstancia().toNegocio(pe.getJugador2()), pe.getPuntaje());
 	}
 }

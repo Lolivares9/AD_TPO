@@ -15,6 +15,10 @@ public class PartidoDTO implements Serializable {
 	private List<ParejaDTO> parejas;
 	private ParejaDTO parejaGanadora;
 	
+	public PartidoDTO() {
+		super();
+	}
+	
 	public PartidoDTO(ChicoDTO chico, ModalidadDTO modalidad, List<ParejaDTO> parejas, ParejaDTO parejaGanadora) {
 		super();
 		this.chico = chico;

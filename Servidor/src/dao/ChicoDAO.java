@@ -35,7 +35,7 @@ public class ChicoDAO {
 		List<ChicoEntity> chicosET = null;
 		try {
 			chicosET = (List<ChicoEntity>) s
-					.createQuery("from ChicoEntity ce where ce.partido = ? OR pe.jugador2 = ?")
+					.createQuery("from ChicoEntity ce where ce.idPartido = ?")
 					.setInteger(0, idPartido).list();
 			s.getTransaction().commit();
 			
