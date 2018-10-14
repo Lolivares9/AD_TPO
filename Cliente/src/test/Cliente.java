@@ -17,7 +17,7 @@ public class Cliente {
 		//crearGrupo();
 		//llenarGrupo();
 		//altaJugador();
-		//iniciarSesion();
+		iniciarSesion();
 		//repartirCartas();
 	}
 	

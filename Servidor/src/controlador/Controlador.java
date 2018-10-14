@@ -8,8 +8,10 @@ import java.util.stream.Collectors;
 
 import dao.GrupoDAO;
 import dao.JugadorDAO;
+import dao.ParejaDAO;
 import dto.CartaDTO;
 import dto.JugadorDTO;
+import entities.ParejaEntity;
 import enums.Categoria;
 import excepciones.CartaException;
 import excepciones.GrupoException;
@@ -71,6 +73,7 @@ public class Controlador {
 	}
 
 	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
+		resultadoPartido();
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
 		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
 			return true;
@@ -134,8 +137,6 @@ public class Controlador {
 		
 		return false;
 	}
-	
-	
 
 	public boolean iniciarPartidaLibre() {
 		// TODO Auto-generated method stub
@@ -146,5 +147,33 @@ public class Controlador {
 		mazo = new Mazo();
 		return (mazo.repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList()));
 	}
+	
+	public void resultadoPartido() {
+		//FACU
+		//Estoy probando con datos insertados a mano traer todos los resultados de un partido
+		//ENCONTRE MUCHOS ERRORES --> LEER COMENTARIO ABAJO
+		List<ParejaEntity> idParejas = ParejaDAO.getInstancia().buscarParejasPorJugador();
+		System.out.println(idParejas.get(0).getPartidos());
+	}
 
+	/*
+	 * Modifiqué la tabla de partido_pareja, para poder hacer la relación con hibernate. Subo el script corregido  
+	 *  
+	 * La tabla partidos tiene una columna id_chico que no tiene sentido, se estarian repitiendo los datos por cada chico dentro de la partida,
+	 * propongo poner un id_partido en la tabla id_chico
+	 * 
+	 * ManoEntity tenia una lista de chicos, y en realidad una mano esta compuesta por chicos
+	 * 
+	 * Para que esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
+	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
+	 * 
+	 * Como vamos a marcar un empate en la tabla bazas (tiene una columna ganadores_baza), le ponemos 0?
+	 * 
+	 * Como vamos a representar en la tabla de turnos cuando se cante por ejemplo Truco-Re truco- Quiero? 
+	 * (todo sucede en un mismo turno) repetimos el id y despues lo unimos??
+	 * 
+	 * 
+	 */
+	
+	
 }

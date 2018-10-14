@@ -1,14 +1,12 @@
 package entities;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -21,9 +19,9 @@ public class ManoEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idMano;
 	
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name="ID_CHICO")
-	private List<ChicoEntity> chico;
+	private ChicoEntity chico;
 	
 	@Column(name="NUMERO_MANO")
 	private int numeroMano;
@@ -44,11 +42,11 @@ public class ManoEntity {
 		this.idMano = idMano;
 	}
 
-	public List<ChicoEntity> getChico() {
+	public ChicoEntity getChico() {
 		return chico;
 	}
 
-	public void setChico(List<ChicoEntity> chico) {
+	public void setChico(ChicoEntity chico) {
 		this.chico = chico;
 	}
 

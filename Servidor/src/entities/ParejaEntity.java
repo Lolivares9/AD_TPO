@@ -1,11 +1,15 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -20,7 +24,7 @@ public class ParejaEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="ID_JUGADOR1")
-	private JugadorEntity Jugador1;
+	private JugadorEntity jugador1;
 	
 	@ManyToOne
 	@JoinColumn(name="ID_JUGADOR2")
@@ -29,6 +33,17 @@ public class ParejaEntity {
 	@Column(name="PUNTAJE")
 	private int puntaje;
 	
+	@ManyToMany(mappedBy="parejas")
+	private List<PartidoEntity> partidos = new ArrayList<PartidoEntity>();
+	
+	public List<PartidoEntity> getPartidos() {
+		return partidos;
+	}
+
+	public void setPartidos(List<PartidoEntity> partidos) {
+		this.partidos = partidos;
+	}
+
 	public ParejaEntity() {
 		super();
 	}
@@ -42,11 +57,11 @@ public class ParejaEntity {
 	}
 
 	public JugadorEntity getJugador1() {
-		return Jugador1;
+		return jugador1;
 	}
 
 	public void setJugador1(JugadorEntity jugador1) {
-		Jugador1 = jugador1;
+		this.jugador1 = jugador1;
 	}
 
 	public JugadorEntity getJugador2() {

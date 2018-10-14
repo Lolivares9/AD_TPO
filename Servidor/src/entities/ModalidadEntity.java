@@ -17,7 +17,7 @@ public class ModalidadEntity {
 	private Integer idModalidad;
 	
 	@Column(name="DESCRIPCION")
-	private int descripcion;
+	private String descripcion;
 	
 	@Column(name="INDIVIDUAL")
 	private boolean individual;
@@ -34,11 +34,11 @@ public class ModalidadEntity {
 		this.idModalidad = idModalidad;
 	}
 
-	public int getDescripcion() {
+	public String getDescripcion() {
 		return descripcion;
 	}
 
-	public void setDescripcion(int descripcion) {
+	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
