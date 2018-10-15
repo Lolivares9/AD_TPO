@@ -94,20 +94,10 @@ public class Controlador {
 	}
 
 	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
-		ChicoDTO c = new ChicoDTO();
-		c.setIdChico(1);
-		try {
-			obtenerDetalleDeChico(c);
-		} catch (ManoException | BazaException | TurnoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
+		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
+			return true;
 		}
-		//****///**** PRUEBA DE METODO ^		
-		
-//		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
-//		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
-//			return true;
-//		}
 		return false;
 	}
 
