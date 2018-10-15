@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import enums.NumeroCarta;
 import enums.PaloCarta;
 
 @Entity
@@ -25,8 +26,8 @@ public class CartaEntity {
 	private PaloCarta palo;
 	
 	@Column(name="NUMERO")
-	//TODO usar enum para numeros de cartas??
-	private int numero;
+	@Enumerated(EnumType.STRING)
+	private NumeroCarta numero;
 	
 	@Column(name="VALOR_JUEGO")
 	private int valorJuego;
@@ -51,11 +52,11 @@ public class CartaEntity {
 		this.palo = palo;
 	}
 
-	public int getNumero() {
+	public NumeroCarta getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(NumeroCarta numero) {
 		this.numero = numero;
 	}
 

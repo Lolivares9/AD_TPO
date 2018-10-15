@@ -1,26 +1,27 @@
 package negocio;
 
 import dto.CartaDTO;
+import enums.NumeroCarta;
 import enums.PaloCarta;
 
 public class Carta {
 	private Integer idCarta;
-	private int numero;
+	private NumeroCarta numero;
 	private PaloCarta palo;
 	private int valorJuego;
 	
-	public Carta(Integer idCarta, int numero, PaloCarta palo, int valorJuego) {
+	public Carta(Integer idCarta, NumeroCarta numeroCarta, PaloCarta palo, int valorJuego) {
 		super();
 		this.idCarta = idCarta;
-		this.numero = numero;
+		this.numero = numeroCarta;
 		this.palo = palo;
 		this.valorJuego = valorJuego;
 	}
 	
-	public int getNumero() {
+	public NumeroCarta getNumero() {
 		return numero;
 	}
-	public void setNumero(int numero) {
+	public void setNumero(NumeroCarta numero) {
 		this.numero = numero;
 	}
 	public PaloCarta getPalo() {
@@ -48,4 +49,8 @@ public class Carta {
 		return new CartaDTO(this.numero, this.palo, this.valorJuego);
 	}
 
+	@Override
+	public String toString() {
+		return numero +" de "+palo;
+	}
 }

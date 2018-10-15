@@ -4,20 +4,34 @@ import java.io.Serializable;
 
 public class BazaDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6002073309038469873L;
+	
 	private ManoDTO mano;
-	private int numero;
+	private int numeroBaza;
 	private ParejaDTO ganadores;
 	private int puntajePareja1;
 	private int puntajePareja2;
 	
-	public BazaDTO(ManoDTO mano, int numero, ParejaDTO ganadores, int puntajePareja1, int puntajePareja2) {
+	public BazaDTO(ManoDTO mano, int numeroBaza, ParejaDTO ganadores, int puntajePareja1, int puntajePareja2) {
 		super();
 		this.mano = mano;
-		this.numero = numero;
+		this.numeroBaza = numeroBaza;
 		this.ganadores = ganadores;
 		this.puntajePareja1 = puntajePareja1;
 		this.puntajePareja2 = puntajePareja2;
 	}
+	
+	public BazaDTO(int numeroBaza, ParejaDTO ganadores, int puntajePareja1, int puntajePareja2) {
+		super();
+		this.numeroBaza = numeroBaza;
+		this.ganadores = ganadores;
+		this.puntajePareja1 = puntajePareja1;
+		this.puntajePareja2 = puntajePareja2;
+	}
+	
 	public ManoDTO getMano() {
 		return mano;
 	}
@@ -25,10 +39,10 @@ public class BazaDTO implements Serializable {
 		this.mano = mano;
 	}
 	public int getNumero() {
-		return numero;
+		return numeroBaza;
 	}
 	public void setNumero(int numero) {
-		this.numero = numero;
+		this.numeroBaza = numero;
 	}
 	public ParejaDTO getGanadores() {
 		return ganadores;

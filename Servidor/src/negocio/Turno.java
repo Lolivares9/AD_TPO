@@ -1,7 +1,7 @@
 package negocio;
 
-import dao.CartaDAO;
 import dao.TurnoDAO;
+import dto.TurnoDTO;
 import enums.Envite;
 
 public class Turno {
@@ -18,6 +18,13 @@ public class Turno {
 		this.carta = carta;
 	}
 	
+	public Turno(Jugador jugador, Envite envite, Carta carta) {
+		super();
+		this.jugador = jugador;
+		this.envite = envite;
+		this.carta = carta;
+	}
+
 	public Baza getBaza() {
 		return baza;
 	}
@@ -47,4 +54,7 @@ public class Turno {
 		return TurnoDAO.getInstancia().guardar(this);
 	}
 	
+	public TurnoDTO toDTO() {
+		return new TurnoDTO(jugador.toDTO(), envite, carta.toDTO());
+	}
 }

@@ -21,7 +21,7 @@ public class ManoEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="ID_CHICO")
-	private ChicoEntity chico;
+	private ChicoEntity idChico;
 	
 	@Column(name="NUMERO_MANO")
 	private int numeroMano;
@@ -42,14 +42,6 @@ public class ManoEntity {
 		this.idMano = idMano;
 	}
 
-	public ChicoEntity getChico() {
-		return chico;
-	}
-
-	public void setChico(ChicoEntity chico) {
-		this.chico = chico;
-	}
-
 	public int getNumeroMano() {
 		return numeroMano;
 	}
@@ -64,6 +56,14 @@ public class ManoEntity {
 
 	public void setParejaGanadora(ParejaEntity parejaGanadora) {
 		this.parejaGanadora = parejaGanadora;
+	}
+
+	public ChicoEntity getIdChico() {
+		return idChico;
+	}
+
+	public void setIdChico(ChicoEntity idChico) {
+		this.idChico = idChico;
 	}
 	
 }

@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class ManoDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3562346828808906265L;
+	
 	private ChicoDTO chico;
 	private int numeroMano;
 	private ParejaDTO parejaGanadora;
@@ -15,6 +20,12 @@ public class ManoDTO implements Serializable {
 		this.parejaGanadora = parejaGanadora;
 	}
 	
+	public ManoDTO(int numeroMano, ParejaDTO parejaGanadora) {
+		super();
+		this.numeroMano = numeroMano;
+		this.parejaGanadora = parejaGanadora;
+	}
+
 	public ChicoDTO getChico() {
 		return chico;
 	}

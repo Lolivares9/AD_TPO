@@ -6,6 +6,11 @@ import enums.Envite;
 
 public class TurnoDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1422007714923225296L;
+	
 	private BazaDTO baza;
 	private JugadorDTO jugador;
 	private Envite envite;
@@ -19,6 +24,13 @@ public class TurnoDTO implements Serializable {
 		this.carta = carta;
 	}
 	
+	public TurnoDTO(JugadorDTO jugador, Envite envite, CartaDTO carta) {
+		super();
+		this.jugador = jugador;
+		this.envite = envite;
+		this.carta = carta;
+	}
+
 	public BazaDTO getBazaDTO() {
 		return baza;
 	}

@@ -8,8 +8,9 @@ public class ChicoDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -1843892719080160092L;
 	
+	private Integer idChico;
 	private int numero;
-	private boolean finaizado;
+	private boolean finalizado;
 	private ParejaDTO parejaGanadora;
 	private int puntajePareja1;
 	private int puntajePareja2;
@@ -17,11 +18,16 @@ public class ChicoDTO implements Serializable {
 	public ChicoDTO(int numero, boolean finaizado, ParejaDTO parejaGanadora, int puntajePareja1, int puntajePareja2) {
 		super();
 		this.numero = numero;
-		this.finaizado = finaizado;
+		this.finalizado = finaizado;
 		this.parejaGanadora = parejaGanadora;
 		this.puntajePareja1 = puntajePareja1;
 		this.puntajePareja2 = puntajePareja2;
 	}
+	
+	public ChicoDTO() {
+		super();
+	}
+	
 	public int getNumero() {
 		return numero;
 	}
@@ -29,10 +35,10 @@ public class ChicoDTO implements Serializable {
 		this.numero = numero;
 	}
 	public boolean isFinaizado() {
-		return finaizado;
+		return finalizado;
 	}
 	public void setFinaizado(boolean finaizado) {
-		this.finaizado = finaizado;
+		this.finalizado = finaizado;
 	}
 	public ParejaDTO getParejaGanadora() {
 		return parejaGanadora;
@@ -51,5 +57,11 @@ public class ChicoDTO implements Serializable {
 	}
 	public void setPuntajePareja2(int puntajePareja2) {
 		this.puntajePareja2 = puntajePareja2;
+	}
+	public Integer getIdChico() {
+		return idChico;
+	}
+	public void setIdChico(Integer idChico) {
+		this.idChico = idChico;
 	}
 }

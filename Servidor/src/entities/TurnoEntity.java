@@ -2,6 +2,8 @@ package entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,13 +25,14 @@ public class TurnoEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="ID_BAZA")
-	private BazaEntity baza;
+	private BazaEntity idBaza;
 	
 	@ManyToOne
 	@JoinColumn(name="ID_JUGADOR")
 	private JugadorEntity jugador;
 	
 	@Column(name="ENVITE")
+	@Enumerated(EnumType.STRING)
 	private Envite envite;
 	
 	@OneToOne
@@ -49,11 +52,11 @@ public class TurnoEntity {
 	}
 
 	public BazaEntity getBaza() {
-		return baza;
+		return idBaza;
 	}
 
 	public void setBaza(BazaEntity baza) {
-		this.baza = baza;
+		this.idBaza = baza;
 	}
 
 	public JugadorEntity getJugador() {

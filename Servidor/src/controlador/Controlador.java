@@ -2,31 +2,45 @@ package controlador;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import dao.BazaDAO;
 import dao.ChicoDAO;
 import dao.GrupoDAO;
 import dao.JugadorDAO;
+import dao.ManoDAO;
 import dao.PartidoDAO;
+import dao.TurnoDAO;
+import dto.BazaDTO;
 import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
+import dto.ManoDTO;
 import dto.PartidoDTO;
+import dto.TurnoDTO;
 import enums.Categoria;
 import enums.TipoModalidad;
+import excepciones.BazaException;
 import excepciones.CartaException;
 import excepciones.ChicoException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
+import excepciones.ManoException;
+import excepciones.TurnoException;
+import negocio.Baza;
 import negocio.Carta;
 import negocio.Chico;
 import negocio.Grupo;
 import negocio.Jugador;
+import negocio.Mano;
 import negocio.Mazo;
 import negocio.Partido;
+import negocio.Turno;
 import util.DTOMapper;
 
 public class Controlador {
@@ -79,11 +93,21 @@ public class Controlador {
 		}
 	}
 
-	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{		
-		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
-		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
-			return true;
+	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
+		ChicoDTO c = new ChicoDTO();
+		c.setIdChico(1);
+		try {
+			obtenerDetalleDeChico(c);
+		} catch (ManoException | BazaException | TurnoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		//****///**** PRUEBA DE METODO ^		
+		
+//		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
+//		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
+//			return true;
+//		}
 		return false;
 	}
 
@@ -194,10 +218,36 @@ public class Controlador {
 	 * 
 	 * @param chicoDTO
 	 * @return
+	 * @throws ManoException 
+	 * @throws BazaException 
+	 * @throws TurnoException 
 	 */
-	public ChicoDTO obtenerChicoConDetalle(ChicoDTO chicoDTO) {
-		//TODO buscar las manos -> las bazas  -> los turnos
-		return null;
+	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chicoDTO) throws ManoException, BazaException, TurnoException {
+		//TODO buscar las manos -> las bazas  -> los turnos  
+		Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> detallePartida = new HashMap<ManoDTO, Map<BazaDTO, List<TurnoDTO>>>();
+		List<Mano> manos = ManoDAO.getInstancia().buscarManosPorChico(chicoDTO.getIdChico());
+		for(Mano m : manos) {
+			System.out.println("\nMano Nº "+m.getNumeroMano() + 
+					" Ganada por " +m.getParejaGanadora().getJugador1().getApodo() + " y "+ m.getParejaGanadora().getJugador2().getApodo());
+			
+			Map<BazaDTO,List<TurnoDTO>> detalleMano = new HashMap<BazaDTO, List<TurnoDTO>>();
+			
+			List<Baza> bazas = BazaDAO.getInstancia().buscarBazasPorMano(m.getIdMano());
+			for(Baza b : bazas) {
+				System.out.println("\nBaza Nª "+b.getNumero()+ " ganada por "+b.getGanadores().getJugador1().getApodo()+" y "+b.getGanadores().getJugador2().getApodo());
+				System.out.println("Puntos: "+ b.getPuntajePareja1() + " y " +b.getPuntajePareja2());
+				List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(b.getIdBaza());
+				
+				for(Turno t : turnos) {
+					System.out.println(t.getJugador().getApodo()+ " cantó "+t.getEnvite()+ " y jugó un "+ t.getCarta().toString());
+				}
+				detalleMano.put(b.toDTO(), turnos.stream().map(Turno::toDTO).collect(Collectors.toList()));
+			}
+			
+			detallePartida.put(m.toDTO(), detalleMano);
+		}
+		
+		return detallePartida;
 	}
 
 	/*

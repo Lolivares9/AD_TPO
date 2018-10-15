@@ -20,7 +20,7 @@ public class BazaEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="ID_MANO")
-	private ManoEntity mano;
+	private ManoEntity idMano;
 	
 	@Column(name="NUMERO_BAZA")
 	private int numeroBaza;
@@ -48,11 +48,11 @@ public class BazaEntity {
 	}
 
 	public ManoEntity getMano() {
-		return mano;
+		return idMano;
 	}
 
 	public void setMano(ManoEntity mano) {
-		this.mano = mano;
+		this.idMano = mano;
 	}
 
 	public int getNumeroBaza() {
