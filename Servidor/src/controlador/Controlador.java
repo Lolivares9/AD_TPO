@@ -102,60 +102,344 @@ public class Controlador {
 	}
 
 	public boolean iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
-		
-		 
 		List<Jugador> jugDisp = new ArrayList<Jugador>();
 		jugDisp.add(jug);
 		boolean completo = false;
+		boolean esParejo = false;
 		
 		completo = completarJugadores(categ,jugDisp);
 		//SI EN EL PRIMER CASO YA ME DEVOLVIO 0 SIGNIFICA QUE NO HAY NADIE DISPONIBLE
 		if(jugDisp.size() == 0 && completo == false){
 			return false;
 		}
-		else{
-			//ACA HABRIA QUE IR BAJANDO DE CATEGORIA, YA QUE EN EL METODO VAMOS SUBIENDO DE CATEGORIA
-		}
+		
+		esParejo = verificarIgualdadParejas(jugDisp);
 		
 		return false;
 		
 	}
 	
-	@SuppressWarnings({ "unused" })
+	private boolean verificarIgualdadParejas(List<Jugador> jugDisp) {
+		int novatos = 0,masters = 0,expertos = 0,calificados = 0;
+		for(int i = 0;i<jugDisp.size();i++){
+			if(jugDisp.get(i).getCategoria().equals(Categoria.Novato)){
+				novatos++;
+			}
+			if(jugDisp.get(i).getCategoria().equals(Categoria.Master)){
+				masters++;
+			}
+			if(jugDisp.get(i).getCategoria().equals(Categoria.Experto)){
+				expertos++;
+			}
+			if(jugDisp.get(i).getCategoria().equals(Categoria.Calificado)){
+				calificados++;
+			}
+		}
+		
+		if(novatos > 2 && (expertos > 0 || masters > 0 || calificados > 0)){
+			return false;
+		}
+		if(masters > 2 && (expertos > 0 || novatos > 0 || calificados > 0)){
+			return false;
+		}
+		if(expertos > 2 && (novatos > 0 || masters > 0 || calificados > 0)){
+			return false;
+		}
+		if(calificados > 2 && (expertos > 0 || masters > 0 || novatos > 0)){
+			return false;
+		}
+		
+		return true;
+	}
+	
 	private boolean completarJugadores(Categoria categ,List<Jugador> jugDisp) {
 		List<Jugador> jugadores = JugadorDAO.getInstancia().getAllJugadores();
+		//SACO EL JUGADOR DE LA LISTA
+		for(int i = 0;i<jugadores.size();i++){
+			if(jugadores.get(i).getApodo().equals(jugDisp.get(0).getApodo())){
+				jugadores.remove(jugadores.get(i));
+			}
+		}
 		
-		HashSet<Jugador> novatos = new HashSet<>();
-		HashSet<Jugador> masters = new HashSet<>();
-		HashSet<Jugador> expertos = new HashSet<>();
-		HashSet<Jugador> calificados = new HashSet<>();
+		List <Jugador> novatos = new ArrayList<Jugador>();
+		List <Jugador> masters = new ArrayList<Jugador>();
+		List <Jugador> expertos = new ArrayList<Jugador>();
+		List <Jugador> calificados = new ArrayList<Jugador>();
 		
 		for(int i = 0;i<jugadores.size();i++){
-			if(jugadores.get(i).getCategoria().equals("Novato")){
+			if(jugadores.get(i).getCategoria().equals(Categoria.Novato)){
 				novatos.add(jugadores.get(i));
 			}
-			if(jugadores.get(i).getCategoria().equals("Master")){
-				novatos.add(jugadores.get(i));
+			if(jugadores.get(i).getCategoria().equals(Categoria.Master)){
+				masters.add(jugadores.get(i));
 			}
-			if(jugadores.get(i).getCategoria().equals("Experto")){
-				novatos.add(jugadores.get(i));
+			if(jugadores.get(i).getCategoria().equals(Categoria.Experto)){
+				expertos.add(jugadores.get(i));
 			}
-			if(jugadores.get(i).getCategoria().equals("Calificado")){
-				novatos.add(jugadores.get(i));
+			if(jugadores.get(i).getCategoria().equals(Categoria.Calificado)){
+				calificados.add(jugadores.get(i));
 			}
 		}
 		
-		if(novatos.size() >= 3 && categ.equals("Novatos")){
-			Iterator<Jugador> i = novatos.iterator(); 
+		if(novatos.size() >= 3 && categ.equals(Categoria.Novato) && jugDisp.size() < 4){
 			while(!novatos.isEmpty()){
-				jugDisp.add((Jugador) novatos.iterator());
-				novatos.remove(i);
-				i.next();
+				jugDisp.add(novatos.get(0));
+				novatos.remove(0);
 			}
+			return true;
+		}
+		if(masters.size() >= 3 && categ.equals(Categoria.Master) && jugDisp.size() < 4){
+			while(!masters.isEmpty()){
+				jugDisp.add(masters.get(0));
+				masters.remove(0);
+			}
+			return true;
+		}
+		if(expertos.size() >= 3 && categ.equals(Categoria.Experto) && jugDisp.size() < 4){
+			while(!expertos.isEmpty()){
+				jugDisp.add(expertos.get(0));
+				expertos.remove(0);
+			}
+			return true;
+		}
+		if(calificados.size() >= 3 && categ.equals(Categoria.Calificado) && jugDisp.size() < 4){
+			while(!calificados.isEmpty()){
+				jugDisp.add(calificados.get(0));
+				calificados.remove(0);
+			}
+			return true;
 		}
 		
+		//SI NO COMPLETAMOS CON UNA MISMA CATEGORIA, TENEMOS QUE COMPLETAR CON LAS MAYORES O MENORES CATEGORIAS
 		
-		return false;
+		if(jugDisp.size() < 4){
+			completarMayorCategoria(categ,jugDisp,novatos,masters,expertos,calificados);
+		}
+		if(jugDisp.size() < 4){
+			completarMenorCategoria(categ,jugDisp,novatos,masters,expertos,calificados);
+		}
+		
+		if(jugDisp.size() < 4){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private void completarMayorCategoria(Categoria categ,List<Jugador> jugDisp,List <Jugador> novatos,List <Jugador> masters
+			,List <Jugador> expertos, List <Jugador> calificados){
+		int x = 0;
+		if(categ.equals(Categoria.Novato)){
+			if(novatos.size() >= 1){ 
+				jugDisp.add(novatos.get(0));
+				novatos.remove(0);
+			}
+			if(masters.size() >= 2){
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(masters.get(0));
+					masters.remove(0);
+					x++;
+				}
+			}
+			else if(masters.size() >= 1){
+				jugDisp.add(masters.get(0));
+				masters.remove(0);
+			}
+			if(expertos.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(expertos.get(0));
+					expertos.remove(0);
+					x++;
+				}
+			}
+			else if(expertos.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(expertos.get(0));
+				expertos.remove(0);
+			}
+			if(calificados.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(calificados.get(0));
+					calificados.remove(0);
+					x++;
+				}
+			}
+			else if(calificados.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(calificados.get(0));
+				calificados.remove(0);
+			}
+		}
+		if(categ.equals(Categoria.Master)){
+			if(masters.size() >= 1){
+				jugDisp.add(masters.get(0));
+				masters.remove(0);
+			}
+			if(expertos.size() >= 2){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(expertos.get(0));
+					expertos.remove(0);
+					x++;
+				}
+			}
+			else if(expertos.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(expertos.get(0));
+				expertos.remove(0);
+			}
+			if(calificados.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(calificados.get(0));
+					calificados.remove(0);
+					x++;
+				}
+			}
+			else if(calificados.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(calificados.get(0));
+				calificados.remove(0);
+			}
+		}
+		if(categ.equals(Categoria.Experto)){
+			if(expertos.size() >= 1){
+				jugDisp.add(expertos.get(0));
+				expertos.remove(0);
+			}
+			if(calificados.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(calificados.get(0));
+					calificados.remove(0);
+					x++;
+				}
+			}
+			else if(calificados.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(calificados.get(0));
+				calificados.remove(0);
+			}
+		}
+		if(categ.equals(Categoria.Calificado)){
+			if(calificados.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(calificados.get(0));
+					calificados.remove(0);
+					x++;
+				}
+			}
+			else if(calificados.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(calificados.get(0));
+				calificados.remove(0);
+			}
+		}
+	}
+	
+	private void completarMenorCategoria(Categoria categ,List<Jugador> jugDisp,List <Jugador> novatos,List <Jugador> masters
+			,List <Jugador> expertos, List <Jugador> calificados){
+		int x = 0;
+		if(categ.equals(Categoria.Calificado)){
+			if(calificados.size() >= 1){ 
+				jugDisp.add(calificados.get(0));
+				calificados.remove(0);
+			}
+			if(expertos.size() >= 2){
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(expertos.get(0));
+					expertos.remove(0);
+					x++;
+				}
+			}
+			else if(expertos.size() >= 1){
+				jugDisp.add(expertos.get(0));
+				expertos.remove(0);
+			}
+			if(masters.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(masters.get(0));
+					masters.remove(0);
+					x++;
+				}
+			}
+			else if(masters.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(masters.get(0));
+				masters.remove(0);
+			}
+			if(novatos.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(novatos.get(0));
+					novatos.remove(0);
+					x++;
+				}
+			}
+			else if(novatos.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(novatos.get(0));
+				novatos.remove(0);
+			}
+		}
+		if(categ.equals(Categoria.Experto)){
+			if(expertos.size() >= 1){
+				jugDisp.add(expertos.get(0));
+				expertos.remove(0);
+			}
+			if(masters.size() >= 2){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(masters.get(0));
+					masters.remove(0);
+					x++;
+				}
+			}
+			else if(masters.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(masters.get(0));
+				masters.remove(0);
+			}
+			if(novatos.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(novatos.get(0));
+					novatos.remove(0);
+					x++;
+				}
+			}
+			else if(novatos.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(novatos.get(0));
+				novatos.remove(0);
+			}
+		}
+		if(categ.equals(Categoria.Master)){
+			if(masters.size() >= 1){
+				jugDisp.add(masters.get(0));
+				masters.remove(0);
+			}
+			if(novatos.size() >= 2 && jugDisp.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(novatos.get(0));
+					novatos.remove(0);
+					x++;
+				}
+			}
+			else if(novatos.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(novatos.get(0));
+				novatos.remove(0);
+			}
+		}
+		if(categ.equals(Categoria.Novato)){
+			if(novatos.size() >= 2 && novatos.size() < 4){
+				x = 0;
+				while(x < 2 && jugDisp.size() < 4){
+					jugDisp.add(novatos.get(0));
+					novatos.remove(0);
+					x++;
+				}
+			}
+			else if(novatos.size() >= 1 && jugDisp.size() < 4){
+				jugDisp.add(novatos.get(0));
+				novatos.remove(0);
+			}
+		}
 	}
 
 	public boolean iniciarPartidaLibre() {
