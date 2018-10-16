@@ -2,15 +2,15 @@ package dao;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
 import entities.ChicoEntity;
+import entities.ParejaEntity;
 import excepciones.ChicoException;
 import hbt.HibernateUtil;
 import negocio.Chico;
+
 
 public class ChicoDAO {
 	private static ChicoDAO instancia;
@@ -23,10 +23,32 @@ public class ChicoDAO {
 	}
 
 	public boolean guardar(Chico chico) {
-		// TODO Auto-generated method stub
-		return false;
+		ChicoEntity cEntity = toEntity(chico);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(cEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return true;
 	}
 	
+	public ChicoEntity toEntity(Chico chico) {
+		ChicoEntity ce = new ChicoEntity();
+		
+		ce.setIdChico(chico.getIdChico());
+		ce.setNumeroChico(chico.getNumero());
+		ce.setFinalizado(chico.isFinaizado());
+		ce.setPuntajePareja1(chico.getPuntajePareja1());
+		ce.setPuntajePareja2(chico.getPuntajePareja2());
+			
+		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(chico.getParejaGanadora());
+		ce.setParejaGanadora(parejaGanadora);
+		
+		return ce;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Chico> buscarChicosPorPartido(Integer idPartido) throws ChicoException{
 		SessionFactory sf = HibernateUtil.getSessionFactory();

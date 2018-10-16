@@ -8,9 +8,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import entities.BazaEntity;
+import entities.JugadorEntity;
+import entities.ParejaEntity;
 import excepciones.BazaException;
 import hbt.HibernateUtil;
 import negocio.Baza;
+import negocio.Jugador;
 
 public class BazaDAO {
 	private static BazaDAO instancia;
@@ -22,9 +25,30 @@ public class BazaDAO {
 		return instancia;
 	}
 
-	public boolean guardar(Baza baza) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean guardar(Baza b) {
+		BazaEntity bEntity = toEntity(b);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(bEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return true;
+	}
+	
+	private BazaEntity toEntity(Baza baza) {
+		BazaEntity be = new BazaEntity();
+		
+		be.setIdBaza(baza.getIdBaza());
+		be.setNumeroBaza(baza.getNumero());
+		be.setPuntajePareja1(baza.getPuntajePareja1());
+		be.setPuntajePareja2(baza.getPuntajePareja2());
+		
+		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(baza.getGanadores());
+		be.setGanadoresBaza((parejaGanadora));
+		
+		return be;
 	}
 	
 	@SuppressWarnings("unchecked")

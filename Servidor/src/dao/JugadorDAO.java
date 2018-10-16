@@ -28,7 +28,7 @@ public class JugadorDAO {
 		return false;
 	}
 
-	public boolean guardarJugador(Jugador p) {
+	public boolean guardar(Jugador p) {
 		JugadorEntity jEntity = toEntity(p);
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
@@ -48,11 +48,21 @@ public class JugadorDAO {
 	}
 	
 	public JugadorEntity toEntity(Jugador jugador){
-		JugadorEntity entity = new JugadorEntity(jugador.getNombre(), jugador.getApodo(), jugador.getMail(),
-				jugador.getPassword(), jugador.getCategoria(), jugador.getPuntaje(), jugador.getPartidosJugados(), jugador.getPartidosGanados(),
-				true, true);
-		entity.setIdJugador(jugador.getId());
-		return entity;
+		JugadorEntity je = new JugadorEntity();
+		
+		je.setApodo(jugador.getApodo());
+		je.setNombre(jugador.getNombre());
+		je.setMail(jugador.getMail());
+		je.setCategoria(jugador.getCategoria());
+		je.setPuntaje(jugador.getPuntaje());
+		je.setPartidosJugados(jugador.getPartidosJugados());
+		je.setPartidosGanados(jugador.getPartidosGanados());
+		je.setConectado(true);
+		je.setJugando(false);
+		je.setPassword(jugador.getPassword());
+		
+		je.setIdJugador(jugador.getId());
+		return je;
 	}
 
 	public Jugador buscarPorMail(String mail) throws JugadorException {

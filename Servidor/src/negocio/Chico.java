@@ -1,15 +1,19 @@
 package negocio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dao.ChicoDAO;
 import dto.ChicoDTO;
-
 /**
- * Soy una colección de manos
+ * Formo parte de un Partido y contengo una coleccion de 3 manos como maximo
  * Un chico es finalizado cuando se llegan a los 30 tantos
  * (15 malos y 15 buenos)
  */
 public class Chico {
+	private Integer idChico;
 	private int numero;
+	private List<Mano> manos;
 	private boolean finalizado;
 	private Pareja parejaGanadora;
 	private int puntajePareja1;
@@ -18,17 +22,28 @@ public class Chico {
 	public Chico(int numero, boolean finaizado, Pareja parejaGanadora, int puntajePareja1, int puntajePareja2) {
 		super();
 		this.numero = numero;
+		this.manos = new ArrayList<Mano>();
 		this.finalizado = finaizado;
 		this.parejaGanadora = parejaGanadora;
 		this.puntajePareja1 = puntajePareja1;
 		this.puntajePareja2 = puntajePareja2;
 	}
+	
 	public int getNumero() {
 		return numero;
 	}
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
+	
+	public List<Mano> getManos() {
+		return manos;
+	}
+
+	public void setManos(List<Mano> manos) {
+		this.manos = manos;
+	}
+
 	public boolean isFinaizado() {
 		return finalizado;
 	}
@@ -58,6 +73,22 @@ public class Chico {
 		this.puntajePareja2 = puntajePareja2;
 	}
 	
+	public Integer getIdChico() {
+		return idChico;
+	}
+
+	public void setIdChico(Integer idChico) {
+		this.idChico = idChico;
+	}
+
+	public boolean isFinalizado() {
+		return finalizado;
+	}
+
+	public void setFinalizado(boolean finalizado) {
+		this.finalizado = finalizado;
+	}
+
 	public ChicoDTO toDTO() {
 		return new ChicoDTO(numero, finalizado, parejaGanadora.toDTO(), puntajePareja1, puntajePareja2);
 	}

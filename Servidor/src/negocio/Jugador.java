@@ -118,22 +118,21 @@ public class Jugador {
 		this.password = password;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public boolean guardar(){
-		return JugadorDAO.getInstancia().guardarJugador(this);
+		return JugadorDAO.getInstancia().guardar(this);
 	}
 
 	public static Jugador getJugador(String mail) throws JugadorException{
 		Jugador j = JugadorDAO.getInstancia().buscarPorMail(mail);
 		return j;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	public JugadorDTO toDTO() {

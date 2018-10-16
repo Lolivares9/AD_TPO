@@ -4,6 +4,7 @@ import dao.ParejaDAO;
 import dto.ParejaDTO;
 
 public class Pareja {
+	private Integer idPareja;
 	private Jugador jugador1;
 	private Jugador jugador2;
 	private int puntaje;
@@ -33,6 +34,14 @@ public class Pareja {
 	}
 	public void setPuntaje(int puntaje) {
 		this.puntaje = puntaje;
+	}
+	
+	public Integer getIdPareja() {
+		return idPareja;
+	}
+
+	public void setIdPareja(Integer idPareja) {
+		this.idPareja = idPareja;
 	}
 	
 	public boolean guardar(){

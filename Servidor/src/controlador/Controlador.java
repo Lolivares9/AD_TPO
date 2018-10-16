@@ -62,7 +62,7 @@ public class Controlador {
 		boolean datosValidos = JugadorDAO.getInstancia().validarDatos(jugador.getApodo(), jugador.getMail());
 		if(datosValidos){
 			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
-			JugadorDAO.getInstancia().guardarJugador(jug);
+			JugadorDAO.getInstancia().guardar(jug);
 		}else{
 			throw new JugadorException("Apodo y/o mail ya registrado/s.");
 		}

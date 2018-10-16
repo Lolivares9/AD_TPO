@@ -4,9 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dao.BazaDAO;
+import dao.PartidoDAO;
 import dto.ModalidadDTO;
 import dto.ParejaDTO;
 import dto.PartidoDTO;
+import enums.EstadoPartido;
 import enums.TipoModalidad;
 
 /**
@@ -21,17 +24,16 @@ public class Partido {
 	private List<Pareja> parejas;
 	private Pareja parejaGanadora;
 	private Date fecha;
-	//private EstadoPartido estado; En la base no hay estado
+	private EstadoPartido estado;
 	
-	public Partido(List<Chico> chico, TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha) {
-			//EstadoPartido estado) {
+	public Partido(List<Chico> chico, TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha,EstadoPartido estado) {
 		super();
 		this.chico = chico;
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
 		this.fecha = fecha;
-		//this.estado = estado;
+		this.estado = estado;
 	}
 	
 	/**
@@ -71,12 +73,14 @@ public class Partido {
 	public void setParejaGanadora(Pareja parejaGanadora) {
 		this.parejaGanadora = parejaGanadora;
 	}
-//	public EstadoPartido getEstado() {
-//		return estado;
-//	}
-//	public void setEstado(EstadoPartido estado) {
-//		this.estado = estado;
-//	}
+	
+	public EstadoPartido getEstado() {
+		return estado;
+	}
+	
+	public void setEstado(EstadoPartido estado) {
+		this.estado = estado;
+	}
 
 	public Date getFecha() {
 		return fecha;
@@ -94,6 +98,9 @@ public class Partido {
 		this.idPartido = idPartido;
 	}
 	
+	public boolean guardar(){
+		return PartidoDAO.getInstancia().guardar(this);
+	}
 	public PartidoDTO toDTOListar() {
 		List<ParejaDTO> parejasDTO = parejas.stream().map(Pareja::toDTO).collect(Collectors.toList());
 		return new PartidoDTO(new ModalidadDTO(modalidad, true), parejasDTO, parejaGanadora.toDTO());

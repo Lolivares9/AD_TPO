@@ -6,6 +6,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.ChicoEntity;
+import entities.JugadorEntity;
 import entities.ParejaEntity;
 import hbt.HibernateUtil;
 import negocio.Pareja;
@@ -21,9 +23,16 @@ public class ParejaDAO {
 		return instancia;
 	}
 
-	public boolean guardar(Pareja pareja) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean guardar(Pareja p) {
+		ParejaEntity pEntity = toEntity(p);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(pEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -96,5 +105,20 @@ public class ParejaDAO {
 	public Pareja toNegocio(ParejaEntity pe){
 		return new Pareja(JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), 
 				JugadorDAO.getInstancia().toNegocio(pe.getJugador2()), pe.getPuntaje());
+	}
+
+	public ParejaEntity toEntity(Pareja parejaGanadora) {
+		ParejaEntity pe = new ParejaEntity();
+		
+		pe.setIdPareja(parejaGanadora.getIdPareja());
+		pe.setPuntaje(parejaGanadora.getPuntaje());
+		
+		JugadorEntity jugador1 = JugadorDAO.getInstancia().toEntity(parejaGanadora.getJugador1());
+		pe.setJugador1(jugador1);
+		
+		JugadorEntity jugador2 = JugadorDAO.getInstancia().toEntity(parejaGanadora.getJugador2());
+		pe.setJugador2(jugador2);
+		
+		return pe;
 	}
 }

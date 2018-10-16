@@ -10,9 +10,8 @@ public class Carta {
 	private PaloCarta palo;
 	private int valorJuego;
 	
-	public Carta(Integer idCarta, NumeroCarta numeroCarta, PaloCarta palo, int valorJuego) {
+	public Carta(NumeroCarta numeroCarta, PaloCarta palo, int valorJuego) {
 		super();
-		this.idCarta = idCarta;
 		this.numero = numeroCarta;
 		this.palo = palo;
 		this.valorJuego = valorJuego;
@@ -51,6 +50,6 @@ public class Carta {
 
 	@Override
 	public String toString() {
-		return numero +" de "+palo;
+		return numero +" de "+ palo;
 	}
 }

@@ -60,7 +60,11 @@ public class CartaDAO {
 	}
 	
 	public Carta toNegocio(CartaEntity carta) {
-		return new Carta(carta.getIdCarta(), carta.getNumero(), carta.getPalo(), carta.getValorJuego()); 
+		Carta c = null;
+		c = new Carta(carta.getNumero(), carta.getPalo(), carta.getValorJuego()); 
+		c.setIdCarta(carta.getIdCarta());
+		
+		return c;
 	}
 	
 }

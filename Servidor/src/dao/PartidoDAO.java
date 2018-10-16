@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.BazaEntity;
 import entities.ParejaEntity;
 import entities.PartidoEntity;
 import hbt.HibernateUtil;
@@ -56,5 +57,36 @@ public class PartidoDAO {
 	public Partido toNegocio(PartidoEntity pe) {
 		return new Partido(pe.getModalidad().getDescripcion(), 
 				ParejaDAO.getInstancia().toNegocio(pe.getParejaGanadora()), pe.getFecha());
+	}
+
+	public boolean guardar(Partido partido) {
+		PartidoEntity pEntity = toEntity(partido);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(pEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return true;
+	}
+
+	private PartidoEntity toEntity(Partido partido) {
+		PartidoEntity pe = new PartidoEntity();
+		
+		pe.setIdPartido(partido.getIdPartido());
+		
+		
+		
+		/*
+		be.setIdBaza(baza.getIdBaza());
+		be.setNumeroBaza(baza.getNumero());
+		be.setPuntajePareja1(baza.getPuntajePareja1());
+		be.setPuntajePareja2(baza.getPuntajePareja2());
+		
+		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(baza.getGanadores());
+		be.setGanadoresBaza((parejaGanadora));
+		*/
+		return pe;
 	}
 }

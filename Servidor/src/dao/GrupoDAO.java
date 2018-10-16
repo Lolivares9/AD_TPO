@@ -76,11 +76,11 @@ public class GrupoDAO {
 	}
 
 	public boolean guardar(Grupo grupo) {
-		GrupoEntity jEntity = toEntity(grupo);
+		GrupoEntity gEntity = toEntity(grupo);
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
-		s.saveOrUpdate(jEntity);
+		s.saveOrUpdate(gEntity);
 		s.getTransaction().commit();
 		s.close();
 
@@ -88,17 +88,21 @@ public class GrupoDAO {
 	}
 	
 	private GrupoEntity toEntity(Grupo grupo){
-		GrupoEntity entity = new GrupoEntity();
-		entity.setNombre(grupo.getNombre());
-		entity.setIdGrupo(grupo.getIdGrupo());
+		GrupoEntity ge = new GrupoEntity();
+		
+		ge.setNombre(grupo.getNombre());
+		ge.setIdGrupo(grupo.getIdGrupo());
+		
 		JugadorEntity admin = JugadorDAO.getInstancia().toEntity(grupo.getJugadorAdmin());
-		entity.setJugadorAdmin(admin);
+		ge.setJugadorAdmin(admin);
+		
 		List<JugadorEntity> jugNeg = null;
 		if(grupo.getJugadores() != null) {
 			jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
 		}
-		entity.setJugadores(jugNeg);
-		return entity;
+		ge.setJugadores(jugNeg);
+		
+		return ge;
 	}
 	
 	public Grupo toNegocio(GrupoEntity grupo){

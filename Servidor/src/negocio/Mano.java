@@ -9,19 +9,11 @@ import dto.ManoDTO;
  */
 public class Mano {
 	private Integer idMano;
-	private Chico chico;
 	private int numeroMano;
 	private Pareja parejaGanadora;
-	
+		
 	public Mano(int numeroMano, Pareja parejaGanadora) {
 		super();
-		this.numeroMano = numeroMano;
-		this.parejaGanadora = parejaGanadora;
-	}
-	
-	public Mano(Integer idMano, int numeroMano, Pareja parejaGanadora) {
-		super();
-		this.idMano= idMano;
 		this.numeroMano = numeroMano;
 		this.parejaGanadora = parejaGanadora;
 	}
@@ -39,8 +31,8 @@ public class Mano {
 		this.parejaGanadora = parejaGanadora;
 	}
 	
-	public boolean guardar(){
-		return ManoDAO.getInstancia().guardar(this);
+	public boolean guardar(Chico chico){
+		return ManoDAO.getInstancia().guardar(this, chico);
 	}
 
 	public Integer getIdMano() {
@@ -49,14 +41,6 @@ public class Mano {
 
 	public void setIdMano(Integer idMano) {
 		this.idMano = idMano;
-	}
-
-	public Chico getChico() {
-		return chico;
-	}
-
-	public void setChico(Chico chico) {
-		this.chico = chico;
 	}
 	
 	/**

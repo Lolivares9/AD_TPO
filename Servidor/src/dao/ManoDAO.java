@@ -7,9 +7,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.ChicoEntity;
 import entities.ManoEntity;
+import entities.ParejaEntity;
 import excepciones.ManoException;
 import hbt.HibernateUtil;
+import negocio.Chico;
 import negocio.Mano;
 
 public class ManoDAO {
@@ -22,11 +25,33 @@ public class ManoDAO {
 		return instancia;
 	}
 
-	public boolean guardar(Mano mano) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean guardar(Mano mano, Chico chico) {
+		ManoEntity mEntity = toEntity(mano, chico);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(mEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return true;
 	}
 	
+	private ManoEntity toEntity(Mano mano, Chico chico) {
+		ManoEntity me = new ManoEntity();
+		
+		me.setIdMano(mano.getIdMano());
+		me.setNumeroMano(mano.getNumeroMano());
+		
+		ChicoEntity chicoEntity = ChicoDAO.getInstancia().toEntity(chico);
+		me.setIdChico(chicoEntity);
+		
+		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(mano.getParejaGanadora());
+		me.setParejaGanadora(parejaGanadora);
+		
+		return me;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Mano> buscarManosPorChico(Integer idChico) throws ManoException{
 		SessionFactory sf = HibernateUtil.getSessionFactory();
@@ -53,7 +78,10 @@ public class ManoDAO {
 	}
 	
 	public Mano toNegocio(ManoEntity me) {
-		return new Mano(me.getIdMano(), me.getNumeroMano(),
+		Mano mano = null;
+		mano = new Mano(me.getNumeroMano(),
 				ParejaDAO.getInstancia().toNegocio(me.getParejaGanadora()));
+		mano.setIdMano(me.getIdMano());
+		return mano;
 	}
 }
