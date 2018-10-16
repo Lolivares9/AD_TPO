@@ -24,6 +24,7 @@ import dto.ManoDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
+import enums.EstadoPartido;
 import enums.TipoModalidad;
 import excepciones.BazaException;
 import excepciones.CartaException;
@@ -39,6 +40,7 @@ import negocio.Grupo;
 import negocio.Jugador;
 import negocio.Mano;
 import negocio.Mazo;
+import negocio.Pareja;
 import negocio.Partido;
 import negocio.Turno;
 import util.DTOMapper;
@@ -101,24 +103,48 @@ public class Controlador {
 		return false;
 	}
 
-	public boolean iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
+	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
 		List<Jugador> jugDisp = new ArrayList<Jugador>();
+		List <Pareja> parejas = new ArrayList<Pareja>();
 		jugDisp.add(jug);
 		boolean completo = false;
 		boolean esParejo = false;
-		
+		Pareja uno = null;
+		Pareja dos = null;
 		completo = completarJugadores(categ,jugDisp);
 		//SI EN EL PRIMER CASO YA ME DEVOLVIO 0 SIGNIFICA QUE NO HAY NADIE DISPONIBLE
 		if(jugDisp.size() == 0 && completo == false){
-			return false;
+			return null;
 		}
 		
 		esParejo = verificarIgualdadParejas(jugDisp);
+		if(esParejo){
+			distribuirParejas(uno,dos,jugDisp);
+			parejas.add(uno);
+			parejas.add(dos);
+		}
 		
-		return false;
+		return new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
 		
 	}
 	
+	private void distribuirParejas(Pareja uno, Pareja dos,List <Jugador> jugDisp) {
+		Categoria inicial;
+		inicial = jugDisp.get(0).getCategoria();
+		uno.setJugador1(jugDisp.get(0));
+		jugDisp.remove(0);
+		for(int i = 0;i<jugDisp.size();i++){
+			if(jugDisp.get(0).getCategoria().equals(inicial)){
+				uno.setJugador1(jugDisp.get(0));
+				jugDisp.remove(0);
+			}
+			else{
+				dos.setJugador2(jugDisp.get(0));
+				jugDisp.remove(0);
+			}
+		}
+	}
+
 	private boolean verificarIgualdadParejas(List<Jugador> jugDisp) {
 		int novatos = 0,masters = 0,expertos = 0,calificados = 0;
 		for(int i = 0;i<jugDisp.size();i++){
