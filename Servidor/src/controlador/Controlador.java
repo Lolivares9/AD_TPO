@@ -102,7 +102,17 @@ public class Controlador {
 		}
 		return false;
 	}
-
+	/**
+	 * Este metodo recibe la categoria en la que quiere jugar el jugador (tendria que definir si va a ser asi, o si se toma la categoria
+	 * que tiene el jugador) y el jugador. Digamos, si el jugador puede elegir o no en que categoria desea jugar.
+	 * 
+	 * Internamente primero se fija si hay 3 (ya que 1 es el que quiere jugar) jugadores disponibles, trayendo todos los que esten conectados
+	 * y NO esten jugando (deberia agregarle un top 100 o algo asi), y separando por categorias (primero se fija si hay de igual o mayor categoria
+	 *  y sino, se fija en las menores categorias), despues de eso, se fija si es posible armar parejas balancedas, en caso de que, devuelve NULL.
+	 * Sino, devuelve un partido con las parejas ya distribuidas.
+	 * 
+	 * Recordar: NO se podrá iniciar un partido si no hay 2 jugadores de la menor categoria. EJ: 3 calificados y uno novato, no se puede balancear
+	 * */
 	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
 		List<Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();

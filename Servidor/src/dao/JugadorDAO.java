@@ -132,7 +132,8 @@ public class JugadorDAO {
 		Session s = sf.openSession();
 		s.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("top 1000 from JugadorEntity je where je.conectado = true and je.jugando = false order by je.categoria desc").list();
+		//FALTARIA AGREGAR UN TOP
+		List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("from JugadorEntity je where je.conectado = true and je.jugando = false order by je.categoria desc").list();
 		for(JugadorEntity jug : jugadoresRecup){
 			jugadores.add(this.toNegocio(jug));
 		}
