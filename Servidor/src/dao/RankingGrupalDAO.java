@@ -1,5 +1,16 @@
 package dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import entities.BazaEntity;
+import entities.GrupoEntity;
+import entities.JugadorEntity;
+import entities.ParejaEntity;
+import entities.PartidoEntity;
+import entities.RankingGrupalEntity;
+import entities.RankingGrupalPK;
+import hbt.HibernateUtil;
 import negocio.RankingGrupal;
 
 public class RankingGrupalDAO {
@@ -13,7 +24,32 @@ public class RankingGrupalDAO {
 	}
 
 	public boolean guardar(RankingGrupal rankingGrupal) {
-		// TODO Auto-generated method stub
-		return false;
+		RankingGrupalEntity rgEntity = toEntity(rankingGrupal);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(rgEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return true;
+	}
+
+	private RankingGrupalEntity toEntity(RankingGrupal rankingGrupal) {
+		RankingGrupalPK rgePK = new RankingGrupalPK();   
+		RankingGrupalEntity rge = new RankingGrupalEntity();
+		
+		GrupoEntity grupo = GrupoDAO.getInstancia().toEntity(rankingGrupal.getGrupo());
+		rgePK.setGrupo(grupo);
+		
+		JugadorEntity jugador = JugadorDAO.getInstancia().toEntity(rankingGrupal.getJugador());
+		rgePK.setJugador(jugador);
+		
+		rge.setId(rgePK);
+		rge.setPartidosJugados(rankingGrupal.getPartidosJugados());
+		rge.setPartidosGanados(rankingGrupal.getPartidosGanados());
+		rge.setPuntaje(rankingGrupal.getPuntaje());
+		
+		return rge;
 	}
 }

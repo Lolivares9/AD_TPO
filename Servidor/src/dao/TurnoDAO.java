@@ -7,6 +7,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.BazaEntity;
+import entities.CartaEntity;
+import entities.JugadorEntity;
+import entities.ParejaEntity;
 import entities.TurnoEntity;
 import excepciones.TurnoException;
 import hbt.HibernateUtil;
@@ -23,10 +27,35 @@ public class TurnoDAO {
 	}
 
 	public boolean guardar(Turno turno) {
-		// TODO Auto-generated method stub
-		return false;
+		TurnoEntity tEntity = toEntity(turno);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.saveOrUpdate(tEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return true;
 	}
 	
+	private TurnoEntity toEntity(Turno turno) {
+		TurnoEntity te = new TurnoEntity();
+		
+		BazaEntity baza = BazaDAO.getInstancia().toEntity(turno.getBaza());		
+		te.setBaza(baza);
+		
+		CartaEntity carta = CartaDAO.getInstancia().toEntity(turno.getCarta());
+		te.setCarta(carta);
+		
+		te.setEnvite(turno.getEnvite());
+		te.setIdTurno(turno.getIdTurno());
+		
+		JugadorEntity jugador = JugadorDAO.getInstancia().toEntity(turno.getJugador());
+		te.setJugador(jugador);
+
+		return te;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Turno> buscarTurnosPorBaza(Integer idBaza) throws TurnoException{
 		SessionFactory sf = HibernateUtil.getSessionFactory();

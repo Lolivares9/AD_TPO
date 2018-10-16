@@ -5,6 +5,7 @@ import dto.TurnoDTO;
 import enums.Envite;
 
 public class Turno {
+	private Integer idTurno;
 	private Baza baza;
 	private Jugador jugador;
 	private Envite envite;
@@ -50,6 +51,14 @@ public class Turno {
 		this.carta = carta;
 	}
 	
+	public Integer getIdTurno() {
+		return idTurno;
+	}
+
+	public void setIdTurno(Integer idTurno) {
+		this.idTurno = idTurno;
+	}
+
 	public boolean guardar(){
 		return TurnoDAO.getInstancia().guardar(this);
 	}

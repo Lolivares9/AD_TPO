@@ -6,15 +6,15 @@ import dao.RankingGrupalDAO;
 public class RankingGrupal {
 	private Grupo grupo;
 	private Jugador jugador;
-	private int partidosJugador;
+	private int partidosJugados;
 	private int partidosGanados;
 	private int puntaje;
 	
-	public RankingGrupal(Grupo grupo, Jugador jugador, int partidosJugador, int partidosGanados, int puntaje) {
+	public RankingGrupal(Grupo grupo, Jugador jugador, int partidosJugados, int partidosGanados, int puntaje) {
 		super();
 		this.grupo = grupo;
 		this.jugador = jugador;
-		this.partidosJugador = partidosJugador;
+		this.partidosJugados = partidosJugados;
 		this.partidosGanados = partidosGanados;
 		this.puntaje = puntaje;
 	}
@@ -30,11 +30,11 @@ public class RankingGrupal {
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
-	public int getPartidosJugador() {
-		return partidosJugador;
+	public int getPartidosJugados() {
+		return partidosJugados;
 	}
-	public void setPartidosJugador(int partidosJugador) {
-		this.partidosJugador = partidosJugador;
+	public void setPartidosJugados(int partidosJugados) {
+		this.partidosJugados = partidosJugados;
 	}
 	public int getPartidosGanados() {
 		return partidosGanados;

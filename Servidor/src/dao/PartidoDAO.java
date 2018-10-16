@@ -55,8 +55,9 @@ public class PartidoDAO {
 	}
 	
 	public Partido toNegocio(PartidoEntity pe) {
-		return new Partido(pe.getModalidad().getDescripcion(), 
-				ParejaDAO.getInstancia().toNegocio(pe.getParejaGanadora()), pe.getFecha());
+		Partido p = null;
+		p = new Partido(pe.getModalidad(), ParejaDAO.getInstancia().toNegocio(pe.getParejaGanadora()), pe.getFecha());
+		return p;
 	}
 
 	public boolean guardar(Partido partido) {
@@ -75,18 +76,13 @@ public class PartidoDAO {
 		PartidoEntity pe = new PartidoEntity();
 		
 		pe.setIdPartido(partido.getIdPartido());
+		pe.setModalidad(partido.getModalidad());
+		pe.setFecha(partido.getFecha());
+		pe.setEstado(partido.getEstado());
 		
+		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(partido.getParejaGanadora());
+		pe.setParejaGanadora((parejaGanadora));
 		
-		
-		/*
-		be.setIdBaza(baza.getIdBaza());
-		be.setNumeroBaza(baza.getNumero());
-		be.setPuntajePareja1(baza.getPuntajePareja1());
-		be.setPuntajePareja2(baza.getPuntajePareja2());
-		
-		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(baza.getGanadores());
-		be.setGanadoresBaza((parejaGanadora));
-		*/
 		return pe;
 	}
 }

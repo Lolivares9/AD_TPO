@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +20,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import enums.EstadoPartido;
+import enums.PaloCarta;
+import enums.TipoModalidad;
+
 @Entity
 @Table(name = "PARTIDOS")
 public class PartidoEntity {
@@ -27,9 +33,9 @@ public class PartidoEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPartido;
 	
-	@OneToOne
-	@JoinColumn(name="ID_MODALIDAD")
-	private ModalidadEntity modalidad;
+	@Column(name="MODALIDAD")
+	@Enumerated(EnumType.STRING)
+	private TipoModalidad modalidad;
 	
 	@ManyToOne
 	@JoinColumn(name="ID_PAREJA_GANADORA")
@@ -39,6 +45,10 @@ public class PartidoEntity {
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
+	@Column(name="ESTADO")
+	@Enumerated(EnumType.STRING)
+	private EstadoPartido estado;
+	
 	@ManyToMany (cascade=CascadeType.ALL)
 	List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
 
@@ -71,12 +81,20 @@ public class PartidoEntity {
 		this.idPartido = idPartido;
 	}
 
-	public ModalidadEntity getModalidad() {
+	public TipoModalidad getModalidad() {
 		return modalidad;
 	}
 
-	public void setModalidad(ModalidadEntity modalidad) {
+	public void setModalidad(TipoModalidad modalidad) {
 		this.modalidad = modalidad;
+	}
+
+	public EstadoPartido getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoPartido estado) {
+		this.estado = estado;
 	}
 
 	public ParejaEntity getParejaGanadora() {

@@ -7,7 +7,6 @@ import entities.ChicoEntity;
 import entities.GrupoEntity;
 import entities.JugadorEntity;
 import entities.ManoEntity;
-import entities.ModalidadEntity;
 import entities.ParejaEntity;
 import entities.PartidoEntity;
 import entities.RankingGrupalEntity;
@@ -30,7 +29,6 @@ public class HibernateUtil {
 	         	config.addAnnotatedClass(GrupoEntity.class);
 	         	config.addAnnotatedClass(JugadorEntity.class);
 	         	config.addAnnotatedClass(ManoEntity.class);
-	         	config.addAnnotatedClass(ModalidadEntity.class);
 	         	config.addAnnotatedClass(ParejaEntity.class);
 	         	config.addAnnotatedClass(PartidoEntity.class);
 	         	config.addAnnotatedClass(RankingGrupalEntity.class);

@@ -37,7 +37,7 @@ public class BazaDAO {
 		return true;
 	}
 	
-	private BazaEntity toEntity(Baza baza) {
+	public BazaEntity toEntity(Baza baza) {
 		BazaEntity be = new BazaEntity();
 		
 		be.setIdBaza(baza.getIdBaza());

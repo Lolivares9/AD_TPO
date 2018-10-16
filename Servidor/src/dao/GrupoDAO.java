@@ -87,7 +87,7 @@ public class GrupoDAO {
 		return true;
 	}
 	
-	private GrupoEntity toEntity(Grupo grupo){
+	public GrupoEntity toEntity(Grupo grupo){
 		GrupoEntity ge = new GrupoEntity();
 		
 		ge.setNombre(grupo.getNombre());
