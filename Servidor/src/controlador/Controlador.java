@@ -122,8 +122,7 @@ public class Controlador {
 		Pareja uno = null;
 		Pareja dos = null;
 		completo = completarJugadores(categ,jugDisp);
-		//SI EN EL PRIMER CASO YA ME DEVOLVIO 0 SIGNIFICA QUE NO HAY NADIE DISPONIBLE
-		if(jugDisp.size() == 0 && completo == false){
+		if(jugDisp.size() < 4 && completo == false){
 			return null;
 		}
 		
