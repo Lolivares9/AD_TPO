@@ -60,7 +60,6 @@ public class Controlador {
 	}
 
 	public void altaJugador(JugadorDTO jugador) throws JugadorException {
-		//Valido apodo y mail, ambos deben estar libres
 		boolean datosValidos = JugadorDAO.getInstancia().validarDatos(jugador.getApodo(), jugador.getMail());
 		if(datosValidos){
 			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
@@ -477,9 +476,10 @@ public class Controlador {
 		}
 	}
 
-	public boolean iniciarPartidaLibre() {
-		// TODO Auto-generated method stub
-		return false;
+	public Partido iniciarPartidaLibre(Pareja parej) {
+		Partido part = null;
+		
+		return part;
 	}
 
 	public List<CartaDTO> repartiCartas() throws CartaException {

@@ -8,6 +8,8 @@ import java.util.List;
 
 import dto.CartaDTO;
 import dto.JugadorDTO;
+import dto.ParejaDTO;
+import dto.PartidoDTO;
 import excepciones.CartaException;
 import excepciones.ComunicationException;
 import excepciones.GrupoException;
@@ -83,24 +85,24 @@ public class BusinessDelegate {
 		return false;
 	}
 
-	public boolean iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException {
-		boolean inicioBien = false;
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException {
+		PartidoDTO partido = null;
 		try {
-			inicioBien = ir.iniciarPartidaLibreIndividual(jugador);
+			partido = ir.iniciarPartidaLibreIndividual(jugador);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return inicioBien;
+		return partido;
 	}
 
-	public boolean iniciarPartidaLibre() throws ComunicationException {
-		boolean inicioBien = false;
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException {
+		PartidoDTO partido = null;
 		try {
-			inicioBien = ir.iniciarPartidaLibre();
+			partido = ir.iniciarPartidaLibre(pareja);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return inicioBien;
+		return partido;
 	}
 	public boolean iniciarPartidaCerrada() throws ComunicationException {
 		// TODO Auto-generated method stub

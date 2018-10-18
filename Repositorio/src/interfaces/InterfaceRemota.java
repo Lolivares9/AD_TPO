@@ -6,6 +6,8 @@ import java.util.List;
 
 import dto.CartaDTO;
 import dto.JugadorDTO;
+import dto.ParejaDTO;
+import dto.PartidoDTO;
 import excepciones.CartaException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
@@ -20,9 +22,9 @@ public interface InterfaceRemota extends Remote {
 
 	public boolean iniciarSesion(JugadorDTO jugador) throws RemoteException;
 	
-	public boolean iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException;
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException;
 	
-	public boolean iniciarPartidaLibre() throws RemoteException;
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException;
 	
 	public boolean iniciarPartidaCerrada() throws RemoteException;
 	
