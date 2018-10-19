@@ -3,8 +3,6 @@ package controlador;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,6 +30,8 @@ import excepciones.ChicoException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
 import excepciones.ManoException;
+import excepciones.ParejaException;
+import excepciones.PartidoException;
 import excepciones.TurnoException;
 import negocio.Baza;
 import negocio.Carta;
@@ -95,7 +95,7 @@ public class Controlador {
 		}
 	}
 
-	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
+	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{		
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
 		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
 			return true;
@@ -498,16 +498,14 @@ public class Controlador {
 	 * @param fecha
 	 * @return List<PartidoDTO>
 	 * Los DTO tendrán la modalidad y la pareja ganadora
+	 * @throws ParejaException 
+	 * @throws PartidoException 
 	 */
-	public List<PartidoDTO> listarPartidos(JugadorDTO jugador, TipoModalidad mod, Date fecha){
+	public List<PartidoDTO> buscarPartidosJugados(JugadorDTO jugador, TipoModalidad mod, Date fechaInicial, Date fechaFin) throws ParejaException, PartidoException{
 		List<PartidoDTO> partidosDTO = new ArrayList<PartidoDTO>();
-		if(mod == null && fecha == null) {
-			List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jugador.getId());
-			return partidos.stream().map(Partido::toDTOListar).collect(Collectors.toList());
-		}else {
-			//TODO traer partidos filtrando, validar si eligió modalidad y/o fecha
-		}
-		return partidosDTO;
+		List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jugador.getId(), mod, fechaInicial, fechaFin);
+		return partidos.stream().map(Partido::toDTOListar).collect(Collectors.toList());
+
 	}
 	
 	/**
@@ -517,7 +515,7 @@ public class Controlador {
 	 * @param partidoDTO  (recibe el partido que seleccionó del listado)
 	 * @throws ChicoException 
 	 */
-	public List<ChicoDTO> listarChicosPorPartido(PartidoDTO partidoDTO) throws ChicoException {
+	public List<ChicoDTO> buscarChicosPorPartido(PartidoDTO partidoDTO) throws ChicoException {
 		List<Chico> c = ChicoDAO.getInstancia().buscarChicosPorPartido(partidoDTO.getIdPartido());
 		return c.stream().map(Chico::toDTO).collect(Collectors.toList());
 	}
@@ -561,21 +559,12 @@ public class Controlador {
 	}
 
 	/*
-	 * Modifiqué la tabla de partido_pareja, para poder hacer la relación con hibernate. Subo el script corregido  
-	 *  
-	 * Hice varias modificaciones en la base para traer los datos que requeria por pasos sin tener que hacer consultas grandes, actualicé el script
-	 * 
-	 * ManoEntity tenia una lista de chicos, y en realidad un chico esta compuesto por manos
-	 * 
-	 * Para qué esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
-	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
 	 * 
 	 * Como vamos a marcar un empate en la tabla bazas (tiene una columna ganadores_baza), le ponemos 0?
 	 * 
 	 * Como vamos a representar en la tabla de turnos cuando se cante por ejemplo Truco-Re truco- Quiero? 
 	 * (todo sucede en un mismo turno) repetimos el id y despues lo unimos??
 	 * 
-	 * Al enum de modalidad se le podria agregar si es individual o no??
 	 */
 	
 	

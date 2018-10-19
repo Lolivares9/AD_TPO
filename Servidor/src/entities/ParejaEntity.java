@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "PAREJAS")
 public class ParejaEntity {
@@ -29,20 +31,21 @@ public class ParejaEntity {
 	@ManyToOne
 	@JoinColumn(name="ID_JUGADOR2")
 	private JugadorEntity jugador2;
+
+	@ManyToMany(mappedBy="parejas")
+	@Where(clause = "MODALIDAD = 'Libre'")
+	private List<PartidoEntity> partidosLibre = new ArrayList<PartidoEntity>();
 	
-	@Column(name="PUNTAJE")
-	private int puntaje;
+	@ManyToMany(mappedBy="parejas")
+	@Where(clause = "MODALIDAD = 'Libre_individual'")
+	private List<PartidoEntity> partidosLibreIndiv = new ArrayList<PartidoEntity>();
+	
+	@ManyToMany(mappedBy="parejas")
+	@Where(clause = "MODALIDAD = 'Cerrado'")
+	private List<PartidoEntity> partidosCerrado = new ArrayList<PartidoEntity>();
 	
 	@ManyToMany(mappedBy="parejas")
 	private List<PartidoEntity> partidos = new ArrayList<PartidoEntity>();
-	
-	public List<PartidoEntity> getPartidos() {
-		return partidos;
-	}
-
-	public void setPartidos(List<PartidoEntity> partidos) {
-		this.partidos = partidos;
-	}
 
 	public ParejaEntity() {
 		super();
@@ -72,11 +75,35 @@ public class ParejaEntity {
 		this.jugador2 = jugador2;
 	}
 
-	public int getPuntaje() {
-		return puntaje;
+	public List<PartidoEntity> getPartidosLibre() {
+		return partidosLibre;
 	}
 
-	public void setPuntaje(int puntaje) {
-		this.puntaje = puntaje;
-	}	
+	public void setPartidosLibre(List<PartidoEntity> partidosLibre) {
+		this.partidosLibre = partidosLibre;
+	}
+
+	public List<PartidoEntity> getPartidosLibreIndiv() {
+		return partidosLibreIndiv;
+	}
+
+	public void setPartidosLibreIndiv(List<PartidoEntity> partidosLibreIndiv) {
+		this.partidosLibreIndiv = partidosLibreIndiv;
+	}
+
+	public List<PartidoEntity> getPartidosCerrado() {
+		return partidosCerrado;
+	}
+
+	public void setPartidosCerrado(List<PartidoEntity> partidosCerrado) {
+		this.partidosCerrado = partidosCerrado;
+	}
+
+	public List<PartidoEntity> getPartidos() {
+		return partidos;
+	}
+
+	public void setPartidos(List<PartidoEntity> partidos) {
+		this.partidos = partidos;
+	}
 }
