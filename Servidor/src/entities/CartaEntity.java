@@ -25,6 +25,7 @@ public class CartaEntity {
 	@Enumerated(EnumType.STRING)
 	private PaloCarta palo;
 	
+	//TODO definir si vamos a usar un enum para los numeros, más que nada en las validaciones de las jugadas
 	@Column(name="NUMERO")
 	@Enumerated(EnumType.STRING)
 	private NumeroCarta numero;

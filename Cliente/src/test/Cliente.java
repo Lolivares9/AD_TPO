@@ -24,14 +24,14 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		//crearGrupo();
+		crearGrupo();
 		//llenarGrupo();
 		//altaJugador();
 		//iniciarSesion();
-		//repartirCartas();
+		//repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
 		//buscarTodosPartidosJugados();
 		//buscarTodosPartidosJugadosConFiltro();
-		buscarChicosPorPartido();
+		//buscarChicosPorPartido();
 		//buscarDetalleChico();
 		
 	}
@@ -103,8 +103,8 @@ public class Cliente {
 	private static void iniciarSesion(){
 		boolean inicioBien = false;
 		JugadorDTO jug = new JugadorDTO();
-		jug.setApodo("Chulo");
-		jug.setPassword("segu2022");
+		jug.setApodo("chulo");
+		jug.setPassword("123");
 		try {
 			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
 		} catch (ComunicationException e) {
@@ -115,7 +115,7 @@ public class Cliente {
 	}
 
 	private static void altaJugador() {
-		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","matias@gmail.com","123");
 		try {
 			BusinessDelegate.getInstancia().AltaJugador(jugador);
 		} catch (ComunicationException e) {
@@ -124,11 +124,9 @@ public class Cliente {
 	}
 	
 	private static void crearGrupo(){
-		//TODO METER AL JUGADOR QUE CREA COMO INTEGRANTE???
-		JugadorDTO jugador = new JugadorDTO();
-		jugador.setApodo("Chulo");
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","matias@gmail.com","123");
 		try {
-			BusinessDelegate.getInstancia().crearGrupo("Grupo5", jugador);
+			BusinessDelegate.getInstancia().crearGrupo("Grupo6", jugador);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
@@ -140,11 +138,11 @@ public class Cliente {
 		jugador.setId(1);
 		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
 		jugadores.add(jugador);
-		JugadorDTO jugador3 = new JugadorDTO("Facundo","faculth","mail@gmail.com",categ,0,0,0,true,false,"123");
+		JugadorDTO jugador3 = new JugadorDTO("Facundo","faculth","asd@gmail.com",categ,0,0,0,true,false,"123");
 		jugador3.setId(2);
 		jugadores.add(jugador3);
 		try {
-			BusinessDelegate.getInstancia().llenarGrupo("Grupo5", jugadores); //TODO Pasar jugador que lo crea (Admin)
+			BusinessDelegate.getInstancia().llenarGrupo("Grupo5", jugadores);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}

@@ -76,6 +76,7 @@ public class Controlador {
 			g.setNombre(nombreGrupo);
 			Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(jugadorAdmin.getApodo());
 			g.setJugadorAdmin(jug);
+			g.agregarJugador(jug);
 			GrupoDAO.getInstancia().guardar(g);
 			return true;
 		}else{
@@ -96,7 +97,7 @@ public class Controlador {
 
 	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{		
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
-		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
+		if(jugador != null && jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
 			return true;
 		}
 		return false;
