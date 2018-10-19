@@ -15,6 +15,7 @@ import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.TipoModalidad;
 import excepciones.BazaException;
+import dto.ParejaDTO;
 import excepciones.CartaException;
 import excepciones.ChicoException;
 import excepciones.GrupoException;
@@ -40,9 +41,9 @@ public interface InterfaceRemota extends Remote {
 	
 	public Map<ManoDTO, Map<BazaDTO, List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws RemoteException, ManoException, BazaException, TurnoException;
 	
-	public boolean iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException;
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException;
 	
-	public boolean iniciarPartidaLibre() throws RemoteException;
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException;
 	
 	public boolean iniciarPartidaCerrada() throws RemoteException;
 	

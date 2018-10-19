@@ -12,6 +12,7 @@ import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
+import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.TipoModalidad;
@@ -25,6 +26,10 @@ import excepciones.ParejaException;
 import excepciones.PartidoException;
 import excepciones.TurnoException;
 import interfaces.InterfaceRemota;
+import negocio.Jugador;
+import negocio.Pareja;
+import negocio.Partido;
+import util.DTOMapper;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota {
 
@@ -38,17 +43,17 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return false;
 	}
 
-	@Override
+	//OK
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws RemoteException, GrupoException, JugadorException {
 		return Controlador.getInstancia().crearGrupo(nombreGrupo, jugadorAdmin);
 	}
 	
-	@Override
+	//FALTA TESTEAR FACU
 	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws RemoteException, GrupoException {
 		return Controlador.getInstancia().llenarGrupo(nombreGrupo, jugadores);
 	}
 
-	@Override
+	//OK
 	public boolean iniciarSesion(JugadorDTO jugador) throws RemoteException {
 		boolean inicioBien = false;
 		try {
@@ -58,18 +63,25 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		}
 		return inicioBien;
 	}
-
-	public boolean iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException {
-		//TODO MATI return Controlador.getInstancia().iniciarPartidaLibreIndividual();
-		return false;
+	
+	//FALTA TESTEAR Y HACER UNOS AJUSTES, ESTAMOS DE ACUERDO QUE ESTO DEVUELVE UN PARTIDO CON LAS PAREJAS YA PARA JUGAR (EN CASO DE QUE SE CUMPLA TODO CLARO)?
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException {
+		Jugador jugador = DTOMapper.getInstancia().jugadorDTOtoNegocio(jug);
+		PartidoDTO part = null;//ME FALTA HACER EL METODO EN EL DTOMAPPER QUE CONVIERTA UN PARTIDO A DTO PARA MANDARLO AL CLIENTEWEB
+		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria(),jugador);
+		return part;
 	}
 	
-	@Override
-	public boolean iniciarPartidaLibre() throws RemoteException {
-		return Controlador.getInstancia().iniciarPartidaLibre();
+	//SIN HACER, ESTAMOS DE ACUERDO QUE ESTO DEVUELVE UN PARTIDO CON LAS PAREJAS YA PARA JUGAR (EN CASO DE QUE ENCUENTRE OTRA PAREJA LIBRE)?
+	//RECORDAR QUE ESTE TAMBIEN HACE CONTROL DE CATEGORIAS
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException {
+		Pareja parej = null;
+		PartidoDTO part = null;//ME FALTA HACER EL METODO EN EL DTOMAPPER QUE CONVIERTA UN PARTIDO A DTO PARA MANDARLO AL CLIENTEWEB
+		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibre(parej);
+		return part;
 	}
 
-	@Override
+	//SIN HACER, ESTE NO HACE CONTROL DE CATEGORIAS
 	public boolean iniciarPartidaCerrada() throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;

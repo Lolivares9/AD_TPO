@@ -60,7 +60,6 @@ public class Controlador {
 	}
 
 	public void altaJugador(JugadorDTO jugador) throws JugadorException {
-		//Valido apodo y mail, ambos deben estar libres
 		boolean datosValidos = JugadorDAO.getInstancia().validarDatos(jugador.getApodo(), jugador.getMail());
 		if(datosValidos){
 			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
@@ -122,8 +121,7 @@ public class Controlador {
 		Pareja uno = null;
 		Pareja dos = null;
 		completo = completarJugadores(categ,jugDisp);
-		//SI EN EL PRIMER CASO YA ME DEVOLVIO 0 SIGNIFICA QUE NO HAY NADIE DISPONIBLE
-		if(jugDisp.size() == 0 && completo == false){
+		if(jugDisp.size() < 4 && completo == false){
 			return null;
 		}
 		
@@ -478,9 +476,10 @@ public class Controlador {
 		}
 	}
 
-	public boolean iniciarPartidaLibre() {
-		// TODO Auto-generated method stub
-		return false;
+	public Partido iniciarPartidaLibre(Pareja parej) {
+		Partido part = null;
+		
+		return part;
 	}
 
 	public List<CartaDTO> repartiCartas() throws CartaException {
