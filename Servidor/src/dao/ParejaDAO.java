@@ -104,8 +104,8 @@ public class ParejaDAO {
 		}
 	}
 	
-	public List<Pareja> buscarParejasLibres() throws ParejaException{
-		List<Integer> idParejasDisponibles = idParejas();
+	public List<Pareja> buscarParejasLibres(Pareja parej) throws ParejaException{
+		List<Integer> idParejasDisponibles = getIdParejas(parej.getIdPareja());
 		List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
 		List<Pareja> parejasNuevas = new ArrayList<Pareja>();
 		ParejaEntity p;
@@ -138,13 +138,14 @@ public class ParejaDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Integer> idParejas(){
+	public List<Integer> getIdParejas(int idPareja){
 		List<Integer> ids = new ArrayList<Integer>();
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
-		ids = (List<Integer>) s.createSQLQuery("SELECT P.ID_PAREJA FROM PAREJAS P WHERE (P.ID_JUGADOR1 IN (SELECT J.ID_JUGADOR FROM JUGADORES J WHERE J.JUGANDO = 'false' AND J.CONECTADO = 'true') AND P.ID_JUGADOR2 IN (SELECT J.ID_JUGADOR FROM JUGADORES J WHERE J.JUGANDO = 'false' AND J.CONECTADO = 'true'))").list();
+		ids = (List<Integer>) s.createSQLQuery("SELECT P.ID_PAREJA FROM PAREJAS P WHERE (P.ID_JUGADOR1 IN (SELECT J.ID_JUGADOR FROM JUGADORES J WHERE J.JUGANDO = 'false' AND J.CONECTADO = 'true') AND P.ID_JUGADOR2 IN (SELECT J.ID_JUGADOR FROM JUGADORES J WHERE J.JUGANDO = 'false' AND J.CONECTADO = 'true')) AND P.ID_PAREJA <> ?").setInteger(0, idPareja).list();
 		s.getTransaction().commit();
+
 		return ids;
 	}
 	

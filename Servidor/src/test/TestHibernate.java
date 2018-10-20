@@ -3,12 +3,14 @@ package test;
 import java.util.ArrayList;
 import java.util.List;
 
+import controlador.Controlador;
 import dao.JugadorDAO;
 import dao.ParejaDAO;
 import excepciones.JugadorException;
 import excepciones.ParejaException;
 import negocio.Jugador;
 import negocio.Pareja;
+import negocio.Partido;
 
 public class TestHibernate {
 /*
@@ -20,11 +22,16 @@ public class TestHibernate {
 	public static void main(String[] args) throws JugadorException, ParejaException {
 		//guardarParejas();
 		//guardarPartido();
-		trapareja();
+		//iniciarPartidaLibre();
 	}
 
-	private static void trapareja() throws ParejaException {
-		List<Pareja> parejas = ParejaDAO.getInstancia().buscarParejasLibres();
+	private static void iniciarPartidaLibre() throws ParejaException, JugadorException {
+		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Chulo");
+		Jugador jug2 = JugadorDAO.getInstancia().buscarPorApodo("Kent");
+		Pareja uno = new Pareja(jug,jug2);
+		uno.setIdPareja(1);
+		Partido p = Controlador.getInstancia().iniciarPartidaLibre(uno);
+		
 	}
 
 	private static void guardarPartido() throws JugadorException {

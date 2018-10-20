@@ -104,6 +104,7 @@ public class Controlador {
 		return false;
 	}
 	
+	//OK, FALTARIA SETEARLE A LOS JUGADORES QUE JUGANDO = TRUE
 	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
 		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
@@ -476,9 +477,13 @@ public class Controlador {
 		}
 	}
 
+	/**
+	 * Entiendo que aca la pareja ya va a estar persistida (la que quiere jugar), por eso necesito su id
+	 * */
+	//OK, FALTARIA SETEARLE A LOS JUGADORES QUE JUGANDO = TRUE
 	public Partido iniciarPartidaLibre(Pareja parej) throws ParejaException {
 		Partido part = null;
-		List<Pareja> parejasDisponibles = ParejaDAO.getInstancia().buscarParejasLibres();
+		List<Pareja> parejasDisponibles = ParejaDAO.getInstancia().buscarParejasLibres(parej);
 		List<Pareja> parejasFinales = new ArrayList<Pareja>();
 		parejasFinales.add(parej);
 		Categoria categoriaBuscada = null;
@@ -487,19 +492,20 @@ public class Controlador {
 			if(parej.getJugador1().getCategoria().equals(Categoria.Calificado) || parej.getJugador2().getCategoria().equals(Categoria.Calificado)){
 				categoriaBuscada = Categoria.Calificado;
 			}
-			if(parej.getJugador1().getCategoria().equals(Categoria.Experto) || parej.getJugador2().getCategoria().equals(Categoria.Experto)){
+			if((parej.getJugador1().getCategoria().equals(Categoria.Experto) || parej.getJugador2().getCategoria().equals(Categoria.Experto)) && categoriaBuscada == null){
 				categoriaBuscada = Categoria.Experto;
 			}
-			if(parej.getJugador1().getCategoria().equals(Categoria.Master) || parej.getJugador2().getCategoria().equals(Categoria.Master)){
+			if((parej.getJugador1().getCategoria().equals(Categoria.Master) || parej.getJugador2().getCategoria().equals(Categoria.Master)) && categoriaBuscada == null){
 				categoriaBuscada = Categoria.Master;
 			}
-			if(parej.getJugador1().getCategoria().equals(Categoria.Novato) || parej.getJugador2().getCategoria().equals(Categoria.Novato)){
+			if((parej.getJugador1().getCategoria().equals(Categoria.Novato) || parej.getJugador2().getCategoria().equals(Categoria.Novato)) && categoriaBuscada == null){
 				categoriaBuscada = Categoria.Novato;
 			}
 			for(int i = 0;i<parejasDisponibles.size();i++){
 				if(parejasDisponibles.get(i).getJugador1().getCategoria().equals(categoriaBuscada) || parejasDisponibles.get(i).getJugador2().getCategoria().equals(categoriaBuscada)){
 					parejasFinales.add(parejasDisponibles.get(i));
 					part =  new Partido(null, TipoModalidad.Libre, parejasFinales, null, null, EstadoPartido.En_Proceso);
+					return part;
 				}
 			}
 		}
