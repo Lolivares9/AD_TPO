@@ -12,6 +12,7 @@ import dao.ChicoDAO;
 import dao.GrupoDAO;
 import dao.JugadorDAO;
 import dao.ManoDAO;
+import dao.ParejaDAO;
 import dao.PartidoDAO;
 import dao.TurnoDAO;
 import dto.BazaDTO;
@@ -102,56 +103,61 @@ public class Controlador {
 		}
 		return false;
 	}
-	/**
-	 * Este metodo recibe la categoria en la que quiere jugar el jugador (tendria que definir si va a ser asi, o si se toma la categoria
-	 * que tiene el jugador) y el jugador. Digamos, si el jugador puede elegir o no en que categoria desea jugar.
-	 * 
-	 * Internamente primero se fija si hay 3 (ya que 1 es el que quiere jugar) jugadores disponibles, trayendo todos los que esten conectados
-	 * y NO esten jugando (deberia agregarle un top 100 o algo asi), y separando por categorias (primero se fija si hay de igual o mayor categoria
-	 *  y sino, se fija en las menores categorias), despues de eso, se fija si es posible armar parejas balancedas, en caso de que, devuelve NULL.
-	 * Sino, devuelve un partido con las parejas ya distribuidas.
-	 * 
-	 * Recordar: NO se podrá iniciar un partido si no hay 2 jugadores de la menor categoria. EJ: 3 calificados y uno novato, no se puede balancear
-	 * */
+	
 	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
-		List<Jugador> jugDisp = new ArrayList<Jugador>();
+		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
 		jugDisp.add(jug);
 		boolean completo = false;
 		boolean esParejo = false;
-		Pareja uno = null;
-		Pareja dos = null;
 		completo = completarJugadores(categ,jugDisp);
-		if(jugDisp.size() < 4 && completo == false){
+		if(jugDisp.size() < 4 || completo == false){
 			return null;
 		}
 		
 		esParejo = verificarIgualdadParejas(jugDisp);
 		if(esParejo){
-			distribuirParejas(uno,dos,jugDisp);
-			parejas.add(uno);
-			parejas.add(dos);
+			parejas = distribuirParejas(jugDisp);
+			return new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
 		}
 		
-		return new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
+		return null;
 		
 	}
 	
-	private void distribuirParejas(Pareja uno, Pareja dos,List <Jugador> jugDisp) {
+	private List<Pareja> distribuirParejas(List <Jugador> jugDisp) {
 		Categoria inicial;
+		List <Pareja> parejasArmadas = new ArrayList<Pareja>();
 		inicial = jugDisp.get(0).getCategoria();
-		uno.setJugador1(jugDisp.get(0));
-		jugDisp.remove(0);
-		for(int i = 0;i<jugDisp.size();i++){
+		Pareja uno = new Pareja(null,null);
+		Pareja dos = new Pareja(null,null);
+		for(int i = 0;i<4;i++){
 			if(jugDisp.get(0).getCategoria().equals(inicial)){
-				uno.setJugador1(jugDisp.get(0));
-				jugDisp.remove(0);
+				if(uno.getJugador1() == null){
+					uno.setJugador1(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
+				else{
+					uno.setJugador2(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
 			}
 			else{
-				dos.setJugador2(jugDisp.get(0));
-				jugDisp.remove(0);
+				if(dos.getJugador1() == null){
+					dos.setJugador1(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
+				else{
+					dos.setJugador2(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
 			}
 		}
+		
+		parejasArmadas.add(uno);
+		parejasArmadas.add(dos);
+		
+		return parejasArmadas;
 	}
 
 	private boolean verificarIgualdadParejas(List<Jugador> jugDisp) {
@@ -171,17 +177,10 @@ public class Controlador {
 			}
 		}
 		
-		if(novatos > 2 && (expertos > 0 || masters > 0 || calificados > 0)){
-			return false;
-		}
-		if(masters > 2 && (expertos > 0 || novatos > 0 || calificados > 0)){
-			return false;
-		}
-		if(expertos > 2 && (novatos > 0 || masters > 0 || calificados > 0)){
-			return false;
-		}
-		if(calificados > 2 && (expertos > 0 || masters > 0 || novatos > 0)){
-			return false;
+		if(novatos != 4 && masters != 4 && expertos != 4 && calificados != 4){
+			if(novatos == 1 || masters == 1 || expertos == 1 || calificados == 1){
+				return false;
+			}
 		}
 		
 		return true;
@@ -477,8 +476,33 @@ public class Controlador {
 		}
 	}
 
-	public Partido iniciarPartidaLibre(Pareja parej) {
+	public Partido iniciarPartidaLibre(Pareja parej) throws ParejaException {
 		Partido part = null;
+		List<Pareja> parejasDisponibles = ParejaDAO.getInstancia().buscarParejasLibres();
+		List<Pareja> parejasFinales = new ArrayList<Pareja>();
+		parejasFinales.add(parej);
+		Categoria categoriaBuscada = null;
+		
+		if(parejasDisponibles != null){
+			if(parej.getJugador1().getCategoria().equals(Categoria.Calificado) || parej.getJugador2().getCategoria().equals(Categoria.Calificado)){
+				categoriaBuscada = Categoria.Calificado;
+			}
+			if(parej.getJugador1().getCategoria().equals(Categoria.Experto) || parej.getJugador2().getCategoria().equals(Categoria.Experto)){
+				categoriaBuscada = Categoria.Experto;
+			}
+			if(parej.getJugador1().getCategoria().equals(Categoria.Master) || parej.getJugador2().getCategoria().equals(Categoria.Master)){
+				categoriaBuscada = Categoria.Master;
+			}
+			if(parej.getJugador1().getCategoria().equals(Categoria.Novato) || parej.getJugador2().getCategoria().equals(Categoria.Novato)){
+				categoriaBuscada = Categoria.Novato;
+			}
+			for(int i = 0;i<parejasDisponibles.size();i++){
+				if(parejasDisponibles.get(i).getJugador1().getCategoria().equals(categoriaBuscada) || parejasDisponibles.get(i).getJugador2().getCategoria().equals(categoriaBuscada)){
+					parejasFinales.add(parejasDisponibles.get(i));
+					part =  new Partido(null, TipoModalidad.Libre, parejasFinales, null, null, EstadoPartido.En_Proceso);
+				}
+			}
+		}
 		
 		return part;
 	}

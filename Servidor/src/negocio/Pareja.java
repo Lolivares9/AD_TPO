@@ -2,6 +2,7 @@ package negocio;
 
 import dao.ParejaDAO;
 import dto.ParejaDTO;
+import entities.JugadorEntity;
 
 public class Pareja {
 	private Integer idPareja;
@@ -14,6 +15,12 @@ public class Pareja {
 		this.jugador2 = jugador2;
 	}
 	
+	public Pareja(Integer idPareja, Jugador negocio, Jugador negocio2) {
+		this.idPareja = idPareja;
+		this.jugador1 = negocio;
+		this.jugador2 = negocio2;
+	}
+
 	public Jugador getJugador1() {
 		return jugador1;
 	}

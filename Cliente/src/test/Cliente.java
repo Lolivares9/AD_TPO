@@ -33,6 +33,19 @@ public class Cliente {
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
 		//buscarDetalleChico();
+		//iniciarPartidaLibreIndividual(); TEST OK MATI
+	}
+
+
+	private static void iniciarPartidaLibreIndividual() {
+		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com","123456");
+		jugador.setCategoria(Categoria.Experto);
+		try {
+			PartidoDTO part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador);
+			System.out.println(part);
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

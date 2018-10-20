@@ -109,7 +109,7 @@ public class BusinessDelegate {
 		return partido;
 	}
 
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException {
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException, ParejaException {
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaLibre(pareja);

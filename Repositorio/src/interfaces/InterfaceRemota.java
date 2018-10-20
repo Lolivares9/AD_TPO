@@ -43,7 +43,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException;
 	
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException;
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException;
 	
 	public boolean iniciarPartidaCerrada() throws RemoteException;
 	
