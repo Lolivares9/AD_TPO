@@ -598,29 +598,9 @@ public class Controlador {
 		
 		return detallePartida;
 	}
-
-<<<<<<< HEAD
 	/*  
 	 * 
 	 * Para qué esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
 	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
-=======
-	/*
->>>>>>> branch 'master' of https://github.com/Lolivares9/AD_TPO.git
-	 * 
-	 * PARDA - Como vamos a marcar un empate en la tabla bazas (tiene una columna ganadores_baza), le ponemos 0?
-	 * 
-	 * ENVITES - como se maeja el tema de los envido y truco en el mismo turno y el real envido y retruco, etc  
-	 * 
-	 * 
-	 * Como vamos a representar en la tabla de turnos cuando se cante por ejemplo Truco-Re truco- Quiero? 
-	 * (todo sucede en un mismo turno) repetimos el id y despues lo unimos??
-<<<<<<< HEAD
-	 */	
-=======
-	 * 
 	 */
-	
-	
->>>>>>> branch 'master' of https://github.com/Lolivares9/AD_TPO.git
 }
