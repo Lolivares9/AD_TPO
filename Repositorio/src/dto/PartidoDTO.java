@@ -10,7 +10,7 @@ public class PartidoDTO implements Serializable {
 	private static final long serialVersionUID = -1807299335449993623L;
 	
 	private Integer idPartido;
-	private ChicoDTO chico;
+	private List<ChicoDTO> chicos;
 	private ModalidadDTO modalidad;
 	private List<ParejaDTO> parejas;
 	private ParejaDTO parejaGanadora;
@@ -19,9 +19,9 @@ public class PartidoDTO implements Serializable {
 		super();
 	}
 	
-	public PartidoDTO(ChicoDTO chico, ModalidadDTO modalidad, List<ParejaDTO> parejas, ParejaDTO parejaGanadora) {
+	public PartidoDTO(List <ChicoDTO> chico, ModalidadDTO modalidad, List<ParejaDTO> parejas, ParejaDTO parejaGanadora) {
 		super();
-		this.chico = chico;
+		this.chicos = chico;
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
@@ -41,11 +41,11 @@ public class PartidoDTO implements Serializable {
 		this.parejaGanadora = parejaGanadora;
 	}
 	
-	public ChicoDTO getChicoDTO() {
-		return chico;
+	public List<ChicoDTO> getChicoDTO() {
+		return chicos;
 	}
-	public void setChicoDTO(ChicoDTO chico) {
-		this.chico = chico;
+	public void setChicoDTO(List<ChicoDTO> chicos) {
+		this.chicos = chicos;
 	}
 	public ModalidadDTO getModalidadDTO() {
 		return modalidad;

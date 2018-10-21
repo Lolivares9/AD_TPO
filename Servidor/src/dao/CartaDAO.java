@@ -46,7 +46,7 @@ public class CartaDAO {
 				
 			} catch (HibernateException e) {
 				e.printStackTrace();
-				return null;
+				throw new CartaException("Error al obtener las cartas.");
 			}finally{
 				s.close();
 			}

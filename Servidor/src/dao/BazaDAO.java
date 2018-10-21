@@ -8,12 +8,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import entities.BazaEntity;
-import entities.JugadorEntity;
 import entities.ParejaEntity;
 import excepciones.BazaException;
 import hbt.HibernateUtil;
 import negocio.Baza;
-import negocio.Jugador;
 
 public class BazaDAO {
 	private static BazaDAO instancia;
@@ -72,7 +70,7 @@ public class BazaDAO {
 			
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			return null;
+			throw new BazaException("Error al buscar las bazas para la mano "+ idMano);
 		}
 	}
 	

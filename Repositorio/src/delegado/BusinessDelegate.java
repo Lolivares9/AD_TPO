@@ -4,14 +4,30 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import dto.BazaDTO;
 import dto.CartaDTO;
+import dto.ChicoDTO;
 import dto.JugadorDTO;
+import dto.ManoDTO;
+import dto.PartidoDTO;
+import dto.TurnoDTO;
+import enums.TipoModalidad;
+import excepciones.BazaException;
+import dto.ParejaDTO;
 import excepciones.CartaException;
+import excepciones.ChicoException;
 import excepciones.ComunicationException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
+import excepciones.ManoException;
+import excepciones.ParejaException;
+import excepciones.PartidoException;
+import excepciones.TurnoException;
 import interfaces.InterfaceRemota;
 
 public class BusinessDelegate {
@@ -40,7 +56,7 @@ public class BusinessDelegate {
 
 	public boolean AltaJugador(JugadorDTO jugador) throws ComunicationException {
 		try {
-			ir.AltaJugador(jugador);
+			ir.altaJugador(jugador);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (JugadorException e) {
@@ -83,24 +99,24 @@ public class BusinessDelegate {
 		return false;
 	}
 
-	public boolean iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException {
-		boolean inicioBien = false;
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException {
+		PartidoDTO partido = null;
 		try {
-			inicioBien = ir.iniciarPartidaLibreIndividual(jugador);
+			partido = ir.iniciarPartidaLibreIndividual(jugador);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return inicioBien;
+		return partido;
 	}
 
-	public boolean iniciarPartidaLibre() throws ComunicationException {
-		boolean inicioBien = false;
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException, ParejaException {
+		PartidoDTO partido = null;
 		try {
-			inicioBien = ir.iniciarPartidaLibre();
+			partido = ir.iniciarPartidaLibre(pareja);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return inicioBien;
+		return partido;
 	}
 	public boolean iniciarPartidaCerrada() throws ComunicationException {
 		// TODO Auto-generated method stub
@@ -147,13 +163,31 @@ public class BusinessDelegate {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	/*
-	public int suma(int a, int b) throws ComunicacionException{
+
+	public List<PartidoDTO> buscarPartidosJugados(JugadorDTO jugador, TipoModalidad modalidad, Date fechaIni, Date fechaFin) throws ComunicationException {
 		try {
-			return ir.suma(a, b);
-		} catch (RemoteException e) {
-			throw new ComunicacionException("Error en las comunicaciones");	
+			return ir.buscarPartidosJugados(jugador, modalidad, fechaIni, fechaFin);
+		} catch (ParejaException | PartidoException | RemoteException e) {
+			e.printStackTrace();
 		}
-	}*/	
+		return Collections.<PartidoDTO>emptyList();
+	}
+	
+	public List<ChicoDTO> buscarChicosPorPartido(PartidoDTO partido){
+		try {
+			return ir.buscarChicosPorPartido(partido);
+		} catch (ChicoException | RemoteException e) {
+			e.printStackTrace();
+		}
+		return Collections.<ChicoDTO>emptyList();
+	}
+	
+	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico){
+		try {
+			return ir.obtenerDetalleDeChico(chico);
+		} catch (ManoException | BazaException | TurnoException | RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

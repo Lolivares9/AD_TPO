@@ -2,15 +2,34 @@ package remoto;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import controlador.Controlador;
+import dto.BazaDTO;
 import dto.CartaDTO;
+import dto.ChicoDTO;
 import dto.JugadorDTO;
+import dto.ManoDTO;
+import dto.ParejaDTO;
+import dto.PartidoDTO;
+import dto.TurnoDTO;
+import enums.TipoModalidad;
+import excepciones.BazaException;
 import excepciones.CartaException;
+import excepciones.ChicoException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
+import excepciones.ManoException;
+import excepciones.ParejaException;
+import excepciones.PartidoException;
+import excepciones.TurnoException;
 import interfaces.InterfaceRemota;
+import negocio.Jugador;
+import negocio.Pareja;
+import negocio.Partido;
+import util.DTOMapper;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota {
 
@@ -18,23 +37,23 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 
 	public ObjetoRemoto() throws RemoteException {}
 
-	@Override
-	public boolean AltaJugador(JugadorDTO jugador) throws RemoteException, JugadorException {
+	
+	public boolean altaJugador(JugadorDTO jugador) throws RemoteException, JugadorException {
 		Controlador.getInstancia().altaJugador(jugador);
 		return false;
 	}
 
-	@Override
+	//OK
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws RemoteException, GrupoException, JugadorException {
 		return Controlador.getInstancia().crearGrupo(nombreGrupo, jugadorAdmin);
 	}
 	
-	@Override
+	//FALTA TESTEAR FACU
 	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws RemoteException, GrupoException {
 		return Controlador.getInstancia().llenarGrupo(nombreGrupo, jugadores);
 	}
 
-	@Override
+	//OK
 	public boolean iniciarSesion(JugadorDTO jugador) throws RemoteException {
 		boolean inicioBien = false;
 		try {
@@ -44,18 +63,26 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		}
 		return inicioBien;
 	}
-
-	public boolean iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException {
-		//TODO MATI return Controlador.getInstancia().iniciarPartidaLibreIndividual();
-		return false;
+	
+	//OK
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException {
+		Jugador jugador = DTOMapper.getInstancia().jugadorDTOtoNegocio(jug);
+		PartidoDTO part = null;
+		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria(),jugador);
+		if(partidoNuevo != null)
+			part = partidoNuevo.toDTO();
+		return part;
 	}
 	
-	@Override
-	public boolean iniciarPartidaLibre() throws RemoteException {
-		return Controlador.getInstancia().iniciarPartidaLibre();
+	//FALTARIA TESTEAR
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException {
+		Pareja parej = null;
+		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibre(parej);
+		PartidoDTO part = partidoNuevo.toDTO();
+		return part;
 	}
 
-	@Override
+	//SIN HACER, ESTE NO HACE CONTROL DE CATEGORIAS
 	public boolean iniciarPartidaCerrada() throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
@@ -100,5 +127,21 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	public boolean modificarJugador() throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
-	}	
+	}
+
+	@Override
+	public List<PartidoDTO> buscarPartidosJugados(JugadorDTO jugador, TipoModalidad modalidad, Date fechaIni, Date fechaFin) throws ParejaException, PartidoException {
+		return Controlador.getInstancia().buscarPartidosJugados(jugador, modalidad, fechaIni, fechaFin);
+	}
+	
+	@Override
+	public List<ChicoDTO> buscarChicosPorPartido(PartidoDTO partido) throws ChicoException{
+		return Controlador.getInstancia().buscarChicosPorPartido(partido);
+	}
+	
+	@Override
+	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws ManoException, BazaException, TurnoException{
+		return Controlador.getInstancia().obtenerDetalleDeChico(chico);
+	}
+	
 }

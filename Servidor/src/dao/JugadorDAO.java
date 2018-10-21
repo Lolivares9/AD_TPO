@@ -114,12 +114,10 @@ public class JugadorDAO {
 			if (aux != null) {
 				resultado = this.toNegocio(aux);
 			} else {
-				//throw new JugadorException("No se encontro el jugador con el apodo: '" + apodo + "'.");
 				return resultado;
 			}
 
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

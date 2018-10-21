@@ -2,17 +2,32 @@ package interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import dto.BazaDTO;
 import dto.CartaDTO;
+import dto.ChicoDTO;
 import dto.JugadorDTO;
+import dto.ManoDTO;
+import dto.PartidoDTO;
+import dto.TurnoDTO;
+import enums.TipoModalidad;
+import excepciones.BazaException;
+import dto.ParejaDTO;
 import excepciones.CartaException;
+import excepciones.ChicoException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
+import excepciones.ManoException;
+import excepciones.ParejaException;
+import excepciones.PartidoException;
+import excepciones.TurnoException;
 
 public interface InterfaceRemota extends Remote {
 	
-	public boolean AltaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
+	public boolean altaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
 	
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugador) throws RemoteException, GrupoException, JugadorException;
 	
@@ -20,9 +35,15 @@ public interface InterfaceRemota extends Remote {
 
 	public boolean iniciarSesion(JugadorDTO jugador) throws RemoteException;
 	
-	public boolean iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException;
+	public List<PartidoDTO> buscarPartidosJugados(JugadorDTO jugador, TipoModalidad modalidad, Date fechaIni, Date fechaFin) throws RemoteException, ParejaException, PartidoException;
 	
-	public boolean iniciarPartidaLibre() throws RemoteException;
+	public List<ChicoDTO> buscarChicosPorPartido(PartidoDTO partido) throws RemoteException, ChicoException;
+	
+	public Map<ManoDTO, Map<BazaDTO, List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws RemoteException, ManoException, BazaException, TurnoException;
+	
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException;
+	
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException;
 	
 	public boolean iniciarPartidaCerrada() throws RemoteException;
 	
@@ -37,4 +58,9 @@ public interface InterfaceRemota extends Remote {
 	public boolean eliminarJugador() throws RemoteException;
 	
 	public boolean modificarJugador() throws RemoteException;
+
+
+
+	
+
 }

@@ -13,6 +13,7 @@ public class Test {
 		try {
 			new Server();
 		} catch (RemoteException e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "No pude arrancar el servidor");
 		}
 	}

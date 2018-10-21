@@ -3,8 +3,6 @@ package controlador;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,6 +12,7 @@ import dao.ChicoDAO;
 import dao.GrupoDAO;
 import dao.JugadorDAO;
 import dao.ManoDAO;
+import dao.ParejaDAO;
 import dao.PartidoDAO;
 import dao.TurnoDAO;
 import dto.BazaDTO;
@@ -32,6 +31,8 @@ import excepciones.ChicoException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
 import excepciones.ManoException;
+import excepciones.ParejaException;
+import excepciones.PartidoException;
 import excepciones.TurnoException;
 import negocio.Baza;
 import negocio.Carta;
@@ -60,7 +61,6 @@ public class Controlador {
 	}
 
 	public void altaJugador(JugadorDTO jugador) throws JugadorException {
-		//Valido apodo y mail, ambos deben estar libres
 		boolean datosValidos = JugadorDAO.getInstancia().validarDatos(jugador.getApodo(), jugador.getMail());
 		if(datosValidos){
 			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
@@ -77,6 +77,7 @@ public class Controlador {
 			g.setNombre(nombreGrupo);
 			Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(jugadorAdmin.getApodo());
 			g.setJugadorAdmin(jug);
+			g.agregarJugador(jug);
 			GrupoDAO.getInstancia().guardar(g);
 			return true;
 		}else{
@@ -95,64 +96,69 @@ public class Controlador {
 		}
 	}
 
-	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{
+	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{		
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
-		if(jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
+		if(jugador != null && jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
 			return true;
 		}
 		return false;
 	}
-	/**
-	 * Este metodo recibe la categoria en la que quiere jugar el jugador (tendria que definir si va a ser asi, o si se toma la categoria
-	 * que tiene el jugador) y el jugador. Digamos, si el jugador puede elegir o no en que categoria desea jugar.
-	 * 
-	 * Internamente primero se fija si hay 3 (ya que 1 es el que quiere jugar) jugadores disponibles, trayendo todos los que esten conectados
-	 * y NO esten jugando (deberia agregarle un top 100 o algo asi), y separando por categorias (primero se fija si hay de igual o mayor categoria
-	 *  y sino, se fija en las menores categorias), despues de eso, se fija si es posible armar parejas balancedas, en caso de que, devuelve NULL.
-	 * Sino, devuelve un partido con las parejas ya distribuidas.
-	 * 
-	 * Recordar: NO se podrá iniciar un partido si no hay 2 jugadores de la menor categoria. EJ: 3 calificados y uno novato, no se puede balancear
-	 * */
+	
+	//OK, FALTARIA SETEARLE A LOS JUGADORES QUE JUGANDO = TRUE
 	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
-		List<Jugador> jugDisp = new ArrayList<Jugador>();
+		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
 		jugDisp.add(jug);
 		boolean completo = false;
 		boolean esParejo = false;
-		Pareja uno = null;
-		Pareja dos = null;
 		completo = completarJugadores(categ,jugDisp);
-		//SI EN EL PRIMER CASO YA ME DEVOLVIO 0 SIGNIFICA QUE NO HAY NADIE DISPONIBLE
-		if(jugDisp.size() == 0 && completo == false){
+		if(jugDisp.size() < 4 || completo == false){
 			return null;
 		}
 		
 		esParejo = verificarIgualdadParejas(jugDisp);
 		if(esParejo){
-			distribuirParejas(uno,dos,jugDisp);
-			parejas.add(uno);
-			parejas.add(dos);
+			parejas = distribuirParejas(jugDisp);
+			return new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
 		}
 		
-		return new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
+		return null;
 		
 	}
 	
-	private void distribuirParejas(Pareja uno, Pareja dos,List <Jugador> jugDisp) {
+	private List<Pareja> distribuirParejas(List <Jugador> jugDisp) {
 		Categoria inicial;
+		List <Pareja> parejasArmadas = new ArrayList<Pareja>();
 		inicial = jugDisp.get(0).getCategoria();
-		uno.setJugador1(jugDisp.get(0));
-		jugDisp.remove(0);
-		for(int i = 0;i<jugDisp.size();i++){
+		Pareja uno = new Pareja(null,null);
+		Pareja dos = new Pareja(null,null);
+		for(int i = 0;i<4;i++){
 			if(jugDisp.get(0).getCategoria().equals(inicial)){
-				uno.setJugador1(jugDisp.get(0));
-				jugDisp.remove(0);
+				if(uno.getJugador1() == null){
+					uno.setJugador1(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
+				else{
+					uno.setJugador2(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
 			}
 			else{
-				dos.setJugador2(jugDisp.get(0));
-				jugDisp.remove(0);
+				if(dos.getJugador1() == null){
+					dos.setJugador1(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
+				else{
+					dos.setJugador2(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
 			}
 		}
+		
+		parejasArmadas.add(uno);
+		parejasArmadas.add(dos);
+		
+		return parejasArmadas;
 	}
 
 	private boolean verificarIgualdadParejas(List<Jugador> jugDisp) {
@@ -172,17 +178,10 @@ public class Controlador {
 			}
 		}
 		
-		if(novatos > 2 && (expertos > 0 || masters > 0 || calificados > 0)){
-			return false;
-		}
-		if(masters > 2 && (expertos > 0 || novatos > 0 || calificados > 0)){
-			return false;
-		}
-		if(expertos > 2 && (novatos > 0 || masters > 0 || calificados > 0)){
-			return false;
-		}
-		if(calificados > 2 && (expertos > 0 || masters > 0 || novatos > 0)){
-			return false;
+		if(novatos != 4 && masters != 4 && expertos != 4 && calificados != 4){
+			if(novatos == 1 || masters == 1 || expertos == 1 || calificados == 1){
+				return false;
+			}
 		}
 		
 		return true;
@@ -489,9 +488,40 @@ public class Controlador {
 		}
 	}
 
-	public boolean iniciarPartidaLibre() {
-		// TODO Auto-generated method stub
-		return false;
+	/**
+	 * Entiendo que aca la pareja ya va a estar persistida (la que quiere jugar), por eso necesito su id
+	 * */
+	//OK, FALTARIA SETEARLE A LOS JUGADORES QUE JUGANDO = TRUE
+	public Partido iniciarPartidaLibre(Pareja parej) throws ParejaException {
+		Partido part = null;
+		List<Pareja> parejasDisponibles = ParejaDAO.getInstancia().buscarParejasLibres(parej);
+		List<Pareja> parejasFinales = new ArrayList<Pareja>();
+		parejasFinales.add(parej);
+		Categoria categoriaBuscada = null;
+		
+		if(parejasDisponibles != null){
+			if(parej.getJugador1().getCategoria().equals(Categoria.Calificado) || parej.getJugador2().getCategoria().equals(Categoria.Calificado)){
+				categoriaBuscada = Categoria.Calificado;
+			}
+			if((parej.getJugador1().getCategoria().equals(Categoria.Experto) || parej.getJugador2().getCategoria().equals(Categoria.Experto)) && categoriaBuscada == null){
+				categoriaBuscada = Categoria.Experto;
+			}
+			if((parej.getJugador1().getCategoria().equals(Categoria.Master) || parej.getJugador2().getCategoria().equals(Categoria.Master)) && categoriaBuscada == null){
+				categoriaBuscada = Categoria.Master;
+			}
+			if((parej.getJugador1().getCategoria().equals(Categoria.Novato) || parej.getJugador2().getCategoria().equals(Categoria.Novato)) && categoriaBuscada == null){
+				categoriaBuscada = Categoria.Novato;
+			}
+			for(int i = 0;i<parejasDisponibles.size();i++){
+				if(parejasDisponibles.get(i).getJugador1().getCategoria().equals(categoriaBuscada) || parejasDisponibles.get(i).getJugador2().getCategoria().equals(categoriaBuscada)){
+					parejasFinales.add(parejasDisponibles.get(i));
+					part =  new Partido(null, TipoModalidad.Libre, parejasFinales, null, null, EstadoPartido.En_Proceso);
+					return part;
+				}
+			}
+		}
+		
+		return part;
 	}
 
 	public List<CartaDTO> repartiCartas() throws CartaException {
@@ -509,16 +539,14 @@ public class Controlador {
 	 * @param fecha
 	 * @return List<PartidoDTO>
 	 * Los DTO tendrán la modalidad y la pareja ganadora
+	 * @throws ParejaException 
+	 * @throws PartidoException 
 	 */
-	public List<PartidoDTO> listarPartidos(JugadorDTO jugador, TipoModalidad mod, Date fecha){
+	public List<PartidoDTO> buscarPartidosJugados(JugadorDTO jugador, TipoModalidad mod, Date fechaInicial, Date fechaFin) throws ParejaException, PartidoException{
 		List<PartidoDTO> partidosDTO = new ArrayList<PartidoDTO>();
-		if(mod == null && fecha == null) {
-			List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jugador.getId());
-			return partidos.stream().map(Partido::toDTOListar).collect(Collectors.toList());
-		}else {
-			//TODO traer partidos filtrando, validar si eligió modalidad y/o fecha
-		}
-		return partidosDTO;
+		List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jugador.getId(), mod, fechaInicial, fechaFin);
+		return partidos.stream().map(Partido::toDTOListar).collect(Collectors.toList());
+
 	}
 	
 	/**
@@ -528,7 +556,7 @@ public class Controlador {
 	 * @param partidoDTO  (recibe el partido que seleccionó del listado)
 	 * @throws ChicoException 
 	 */
-	public List<ChicoDTO> listarChicosPorPartido(PartidoDTO partidoDTO) throws ChicoException {
+	public List<ChicoDTO> buscarChicosPorPartido(PartidoDTO partidoDTO) throws ChicoException {
 		List<Chico> c = ChicoDAO.getInstancia().buscarChicosPorPartido(partidoDTO.getIdPartido());
 		return c.stream().map(Chico::toDTO).collect(Collectors.toList());
 	}
@@ -571,10 +599,14 @@ public class Controlador {
 		return detallePartida;
 	}
 
+<<<<<<< HEAD
 	/*  
 	 * 
 	 * Para qué esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
 	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
+=======
+	/*
+>>>>>>> branch 'master' of https://github.com/Lolivares9/AD_TPO.git
 	 * 
 	 * PARDA - Como vamos a marcar un empate en la tabla bazas (tiene una columna ganadores_baza), le ponemos 0?
 	 * 
@@ -583,5 +615,12 @@ public class Controlador {
 	 * 
 	 * Como vamos a representar en la tabla de turnos cuando se cante por ejemplo Truco-Re truco- Quiero? 
 	 * (todo sucede en un mismo turno) repetimos el id y despues lo unimos??
+<<<<<<< HEAD
 	 */	
+=======
+	 * 
+	 */
+	
+	
+>>>>>>> branch 'master' of https://github.com/Lolivares9/AD_TPO.git
 }

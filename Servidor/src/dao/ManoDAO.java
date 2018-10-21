@@ -73,7 +73,7 @@ public class ManoDAO {
 			
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			return null;
+			throw new ManoException("Error al obtener las manos para el chico "+idChico);
 		}
 	}
 	

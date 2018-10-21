@@ -1,5 +1,6 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.GrupoDAO;
@@ -52,5 +53,15 @@ public class Grupo {
 		return GrupoDAO.getInstancia().guardar(this);
 	}
 
+	public void agregarJugador(Jugador jugador) {
+		if(this.jugadores == null) {
+			this.jugadores = new ArrayList<Jugador>();
+		}
+		this.jugadores.add(jugador);
+	}
+	
+	public void eliminarJugador(Jugador jugador) {
+		this.jugadores.remove(jugador);
+	}
 
 }

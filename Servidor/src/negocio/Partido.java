@@ -1,11 +1,13 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import dao.BazaDAO;
 import dao.PartidoDAO;
+import dto.ChicoDTO;
 import dto.ModalidadDTO;
 import dto.ParejaDTO;
 import dto.PartidoDTO;
@@ -19,7 +21,7 @@ import enums.TipoModalidad;
  */
 public class Partido {
 	private Integer idPartido;
-	private List<Chico> chico;
+	private List<Chico> chicos;
 	private TipoModalidad modalidad;
 	private List<Pareja> parejas;
 	private Pareja parejaGanadora;
@@ -28,7 +30,7 @@ public class Partido {
 	
 	public Partido(List<Chico> chico, TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha,EstadoPartido estado) {
 		super();
-		this.chico = chico;
+		this.chicos = chico;
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
@@ -38,7 +40,7 @@ public class Partido {
 	
 	/**
 	 * Constructor usado para traer datos de la base, las parejas se insertaran con el set
-	 * @param chico
+	 * @param chicos
 	 * @param modalidad
 	 * @param parejaGanadora
 	 */
@@ -50,10 +52,10 @@ public class Partido {
 	}
 	
 	public List<Chico> getChico() {
-		return chico;
+		return chicos;
 	}
 	public void setChico(List<Chico> chico) {
-		this.chico = chico;
+		this.chicos = chico;
 	}
 	public TipoModalidad getModalidad() {
 		return modalidad;
@@ -104,5 +106,36 @@ public class Partido {
 	public PartidoDTO toDTOListar() {
 		List<ParejaDTO> parejasDTO = parejas.stream().map(Pareja::toDTO).collect(Collectors.toList());
 		return new PartidoDTO(new ModalidadDTO(modalidad, true), parejasDTO, parejaGanadora.toDTO());
+	}
+	
+	public PartidoDTO toDTO(){
+		ModalidadDTO mod = null;
+		List<ParejaDTO> parejasDTO = new ArrayList<ParejaDTO>();
+		List<ChicoDTO> chicosDTO = new ArrayList<ChicoDTO>();
+		if(modalidad.equals(TipoModalidad.Libre_individual)){
+			mod = new ModalidadDTO(modalidad,true);
+		}
+		else{
+			mod = new ModalidadDTO(modalidad,false);
+		}
+		if(parejas != null){
+			for(Pareja p : parejas){
+				parejasDTO.add(p.toDTO());
+			}
+		}
+		if(chicos != null){
+			for(Chico c : chicos){
+				chicosDTO.add(c.toDTO());
+			}
+		}
+		if(parejaGanadora != null){
+			return new PartidoDTO(chicosDTO,mod,parejasDTO,parejaGanadora.toDTO());
+		}
+		
+		return new PartidoDTO(chicosDTO,mod,parejasDTO,null);
+	}
+
+	public void save() {
+		PartidoDAO.getInstancia().guardar(this);
 	}
 }

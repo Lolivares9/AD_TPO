@@ -10,7 +10,6 @@ import org.hibernate.SessionFactory;
 import entities.BazaEntity;
 import entities.CartaEntity;
 import entities.JugadorEntity;
-import entities.ParejaEntity;
 import entities.TurnoEntity;
 import excepciones.TurnoException;
 import hbt.HibernateUtil;
@@ -77,7 +76,7 @@ public class TurnoDAO {
 			
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			return null;
+			throw new TurnoException("Error al buscar los turnos para la baza "+idBaza);
 		}
 	}
 	

@@ -1,7 +1,9 @@
 package util;
 
 import dto.JugadorDTO;
+import dto.PartidoDTO;
 import negocio.Jugador;
+import negocio.Partido;
 
 public class DTOMapper {
 
@@ -21,5 +23,10 @@ public class DTOMapper {
 					jugDTO.getPartidosJugados(),jugDTO.getPartidosGanados(),jugDTO.isConectado(),jugDTO.isJugando(),jugDTO.getPassword());
 			jugador.setId(jugDTO.getId());
 		return jugador;
+	}
+	
+	public Partido partidoDTOtoNegocio(PartidoDTO partDTO){
+		Partido partido = null;
+		return partido;
 	}
 }

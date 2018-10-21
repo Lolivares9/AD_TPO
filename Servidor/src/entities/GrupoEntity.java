@@ -69,6 +69,14 @@ public class GrupoEntity {
 	public void setJugadorAdmin(JugadorEntity jugadorAdmin) {
 		this.jugadorAdmin = jugadorAdmin;
 	}
+	
+	public void agregarJugador(JugadorEntity jugador) {
+		this.jugadores.add(jugador);
+	}
+	
+	public void eliminarJugador(JugadorEntity jugador) {
+		this.jugadores.remove(jugador);
+	}
 
 	@Override
 	public int hashCode() {
