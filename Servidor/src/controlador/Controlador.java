@@ -189,6 +189,17 @@ public class Controlador {
 	}
 	
 	private boolean completarJugadores(Categoria categ,List<Jugador> jugDisp) {
+		
+		/*
+		 *1- Si el jugador que arma la partida es novato - Revisar que exista al menos 1 jugador de la misma categoria del jugador que esta creando la partida.
+		 *2- Si existe al menos uno, busca si existen 2 mas de la misma categoria. 
+		 *2.1 Sino busco 2 jugadores mas de la misma categoria 
+		 *sino buso superiores
+		 *sino busco de la categoria inferior  
+		 		PD: en ambos casos se deben equiparar los equipos.
+		 * */
+		
+		
 		List<Jugador> jugadores = JugadorDAO.getInstancia().getAllJugadores();
 		//SACO EL JUGADOR DE LA LISTA
 		for(int i = 0;i<jugadores.size();i++){
@@ -560,23 +571,17 @@ public class Controlador {
 		return detallePartida;
 	}
 
-	/*
-	 * Modifiqué la tabla de partido_pareja, para poder hacer la relación con hibernate. Subo el script corregido  
-	 *  
-	 * Hice varias modificaciones en la base para traer los datos que requeria por pasos sin tener que hacer consultas grandes, actualicé el script
-	 * 
-	 * ManoEntity tenia una lista de chicos, y en realidad un chico esta compuesto por manos
+	/*  
 	 * 
 	 * Para qué esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
 	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
 	 * 
-	 * Como vamos a marcar un empate en la tabla bazas (tiene una columna ganadores_baza), le ponemos 0?
+	 * PARDA - Como vamos a marcar un empate en la tabla bazas (tiene una columna ganadores_baza), le ponemos 0?
+	 * 
+	 * ENVITES - como se maeja el tema de los envido y truco en el mismo turno y el real envido y retruco, etc  
+	 * 
 	 * 
 	 * Como vamos a representar en la tabla de turnos cuando se cante por ejemplo Truco-Re truco- Quiero? 
 	 * (todo sucede en un mismo turno) repetimos el id y despues lo unimos??
-	 * 
-	 * Al enum de modalidad se le podria agregar si es individual o no??
-	 */
-	
-	
+	 */	
 }
