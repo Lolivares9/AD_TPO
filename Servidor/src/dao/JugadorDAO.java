@@ -57,8 +57,8 @@ public class JugadorDAO {
 		je.setPuntaje(jugador.getPuntaje());
 		je.setPartidosJugados(jugador.getPartidosJugados());
 		je.setPartidosGanados(jugador.getPartidosGanados());
-		je.setConectado(true);
-		je.setJugando(false);
+		je.setConectado(jugador.isConectado());
+		je.setJugando(jugador.isJugando());
 		je.setPassword(jugador.getPassword());
 		
 		je.setIdJugador(jugador.getId());

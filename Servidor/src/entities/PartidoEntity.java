@@ -102,8 +102,4 @@ public class PartidoEntity {
 	public void setParejaGanadora(ParejaEntity parejaGanadora) {
 		this.parejaGanadora = parejaGanadora;
 	}
-
-	
-
-
 }

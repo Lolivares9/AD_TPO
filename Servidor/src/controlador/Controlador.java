@@ -137,19 +137,20 @@ public class Controlador {
 		Pareja uno = new Pareja(null,null);
 		Pareja dos = new Pareja(null,null);
 		for(int i = 0;i<4;i++){
-			if(jugDisp.get(0).getCategoria().equals(inicial)){
+			if(jugDisp.get(0).getCategoria().equals(inicial) && (uno.getJugador1() == null || dos.getJugador1() == null)){
 				if(uno.getJugador1() == null){
 					uno.setJugador1(jugDisp.get(0));
 					jugDisp.remove(0);
 				}
 				else{
-					uno.setJugador2(jugDisp.get(0));
+					
+					dos.setJugador1(jugDisp.get(0));
 					jugDisp.remove(0);
 				}
 			}
 			else{
-				if(dos.getJugador1() == null){
-					dos.setJugador1(jugDisp.get(0));
+				if(uno.getJugador2() == null){
+					uno.setJugador2(jugDisp.get(0));
 					jugDisp.remove(0);
 				}
 				else{

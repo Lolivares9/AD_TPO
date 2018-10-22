@@ -16,6 +16,7 @@ import enums.TipoModalidad;
 import excepciones.ParejaException;
 import excepciones.PartidoException;
 import hbt.HibernateUtil;
+import negocio.Pareja;
 import negocio.Partido;
 
 public class PartidoDAO {
@@ -106,11 +107,18 @@ public class PartidoDAO {
 			pe.setParejaGanadora((parejaGanadora));
 		}
 		
-		List<ParejaEntity> parejas = null;
+		List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
 		if(partido.getParejas() != null) {
-			parejas = partido.getParejas().stream().map(j -> ParejaDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
+			for (Pareja p: partido.getParejas()) {
+				ParejaEntity pEntity = ParejaDAO.getInstancia().toEntity(p);
+				pEntity.getPartidos().add(pe);
+				parejas.add(pEntity);
+			}
 		}
 		pe.setParejas(parejas);
+		if (partido.getParejaGanadora() == null) {
+			pe.setParejaGanadora(parejas.get(0));
+		}
 		
 		return pe;
 	}
