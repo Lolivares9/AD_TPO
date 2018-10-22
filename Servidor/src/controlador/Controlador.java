@@ -100,6 +100,8 @@ public class Controlador {
 	public boolean iniciarSesion(JugadorDTO jug) throws JugadorException{		
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
 		if(jugador != null && jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
+			jugador.setConectado(true);
+			jugador.guardar();
 			return true;
 		}
 		return false;

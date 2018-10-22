@@ -25,8 +25,8 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		altaJugador();  // OK 
-		//iniciarSesion(); // 
+		//altaJugador();  // OK 
+		//iniciarSesion(); // OK 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();
@@ -140,6 +140,7 @@ public class Cliente {
 	private static void iniciarSesion(){
 		boolean inicioBien = false;
 		JugadorDTO jug = new JugadorDTO();
+		//INICIA SESION MATI
 		jug.setApodo("chulo");
 		jug.setPassword("123");
 		try {
@@ -148,7 +149,40 @@ public class Cliente {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Inició bien: "+inicioBien);
+		System.out.println(jug.getApodo() + " Inició sesión.\n");
+		
+		//INICIA SESION FACU
+		jug.setApodo("faculth");
+		jug.setPassword("123");
+		try {
+			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(jug.getApodo() + " Inició sesión.\n");
+		
+		//INICIA SESION LAUTI
+		jug.setApodo("lolivares");
+		jug.setPassword("123");
+		try {
+			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(jug.getApodo() + " Inició sesión.\n");
+		
+		//INICIA SESION ROBERTO
+		jug.setApodo("rober");
+		jug.setPassword("123");
+		try {
+			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(jug.getApodo() + " Inició sesión.\n");
 	}
 
 	private static void altaJugador() {

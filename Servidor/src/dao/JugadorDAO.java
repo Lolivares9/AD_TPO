@@ -60,8 +60,8 @@ public class JugadorDAO {
 		je.setConectado(jugador.isConectado());
 		je.setJugando(jugador.isJugando());
 		je.setPassword(jugador.getPassword());
-		
 		je.setIdJugador(jugador.getId());
+		
 		return je;
 	}
 
