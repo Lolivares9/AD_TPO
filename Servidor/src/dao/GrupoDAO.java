@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,6 +101,12 @@ public class GrupoDAO {
 		if(grupo.getJugadores() != null) {
 			jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
 		}
+		
+		List<GrupoEntity> jeGrupos = new ArrayList<GrupoEntity> ();
+		jeGrupos.add(ge);
+		jugNeg.get(0).setGrupos(jeGrupos);
+		jugNeg.get(1).setGrupos(jeGrupos);
+		
 		ge.setJugadores(jugNeg);
 		
 		return ge;

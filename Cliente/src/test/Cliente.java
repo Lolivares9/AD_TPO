@@ -24,16 +24,17 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		crearGrupo();
-		//llenarGrupo();
-		//altaJugador();
-		//iniciarSesion();
+		//altaJugador();  // OK 
+		//iniciarSesion(); // 
+		//crearGrupo(); // OK 
+		//llenarGrupo(); // OK
+		
 		//repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
 		//buscarTodosPartidosJugados();
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
 		//buscarDetalleChico();
-		//iniciarPartidaLibreIndividual(); TEST OK MATI
+		//iniciarPartidaLibreIndividual(); //TEST OK MATI
 	}
 
 
@@ -134,6 +135,12 @@ public class Cliente {
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
+		JugadorDTO jugador2 = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
+		try {
+			BusinessDelegate.getInstancia().AltaJugador(jugador2);
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static void crearGrupo(){
@@ -148,14 +155,14 @@ public class Cliente {
 	private static void llenarGrupo(){
 		Categoria categ = Categoria.Novato;
 		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,"segu2022");
-		jugador.setId(1);
+		jugador.setId(3);
 		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
 		jugadores.add(jugador);
 		JugadorDTO jugador3 = new JugadorDTO("Facundo","faculth","asd@gmail.com",categ,0,0,0,true,false,"123");
-		jugador3.setId(2);
+		jugador3.setId(4);
 		jugadores.add(jugador3);
 		try {
-			BusinessDelegate.getInstancia().llenarGrupo("Grupo5", jugadores);
+			BusinessDelegate.getInstancia().llenarGrupo("Grupo6", jugadores);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}

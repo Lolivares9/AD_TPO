@@ -63,6 +63,14 @@ public class JugadorEntity {
 	//@Column(name="ESTADO")
 	//enum con estados posibles (jugando, conectado...)
 	
+	public List<GrupoEntity> getGrupos() {
+		return grupos;
+	}
+
+	public void setGrupos(List<GrupoEntity> grupos) {
+		this.grupos = grupos;
+	}
+
 	public JugadorEntity() {
 		super();
 	}
