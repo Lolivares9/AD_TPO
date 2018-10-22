@@ -21,6 +21,7 @@ public class JugadorDTO implements Serializable  {
 	private int partidosGanados;
 	private boolean conectado;
 	private boolean jugando;
+	private boolean buscandoLibreIndividual;
 	private String password;
 	private Integer numJugador;
 	
@@ -29,7 +30,7 @@ public class JugadorDTO implements Serializable  {
 	}
 	
 	public JugadorDTO(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
-			int partidosGanados, boolean conectado, boolean jugando, String password) {
+			int partidosGanados, boolean conectado, boolean jugando, boolean buscandoLibreIndividual,String password) {
 		super();
 		this.nombre = nombre;
 		this.apodo = apodo;
@@ -40,6 +41,7 @@ public class JugadorDTO implements Serializable  {
 		this.partidosGanados = partidosGanados;
 		this.conectado = conectado;
 		this.jugando = jugando;
+		this.buscandoLibreIndividual = buscandoLibreIndividual;
 		this.password = password;
 	}
 
@@ -189,5 +191,14 @@ public class JugadorDTO implements Serializable  {
 
 	public void setNumJugador(Integer numJugador) {
 		this.numJugador = numJugador;
+	}
+
+	public boolean isBuscandoLibreIndividual() {
+		return buscandoLibreIndividual;
+	}
+
+	public void setBuscandoLibreIndividual(boolean buscandoLibreIndividual) {
+		this.buscandoLibreIndividual = buscandoLibreIndividual;
 	}	
+	
 }

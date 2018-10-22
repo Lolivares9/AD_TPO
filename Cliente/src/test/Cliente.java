@@ -30,12 +30,26 @@ public class Cliente {
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();
+		//buscarPartidaLibreIndividual();
+		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
 		//repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
 		//buscarDetalleChico();
-		iniciarPartidaLibreIndividual(); //TEST OK MATI
+		
+	}
+
+
+	private static void buscarPartidaLibreIndividual() {
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
+		jugador.setCategoria(Categoria.Novato);
+		try {
+			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
@@ -62,7 +76,7 @@ public class Cliente {
 
 	private static void buscarTodosPartidosJugados() {
 		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
-		jugador.setId(1);
+		jugador.setId(2);
 		try {
 			List<PartidoDTO> partidos = BusinessDelegate.getInstancia().buscarPartidosJugados(jugador, null, null, null);
 			System.out.println("El jugador tiene "+ partidos.size() + " partido/s registrado/s.");
@@ -175,11 +189,11 @@ public class Cliente {
 
 	private static void llenarGrupo(){
 		Categoria categ = Categoria.Novato;
-		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,"segu2022");
+		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,false,"segu2022");
 		jugador.setId(1);
 		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
 		jugadores.add(jugador);
-		JugadorDTO jugador2 = new JugadorDTO("Facundo","faculth","asd@gmail.com",categ,0,0,0,true,false,"123");
+		JugadorDTO jugador2 = new JugadorDTO("Facundo","faculth","asd@gmail.com",categ,0,0,0,true,false,false,"123");
 		jugador2.setId(2);
 		jugadores.add(jugador2);
 		try {

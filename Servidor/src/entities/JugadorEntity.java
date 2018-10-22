@@ -56,6 +56,10 @@ public class JugadorEntity {
 	@Column(name="JUGANDO")
 	private boolean jugando;
 	
+	@Column(name="BUSCANDO_LIBRE_INDIVIDUAL")
+	private boolean buscandoLibreIndividual;
+	
+	
 	@ManyToMany(mappedBy="jugadores")//Acá va el nombre de la lista de jugadores que tiene GrupoEntity
 	private List<GrupoEntity> grupos = new ArrayList<GrupoEntity>();
 	
@@ -177,6 +181,14 @@ public class JugadorEntity {
 
 	public void setJugando(boolean jugando) {
 		this.jugando = jugando;
+	}
+
+	public boolean isBuscandoLibreIndividual() {
+		return buscandoLibreIndividual;
+	}
+
+	public void setBuscandoLibreIndividual(boolean buscandoLibreIndividual) {
+		this.buscandoLibreIndividual = buscandoLibreIndividual;
 	}
 
 	@Override

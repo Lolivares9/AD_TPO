@@ -99,6 +99,15 @@ public class BusinessDelegate {
 		return false;
 	}
 
+	public void buscarPartidaLibreIndividual(JugadorDTO jugador) {
+		try {
+			ir.buscarPartidaLibreIndividual(jugador);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (JugadorException e) {
+			e.printStackTrace();
+		}
+	}
 	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException, PartidoException {
 		PartidoDTO partido = null;
 		try {
@@ -193,4 +202,6 @@ public class BusinessDelegate {
 		}
 		return null;
 	}
+
+
 }

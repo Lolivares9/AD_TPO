@@ -64,6 +64,13 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return inicioBien;
 	}
 	
+	@Override
+	public void buscarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException, JugadorException {
+		Jugador j = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
+		j.setBuscandoLibreIndividual(true);
+		j.guardar();
+	}
+	
 	//OK
 	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException, PartidoException {
 		Jugador jugador = DTOMapper.getInstancia().jugadorDTOtoNegocio(jug);
@@ -148,5 +155,8 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws ManoException, BazaException, TurnoException{
 		return Controlador.getInstancia().obtenerDetalleDeChico(chico);
 	}
+
+
+
 	
 }

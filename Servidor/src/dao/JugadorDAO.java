@@ -42,7 +42,7 @@ public class JugadorDAO {
 	
 	public Jugador toNegocio(JugadorEntity jugador){
 		Jugador j = new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),jugador.getCategoria(),jugador.getPuntaje(),
-				jugador.getPartidosJugados(),jugador.getPartidosGanados(),jugador.isConectado(),jugador.isJugando(),jugador.getPassword());
+				jugador.getPartidosJugados(),jugador.getPartidosGanados(),jugador.isConectado(),jugador.isJugando(),jugador.isBuscandoLibreIndividual(),jugador.getPassword());
 		j.setId(jugador.getIdJugador());
 		return j;
 	}

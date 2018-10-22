@@ -41,6 +41,8 @@ public interface InterfaceRemota extends Remote {
 	
 	public Map<ManoDTO, Map<BazaDTO, List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws RemoteException, ManoException, BazaException, TurnoException;
 	
+	public void buscarPartidaLibreIndividual(JugadorDTO jugador)throws RemoteException, JugadorException;
+	
 	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException, PartidoException;
 	
 	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException;
@@ -58,6 +60,8 @@ public interface InterfaceRemota extends Remote {
 	public boolean eliminarJugador() throws RemoteException;
 	
 	public boolean modificarJugador() throws RemoteException;
+
+
 
 
 
