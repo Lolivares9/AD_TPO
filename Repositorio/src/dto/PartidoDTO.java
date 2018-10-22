@@ -73,8 +73,4 @@ public class PartidoDTO implements Serializable {
 	public void setIdPartido(Integer idPartido) {
 		this.idPartido = idPartido;
 	}
-	
-	
-	
-
 }

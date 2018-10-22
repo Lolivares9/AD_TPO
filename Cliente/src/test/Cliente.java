@@ -33,7 +33,7 @@ public class Cliente {
 		//buscarPartidaLibreIndividual(); // OK
 		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
-		repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
+		//repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
 		//buscarDetalleChico();
