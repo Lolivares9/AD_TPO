@@ -154,15 +154,15 @@ public class ParejaDAO {
 				JugadorDAO.getInstancia().toNegocio(pe.getJugador2()));
 	}
 
-	public ParejaEntity toEntity(Pareja parejaGanadora) {
+	public ParejaEntity toEntity(Pareja pareja) {
 		ParejaEntity pe = new ParejaEntity();
 		
-		pe.setIdPareja(parejaGanadora.getIdPareja());
+		pe.setIdPareja(pareja.getIdPareja());
 		
-		JugadorEntity jugador1 = JugadorDAO.getInstancia().toEntity(parejaGanadora.getJugador1());
+		JugadorEntity jugador1 = JugadorDAO.getInstancia().toEntity(pareja.getJugador1());
 		pe.setJugador1(jugador1);
 		
-		JugadorEntity jugador2 = JugadorDAO.getInstancia().toEntity(parejaGanadora.getJugador2());
+		JugadorEntity jugador2 = JugadorDAO.getInstancia().toEntity(pareja.getJugador2());
 		pe.setJugador2(jugador2);
 		
 		return pe;

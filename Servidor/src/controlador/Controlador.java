@@ -112,12 +112,19 @@ public class Controlador {
 		jugDisp.add(jug);
 		boolean completo = false;
 		boolean esParejo = false;
-		completo = completarJugadores(categ,jugDisp);
+		completo =completarJugadores(categ,jugDisp);
 		if(jugDisp.size() ==  4  && completo == true){
 			esParejo = verificarIgualdadParejas(jugDisp);
 			if(esParejo){
 				parejas = distribuirParejas(jugDisp);
-				return new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
+				Partido p =  new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
+				p.guardar();
+				for (Jugador j : jugDisp) {
+					j.setJugando(true);
+					j.setPartidosJugados(j.getPartidosJugados() + 1);
+					j.guardar();
+				}
+				return p;
 			}	
 		}
 		return null;
@@ -201,6 +208,7 @@ public class Controlador {
 		for(int i = 0;i<jugadores.size();i++){
 			if(jugadores.get(i).getApodo().equals(jugDisp.get(0).getApodo())){
 				jugadores.remove(jugadores.get(i));
+				break;
 			}
 		}
 		

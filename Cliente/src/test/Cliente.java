@@ -40,7 +40,7 @@ public class Cliente {
 
 
 	private static void iniciarPartidaLibreIndividual() {
-		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com","123456");
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
 		jugador.setCategoria(Categoria.Novato);
 		try {
 			PartidoDTO part;
@@ -150,6 +150,18 @@ public class Cliente {
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
+		JugadorDTO jugador3 = new JugadorDTO("Lautaro","lolivares","lautiolivares@gmail.com","123");
+		try {
+			BusinessDelegate.getInstancia().AltaJugador(jugador3);
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
+		JugadorDTO jugador4 = new JugadorDTO("Roberto","rober","rober@gmail.com","123");
+		try {
+			BusinessDelegate.getInstancia().AltaJugador(jugador4);
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static void crearGrupo(){
@@ -164,12 +176,12 @@ public class Cliente {
 	private static void llenarGrupo(){
 		Categoria categ = Categoria.Novato;
 		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,"segu2022");
-		jugador.setId(3);
+		jugador.setId(1);
 		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
 		jugadores.add(jugador);
-		JugadorDTO jugador3 = new JugadorDTO("Facundo","faculth","asd@gmail.com",categ,0,0,0,true,false,"123");
-		jugador3.setId(4);
-		jugadores.add(jugador3);
+		JugadorDTO jugador2 = new JugadorDTO("Facundo","faculth","asd@gmail.com",categ,0,0,0,true,false,"123");
+		jugador2.setId(2);
+		jugadores.add(jugador2);
 		try {
 			BusinessDelegate.getInstancia().llenarGrupo("Grupo6", jugadores);
 		} catch (ComunicationException e) {

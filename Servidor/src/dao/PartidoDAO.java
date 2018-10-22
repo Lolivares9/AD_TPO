@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.JugadorEntity;
 import entities.ParejaEntity;
 import entities.PartidoEntity;
 import enums.TipoModalidad;
@@ -100,8 +101,16 @@ public class PartidoDAO {
 		pe.setFecha(partido.getFecha());
 		pe.setEstado(partido.getEstado());
 		
-		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(partido.getParejaGanadora());
-		pe.setParejaGanadora((parejaGanadora));
+		if (partido.getParejaGanadora() != null) {
+			ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(partido.getParejaGanadora());
+			pe.setParejaGanadora((parejaGanadora));
+		}
+		
+		List<ParejaEntity> parejas = null;
+		if(partido.getParejas() != null) {
+			parejas = partido.getParejas().stream().map(j -> ParejaDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
+		}
+		pe.setParejas(parejas);
 		
 		return pe;
 	}
