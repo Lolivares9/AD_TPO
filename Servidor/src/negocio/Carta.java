@@ -6,21 +6,21 @@ import enums.PaloCarta;
 
 public class Carta {
 	private Integer idCarta;
-	private NumeroCarta numero;
+	private int numero;
 	private PaloCarta palo;
 	private int valorJuego;
 	
-	public Carta(NumeroCarta numeroCarta, PaloCarta palo, int valorJuego) {
+	public Carta(int numeroCarta, PaloCarta palo, int valorJuego) {
 		super();
 		this.numero = numeroCarta;
 		this.palo = palo;
 		this.valorJuego = valorJuego;
 	}
 	
-	public NumeroCarta getNumero() {
+	public int getNumero() {
 		return numero;
 	}
-	public void setNumero(NumeroCarta numero) {
+	public void setNumero(int numero) {
 		this.numero = numero;
 	}
 	public PaloCarta getPalo() {

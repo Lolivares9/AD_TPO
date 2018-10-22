@@ -32,10 +32,7 @@ public class ManoEntity {
 	@JoinColumn(name="ID_PAREJA_GANADORA")
 	private ParejaEntity parejaGanadora;
 	
-	//MODIFICAR
-	@ManyToOne
-	@JoinColumn(name="ID_BAZA")
-	private List<BazaEntity> bazas;
+	
 	
 	public ManoEntity() {
 		super();
@@ -73,12 +70,6 @@ public class ManoEntity {
 		this.idChico = idChico;
 	}
 
-	public List<BazaEntity> getBazas() {
-		return this.bazas;
-	}
 
-	public void setBazas(List<BazaEntity> bazas) {
-		this.bazas = bazas;
-	}
 	
 }

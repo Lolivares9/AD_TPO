@@ -131,6 +131,7 @@ public class Controlador {
 					//actualizo el jugador 2
 					j = pj.getJugador2();
 					j.setJugando(true);
+					j.setBuscandoLibreIndividual(false);
 					j.setPartidosJugados(j.getPartidosJugados() + 1);
 					j.guardar();
 				}

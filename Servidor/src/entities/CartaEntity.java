@@ -27,8 +27,7 @@ public class CartaEntity {
 	
 	//TODO definir si vamos a usar un enum para los numeros, más que nada en las validaciones de las jugadas
 	@Column(name="NUMERO")
-	@Enumerated(EnumType.STRING)
-	private NumeroCarta numero;
+	private int numero;
 	
 	@Column(name="VALOR_JUEGO")
 	private int valorJuego;
@@ -53,11 +52,11 @@ public class CartaEntity {
 		this.palo = palo;
 	}
 
-	public NumeroCarta getNumero() {
+	public int getNumero() {
 		return numero;
 	}
 
-	public void setNumero(NumeroCarta numero) {
+	public void setNumero(int numero) {
 		this.numero = numero;
 	}
 
