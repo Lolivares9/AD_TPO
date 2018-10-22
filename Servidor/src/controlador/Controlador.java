@@ -117,9 +117,16 @@ public class Controlador {
 			esParejo = verificarIgualdadParejas(jugDisp);
 			if(esParejo){
 				parejas = distribuirParejas(jugDisp);
-				Partido p =  new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
+				Partido p =  new Partido(null, TipoModalidad.Libre_individual, parejas, null, new Date(), EstadoPartido.En_Proceso);
 				p.guardar();
-				for (Jugador j : jugDisp) {
+				for (Pareja pj : parejas) {
+					//actualizo el jugador1
+					Jugador j = pj.getJugador1();
+					j.setJugando(true);
+					j.setPartidosJugados(j.getPartidosJugados() + 1);
+					j.guardar();
+					//actualizo el jugador 2
+					j = pj.getJugador2();
 					j.setJugando(true);
 					j.setPartidosJugados(j.getPartidosJugados() + 1);
 					j.guardar();
@@ -208,6 +215,11 @@ public class Controlador {
 		//SACO EL JUGADOR DE LA LISTA
 		for(int i = 0;i<jugadores.size();i++){
 			if(jugadores.get(i).getApodo().equals(jugDisp.get(0).getApodo())){
+				//Lo saco de la lista porque no esta con los id
+				jugDisp.remove(0);
+				//agrego el que traje de la BBDD porque esta completa
+				jugDisp.add(jugadores.get(i));
+				//Lo saco de la lista
 				jugadores.remove(jugadores.get(i));
 				break;
 			}

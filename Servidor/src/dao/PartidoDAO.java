@@ -117,9 +117,9 @@ public class PartidoDAO {
 		}
 		pe.setParejas(parejas);
 		if (partido.getParejaGanadora() == null) {
-			pe.setParejaGanadora(parejas.get(0));
+//			pe.setParejaGanadora(parejas.get(0));
 		}
-		
+		pe.setFecha(partido.getFecha());
 		return pe;
 	}
 }
