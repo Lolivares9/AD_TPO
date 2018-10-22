@@ -28,19 +28,19 @@ public class Cliente {
 		//iniciarSesion(); // 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
+		//buscarTodosPartidosJugados();
 		
 		//repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
-		//buscarTodosPartidosJugados();
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
 		//buscarDetalleChico();
-		//iniciarPartidaLibreIndividual(); //TEST OK MATI
+		iniciarPartidaLibreIndividual(); //TEST OK MATI
 	}
 
 
 	private static void iniciarPartidaLibreIndividual() {
 		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com","123456");
-		jugador.setCategoria(Categoria.Experto);
+		jugador.setCategoria(Categoria.Novato);
 		try {
 			PartidoDTO part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador);
 			System.out.println(part);

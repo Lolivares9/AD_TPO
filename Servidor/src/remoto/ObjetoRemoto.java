@@ -48,7 +48,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return Controlador.getInstancia().crearGrupo(nombreGrupo, jugadorAdmin);
 	}
 	
-	//FALTA TESTEAR FACU
+	//OK
 	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws RemoteException, GrupoException {
 		return Controlador.getInstancia().llenarGrupo(nombreGrupo, jugadores);
 	}
