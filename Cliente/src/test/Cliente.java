@@ -29,9 +29,9 @@ public class Cliente {
 		//iniciarSesion(); // OK 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
-		//buscarTodosPartidosJugados();
-		//buscarPartidaLibreIndividual();
-		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
+		//buscarTodosPartidosJugados();  //NO NADA, ROMPE CUANDO REALMENTE EXISTEN PARTIDOS
+		//buscarPartidaLibreIndividual(); // OK
+		iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
 		//repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
 		//buscarTodosPartidosJugadosConFiltro();
@@ -42,7 +42,35 @@ public class Cliente {
 
 
 	private static void buscarPartidaLibreIndividual() {
+		//MATI SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
 		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
+		jugador.setCategoria(Categoria.Novato);
+		try {
+			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//FACU SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
+		jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
+		jugador.setCategoria(Categoria.Novato);
+		try {
+			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//LAUTI SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
+		jugador = new JugadorDTO("Lautaro","lolivares","lautiolivares@gmail.com","123");
+		jugador.setCategoria(Categoria.Novato);
+		try {
+			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//ROBERTO SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
+		jugador = new JugadorDTO("Roberto","rober","rober@gmail.com","123");
 		jugador.setCategoria(Categoria.Novato);
 		try {
 			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);

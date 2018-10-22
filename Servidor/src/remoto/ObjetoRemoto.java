@@ -66,9 +66,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	
 	@Override
 	public void buscarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException, JugadorException {
-		Jugador j = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
-		j.setBuscandoLibreIndividual(true);
-		j.guardar();
+		Controlador.getInstancia().buscarPartidaLibreIndividual(jugador);
 	}
 	
 	//OK

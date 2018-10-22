@@ -59,6 +59,7 @@ public class JugadorDAO {
 		je.setPartidosGanados(jugador.getPartidosGanados());
 		je.setConectado(jugador.isConectado());
 		je.setJugando(jugador.isJugando());
+		je.setBuscandoLibreIndividual(jugador.isBuscandoLibreIndividual());
 		je.setPassword(jugador.getPassword());
 		je.setIdJugador(jugador.getId());
 		
@@ -131,7 +132,7 @@ public class JugadorDAO {
 		s.beginTransaction();
 		@SuppressWarnings("unchecked")
 		//FALTARIA AGREGAR UN TOP
-		List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("from JugadorEntity je where je.conectado = true and je.jugando = false and je.buscando_libre_individual = true order by je.categoria desc").list();
+		List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("from JugadorEntity je where je.conectado = true and je.jugando = false and je.buscandoLibreIndividual = true order by je.categoria desc").list();
 		for(JugadorEntity jug : jugadoresRecup){
 			jugadores.add(this.toNegocio(jug));
 		}

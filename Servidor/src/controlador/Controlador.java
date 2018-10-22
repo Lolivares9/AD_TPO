@@ -107,7 +107,7 @@ public class Controlador {
 		return false;
 	}
 	
-	//OK, FALTARIA SETEARLE A LOS JUGADORES QUE JUGANDO = TRUE
+
 	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug) throws PartidoException {
 		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
@@ -125,6 +125,7 @@ public class Controlador {
 					//actualizo el jugador1
 					Jugador j = pj.getJugador1();
 					j.setJugando(true);
+					j.setBuscandoLibreIndividual(false);
 					j.setPartidosJugados(j.getPartidosJugados() + 1);
 					j.guardar();
 					//actualizo el jugador 2
@@ -624,4 +625,16 @@ public class Controlador {
 	 * Para qué esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
 	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
 	 */
+
+	public void buscarPartidaLibreIndividual(JugadorDTO jugador) {
+		Jugador j;
+		try {
+			j = JugadorDAO.getInstancia().buscarPorApodo(jugador.getApodo());
+			j.setBuscandoLibreIndividual(true);
+			j.guardar();
+		} catch (JugadorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
