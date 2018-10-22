@@ -25,7 +25,7 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		//altaJugador();  // OK 
+		altaJugador();  // OK 
 		//iniciarSesion(); // 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
