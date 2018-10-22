@@ -65,12 +65,17 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	//OK
-	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException {
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException, PartidoException {
 		Jugador jugador = DTOMapper.getInstancia().jugadorDTOtoNegocio(jug);
 		PartidoDTO part = null;
-		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria(),jugador);
-		if(partidoNuevo != null)
-			part = partidoNuevo.toDTO();
+		try {
+			Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria(),jugador);
+			if(partidoNuevo != null)
+				part = partidoNuevo.toDTO();
+			
+		} catch (PartidoException e) {
+			e.printStackTrace();
+		}
 		return part;
 	}
 	

@@ -99,11 +99,14 @@ public class BusinessDelegate {
 		return false;
 	}
 
-	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException {
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException, PartidoException {
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaLibreIndividual(jugador);
 		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		catch (PartidoException e) {
 			e.printStackTrace();
 		}
 		return partido;

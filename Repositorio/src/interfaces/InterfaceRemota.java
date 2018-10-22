@@ -41,7 +41,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public Map<ManoDTO, Map<BazaDTO, List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws RemoteException, ManoException, BazaException, TurnoException;
 	
-	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException;
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException, PartidoException;
 	
 	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException;
 	

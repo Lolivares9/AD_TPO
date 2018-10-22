@@ -18,6 +18,7 @@ import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
 import excepciones.ComunicationException;
+import excepciones.PartidoException;
 
 public class Cliente {
 
@@ -42,12 +43,20 @@ public class Cliente {
 		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com","123456");
 		jugador.setCategoria(Categoria.Novato);
 		try {
-			PartidoDTO part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador);
-			System.out.println(part);
+			PartidoDTO part;
+			part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador);
+			if (part != null) {
+				System.out.println(part);	
+			}
+			else {
+				System.out.println("No se puede inicializar el partido, no hay suficientes jugadores en linea.");
+			}
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
-		
+		catch (PartidoException e) {
+			e.printStackTrace();
+		}
 	}
 
 

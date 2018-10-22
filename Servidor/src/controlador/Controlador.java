@@ -1,5 +1,6 @@
 package controlador;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -105,25 +106,21 @@ public class Controlador {
 	}
 	
 	//OK, FALTARIA SETEARLE A LOS JUGADORES QUE JUGANDO = TRUE
-	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug){
+	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug) throws PartidoException {
 		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
 		jugDisp.add(jug);
 		boolean completo = false;
 		boolean esParejo = false;
 		completo = completarJugadores(categ,jugDisp);
-		if(jugDisp.size() < 4 || completo == false){
-			return null;
+		if(jugDisp.size() ==  4  && completo == true){
+			esParejo = verificarIgualdadParejas(jugDisp);
+			if(esParejo){
+				parejas = distribuirParejas(jugDisp);
+				return new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
+			}	
 		}
-		
-		esParejo = verificarIgualdadParejas(jugDisp);
-		if(esParejo){
-			parejas = distribuirParejas(jugDisp);
-			return new Partido(null, TipoModalidad.Libre_individual, parejas, null, null, EstadoPartido.En_Proceso);
-		}
-		
 		return null;
-		
 	}
 	
 	private List<Pareja> distribuirParejas(List <Jugador> jugDisp) {
