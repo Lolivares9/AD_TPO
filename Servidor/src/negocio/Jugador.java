@@ -21,6 +21,7 @@ public class Jugador {
 	private boolean conectado;
 	private boolean jugando;
 	private String password;
+	private Integer numJugador;
 
 	public Jugador(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
 			int partidosGanados, boolean conectado, boolean jugando, String password) {
@@ -126,10 +127,18 @@ public class Jugador {
 		this.id = id;
 	}
 	
+	public Integer getNumJugador() {
+		return numJugador;
+	}
+
+	public void setNumJugador(Integer numJugador) {
+		this.numJugador = numJugador;
+	}
+
 	public boolean guardar(){
 		return JugadorDAO.getInstancia().guardar(this);
 	}
-
+	
 	public static Jugador getJugador(String mail) throws JugadorException{
 		Jugador j = JugadorDAO.getInstancia().buscarPorMail(mail);
 		return j;

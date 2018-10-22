@@ -22,7 +22,8 @@ public class JugadorDTO implements Serializable  {
 	private boolean conectado;
 	private boolean jugando;
 	private String password;
-
+	private Integer numJugador;
+	
 	public JugadorDTO() {
 		super();
 	}
@@ -180,5 +181,13 @@ public class JugadorDTO implements Serializable  {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getNumJugador() {
+		return numJugador;
+	}
+
+	public void setNumJugador(Integer numJugador) {
+		this.numJugador = numJugador;
 	}	
 }

@@ -1,7 +1,9 @@
 package util;
 
+import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.PartidoDTO;
+import negocio.Chico;
 import negocio.Jugador;
 import negocio.Partido;
 
@@ -28,5 +30,10 @@ public class DTOMapper {
 	public Partido partidoDTOtoNegocio(PartidoDTO partDTO){
 		Partido partido = null;
 		return partido;
+	}
+	
+	public Chico chicoDTOtoNegocio(ChicoDTO chicoDTO){
+		Chico chicoBO = null;
+		return chicoBO;
 	}
 }
