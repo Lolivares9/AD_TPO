@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import entities.ManoEntity;
 import entities.ParejaEntity;
 import excepciones.ManoException;
 import hbt.HibernateUtil;
+import negocio.Baza;
 import negocio.Chico;
 import negocio.Mano;
 
@@ -79,9 +81,12 @@ public class ManoDAO {
 	
 	public Mano toNegocio(ManoEntity me) {
 		Mano mano = null;
+		//MODIFICAR ACA
+		/*
+		List<Baza> bazas = BazaDAO.getInstancia().toNegocioAll(me.getBazas());
 		mano = new Mano(me.getNumeroMano(),
-				ParejaDAO.getInstancia().toNegocio(me.getParejaGanadora()));
-		mano.setIdMano(me.getIdMano());
+				ParejaDAO.getInstancia().toNegocio(me.getParejaGanadora()),bazas);
+		mano.setIdMano(me.getIdMano());*/
 		return mano;
 	}
 }

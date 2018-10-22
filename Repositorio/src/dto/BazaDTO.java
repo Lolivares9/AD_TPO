@@ -1,6 +1,7 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class BazaDTO implements Serializable {
 
@@ -9,21 +10,12 @@ public class BazaDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -6002073309038469873L;
 	
-	private ManoDTO mano;
 	private int numeroBaza;
 	private ParejaDTO ganadores;
 	private int puntajePareja1;
 	private int puntajePareja2;
-	
-	public BazaDTO(ManoDTO mano, int numeroBaza, ParejaDTO ganadores, int puntajePareja1, int puntajePareja2) {
-		super();
-		this.mano = mano;
-		this.numeroBaza = numeroBaza;
-		this.ganadores = ganadores;
-		this.puntajePareja1 = puntajePareja1;
-		this.puntajePareja2 = puntajePareja2;
-	}
-	
+	private List<TurnoDTO> turnos;
+
 	public BazaDTO(int numeroBaza, ParejaDTO ganadores, int puntajePareja1, int puntajePareja2) {
 		super();
 		this.numeroBaza = numeroBaza;
@@ -32,12 +24,6 @@ public class BazaDTO implements Serializable {
 		this.puntajePareja2 = puntajePareja2;
 	}
 	
-	public ManoDTO getMano() {
-		return mano;
-	}
-	public void setMano(ManoDTO mano) {
-		this.mano = mano;
-	}
 	public int getNumero() {
 		return numeroBaza;
 	}
@@ -61,5 +47,13 @@ public class BazaDTO implements Serializable {
 	}
 	public void setPuntajePareja2(int puntajePareja2) {
 		this.puntajePareja2 = puntajePareja2;
+	}
+
+	public List<TurnoDTO> getTurnos() {
+		return turnos;
+	}
+
+	public void setTurnos(List<TurnoDTO> turnos) {
+		this.turnos = turnos;
 	}
 }

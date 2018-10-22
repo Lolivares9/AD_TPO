@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.List;
+
 import dao.BazaDAO;
 import dto.BazaDTO;
 
@@ -9,19 +11,20 @@ import dto.BazaDTO;
 public class Baza {
 	
 	private Integer idBaza;
-	private Mano mano;
 	private int numeroBaza;
 	private Pareja ganadores;
 	private int puntajePareja1;
 	private int puntajePareja2;
+	private List<Turno> turnos;
 	
-	public Baza(Mano mano, int numero, Pareja ganadores, int puntajePareja1, int puntajePareja2) {
+	public Baza(Integer idBaza, int numeroBaza, Pareja ganadores, int puntajePareja1, int puntajePareja2,List<Turno> turnos) {
 		super();
-		this.mano = mano;
-		this.numeroBaza = numero;
+		this.idBaza = idBaza;
+		this.numeroBaza = numeroBaza;
 		this.ganadores = ganadores;
 		this.puntajePareja1 = puntajePareja1;
 		this.puntajePareja2 = puntajePareja2;
+		this.turnos = turnos;
 	}
 	
 	public Baza(Integer idBaza, int numeroBaza, Pareja ganadores, int puntajePareja1, int puntajePareja2) {
@@ -32,12 +35,7 @@ public class Baza {
 		this.puntajePareja1 = puntajePareja1;
 		this.puntajePareja2 = puntajePareja2;
 	}
-	public Mano getMano() {
-		return mano;
-	}
-	public void setMano(Mano mano) {
-		this.mano = mano;
-	}
+	
 	public int getNumero() {
 		return numeroBaza;
 	}
@@ -75,5 +73,13 @@ public class Baza {
 	}
 	public void setIdBaza(Integer idBaza) {
 		this.idBaza = idBaza;
+	}
+
+	public List<Turno> getTurnos() {
+		return turnos;
+	}
+
+	public void setTurnos(List<Turno> turnos) {
+		this.turnos = turnos;
 	}
 }

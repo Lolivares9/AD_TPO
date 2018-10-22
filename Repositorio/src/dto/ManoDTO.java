@@ -1,6 +1,7 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ManoDTO implements Serializable {
 
@@ -9,16 +10,9 @@ public class ManoDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 3562346828808906265L;
 	
-	private ChicoDTO chico;
 	private int numeroMano;
 	private ParejaDTO parejaGanadora;
-	
-	public ManoDTO(ChicoDTO chico, int numeroMano, ParejaDTO parejaGanadora) {
-		super();
-		this.chico = chico;
-		this.numeroMano = numeroMano;
-		this.parejaGanadora = parejaGanadora;
-	}
+	private List<BazaDTO> bazas;
 	
 	public ManoDTO(int numeroMano, ParejaDTO parejaGanadora) {
 		super();
@@ -26,12 +20,6 @@ public class ManoDTO implements Serializable {
 		this.parejaGanadora = parejaGanadora;
 	}
 
-	public ChicoDTO getChico() {
-		return chico;
-	}
-	public void setChico(ChicoDTO chico) {
-		this.chico = chico;
-	}
 	public int getNumeroMano() {
 		return numeroMano;
 	}
@@ -43,6 +31,14 @@ public class ManoDTO implements Serializable {
 	}
 	public void setParejaGanadora(ParejaDTO parejaGanadora) {
 		this.parejaGanadora = parejaGanadora;
+	}
+
+	public List<BazaDTO> getBazas() {
+		return bazas;
+	}
+
+	public void setBazas(List<BazaDTO> bazas) {
+		this.bazas = bazas;
 	}
 	
 }

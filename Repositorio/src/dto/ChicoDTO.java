@@ -1,5 +1,6 @@
 package dto;
 import java.io.Serializable;
+import java.util.List;
 
 public class ChicoDTO implements Serializable {
 
@@ -14,6 +15,7 @@ public class ChicoDTO implements Serializable {
 	private ParejaDTO parejaGanadora;
 	private int puntajePareja1;
 	private int puntajePareja2;
+	private List<ManoDTO> manos;
 	
 	public ChicoDTO(int numero, boolean finaizado, ParejaDTO parejaGanadora, int puntajePareja1, int puntajePareja2) {
 		super();
@@ -63,5 +65,13 @@ public class ChicoDTO implements Serializable {
 	}
 	public void setIdChico(Integer idChico) {
 		this.idChico = idChico;
+	}
+
+	public List<ManoDTO> getManos() {
+		return manos;
+	}
+
+	public void setManos(List<ManoDTO> manos) {
+		this.manos = manos;
 	}
 }

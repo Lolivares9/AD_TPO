@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.List;
+
 import dao.ManoDAO;
 import dto.ManoDTO;
 
@@ -11,11 +13,13 @@ public class Mano {
 	private Integer idMano;
 	private int numeroMano;
 	private Pareja parejaGanadora;
-		
-	public Mano(int numeroMano, Pareja parejaGanadora) {
+	private List<Baza> bazas;
+	
+	public Mano(int numeroMano, Pareja parejaGanadora,List<Baza> bazas) {
 		super();
 		this.numeroMano = numeroMano;
 		this.parejaGanadora = parejaGanadora;
+		this.bazas = bazas;
 	}
 	
 	public int getNumeroMano() {
@@ -49,5 +53,13 @@ public class Mano {
 	 */
 	public ManoDTO toDTO() {
 		return new ManoDTO(numeroMano, parejaGanadora.toDTO());
+	}
+
+	public List<Baza> getBazas() {
+		return bazas;
+	}
+
+	public void setBazas(List<Baza> bazas) {
+		this.bazas = bazas;
 	}
 }
