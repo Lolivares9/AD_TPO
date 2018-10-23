@@ -19,8 +19,9 @@ public class PartidoDTO implements Serializable {
 		super();
 	}
 	
-	public PartidoDTO(List <ChicoDTO> chico, ModalidadDTO modalidad, List<ParejaDTO> parejas, ParejaDTO parejaGanadora) {
+	public PartidoDTO(Integer idPartido, List <ChicoDTO> chico, ModalidadDTO modalidad, List<ParejaDTO> parejas, ParejaDTO parejaGanadora) {
 		super();
+		this.idPartido = idPartido;
 		this.chicos = chico;
 		this.modalidad = modalidad;
 		this.parejas = parejas;

@@ -10,7 +10,6 @@ import java.util.Map;
 
 import delegado.BusinessDelegate;
 import dto.BazaDTO;
-import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
@@ -18,20 +17,19 @@ import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
 import excepciones.ComunicationException;
-import excepciones.PartidoException;
 
 public class Cliente {
 
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		//altaJugador();  // OK 
-		//iniciarSesion(); // OK 
+		altaJugador();  // OK 
+		iniciarSesion(); // OK 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //NO NADA, ROMPE CUANDO REALMENTE EXISTEN PARTIDOS
-		//buscarPartidaLibreIndividual(); // OK
-		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
+		buscarPartidaLibreIndividual(); // OK
+		iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
 		//repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
 		//buscarTodosPartidosJugadosConFiltro();
@@ -88,15 +86,12 @@ public class Cliente {
 			PartidoDTO part;
 			part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador);
 			if (part != null) {
-				System.out.println(part);	
+				System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
 			}
 			else {
 				System.out.println("No se puede inicializar el partido, no hay suficientes jugadores en linea.");
 			}
 		} catch (ComunicationException e) {
-			e.printStackTrace();
-		}
-		catch (PartidoException e) {
 			e.printStackTrace();
 		}
 	}
@@ -157,8 +152,7 @@ public class Cliente {
 
 	private static void repartirCartas() {
 		try {
-			List<CartaDTO> cartas = BusinessDelegate.getInstancia().repartirCartas();
-			cartas.forEach(c -> System.out.println(c.getNumero() + " de " + c.getPalo()));
+			BusinessDelegate.getInstancia().repartirCartas(null);
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

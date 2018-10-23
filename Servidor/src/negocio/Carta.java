@@ -1,7 +1,6 @@
 package negocio;
 
 import dto.CartaDTO;
-import enums.NumeroCarta;
 import enums.PaloCarta;
 
 public class Carta {

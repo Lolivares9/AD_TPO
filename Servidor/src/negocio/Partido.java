@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import dao.BazaDAO;
 import dao.PartidoDAO;
 import dto.ChicoDTO;
 import dto.ModalidadDTO;
@@ -100,7 +99,7 @@ public class Partido {
 		this.idPartido = idPartido;
 	}
 	
-	public boolean guardar(){
+	public int guardar(){
 		return PartidoDAO.getInstancia().guardar(this);
 	}
 	public PartidoDTO toDTOListar() {
@@ -129,10 +128,10 @@ public class Partido {
 			}
 		}
 		if(parejaGanadora != null){
-			return new PartidoDTO(chicosDTO,mod,parejasDTO,parejaGanadora.toDTO());
+			return new PartidoDTO(this.idPartido, chicosDTO,mod,parejasDTO,parejaGanadora.toDTO());
 		}
 		
-		return new PartidoDTO(chicosDTO,mod,parejasDTO,null);
+		return new PartidoDTO(this.idPartido, chicosDTO,mod,parejasDTO,null);
 	}
 
 	public void save() {

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import controlador.Controlador;
 import dto.BazaDTO;
-import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
@@ -70,18 +69,9 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	//OK
-	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException, PartidoException {
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException, PartidoException, CartaException {
 		Jugador jugador = DTOMapper.getInstancia().jugadorDTOtoNegocio(jug);
-		PartidoDTO part = null;
-		try {
-			Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria(),jugador);
-			if(partidoNuevo != null)
-				part = partidoNuevo.toDTO();
-			
-		} catch (PartidoException e) {
-			e.printStackTrace();
-		}
-		return part;
+		return Controlador.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria(),jugador);
 	}
 	
 	//FALTARIA TESTEAR
@@ -105,14 +95,13 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	@Override
-	public List<CartaDTO> repartirCartas() throws RemoteException {
+	public void repartirCartas(PartidoDTO pd) throws RemoteException {
 		try {
-			return Controlador.getInstancia().repartiCartas();
+			Controlador.getInstancia().repartiCartas(pd);
 		} catch (CartaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
 	}
 
 	@Override

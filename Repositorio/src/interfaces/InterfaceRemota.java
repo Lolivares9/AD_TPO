@@ -7,15 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import dto.BazaDTO;
-import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
+import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.TipoModalidad;
 import excepciones.BazaException;
-import dto.ParejaDTO;
 import excepciones.CartaException;
 import excepciones.ChicoException;
 import excepciones.GrupoException;
@@ -43,7 +42,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public void buscarPartidaLibreIndividual(JugadorDTO jugador)throws RemoteException, JugadorException;
 	
-	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException, PartidoException;
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws RemoteException, PartidoException, CartaException;
 	
 	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException;
 	
@@ -51,7 +50,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public boolean buscarJugDisponibles() throws RemoteException;
 	
-	public List<CartaDTO> repartirCartas() throws RemoteException, CartaException;
+	public void repartirCartas(PartidoDTO pd) throws RemoteException, CartaException;
 	
 	public boolean nuevaMano() throws RemoteException;
 
