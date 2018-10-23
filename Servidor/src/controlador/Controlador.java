@@ -121,7 +121,9 @@ public class Controlador {
 				parejas = distribuirParejas(jugDisp);
 				Partido p =  new Partido(null, TipoModalidad.Libre_individual, parejas, null, new Date(), EstadoPartido.En_Proceso);
 				p.setIdPartido(p.guardar());
-				//p.setChico(crearChicos ());
+				p.setChico(crearChicos ());
+				p.guardar();
+
 				for (Pareja pj : parejas) {
 					//actualizo el jugador1
 					Jugador j = pj.getJugador1();
@@ -149,13 +151,8 @@ public class Controlador {
 		List <Chico> chicos = new ArrayList<Chico>();
 		
 		Chico chico1 = new Chico(1, false, null, 0, 0);
-		chico1.guardar();
-		
 		Chico chico2 = new Chico(2, false, null, 0, 0);
-		chico1.guardar();
-		
 		Chico chico3 = new Chico(3, false, null, 0, 0);
-		chico2.guardar();
 		
 		chicos.add(chico1);
 		chicos.add(chico2);

@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.ChicoEntity;
 import entities.JugadorEntity;
 import entities.ParejaEntity;
 import entities.PartidoEntity;
@@ -16,6 +17,7 @@ import enums.TipoModalidad;
 import excepciones.ParejaException;
 import excepciones.PartidoException;
 import hbt.HibernateUtil;
+import negocio.Chico;
 import negocio.Pareja;
 import negocio.Partido;
 
@@ -120,6 +122,14 @@ public class PartidoDAO {
 //			pe.setParejaGanadora(parejas.get(0));
 		}
 		pe.setFecha(partido.getFecha());
+		
+		List<ChicoEntity> chicos = new ArrayList<ChicoEntity>();
+		if(partido.getChico() != null) {
+			for (Chico c: partido.getChico()) {
+				chicos.add(ChicoDAO.getInstancia().toEntity(c));
+			}
+		}
+		pe.setChicos(chicos);
 		return pe;
 	}
 }
