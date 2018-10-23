@@ -99,7 +99,7 @@ public class Partido {
 		this.idPartido = idPartido;
 	}
 	
-	public int guardar(){
+	public boolean guardar(){
 		return PartidoDAO.getInstancia().guardar(this);
 	}
 	public PartidoDTO toDTOListar() {

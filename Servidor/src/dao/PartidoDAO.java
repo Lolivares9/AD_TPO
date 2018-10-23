@@ -84,16 +84,16 @@ public class PartidoDAO {
 		return p;
 	}
 
-	public int guardar(Partido partido) {
+	public boolean guardar(Partido partido) {
 		PartidoEntity pEntity = toEntity(partido);
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
-		s.save(pEntity);
+		s.saveOrUpdate(pEntity);
 		s.getTransaction().commit();
 		s.close();
 
-		return pEntity.getIdPartido();
+		return true;
 	}
 
 	private PartidoEntity toEntity(Partido partido) {
