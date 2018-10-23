@@ -126,7 +126,9 @@ public class PartidoDAO {
 		List<ChicoEntity> chicos = new ArrayList<ChicoEntity>();
 		if(partido.getChico() != null) {
 			for (Chico c: partido.getChico()) {
-				chicos.add(ChicoDAO.getInstancia().toEntity(c));
+				ChicoEntity cEntity = ChicoDAO.getInstancia().toEntity(c);
+				cEntity.setIdPartido(pe);
+				chicos.add(cEntity);
 			}
 		}
 		pe.setChicos(chicos);
