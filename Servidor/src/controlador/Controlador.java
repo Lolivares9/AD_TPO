@@ -1,6 +1,5 @@
 package controlador;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +20,7 @@ import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
+import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
@@ -108,7 +108,7 @@ public class Controlador {
 	}
 	
 
-	public Partido iniciarPartidaLibreIndividual(Categoria categ,Jugador jug) throws PartidoException {
+	public PartidoDTO iniciarPartidaLibreIndividual(Categoria categ,Jugador jug) throws PartidoException, CartaException {
 		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
 		jugDisp.add(jug);
@@ -120,8 +120,10 @@ public class Controlador {
 			if(esParejo){
 				parejas = distribuirParejas(jugDisp);
 				Partido p =  new Partido(null, TipoModalidad.Libre_individual, parejas, null, new Date(), EstadoPartido.En_Proceso);
+				p.setIdPartido(p.guardar());
 				p.setChico(crearChicos ());
 				p.guardar();
+
 				for (Pareja pj : parejas) {
 					//actualizo el jugador1
 					Jugador j = pj.getJugador1();
@@ -136,7 +138,10 @@ public class Controlador {
 					j.setPartidosJugados(j.getPartidosJugados() + 1);
 					j.guardar();
 				}
-				return p;
+				
+				PartidoDTO pd = p.toDTO();
+				repartiCartas(pd);
+				return pd;
 			}	
 		}
 		return null;
@@ -562,9 +567,16 @@ public class Controlador {
 		return part;
 	}
 
-	public List<CartaDTO> repartiCartas() throws CartaException {
+	public void repartiCartas(PartidoDTO pd) throws CartaException {
 		mazo = new Mazo();
-		return (mazo.repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList()));
+		List<ParejaDTO> parejas = pd.getParejaDTOs();
+		List<CartaDTO> cartas =  mazo.repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList());
+		for(int i = 1; i <= 3; i++){
+			parejas.get(0).agregarCartaJug1(cartas.remove(0));
+			parejas.get(0).agregarCartaJug2(cartas.remove(0));
+			parejas.get(1).agregarCartaJug1(cartas.remove(0));
+			parejas.get(1).agregarCartaJug2(cartas.remove(0));
+		}
 	}
 
 	/**
@@ -581,7 +593,6 @@ public class Controlador {
 	 * @throws PartidoException 
 	 */
 	public List<PartidoDTO> buscarPartidosJugados(JugadorDTO jugador, TipoModalidad mod, Date fechaInicial, Date fechaFin) throws ParejaException, PartidoException{
-		List<PartidoDTO> partidosDTO = new ArrayList<PartidoDTO>();
 		List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jugador.getId(), mod, fechaInicial, fechaFin);
 		return partidos.stream().map(Partido::toDTOListar).collect(Collectors.toList());
 

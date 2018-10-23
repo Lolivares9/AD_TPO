@@ -10,15 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import dto.BazaDTO;
-import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
+import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.TipoModalidad;
 import excepciones.BazaException;
-import dto.ParejaDTO;
 import excepciones.CartaException;
 import excepciones.ChicoException;
 import excepciones.ComunicationException;
@@ -108,7 +107,7 @@ public class BusinessDelegate {
 			e.printStackTrace();
 		}
 	}
-	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException, PartidoException {
+	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException{
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaLibreIndividual(jugador);
@@ -117,15 +116,18 @@ public class BusinessDelegate {
 		}
 		catch (PartidoException e) {
 			e.printStackTrace();
+		} catch (CartaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return partido;
 	}
 
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException, ParejaException {
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException{
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaLibre(pareja);
-		} catch (RemoteException e) {
+		} catch (RemoteException | ParejaException e) {
 			e.printStackTrace();
 		}
 		return partido;
@@ -142,16 +144,15 @@ public class BusinessDelegate {
 	}
 
 
-	public List<CartaDTO> repartirCartas() throws ComunicationException {
+	public void repartirCartas(PartidoDTO pd) throws ComunicationException {
 		try {
-			return ir.repartirCartas();
+			ir.repartirCartas(pd);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (CartaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
 	}
 
 
