@@ -98,4 +98,5 @@ public class ChicoEntity {
 	public void setIdPartido(PartidoEntity idPartido) {
 		this.idPartido = idPartido;
 	}
+	
 }

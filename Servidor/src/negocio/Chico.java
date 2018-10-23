@@ -19,11 +19,11 @@ public class Chico {
 	private int puntajePareja1;
 	private int puntajePareja2;
 	
-	public Chico(int numero, boolean finaizado, Pareja parejaGanadora, int puntajePareja1, int puntajePareja2) {
+	public Chico(int numero, boolean finalizado, Pareja parejaGanadora, int puntajePareja1, int puntajePareja2) {
 		super();
 		this.numero = numero;
 		this.manos = new ArrayList<Mano>();
-		this.finalizado = finaizado;
+		this.finalizado = finalizado;
 		this.parejaGanadora = parejaGanadora;
 		this.puntajePareja1 = puntajePareja1;
 		this.puntajePareja2 = puntajePareja2;

@@ -42,10 +42,12 @@ public class ChicoDAO {
 		ce.setFinalizado(chico.isFinaizado());
 		ce.setPuntajePareja1(chico.getPuntajePareja1());
 		ce.setPuntajePareja2(chico.getPuntajePareja2());
-			
-		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(chico.getParejaGanadora());
-		ce.setParejaGanadora(parejaGanadora);
 		
+		ParejaEntity parejaGanadora = null;
+		if (chico.getParejaGanadora() != null) {
+			parejaGanadora = ParejaDAO.getInstancia().toEntity(chico.getParejaGanadora());
+		}
+		ce.setParejaGanadora(parejaGanadora);
 		return ce;
 	}
 
