@@ -27,11 +27,11 @@ public class Cliente {
 		iniciarSesion(); // OK 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
-		//buscarTodosPartidosJugados();  //NO NADA, ROMPE CUANDO REALMENTE EXISTEN PARTIDOS
+		//buscarTodosPartidosJugados();  //OK
 		buscarPartidaLibreIndividual(); // OK
 		iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
-		//repartirCartas(); //TODO definir si usamos enum para los numeros de cartas
+		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
 		//buscarDetalleChico();

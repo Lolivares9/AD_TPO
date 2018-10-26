@@ -99,12 +99,22 @@ public class Partido {
 		this.idPartido = idPartido;
 	}
 	
-	public boolean guardar(){
+	public Integer guardar(){
 		return PartidoDAO.getInstancia().guardar(this);
 	}
+	
+	public boolean actualizar(){
+		return PartidoDAO.getInstancia().actualizar(this);
+	}
+	
 	public PartidoDTO toDTOListar() {
 		List<ParejaDTO> parejasDTO = parejas.stream().map(Pareja::toDTO).collect(Collectors.toList());
-		return new PartidoDTO(new ModalidadDTO(modalidad, true), parejasDTO, parejaGanadora.toDTO());
+		if(parejaGanadora != null) {
+			return new PartidoDTO(new ModalidadDTO(modalidad, true), parejasDTO, parejaGanadora.toDTO());
+		}else {
+			return new PartidoDTO(new ModalidadDTO(modalidad, true), parejasDTO, null);
+		}
+		
 	}
 	
 	public PartidoDTO toDTO(){

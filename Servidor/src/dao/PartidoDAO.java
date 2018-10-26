@@ -10,7 +10,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import entities.ChicoEntity;
-import entities.JugadorEntity;
 import entities.ParejaEntity;
 import entities.PartidoEntity;
 import enums.TipoModalidad;
@@ -80,11 +79,27 @@ public class PartidoDAO {
 	
 	public Partido toNegocio(PartidoEntity pe) {
 		Partido p = null;
-		p = new Partido(pe.getModalidad(), ParejaDAO.getInstancia().toNegocio(pe.getParejaGanadora()), pe.getFecha());
+		if(pe.getParejaGanadora() != null) {
+			p = new Partido(pe.getModalidad(), ParejaDAO.getInstancia().toNegocio(pe.getParejaGanadora()), pe.getFecha());
+		}else {
+			p = new Partido(pe.getModalidad(), null, pe.getFecha());
+		}
 		return p;
 	}
 
-	public boolean guardar(Partido partido) {
+	public Integer guardar(Partido partido) {
+		PartidoEntity pEntity = toEntity(partido);
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		s.save(pEntity);
+		s.getTransaction().commit();
+		s.close();
+
+		return pEntity.getIdPartido();
+	}
+	
+	public boolean actualizar(Partido partido) {
 		PartidoEntity pEntity = toEntity(partido);
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();

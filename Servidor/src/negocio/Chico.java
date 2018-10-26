@@ -90,6 +90,10 @@ public class Chico {
 	}
 
 	public ChicoDTO toDTO() {
-		return new ChicoDTO(numero, finalizado, parejaGanadora.toDTO(), puntajePareja1, puntajePareja2);
+		if(parejaGanadora != null) {
+			return new ChicoDTO(numero, finalizado, parejaGanadora.toDTO(), puntajePareja1, puntajePareja2);
+		}else {
+			return new ChicoDTO(numero, finalizado, null, puntajePareja1, puntajePareja2);
+		}
 	}
 }

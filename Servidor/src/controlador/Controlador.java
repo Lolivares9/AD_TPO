@@ -120,8 +120,8 @@ public class Controlador {
 			if(esParejo){
 				parejas = distribuirParejas(jugDisp);
 				Partido p =  new Partido(null, TipoModalidad.Libre_individual, parejas, null, new Date(), EstadoPartido.En_Proceso);
+				p.setIdPartido(p.guardar());
 				p.setChico(crearChicos());
-				p.guardar();
 				for (Pareja pj : parejas) {
 					//actualizo el jugador1
 					Jugador j = pj.getJugador1();
