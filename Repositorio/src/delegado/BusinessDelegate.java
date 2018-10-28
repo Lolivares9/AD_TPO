@@ -53,7 +53,7 @@ public class BusinessDelegate {
 	}
 	
 
-	public boolean AltaJugador(JugadorDTO jugador) throws ComunicationException {
+	public boolean altaJugador(JugadorDTO jugador) throws ComunicationException {
 		try {
 			ir.altaJugador(jugador);
 		} catch (RemoteException e) {
@@ -64,14 +64,14 @@ public class BusinessDelegate {
 		return false;
 	}
 
-	public boolean iniciarSesion(JugadorDTO jugador) throws ComunicationException {
-		boolean inicioBien = false;
+	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws ComunicationException {
+		JugadorDTO jugLog = null;
 		try {
-			inicioBien = ir.iniciarSesion(jugador);
+			jugLog = ir.iniciarSesion(jugador);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return inicioBien;
+		return jugLog;
 	}
 	
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws ComunicationException{

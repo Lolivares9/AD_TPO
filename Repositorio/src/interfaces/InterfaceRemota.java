@@ -32,7 +32,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws RemoteException, GrupoException;
 
-	public boolean iniciarSesion(JugadorDTO jugador) throws RemoteException;
+	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws RemoteException;
 	
 	public List<PartidoDTO> buscarPartidosJugados(JugadorDTO jugador, TipoModalidad modalidad, Date fechaIni, Date fechaFin) throws RemoteException, ParejaException, PartidoException;
 	

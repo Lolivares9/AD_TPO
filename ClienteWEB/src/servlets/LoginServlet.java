@@ -19,7 +19,7 @@ import excepciones.ComunicationException;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 2481325140950452392L;
-	private static String usuarioLogueado;
+	private static JugadorDTO usuarioLogueado;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -46,8 +46,9 @@ public class LoginServlet extends HttpServlet {
 		jug.setApodo(apodo);
 		jug.setPassword(password);
 		try {
-			if (BusinessDelegate.getInstancia().iniciarSesion(jug)) {
-				setUsuarioLogueado(apodo);
+			JugadorDTO juglog = BusinessDelegate.getInstancia().iniciarSesion(jug);
+			if (juglog != null) {
+				setUsuarioLogueado(juglog);
 				return true;
 			} else {
 				return false;
@@ -68,11 +69,11 @@ public class LoginServlet extends HttpServlet {
 		}
 	}
 
-	public static String getUsuarioLogueado() {
+	public static JugadorDTO getUsuarioLogueado() {
 		return usuarioLogueado;
 	}
 
-	public static void setUsuarioLogueado(String usuarioLogueado) {
+	public static void setUsuarioLogueado(JugadorDTO usuarioLogueado) {
 		LoginServlet.usuarioLogueado = usuarioLogueado;
 	}
 }

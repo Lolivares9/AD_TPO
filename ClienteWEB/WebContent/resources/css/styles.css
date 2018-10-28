@@ -16,8 +16,7 @@ h1 {
 
 .cartasJugador {
 	position: relative;
-  	background: #008080;
-  	left: 252.5px; top: 426px; z-index: 423; width: 100px; height: 100px;
+	left: 160.5px; top: 326px; z-index: 423; width: 100px; height: 100px;
 }
 
 img {

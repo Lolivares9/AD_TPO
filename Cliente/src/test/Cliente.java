@@ -29,7 +29,7 @@ public class Cliente {
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //OK
 		buscarPartidaLibreIndividual(); // OK
-		iniciarPartidaLibreIndividual(); //TEST OK LAUTI
+		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
@@ -160,13 +160,13 @@ public class Cliente {
 	}
 
 	private static void iniciarSesion(){
-		boolean inicioBien = false;
+		JugadorDTO jugLog = null;
 		JugadorDTO jug = new JugadorDTO();
 		//INICIA SESION MATI
 		jug.setApodo("chulo");
 		jug.setPassword("123");
 		try {
-			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
+			jugLog = BusinessDelegate.getInstancia().iniciarSesion(jug);
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -177,7 +177,7 @@ public class Cliente {
 		jug.setApodo("faculth");
 		jug.setPassword("123");
 		try {
-			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
+			jugLog = BusinessDelegate.getInstancia().iniciarSesion(jug);
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -188,7 +188,7 @@ public class Cliente {
 		jug.setApodo("lolivares");
 		jug.setPassword("123");
 		try {
-			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
+			jugLog = BusinessDelegate.getInstancia().iniciarSesion(jug);
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -199,7 +199,7 @@ public class Cliente {
 		jug.setApodo("rober");
 		jug.setPassword("123");
 		try {
-			inicioBien = BusinessDelegate.getInstancia().iniciarSesion(jug);
+			jugLog = BusinessDelegate.getInstancia().iniciarSesion(jug);
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -210,25 +210,25 @@ public class Cliente {
 	private static void altaJugador() {
 		JugadorDTO jugador = new JugadorDTO("Matias","chulo","matias@gmail.com","123");
 		try {
-			BusinessDelegate.getInstancia().AltaJugador(jugador);
+			BusinessDelegate.getInstancia().altaJugador(jugador);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
 		JugadorDTO jugador2 = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
 		try {
-			BusinessDelegate.getInstancia().AltaJugador(jugador2);
+			BusinessDelegate.getInstancia().altaJugador(jugador2);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
 		JugadorDTO jugador3 = new JugadorDTO("Lautaro","lolivares","lautiolivares@gmail.com","123");
 		try {
-			BusinessDelegate.getInstancia().AltaJugador(jugador3);
+			BusinessDelegate.getInstancia().altaJugador(jugador3);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
 		JugadorDTO jugador4 = new JugadorDTO("Roberto","rober","rober@gmail.com","123");
 		try {
-			BusinessDelegate.getInstancia().AltaJugador(jugador4);
+			BusinessDelegate.getInstancia().altaJugador(jugador4);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
