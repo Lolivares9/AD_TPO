@@ -3,11 +3,8 @@ package dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import entities.BazaEntity;
 import entities.GrupoEntity;
 import entities.JugadorEntity;
-import entities.ParejaEntity;
-import entities.PartidoEntity;
 import entities.RankingGrupalEntity;
 import entities.RankingGrupalPK;
 import hbt.HibernateUtil;

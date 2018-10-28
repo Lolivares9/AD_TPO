@@ -1,6 +1,5 @@
 package dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +12,6 @@ import entities.ManoEntity;
 import entities.ParejaEntity;
 import excepciones.ManoException;
 import hbt.HibernateUtil;
-import negocio.Baza;
 import negocio.Chico;
 import negocio.Mano;
 

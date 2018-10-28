@@ -3,7 +3,6 @@ package controlador;
 import dto.PartidoDTO;
 import enums.Envite;
 import negocio.Baza;
-import negocio.Chico;
 import negocio.Mano;
 import negocio.Partido;
 import negocio.Turno;

@@ -2,7 +2,6 @@ package negocio;
 
 import dao.ParejaDAO;
 import dto.ParejaDTO;
-import entities.JugadorEntity;
 
 public class Pareja {
 	private Integer idPareja;

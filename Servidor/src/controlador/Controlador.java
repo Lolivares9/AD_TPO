@@ -79,7 +79,7 @@ public class Controlador {
 			Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(jugadorAdmin.getApodo());
 			g.setJugadorAdmin(jug);
 			g.agregarJugador(jug);
-			GrupoDAO.getInstancia().guardar(g);
+			g.guardar();
 			return true;
 		}else{
 			return false;
@@ -101,8 +101,7 @@ public class Controlador {
 		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
 		if(jugador != null && jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
 			jugador.setConectado(true);
-			jugador.guardar();
-			return true;
+			return jugador.guardar();
 		}
 		return false;
 	}
@@ -569,6 +568,7 @@ public class Controlador {
 		mazo = new Mazo();
 		List<ParejaDTO> parejas = pd.getParejaDTOs();
 		List<CartaDTO> cartas =  mazo.repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList());
+		//TODO meter esta logica en mazo
 		for(int i = 1; i <= 3; i++){
 			parejas.get(0).agregarCartaJug1(cartas.remove(0));
 			parejas.get(0).agregarCartaJug2(cartas.remove(0));

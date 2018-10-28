@@ -2,7 +2,6 @@ package dto;
 
 import java.io.Serializable;
 
-import enums.NumeroCarta;
 import enums.PaloCarta;
 
 public class CartaDTO implements Serializable {

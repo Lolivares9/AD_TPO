@@ -1,8 +1,5 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import controlador.Controlador;
 import dao.JugadorDAO;
 import dao.ParejaDAO;

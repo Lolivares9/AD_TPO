@@ -1,6 +1,5 @@
 package negocio;
 
-import dao.CartaDAO;
 import dao.RankingGrupalDAO;
 
 public class RankingGrupal {
