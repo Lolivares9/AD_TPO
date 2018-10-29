@@ -27,9 +27,9 @@ public class Partido {
 	private Date fecha;
 	private EstadoPartido estado;
 	
-	public Partido(List<Chico> chico, TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha,EstadoPartido estado) {
+	public Partido(TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha,EstadoPartido estado) {
 		super();
-		this.chicos = chico;
+		this.chicos = crearChicos();
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
@@ -100,7 +100,8 @@ public class Partido {
 	}
 	
 	public Integer guardar(){
-		return PartidoDAO.getInstancia().guardar(this);
+		idPartido = PartidoDAO.getInstancia().guardar(this);
+		return idPartido;
 	}
 	
 	public boolean actualizar(){
@@ -146,5 +147,19 @@ public class Partido {
 
 	public void save() {
 		PartidoDAO.getInstancia().guardar(this);
+	}
+	
+	private List<Chico> crearChicos() {
+		List <Chico> chicos = new ArrayList<Chico>();
+		
+		Chico chico1 = new Chico(1, false, null, 0, 0);
+		Chico chico2 = new Chico(2, false, null, 0, 0);
+		Chico chico3 = new Chico(3, false, null, 0, 0);
+		
+		chicos.add(chico1);
+		chicos.add(chico2);
+		chicos.add(chico3);
+		
+		return chicos;
 	}
 }
