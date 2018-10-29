@@ -12,6 +12,9 @@ public class Baza {
 	
 	private Integer idBaza;
 	private int numeroBaza;
+	private boolean envitePendiente;
+	private int numJugEnvitePendiente;
+	private boolean bazaTerminada;
 	private Pareja ganadores;
 	private int puntajePareja1;
 	private int puntajePareja2;
@@ -81,5 +84,29 @@ public class Baza {
 
 	public void setTurnos(List<Turno> turnos) {
 		this.turnos = turnos;
+	}
+
+	public boolean isEnvitePendiente() {
+		return envitePendiente;
+	}
+
+	public void setEnvitePendiente(boolean envitePendiente) {
+		this.envitePendiente = envitePendiente;
+	}
+
+	public int getNumJugEnvitePendiente() {
+		return numJugEnvitePendiente;
+	}
+
+	public void setNumJugEnvitePendiente(int numJugEnvitePendiente) {
+		this.numJugEnvitePendiente = numJugEnvitePendiente;
+	}
+
+	public boolean isBazaTerminada() {
+		return bazaTerminada;
+	}
+
+	public void setBazaTerminada(boolean bazaTerminada) {
+		this.bazaTerminada = bazaTerminada;
 	}
 }
