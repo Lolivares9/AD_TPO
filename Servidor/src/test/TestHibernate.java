@@ -22,24 +22,24 @@ public class TestHibernate {
 	DBCC CHECKIDENT ('APD.dbo.PAREJAS',RESEED, 0)
 	*/
 	
-	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException {
-		Partido partido = null;
-		//guardarParejas();
-		//guardarPartido();
-		//iniciarPartidaLibre();
-		partido = iniciarPartidaLibreIndividual();
-		
-	}
+//	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException {
+//		Partido partido = null;
+//		//guardarParejas();
+//		//guardarPartido();
+//		//iniciarPartidaLibre();
+//		partido = iniciarPartidaLibreIndividual();
+//		
+//	}
 
-	private static Partido iniciarPartidaLibreIndividual() throws PartidoException, CartaException, JugadorException {
-		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");
-		JugadorDTO jdto = jug.toDTO();
-		Partido part = null;
-		Categoria categ = jug.getCategoria();
-		PartidoDTO partido = Controlador.getInstancia().iniciarPartidaLibreIndividual(categ, jdto);
-		part = DTOMapper.getInstancia().partidoDTOtoNegocio(partido);
-		return part;
-	}
+//	private static Partido iniciarPartidaLibreIndividual() throws PartidoException, CartaException, JugadorException {
+//		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");
+//		JugadorDTO jdto = jug.toDTO();
+//		Partido part = null;
+//		Categoria categ = jug.getCategoria();
+//		PartidoDTO partido = Controlador.getInstancia().iniciarPartidaLibreIndividual(categ, jdto);
+//		part = DTOMapper.getInstancia().partidoDTOtoNegocio(partido);
+//		return part;
+//	}
 
 	private static void iniciarPartidaLibre() throws ParejaException, JugadorException {
 		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");

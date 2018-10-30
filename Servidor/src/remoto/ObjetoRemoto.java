@@ -69,9 +69,9 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	//OK
-	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jug) throws RemoteException, PartidoException, CartaException {
+	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException {
 		
-		return Controlador.getInstancia().iniciarPartidaLibreIndividual(jug.getCategoria(),jug);
+		return Controlador.getInstancia().iniciarPartidaLibreIndividual(categoria,apodo);
 	}
 	
 	//FALTARIA TESTEAR

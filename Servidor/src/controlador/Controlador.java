@@ -108,13 +108,13 @@ public class Controlador {
 		//Esto va directamente en el grupo?
 	}
 
-	public PartidoDTO iniciarPartidaLibreIndividual(Categoria categ,JugadorDTO jugDTO) throws PartidoException, CartaException {
-		Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugDTO);
+	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws PartidoException, CartaException, JugadorException {
+		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(apodo);
 		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
 		
 		jugDisp.add(jug);
-		jugDisp = Jugador.completarJugadores(categ, jug.getApodo());
+		jugDisp = Jugador.completarJugadores(Categoria.valueOf(categ), jug.getApodo());
 		
 		if(jugDisp != null && jugDisp.size() ==  4 ){
 			parejas = Pareja.distribuirParejas(jugDisp);

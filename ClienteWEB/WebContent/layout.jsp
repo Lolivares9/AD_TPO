@@ -11,19 +11,22 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-var user;
 $(document).ready(function(){
-	user = "${usuario}";
-	
+	var user = "${usuario}";
+	var categoria = "${categoria}";
 	$("#LibreIndiv").click(function() {
 		  alert( "Handler for .click() called." );
 		  $.ajax({
-		      type: 'POST',
+			  var sendInfo = {
+					 Usuario: user,
+					 Categoria: categoria
+			       };
+			  type: 'POST',
 		      url: 'ActionsServlet?action=LibreIndiv',
 		      contentType: 'application/json; charset=utf-8',
 		      dataType: 'json',
-		      data: user
-		    }).then;
+		      data: sendInfo
+		    });
 		});
 })
 
