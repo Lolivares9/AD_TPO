@@ -74,7 +74,7 @@ public class Mano {
 		
 		Baza bazaActual = manoActual.getBazas().get(0);
 		Turno turnoEnvite = null;
-		if(bazaActual.isEnvitePendiente()){
+		if(bazaActual.getEnviteActual() != null){
 			turnoEnvite = bazaActual.getTurnos().get(bazaActual.getNumJugEnvitePendiente());
 
 			
