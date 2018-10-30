@@ -25,10 +25,8 @@ import excepciones.ParejaException;
 import excepciones.PartidoException;
 import excepciones.TurnoException;
 import interfaces.InterfaceRemota;
-import negocio.Jugador;
 import negocio.Pareja;
 import negocio.Partido;
-import util.DTOMapper;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota {
 
@@ -69,9 +67,9 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	//OK
-	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException {
+	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException {
 		
-		return Controlador.getInstancia().iniciarPartidaLibreIndividual(categoria,apodo);
+		return Controlador.getInstancia().iniciarPartidaLibreIndividual(categ,apodo);
 	}
 	
 	//FALTARIA TESTEAR

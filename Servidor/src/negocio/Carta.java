@@ -1,5 +1,8 @@
 package negocio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dto.CartaDTO;
 import enums.PaloCarta;
 
@@ -8,12 +11,21 @@ public class Carta {
 	private int numero;
 	private PaloCarta palo;
 	private int valorJuego;
+	private int valorEnvido;
 	
 	public Carta(int numeroCarta, PaloCarta palo, int valorJuego) {
 		super();
 		this.numero = numeroCarta;
 		this.palo = palo;
 		this.valorJuego = valorJuego;
+	}
+	
+	public Carta(int numeroCarta, PaloCarta palo, int valorJuego,int valorTanto) {
+		super();
+		this.numero = numeroCarta;
+		this.palo = palo;
+		this.valorJuego = valorJuego;
+		this.valorEnvido = valorTanto;
 	}
 	
 	public int getNumero() {
@@ -50,5 +62,25 @@ public class Carta {
 	@Override
 	public String toString() {
 		return numero +" de "+ palo;
+	}
+	
+	public static Carta toNegocio(CartaDTO carta){
+		return new Carta(carta.getNumero(),carta.getPalo(),carta.getValorJuego());
+	}
+	
+	public static List<Carta> cartasToNegocio(List<CartaDTO> cartas){
+		List<Carta> cartasBO = new ArrayList<Carta>();
+		for(int i = 0;i<cartas.size();i++){
+			cartasBO.add(toNegocio(cartas.get(i)));
+		}
+		return cartasBO;
+	}
+
+	public int getValorEnvido() {
+		return valorEnvido;
+	}
+
+	public void setValorEnvido(int valorTanto) {
+		this.valorEnvido = valorTanto;
 	}
 }

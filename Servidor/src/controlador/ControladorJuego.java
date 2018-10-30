@@ -1,8 +1,12 @@
 package controlador;
 
+import java.util.List;
+
+import dto.ParejaDTO;
 import dto.PartidoDTO;
 import enums.Envite;
 import negocio.Baza;
+import negocio.Carta;
 import negocio.Mano;
 import negocio.Partido;
 import negocio.Turno;
@@ -28,15 +32,19 @@ public class ControladorJuego {
 	 * @return
 	 */
 	public PartidoDTO nuevaJugada(PartidoDTO partido){
-		Partido partidoBO = DTOMapper.getInstancia().partidoDTOtoNegocio(partido);
-		Mano manoActual = partidoBO.getChico().get(0).getManos().get(0);
+		
+		
 		boolean siguienteTurno = false;
 		
-		siguienteTurno = analizarEnvitesMano(manoActual);
+		siguienteTurno = analizarEnvitesMano(partido);
 		return null;
 	}
 
-	private boolean analizarEnvitesMano(Mano manoActual) {
+	private boolean analizarEnvitesMano(PartidoDTO partido) {
+		Partido partidoBO = DTOMapper.getInstancia().partidoDTOtoNegocio(partido);
+		Mano manoActual = partidoBO.getChico().get(0).getManos().get(0);
+		
+		
 		Baza bazaActual = manoActual.getBazas().get(0);
 		Turno turnoEnvite = null;
 		if(bazaActual.isEnvitePendiente()){
@@ -50,6 +58,7 @@ public class ControladorJuego {
 				return true;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_Querido)){
+				
 				//CALCULO INDIVIDUALMENTE EL TANTO DE LOS JUGADORES, Y LE SUMO LOS PUNTOS A LA PAREJA
 				//PAREJA GANADORA +2 PUNTOS
 				return false;
@@ -218,4 +227,128 @@ public class ControladorJuego {
 	}
 	
 	
+	private ParejaDTO calcularTantoParejas(ParejaDTO pareja1, ParejaDTO pareja2){
+		ParejaDTO parejaGanadora = null;
+		List<Carta> cartasJug1Pareja1 = Carta.cartasToNegocio(pareja1.getCartasJug1());
+		List<Carta> cartasJug2Pareja1 = Carta.cartasToNegocio(pareja1.getCartasJug2());
+		List<Carta> cartasJug1Pareja2 = Carta.cartasToNegocio(pareja2.getCartasJug1());
+		List<Carta> cartasJug2Pareja2 = Carta.cartasToNegocio(pareja2.getCartasJug2());
+		int tantoJug1Pareja1 = calcularTantoJugadores(cartasJug1Pareja1);
+		int tantoJug2Pareja1 = calcularTantoJugadores(cartasJug1Pareja2);
+		int tantoJug1Pareja2 = calcularTantoJugadores(cartasJug2Pareja1);
+		int tantoJug2Pareja2 = calcularTantoJugadores(cartasJug2Pareja2);
+		
+		if(((tantoJug1Pareja1 > tantoJug1Pareja2) && (tantoJug1Pareja1 > tantoJug2Pareja2)) || ((tantoJug2Pareja1 > tantoJug1Pareja2) && (tantoJug2Pareja1 > tantoJug2Pareja2))){
+			parejaGanadora = pareja1;
+		}
+		//ESTE CASO ES CUANDO EMPATAN EN EL ENVIDO
+		else if(((tantoJug1Pareja1 == tantoJug1Pareja2) || (tantoJug1Pareja1 == tantoJug2Pareja2)) || ((tantoJug2Pareja1 == tantoJug1Pareja2) || (tantoJug2Pareja1 == tantoJug2Pareja2))){
+			if(pareja1.getJugadorDTO1().getNumJugador() == 1 || pareja1.getJugadorDTO2().getNumJugador() == 1){
+				return parejaGanadora = pareja1;
+			}
+			else{
+				return parejaGanadora = pareja2;
+			}
+		}
+		
+		return parejaGanadora;
+		
+	}
+	
+	private int calcularTantoJugadores(List<Carta> cartas){
+		Carta carta1 = cartas.get(0);
+		Carta carta2 = cartas.get(1);
+		Carta carta3 = cartas.get(2);
+		int envido = 0;
+		int sumaCarta1Carta2 = 0;
+		int sumaCarta1Carta3 = 0;
+		int sumaCarta2Carta3 = 0;
+		
+		//3 CARTAS DE IGUAL PALO
+		if(carta1.getPalo().equals(carta2.getPalo()) && carta1.getPalo().equals(carta3.getPalo())){
+			if((carta1.getValorEnvido() == 20 && carta2.getValorEnvido() == 20) || (carta3.getValorEnvido() == 20 && carta2.getValorEnvido() == 20) || (carta1.getValorEnvido() == 20 || carta3.getValorEnvido() == 20)){
+				return envido = 20;
+			}
+			sumaCarta1Carta2 = carta1.getValorEnvido() + carta2.getValorEnvido();
+			sumaCarta1Carta3 = carta1.getValorEnvido() + carta3.getValorEnvido();
+			sumaCarta2Carta3 = carta2.getValorEnvido() + carta3.getValorEnvido();
+			if((sumaCarta1Carta2 > sumaCarta1Carta3) && (sumaCarta1Carta2 > sumaCarta2Carta3)){
+				envido = sumaCarta1Carta2;
+				return envido;
+			}
+			else if((sumaCarta1Carta3 > sumaCarta1Carta2) && (sumaCarta1Carta3 > sumaCarta2Carta3)){
+				envido = sumaCarta1Carta3;
+				return envido;
+			}
+			else{
+				envido = sumaCarta2Carta3;
+				return envido;
+			}
+		}
+		//NINGUNA CARTA TIENE IGUAL PALO
+		else if(!carta1.getPalo().equals(carta2.getPalo()) && !carta1.getPalo().equals(carta3.getPalo())){
+			if((carta1.getValorEnvido() >= carta2.getValorEnvido()) && (carta1.getValorEnvido() >= carta3.getValorEnvido())){
+				envido = carta1.getValorEnvido();
+				if(carta1.getValorEnvido() == 10 || carta1.getValorEnvido() == 11 || carta1.getValorEnvido() == 12){
+					return envido = 20;
+				}
+				else{
+					return envido;
+				}
+			}
+			else if((carta2.getValorEnvido() >= carta1.getValorEnvido()) && (carta2.getValorEnvido() >= carta3.getValorEnvido())){
+				envido = carta2.getValorEnvido();
+				if(carta2.getValorEnvido() == 10 || carta2.getValorEnvido() == 11 || carta2.getValorEnvido() == 12){
+					return envido = 20;
+				}
+				else{
+					return envido;
+				}
+			}
+			else if((carta3.getValorEnvido() >= carta2.getValorEnvido()) && (carta3.getValorEnvido() >= carta1.getValorEnvido())){
+				envido = carta3.getValorEnvido();
+				if(carta3.getValorEnvido() == 10 || carta3.getValorEnvido() == 11 || carta3.getValorEnvido() == 12){
+					return envido = 20;
+				}
+				else{
+					return envido;
+				}
+			}
+		}
+		else if(carta1.getPalo().equals(carta2.getPalo())){
+			sumaCarta1Carta2 = carta1.getValorEnvido() + carta2.getValorEnvido();
+			envido = sumaCarta1Carta2;
+			return envido;
+		}
+		else if(carta1.getPalo().equals(carta3.getPalo())){
+			sumaCarta1Carta3 = carta1.getValorEnvido() + carta3.getValorEnvido();
+			envido = sumaCarta1Carta3;
+			return envido;
+		}
+		else if(carta2.getPalo().equals(carta3.getPalo())){
+			sumaCarta2Carta3 = carta2.getValorEnvido() + carta3.getValorEnvido();
+			envido = sumaCarta2Carta3;
+			return envido;
+		}
+		
+		return envido;
+	}
+	
+	
+	
+	
+	
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+

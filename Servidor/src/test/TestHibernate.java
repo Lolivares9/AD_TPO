@@ -30,7 +30,7 @@ public class TestHibernate {
 //		partido = iniciarPartidaLibreIndividual();
 //		
 //	}
-
+//
 //	private static Partido iniciarPartidaLibreIndividual() throws PartidoException, CartaException, JugadorException {
 //		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");
 //		JugadorDTO jdto = jug.toDTO();
