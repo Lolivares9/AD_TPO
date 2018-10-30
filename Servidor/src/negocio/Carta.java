@@ -59,9 +59,16 @@ public class Carta {
 		return new CartaDTO(this.numero, this.palo, this.valorJuego);
 	}
 
-	@Override
 	public String toString() {
 		return numero +" de "+ palo;
+	}
+	
+	public int getValorEnvido() {
+		return valorEnvido;
+	}
+
+	public void setValorEnvido(int valorTanto) {
+		this.valorEnvido = valorTanto;
 	}
 	
 	public static Carta toNegocio(CartaDTO carta){
@@ -76,11 +83,41 @@ public class Carta {
 		return cartasBO;
 	}
 
-	public int getValorEnvido() {
-		return valorEnvido;
+	public static Carta cartaMasAlta(List<Turno> turnos){
+		Turno turno1 = turnos.get(0);
+		Turno turno2 = turnos.get(1);
+		Turno turno3 = turnos.get(2);
+		Turno turno4 = turnos.get(3);
+		
+		//ME FALTA TERMINAR, EN EL CASO DE QUE SEA PARDA Y TODO ESO
+		
+		if((turno1.getCarta().getValorJuego() > turno3.getCarta().getValorJuego() || turno1.getCarta().getValorJuego() > turno4.getCarta().getValorJuego()) ||
+				(turno2.getCarta().getValorJuego() > turno3.getCarta().getValorJuego() || turno2.getCarta().getValorJuego() > turno4.getCarta().getValorJuego())){
+			if(turno1.getCarta().getValorJuego() > turno2.getCarta().getValorJuego()){
+				return turno1.getCarta();
+			}
+			else{
+				return turno2.getCarta();
+			}
+		}
+		else{
+			if(turno3.getCarta().getValorJuego() > turno4.getCarta().getValorJuego()){
+				return turno3.getCarta();
+			}
+			else{
+				return turno4.getCarta();
+			}
+		}
 	}
-
-	public void setValorEnvido(int valorTanto) {
-		this.valorEnvido = valorTanto;
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

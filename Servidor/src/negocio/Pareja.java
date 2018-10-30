@@ -11,6 +11,8 @@ public class Pareja {
 	private Integer idPareja;
 	private Jugador jugador1;
 	private Jugador jugador2;
+	private List<Carta> cartasJugador1;
+	private List<Carta> cartasJugador2;
 	
 	public Pareja(Jugador jugador1, Jugador jugador2) {
 		super();
@@ -99,7 +101,22 @@ public class Pareja {
 			j.actualizarEstadoJugador();
 		}
 	}
-	
+
+	public List<Carta> getCartasJugador1() {
+		return cartasJugador1;
+	}
+
+	public void setCartasJugador1(List<Carta> cartasJugador1) {
+		this.cartasJugador1 = cartasJugador1;
+	}
+
+	public List<Carta> getCartasJugador2() {
+		return cartasJugador2;
+	}
+
+	public void setCartasJugador2(List<Carta> cartasJugador2) {
+		this.cartasJugador2 = cartasJugador2;
+	}
 	
 	public static ParejaDTO calcularTantoParejas(ParejaDTO pareja1, ParejaDTO pareja2){
 		ParejaDTO parejaGanadora = null;
@@ -128,5 +145,6 @@ public class Pareja {
 		return parejaGanadora;
 		
 	}
+
 	
 }
