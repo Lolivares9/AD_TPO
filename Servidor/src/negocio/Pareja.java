@@ -1,7 +1,11 @@
 package negocio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dao.ParejaDAO;
 import dto.ParejaDTO;
+import enums.Categoria;
 
 public class Pareja {
 	private Integer idPareja;
@@ -46,6 +50,54 @@ public class Pareja {
 	
 	public ParejaDTO toDTO() {
 		return new ParejaDTO(jugador1.toDTO(), jugador2.toDTO());
+	}
+
+	public static List<Pareja> distribuirParejas(List<Jugador> jugDisp) {
+
+		Categoria inicial;
+		List <Pareja> parejasArmadas = new ArrayList<Pareja>();
+		inicial = jugDisp.get(0).getCategoria();
+		Pareja uno = new Pareja(null,null);
+		Pareja dos = new Pareja(null,null);
+		for(int i = 0;i<4;i++){
+			if(jugDisp.get(0).getCategoria().equals(inicial) && (uno.getJugador1() == null || dos.getJugador1() == null)){
+				if(uno.getJugador1() == null){
+					uno.setJugador1(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
+				else{
+					
+					dos.setJugador1(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
+			}
+			else{
+				if(uno.getJugador2() == null){
+					uno.setJugador2(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
+				else{
+					dos.setJugador2(jugDisp.get(0));
+					jugDisp.remove(0);
+				}
+			}
+		}
+		
+		parejasArmadas.add(uno);
+		parejasArmadas.add(dos);
+		
+		return parejasArmadas;
+	}
+
+	public static void actualizarEstadoParejas(List<Pareja> parejas) {
+		for (Pareja pj : parejas) {
+			//actualizo el jugador1
+			Jugador j = pj.getJugador1();
+			j.actualizarEstadoJugador();
+			//actualizo el jugador 2
+			j = pj.getJugador2();
+			j.actualizarEstadoJugador();
+		}
 	}
 	
 }

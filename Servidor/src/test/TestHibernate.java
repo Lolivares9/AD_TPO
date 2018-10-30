@@ -3,6 +3,7 @@ package test;
 import controlador.Controlador;
 import dao.JugadorDAO;
 import dao.ParejaDAO;
+import dto.JugadorDTO;
 import dto.PartidoDTO;
 import enums.Categoria;
 import excepciones.CartaException;
@@ -32,9 +33,10 @@ public class TestHibernate {
 
 	private static Partido iniciarPartidaLibreIndividual() throws PartidoException, CartaException, JugadorException {
 		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");
+		JugadorDTO jdto = jug.toDTO();
 		Partido part = null;
 		Categoria categ = jug.getCategoria();
-		PartidoDTO partido = Controlador.getInstancia().iniciarPartidaLibreIndividual(categ, jug);
+		PartidoDTO partido = Controlador.getInstancia().iniciarPartidaLibreIndividual(categ, jdto);
 		part = DTOMapper.getInstancia().partidoDTOtoNegocio(partido);
 		return part;
 	}

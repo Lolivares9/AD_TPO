@@ -65,20 +65,30 @@ public class Controlador {
 		boolean datosValidos = JugadorDAO.getInstancia().validarDatos(jugador.getApodo(), jugador.getMail());
 		if(datosValidos){
 			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
-			JugadorDAO.getInstancia().guardar(jug);
+			jug.guardar();
 		}else{
 			throw new JugadorException("Apodo y/o mail ya registrado/s.");
 		}
 	}
-
+	
+	public JugadorDTO iniciarSesion(JugadorDTO jug) throws JugadorException{
+		
+		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
+		boolean flag = jugador.iniciarSesion(jug.getApodo(), jug.getPassword());
+		if (flag) {
+			return jugador.toDTO();
+		}
+		else {
+			return null;
+		}
+	}
+	
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugadorAdmin) throws GrupoException, JugadorException {
 		boolean valido = GrupoDAO.getInstancia().nombreGrupoValido(nombreGrupo);
 		if(valido){
-			Grupo g = new Grupo();
-			g.setNombre(nombreGrupo);
 			Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(jugadorAdmin.getApodo());
-			g.setJugadorAdmin(jug);
-			g.agregarJugador(jug);
+			List <Jugador> jugadores = new ArrayList<Jugador>();
+			Grupo g = new Grupo(nombreGrupo, jug, jugadores);
 			g.guardar();
 			return true;
 		}else{
@@ -94,440 +104,33 @@ public class Controlador {
 			return g.guardar();
 		}else{
 			return false;
-		}
+		} 
+		//Esto va directamente en el grupo?
 	}
 
-	public JugadorDTO iniciarSesion(JugadorDTO jug) throws JugadorException{		
-		Jugador jugador = JugadorDAO.getInstancia().buscarPorApodo(jug.getApodo());
-		if(jugador != null && jugador.getApodo().equals(jug.getApodo()) && jugador.getPassword().equals(jug.getPassword())){
-			jugador.setConectado(true);
-			jugador.guardar();
-			return jugador.toDTO();
-		}
-		return null;
-	}
-	
-
-	public PartidoDTO iniciarPartidaLibreIndividual(Categoria categ,Jugador jug) throws PartidoException, CartaException {
+	public PartidoDTO iniciarPartidaLibreIndividual(Categoria categ,JugadorDTO jugDTO) throws PartidoException, CartaException {
+		Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugDTO);
 		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
+		
 		jugDisp.add(jug);
-		boolean completo = false;
-		boolean esParejo = false;
-		completo =completarJugadores(categ,jugDisp);
-		if(jugDisp.size() ==  4  && completo == true){
-			esParejo = verificarIgualdadParejas(jugDisp);
-			if(esParejo){
-				parejas = distribuirParejas(jugDisp);
-				Partido p =  new Partido(null, TipoModalidad.Libre_individual, parejas, null, new Date(), EstadoPartido.En_Proceso);
-				p.setIdPartido(p.guardar());
-				p.setChico(crearChicos());
-				for (Pareja pj : parejas) {
-					//actualizo el jugador1
-					Jugador j = pj.getJugador1();
-					j.setJugando(true);
-					j.setBuscandoLibreIndividual(false);
-					j.setPartidosJugados(j.getPartidosJugados() + 1);
-					j.guardar();
-					//actualizo el jugador 2
-					j = pj.getJugador2();
-					j.setJugando(true);
-					j.setBuscandoLibreIndividual(false);
-					j.setPartidosJugados(j.getPartidosJugados() + 1);
-					j.guardar();
-				}
-				
-				PartidoDTO pd = p.toDTO();
-				repartiCartas(pd);
-				return pd;
-			}	
+		jugDisp = Jugador.completarJugadores(categ, jug.getApodo());
+		
+		if(jugDisp != null && jugDisp.size() ==  4 ){
+			parejas = Pareja.distribuirParejas(jugDisp);
+			
+			Partido p =  new Partido(TipoModalidad.Libre_individual, parejas, null, new Date(), EstadoPartido.En_Proceso);
+			p.guardar();
+			Pareja.actualizarEstadoParejas(parejas);
+		
+			PartidoDTO pd = p.toDTO();
+			repartiCartas(pd);
+			return pd;
 		}
 		return null;
 	}
 	
-	private List<Chico> crearChicos() {
-		List <Chico> chicos = new ArrayList<Chico>();
-		
-		Chico chico1 = new Chico(1, false, null, 0, 0);
-		Chico chico2 = new Chico(2, false, null, 0, 0);
-		Chico chico3 = new Chico(3, false, null, 0, 0);
-		
-		chicos.add(chico1);
-		chicos.add(chico2);
-		chicos.add(chico3);
-		
-		return chicos;
-	}
 
-	private List<Pareja> distribuirParejas(List <Jugador> jugDisp) {
-		Categoria inicial;
-		List <Pareja> parejasArmadas = new ArrayList<Pareja>();
-		inicial = jugDisp.get(0).getCategoria();
-		Pareja uno = new Pareja(null,null);
-		Pareja dos = new Pareja(null,null);
-		for(int i = 0;i<4;i++){
-			if(jugDisp.get(0).getCategoria().equals(inicial) && (uno.getJugador1() == null || dos.getJugador1() == null)){
-				if(uno.getJugador1() == null){
-					uno.setJugador1(jugDisp.get(0));
-					jugDisp.remove(0);
-				}
-				else{
-					
-					dos.setJugador1(jugDisp.get(0));
-					jugDisp.remove(0);
-				}
-			}
-			else{
-				if(uno.getJugador2() == null){
-					uno.setJugador2(jugDisp.get(0));
-					jugDisp.remove(0);
-				}
-				else{
-					dos.setJugador2(jugDisp.get(0));
-					jugDisp.remove(0);
-				}
-			}
-		}
-		
-		parejasArmadas.add(uno);
-		parejasArmadas.add(dos);
-		
-		return parejasArmadas;
-	}
-
-	private boolean verificarIgualdadParejas(List<Jugador> jugDisp) {
-		int novatos = 0,masters = 0,expertos = 0,calificados = 0;
-		for(int i = 0;i<jugDisp.size();i++){
-			if(jugDisp.get(i).getCategoria().equals(Categoria.Novato)){
-				novatos++;
-			}
-			if(jugDisp.get(i).getCategoria().equals(Categoria.Master)){
-				masters++;
-			}
-			if(jugDisp.get(i).getCategoria().equals(Categoria.Experto)){
-				expertos++;
-			}
-			if(jugDisp.get(i).getCategoria().equals(Categoria.Calificado)){
-				calificados++;
-			}
-		}
-		
-		if(novatos != 4 && masters != 4 && expertos != 4 && calificados != 4){
-			if(novatos == 1 || masters == 1 || expertos == 1 || calificados == 1){
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	private boolean completarJugadores(Categoria categ,List<Jugador> jugDisp) {
-		
-		/*
-		 *1- Si el jugador que arma la partida es novato - Revisar que exista al menos 1 jugador de la misma categoria del jugador que esta creando la partida.
-		 *2- Si existe al menos uno, busca si existen 2 mas de la misma categoria. 
-		 *2.1 Sino busco 2 jugadores mas de la misma categoria 
-		 *sino buso superiores
-		 *sino busco de la categoria inferior  
-		 		PD: en ambos casos se deben equiparar los equipos.
-		 * */
-		
-		
-		List<Jugador> jugadores = JugadorDAO.getInstancia().getAllJugadores();
-		//SACO EL JUGADOR DE LA LISTA
-		for(int i = 0;i<jugadores.size();i++){
-			if(jugadores.get(i).getApodo().equals(jugDisp.get(0).getApodo())){
-				//Lo saco de la lista porque no esta con los id
-				jugDisp.remove(0);
-				//agrego el que traje de la BBDD porque esta completa
-				jugDisp.add(jugadores.get(i));
-				//Lo saco de la lista
-				jugadores.remove(jugadores.get(i));
-				break;
-			}
-		}
-		
-		if (jugadores.size() > 2) {
-			List <Jugador> novatos = new ArrayList<Jugador>();
-			List <Jugador> masters = new ArrayList<Jugador>();
-			List <Jugador> expertos = new ArrayList<Jugador>();
-			List <Jugador> calificados = new ArrayList<Jugador>();
-			
-			for(int i = 0;i<jugadores.size();i++){
-				if(jugadores.get(i).getCategoria().equals(Categoria.Novato)){
-					novatos.add(jugadores.get(i));
-				}
-				else if(jugadores.get(i).getCategoria().equals(Categoria.Master)){
-					masters.add(jugadores.get(i));
-				}
-				else if(jugadores.get(i).getCategoria().equals(Categoria.Experto)){
-					expertos.add(jugadores.get(i));
-				}
-				else if(jugadores.get(i).getCategoria().equals(Categoria.Calificado)){
-					calificados.add(jugadores.get(i));
-				}
-			}
-			
-			if(novatos.size() >= 3 && categ.equals(Categoria.Novato) && jugDisp.size() < 4){
-				while(!novatos.isEmpty()){
-					jugDisp.add(novatos.get(0));
-					novatos.remove(0);
-				}
-				return true;
-			}
-			if(masters.size() >= 3 && categ.equals(Categoria.Master) && jugDisp.size() < 4){
-				while(!masters.isEmpty()){
-					jugDisp.add(masters.get(0));
-					masters.remove(0);
-				}
-				return true;
-			}
-			if(expertos.size() >= 3 && categ.equals(Categoria.Experto) && jugDisp.size() < 4){
-				while(!expertos.isEmpty()){
-					jugDisp.add(expertos.get(0));
-					expertos.remove(0);
-				}
-				return true;
-			}
-			if(calificados.size() >= 3 && categ.equals(Categoria.Calificado) && jugDisp.size() < 4){
-				while(!calificados.isEmpty()){
-					jugDisp.add(calificados.get(0));
-					calificados.remove(0);
-				}
-				return true;
-			}
-			
-			//SI NO COMPLETAMOS CON UNA MISMA CATEGORIA, TENEMOS QUE COMPLETAR CON LAS MAYORES O MENORES CATEGORIAS
-			
-			if(jugDisp.size() < 4){
-				completarMayorCategoria(categ,jugDisp,novatos,masters,expertos,calificados);
-			}
-			if(jugDisp.size() < 4){
-				completarMenorCategoria(categ,jugDisp,novatos,masters,expertos,calificados);
-			}
-		}
-		else {
-			return false;
-		}
-		
-		return true;
-	}
-	
-	private void completarMayorCategoria(Categoria categ,List<Jugador> jugDisp,List <Jugador> novatos,List <Jugador> masters
-			,List <Jugador> expertos, List <Jugador> calificados){
-		int x = 0;
-		if(categ.equals(Categoria.Novato)){
-			if(novatos.size() >= 1){ 
-				jugDisp.add(novatos.get(0));
-				novatos.remove(0);
-			}
-			if(masters.size() >= 2){
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(masters.get(0));
-					masters.remove(0);
-					x++;
-				}
-			}
-			else if(masters.size() >= 1){
-				jugDisp.add(masters.get(0));
-				masters.remove(0);
-			}
-			if(expertos.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(expertos.get(0));
-					expertos.remove(0);
-					x++;
-				}
-			}
-			else if(expertos.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(expertos.get(0));
-				expertos.remove(0);
-			}
-			if(calificados.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(calificados.get(0));
-					calificados.remove(0);
-					x++;
-				}
-			}
-			else if(calificados.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(calificados.get(0));
-				calificados.remove(0);
-			}
-		}
-		if(categ.equals(Categoria.Master)){
-			if(masters.size() >= 1){
-				jugDisp.add(masters.get(0));
-				masters.remove(0);
-			}
-			if(expertos.size() >= 2){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(expertos.get(0));
-					expertos.remove(0);
-					x++;
-				}
-			}
-			else if(expertos.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(expertos.get(0));
-				expertos.remove(0);
-			}
-			if(calificados.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(calificados.get(0));
-					calificados.remove(0);
-					x++;
-				}
-			}
-			else if(calificados.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(calificados.get(0));
-				calificados.remove(0);
-			}
-		}
-		if(categ.equals(Categoria.Experto)){
-			if(expertos.size() >= 1){
-				jugDisp.add(expertos.get(0));
-				expertos.remove(0);
-			}
-			if(calificados.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(calificados.get(0));
-					calificados.remove(0);
-					x++;
-				}
-			}
-			else if(calificados.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(calificados.get(0));
-				calificados.remove(0);
-			}
-		}
-		if(categ.equals(Categoria.Calificado)){
-			if(calificados.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(calificados.get(0));
-					calificados.remove(0);
-					x++;
-				}
-			}
-			else if(calificados.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(calificados.get(0));
-				calificados.remove(0);
-			}
-		}
-	}
-	
-	private void completarMenorCategoria(Categoria categ,List<Jugador> jugDisp,List <Jugador> novatos,List <Jugador> masters
-			,List <Jugador> expertos, List <Jugador> calificados){
-		int x = 0;
-		if(categ.equals(Categoria.Calificado)){
-			if(calificados.size() >= 1){ 
-				jugDisp.add(calificados.get(0));
-				calificados.remove(0);
-			}
-			if(expertos.size() >= 2){
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(expertos.get(0));
-					expertos.remove(0);
-					x++;
-				}
-			}
-			else if(expertos.size() >= 1){
-				jugDisp.add(expertos.get(0));
-				expertos.remove(0);
-			}
-			if(masters.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(masters.get(0));
-					masters.remove(0);
-					x++;
-				}
-			}
-			else if(masters.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(masters.get(0));
-				masters.remove(0);
-			}
-			if(novatos.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(novatos.get(0));
-					novatos.remove(0);
-					x++;
-				}
-			}
-			else if(novatos.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(novatos.get(0));
-				novatos.remove(0);
-			}
-		}
-		if(categ.equals(Categoria.Experto)){
-			if(expertos.size() >= 1){
-				jugDisp.add(expertos.get(0));
-				expertos.remove(0);
-			}
-			if(masters.size() >= 2){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(masters.get(0));
-					masters.remove(0);
-					x++;
-				}
-			}
-			else if(masters.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(masters.get(0));
-				masters.remove(0);
-			}
-			if(novatos.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(novatos.get(0));
-					novatos.remove(0);
-					x++;
-				}
-			}
-			else if(novatos.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(novatos.get(0));
-				novatos.remove(0);
-			}
-		}
-		if(categ.equals(Categoria.Master)){
-			if(masters.size() >= 1){
-				jugDisp.add(masters.get(0));
-				masters.remove(0);
-			}
-			if(novatos.size() >= 2 && jugDisp.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(novatos.get(0));
-					novatos.remove(0);
-					x++;
-				}
-			}
-			else if(novatos.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(novatos.get(0));
-				novatos.remove(0);
-			}
-		}
-		if(categ.equals(Categoria.Novato)){
-			if(novatos.size() >= 2 && novatos.size() < 4){
-				x = 0;
-				while(x < 2 && jugDisp.size() < 4){
-					jugDisp.add(novatos.get(0));
-					novatos.remove(0);
-					x++;
-				}
-			}
-			else if(novatos.size() >= 1 && jugDisp.size() < 4){
-				jugDisp.add(novatos.get(0));
-				novatos.remove(0);
-			}
-		}
-	}
 
 	/**
 	 * Entiendo que aca la pareja ya va a estar persistida (la que quiere jugar), por eso necesito su id
@@ -556,7 +159,7 @@ public class Controlador {
 			for(int i = 0;i<parejasDisponibles.size();i++){
 				if(parejasDisponibles.get(i).getJugador1().getCategoria().equals(categoriaBuscada) || parejasDisponibles.get(i).getJugador2().getCategoria().equals(categoriaBuscada)){
 					parejasFinales.add(parejasDisponibles.get(i));
-					part =  new Partido(null, TipoModalidad.Libre, parejasFinales, null, null, EstadoPartido.En_Proceso);
+					part =  new Partido(TipoModalidad.Libre, parejasFinales, null, null, EstadoPartido.En_Proceso);
 					return part;
 				}
 			}
