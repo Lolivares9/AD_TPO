@@ -9,20 +9,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Menú Principal</title>
 
-		<script type="text/javascript" >
-			function LibreIndiv(){
-				alert('Gracias por hacer click aca');
-			}
-		</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+var user;
+$(document).ready(function(){
+	user = "${usuario}";
+	
+	$("#LibreIndiv").click(function() {
+		  alert( "Handler for .click() called." );
+		  $.ajax({
+		      type: 'POST',
+		      url: 'ActionsServlet?action=LibreIndiv',
+		      contentType: 'application/json; charset=utf-8',
+		      dataType: 'json',
+		      data: user
+		    }).then;
+		});
+})
+
+
+</script>
 
 </head>
 <body>
-				<center><h2>Usuario Logueado</h2></center>
-				<% JugadorDTO user = LoginServlet.getUsuarioLogueado(); %>
-				<h4> Usuario logueado: <%= user.getApodo() %></h4>
-				
-				<!-- input type="button" onclick="ActionsServlet?action=LibreIndiv" value="Inicia partida libre individual"-->
-				<a href="ActionsServlet?action=LibreIndiv" target="_self">Inicia partida libre individual</a> 
+		<center><h2>Usuario Logueado</h2></center>
+		<% String apodo = (String) request.getAttribute("usuario"); %>
+		<% String categoria = (String) request.getAttribute("categoria"); %>
+		<h4> Usuario logueado: <%= apodo %></h4>
+		<h4> Categoria: <%= categoria %></h4>
+			
+		<input type="button" id="LibreIndiv" value="Iniciar partida libre individual">
+		<!--a href="ActionsServlet?action=LibreIndiv" target="_self">Inicia partida libre individual</a--> 
 
 </body>
 </html>

@@ -28,7 +28,7 @@ public class Cliente {
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //OK
-		buscarPartidaLibreIndividual(); // OK
+		//buscarPartidaLibreIndividual(); // OK
 		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
 		//repartirCartas();
