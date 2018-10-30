@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
 		JugadorDTO jugLog = validarUsuario(apodo,password);
 		if(jugLog != null){
 			request.setAttribute("usuario", apodo);
-			request.setAttribute("categoria", jugLog.getCategoria());
+			request.setAttribute("categoria", jugLog.getCategoria().toString());
 			dispatch(jspPage, request, response);
 		}
 		else{

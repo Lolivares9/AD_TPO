@@ -14,18 +14,23 @@
 $(document).ready(function(){
 	var user = "${usuario}";
 	var categoria = "${categoria}";
+	  var sendInfo = {
+				 Usuario: user,
+				 Categoria: categoria
+		       };
 	$("#LibreIndiv").click(function() {
-		  alert( "Handler for .click() called." );
 		  $.ajax({
-			  var sendInfo = {
-					 Usuario: user,
-					 Categoria: categoria
-			       };
 			  type: 'POST',
 		      url: 'ActionsServlet?action=LibreIndiv',
 		      contentType: 'application/json; charset=utf-8',
 		      dataType: 'json',
-		      data: sendInfo
+		      data: JSON.stringify(sendInfo),
+	          success: function(response ,response2) {
+	        	  $("html").html(response2);
+                   },
+     	          error: function(response,response2) {
+     	        	 $("html").html(response2);
+                   }
 		    });
 		});
 })

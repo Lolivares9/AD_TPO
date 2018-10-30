@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -36,6 +35,8 @@ public class ActionsServlet extends HttpServlet{
     {
         String action = request.getParameter("action");
         String jspPage = "/index.jsp";
+        request.getParameterNames();
+        request.getAttributeNames();
         
         if ((action == null) || (action.length() < 1))
         {
@@ -43,27 +44,29 @@ public class ActionsServlet extends HttpServlet{
         }else if ("LibreIndiv".equals(action))
         {
             try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
-                String json = "";
-                if(br != null){
-                    json = br.readLine();
+                StringBuilder sb = new StringBuilder();
+                BufferedReader reader = request.getReader();
+                try {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line).append('\n');
+                    }
+                } finally {
+                    reader.close();
                 }
                 Gson g = new Gson();
-                Map<String,String> mapa = g.fromJson(json, Map.class);
-				PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(mapa.get("categoria"), mapa.get("usuario"));
+                Map<String,String> mapa = g.fromJson(sb.toString(), Map.class);
+				PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(mapa.get("Categoria"), mapa.get("Usuario"));
+				jspPage = "/partido.jsp";
 				request.setAttribute("partido", partido);
 			} catch (ComunicationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            jspPage = "/partido.jsp";
+   
         }
-        
-        
-    
         dispatch(jspPage, request, response);
     }
-	
 	
     protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
