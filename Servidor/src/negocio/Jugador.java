@@ -501,4 +501,83 @@ public class Jugador {
 		this.partidosJugados = this.partidosJugados + 1;
 		this.guardar();
 	}
+	
+	public static int calcularTantoJugadores(List<Carta> cartas){
+		Carta carta1 = cartas.get(0);
+		Carta carta2 = cartas.get(1);
+		Carta carta3 = cartas.get(2);
+		int envido = 0;
+		int sumaCarta1Carta2 = 0;
+		int sumaCarta1Carta3 = 0;
+		int sumaCarta2Carta3 = 0;
+		
+		//3 CARTAS DE IGUAL PALO
+		if(carta1.getPalo().equals(carta2.getPalo()) && carta1.getPalo().equals(carta3.getPalo())){
+			if((carta1.getValorEnvido() == 20 && carta2.getValorEnvido() == 20) || (carta3.getValorEnvido() == 20 && carta2.getValorEnvido() == 20) || (carta1.getValorEnvido() == 20 || carta3.getValorEnvido() == 20)){
+				return envido = 20;
+			}
+			sumaCarta1Carta2 = carta1.getValorEnvido() + carta2.getValorEnvido();
+			sumaCarta1Carta3 = carta1.getValorEnvido() + carta3.getValorEnvido();
+			sumaCarta2Carta3 = carta2.getValorEnvido() + carta3.getValorEnvido();
+			if((sumaCarta1Carta2 > sumaCarta1Carta3) && (sumaCarta1Carta2 > sumaCarta2Carta3)){
+				envido = sumaCarta1Carta2;
+				return envido;
+			}
+			else if((sumaCarta1Carta3 > sumaCarta1Carta2) && (sumaCarta1Carta3 > sumaCarta2Carta3)){
+				envido = sumaCarta1Carta3;
+				return envido;
+			}
+			else{
+				envido = sumaCarta2Carta3;
+				return envido;
+			}
+		}
+		//NINGUNA CARTA TIENE IGUAL PALO
+		else if(!carta1.getPalo().equals(carta2.getPalo()) && !carta1.getPalo().equals(carta3.getPalo())){
+			if((carta1.getValorEnvido() >= carta2.getValorEnvido()) && (carta1.getValorEnvido() >= carta3.getValorEnvido())){
+				envido = carta1.getValorEnvido();
+				if(carta1.getValorEnvido() == 10 || carta1.getValorEnvido() == 11 || carta1.getValorEnvido() == 12){
+					return envido = 20;
+				}
+				else{
+					return envido;
+				}
+			}
+			else if((carta2.getValorEnvido() >= carta1.getValorEnvido()) && (carta2.getValorEnvido() >= carta3.getValorEnvido())){
+				envido = carta2.getValorEnvido();
+				if(carta2.getValorEnvido() == 10 || carta2.getValorEnvido() == 11 || carta2.getValorEnvido() == 12){
+					return envido = 20;
+				}
+				else{
+					return envido;
+				}
+			}
+			else if((carta3.getValorEnvido() >= carta2.getValorEnvido()) && (carta3.getValorEnvido() >= carta1.getValorEnvido())){
+				envido = carta3.getValorEnvido();
+				if(carta3.getValorEnvido() == 10 || carta3.getValorEnvido() == 11 || carta3.getValorEnvido() == 12){
+					return envido = 20;
+				}
+				else{
+					return envido;
+				}
+			}
+		}
+		else if(carta1.getPalo().equals(carta2.getPalo())){
+			sumaCarta1Carta2 = carta1.getValorEnvido() + carta2.getValorEnvido();
+			envido = sumaCarta1Carta2;
+			return envido;
+		}
+		else if(carta1.getPalo().equals(carta3.getPalo())){
+			sumaCarta1Carta3 = carta1.getValorEnvido() + carta3.getValorEnvido();
+			envido = sumaCarta1Carta3;
+			return envido;
+		}
+		else if(carta2.getPalo().equals(carta3.getPalo())){
+			sumaCarta2Carta3 = carta2.getValorEnvido() + carta3.getValorEnvido();
+			envido = sumaCarta2Carta3;
+			return envido;
+		}
+		
+		return envido;
+	}
 }

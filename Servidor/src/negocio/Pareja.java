@@ -100,4 +100,33 @@ public class Pareja {
 		}
 	}
 	
+	
+	public static ParejaDTO calcularTantoParejas(ParejaDTO pareja1, ParejaDTO pareja2){
+		ParejaDTO parejaGanadora = null;
+		List<Carta> cartasJug1Pareja1 = Carta.cartasToNegocio(pareja1.getCartasJug1());
+		List<Carta> cartasJug2Pareja1 = Carta.cartasToNegocio(pareja1.getCartasJug2());
+		List<Carta> cartasJug1Pareja2 = Carta.cartasToNegocio(pareja2.getCartasJug1());
+		List<Carta> cartasJug2Pareja2 = Carta.cartasToNegocio(pareja2.getCartasJug2());
+		int tantoJug1Pareja1 = Jugador.calcularTantoJugadores(cartasJug1Pareja1);
+		int tantoJug2Pareja1 = Jugador.calcularTantoJugadores(cartasJug1Pareja2);
+		int tantoJug1Pareja2 = Jugador.calcularTantoJugadores(cartasJug2Pareja1);
+		int tantoJug2Pareja2 = Jugador.calcularTantoJugadores(cartasJug2Pareja2);
+		
+		if(((tantoJug1Pareja1 > tantoJug1Pareja2) && (tantoJug1Pareja1 > tantoJug2Pareja2)) || ((tantoJug2Pareja1 > tantoJug1Pareja2) && (tantoJug2Pareja1 > tantoJug2Pareja2))){
+			parejaGanadora = pareja1;
+		}
+		//ESTE CASO ES CUANDO EMPATAN EN EL ENVIDO,GANA EL QUE ES MANO
+		else if(((tantoJug1Pareja1 == tantoJug1Pareja2) || (tantoJug1Pareja1 == tantoJug2Pareja2)) || ((tantoJug2Pareja1 == tantoJug1Pareja2) || (tantoJug2Pareja1 == tantoJug2Pareja2))){
+			if(pareja1.getJugadorDTO1().getNumJugador() == 1 || pareja1.getJugadorDTO2().getNumJugador() == 1){
+				return parejaGanadora = pareja1;
+			}
+			else{
+				return parejaGanadora = pareja2;
+			}
+		}
+		
+		return parejaGanadora;
+		
+	}
+	
 }

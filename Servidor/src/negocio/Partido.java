@@ -162,4 +162,13 @@ public class Partido {
 		
 		return chicos;
 	}
+	
+	public static PartidoDTO nuevaJugada(PartidoDTO partido){
+		
+		
+		boolean siguienteTurno = false;
+		
+		siguienteTurno = Mano.analizarEnvitesMano(partido);
+		return null;
+	}
 }
