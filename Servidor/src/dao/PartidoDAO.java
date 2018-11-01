@@ -149,4 +149,29 @@ public class PartidoDAO {
 		pe.setChicos(chicos);
 		return pe;
 	}
+
+	public Partido buscarPartidoPorID(int id) throws PartidoException {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		Partido p = null;
+		PartidoEntity partidoe;
+		try {
+				partidoe = (PartidoEntity) s.createQuery("from PartidoEntity pe where pe.idPartido = ?").setInteger(0, id).uniqueResult();
+				s.getTransaction().commit();
+				s.close();
+				if(partidoe != null){
+					p = toNegocio(partidoe);
+				}
+				else{
+					return p;
+				}
+			} catch (HibernateException e) {
+				e.printStackTrace();
+				throw new PartidoException("Error al buscar los partidos del jugador");
+			}finally {
+				s.close();
+			}
+		return p;
+	}
 }

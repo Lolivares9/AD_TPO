@@ -3,9 +3,11 @@ package negocio;
 import java.util.List;
 
 import dao.ManoDAO;
+import dao.PartidoDAO;
 import dto.ManoDTO;
 import dto.PartidoDTO;
 import enums.Envite;
+import excepciones.PartidoException;
 import util.DTOMapper;
 
 /**
@@ -67,12 +69,25 @@ public class Mano {
 	}
 	
 	
-	public static boolean analizarEnvitesMano(PartidoDTO partido) {
-		Partido partidoBO = DTOMapper.getInstancia().partidoDTOtoNegocio(partido);
-		Mano manoActual = partidoBO.getChico().get(0).getManos().get(0);
+	public static boolean analizarEnvitesMano(int id) throws PartidoException {
+		int indiceChico = 0;
+		int indiceMano = 0;
+		int indiceBaza = 0;
+		Partido partidoBO = PartidoDAO.getInstancia().buscarPartidoPorID(id);
+		if(partidoBO.getChico().size() > 0){
+			indiceChico = partidoBO.getChico().size()-1;//agarro el chico actual
+			if(partidoBO.getChico().get(indiceChico).getManos().size() > 0){
+				indiceMano =  partidoBO.getChico().get(indiceChico).getManos().size()-1;//agarro la mano actual
+				Mano manoActual = partidoBO.getChico().get(indiceChico).getManos().get(indiceMano);
+				if(manoActual.getBazas().size() > 0){
+					indiceBaza = manoActual.getBazas().size() - 1;//agarro la baza/ronda actual
+				}
+			}
+		}
 		
+		Mano manoActual = partidoBO.getChico().get(indiceChico).getManos().get(indiceMano);
+		Baza bazaActual = manoActual.getBazas().get(indiceBaza);
 		
-		Baza bazaActual = manoActual.getBazas().get(0);
 		Turno turnoEnvite = null;
 		if(bazaActual.getEnviteActual() != null){
 			turnoEnvite = bazaActual.getTurnos().get(bazaActual.getNumJugEnvitePendiente());
