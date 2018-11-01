@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Truco Online</title>
@@ -22,8 +23,9 @@
 	<section id="main"
 		class="container-fluid d-flex justify-content-center align-items-center col-12 col-md-8">
 		<div class="login-box bg-dark mt-4 text-light">
-			<h1 class="brand-text text-center">Truco Online</h1>
+			<h2 class="brand-text text-center"><center>Truco Online</center></h2>
 			<form name="login" action="LoginServlet" method="post">
+			<center>
 				<div class="input-group mb-3 mt-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon1">Usuario</span>
@@ -40,10 +42,24 @@
 					<input type="password" class="form-control" placeholder="Ingrese contraseña..."
 						name="password" aria-label="Contraseña" aria-describedby="basic-addon2">
 				</div>
+				<br>
 				<div class="container d-flex justify-content-center">
 					<input type="submit" value="Log in" class="btn btn-secondary w-100" />
 				</div>
+				<br>
+				<a href="AltaJugador.jsp" target="_self"> Si no estas registrado "Haz click Aquí"</a>
 			</form>
+			</center>
+			<%
+    		 if(null!=request.getAttribute("Message"))
+    		{
+      		 out.println("<script>alert('Jugador dado de alta correctamente');</script>");
+      		 }else if(null!=request.getAttribute("errorMessage"))
+    		{
+      		 out.println("<script>alert('Usuario o contraseña incorrecta');</script>");
+      		 
+   			 }
+			%>
 		</div>
 	</section>
 	<div class="loading-overlay">

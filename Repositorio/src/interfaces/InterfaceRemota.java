@@ -26,7 +26,7 @@ import excepciones.TurnoException;
 
 public interface InterfaceRemota extends Remote {
 	
-	public boolean altaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
+	public JugadorDTO altaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
 	
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugador) throws RemoteException, GrupoException, JugadorException;
 	

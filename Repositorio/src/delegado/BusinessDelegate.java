@@ -53,15 +53,16 @@ public class BusinessDelegate {
 	}
 	
 
-	public boolean altaJugador(JugadorDTO jugador) throws ComunicationException {
+	public JugadorDTO altaJugador(JugadorDTO jugador) throws ComunicationException {
+		JugadorDTO jugLog = null;
 		try {
-			ir.altaJugador(jugador);
+			jugLog=ir.altaJugador(jugador);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (JugadorException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return jugLog;
 	}
 
 	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws ComunicationException {
