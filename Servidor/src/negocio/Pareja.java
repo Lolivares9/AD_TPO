@@ -26,6 +26,10 @@ public class Pareja {
 		this.jugador2 = negocio2;
 	}
 
+	public Pareja(){
+		
+	};
+	
 	public Jugador getJugador1() {
 		return jugador1;
 	}

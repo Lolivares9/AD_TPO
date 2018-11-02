@@ -77,6 +77,11 @@ public class ChicoDAO {
 	}
 	
 	public Chico toNegocio(ChicoEntity ce) {
-		return new Chico(ce.getNumeroChico(), ce.isFinalizado(), ParejaDAO.getInstancia().toNegocio(ce.getParejaGanadora()), ce.getPuntajePareja1(), ce.getPuntajePareja2());
+		if(ce.getParejaGanadora() != null){
+			return new Chico(ce.getNumeroChico(), ce.isFinalizado(), ParejaDAO.getInstancia().toNegocio(ce.getParejaGanadora()), ce.getPuntajePareja1(), ce.getPuntajePareja2());
+		}
+		else{
+			return new Chico(ce.getIdChico(),ce.getNumeroChico(),ManoDAO.getInstancia().manosToNegocio(ce.getManos()),ce.isFinalizado(),ParejaDAO.getInstancia().toNegocio(ce.getParejaGanadora()),ce.getPuntajePareja1(),ce.getPuntajePareja2());
+		}
 	}
 }

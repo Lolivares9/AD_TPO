@@ -1,13 +1,21 @@
 package entities;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "BAZAS")
@@ -34,6 +42,11 @@ public class BazaEntity {
 	
 	@Column(name="PUNTAJE_PAREJA2")
 	private int puntajePareja2;
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinColumn(name="ID_BAZA")
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<TurnoEntity> turnos;
 
 	public BazaEntity() {
 		super();
@@ -87,5 +100,13 @@ public class BazaEntity {
 		this.puntajePareja2 = puntajePareja2;
 	}
 	
+	public List<TurnoEntity> getTurnos() {
+		return turnos;
+	}
+
+	public void setTurnos(List<TurnoEntity> turnos) {
+		this.turnos = turnos;
+	}
+
 	
 }

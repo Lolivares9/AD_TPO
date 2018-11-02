@@ -79,11 +79,21 @@ public class PartidoDAO {
 	
 	public Partido toNegocio(PartidoEntity pe) {
 		Partido p = null;
+		List<Chico> chicos = new ArrayList<Chico>();
+		List<Pareja> parejas = new ArrayList<Pareja>();
 		if(pe.getParejaGanadora() != null) {
 			p = new Partido(pe.getModalidad(), ParejaDAO.getInstancia().toNegocio(pe.getParejaGanadora()), pe.getFecha());
 		}else {
 			p = new Partido(pe.getModalidad(), null, pe.getFecha());
 		}
+		for(int i = 0;i<pe.getChicos().size();i++){
+			chicos.add(ChicoDAO.getInstancia().toNegocio(pe.getChicos().get(i)));
+		}
+		p.setChico(chicos);
+		for(int i = 0;i<pe.getParejas().size();i++){
+			parejas.add(ParejaDAO.getInstancia().toNegocio(pe.getParejas().get(i)));
+		}
+		p.setParejas(parejas);
 		return p;
 	}
 

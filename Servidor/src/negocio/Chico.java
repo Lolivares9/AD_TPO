@@ -29,6 +29,18 @@ public class Chico {
 		this.puntajePareja2 = puntajePareja2;
 	}
 	
+	public Chico(Integer idChico, int numero, List<Mano> manos, boolean finalizado, Pareja parejaGanadora,
+			int puntajePareja1, int puntajePareja2) {
+		super();
+		this.idChico = idChico;
+		this.numero = numero;
+		this.manos = manos;
+		this.finalizado = finalizado;
+		this.parejaGanadora = parejaGanadora;
+		this.puntajePareja1 = puntajePareja1;
+		this.puntajePareja2 = puntajePareja2;
+	}
+	
 	public int getNumero() {
 		return numero;
 	}

@@ -150,8 +150,12 @@ public class ParejaDAO {
 	}
 	
 	public Pareja toNegocio(ParejaEntity pe){
-		return new Pareja(pe.getIdPareja(),JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), 
+		Pareja p = new Pareja();
+		if(pe != null){
+			return new Pareja(pe.getIdPareja(),JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), 
 				JugadorDAO.getInstancia().toNegocio(pe.getJugador2()));
+		}
+		return p;
 	}
 
 	public ParejaEntity toEntity(Pareja pareja) {

@@ -40,6 +40,9 @@ public class Baza {
 		this.puntajePareja2 = puntajePareja2;
 	}
 	
+	public Baza() {
+	}
+
 	public int getNumero() {
 		return numeroBaza;
 	}

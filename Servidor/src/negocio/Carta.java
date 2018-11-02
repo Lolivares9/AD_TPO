@@ -28,6 +28,9 @@ public class Carta {
 		this.valorEnvido = valorTanto;
 	}
 	
+	public Carta() {
+	}
+
 	public int getNumero() {
 		return numero;
 	}

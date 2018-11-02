@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,5 +84,15 @@ public class TurnoDAO {
 	public Turno toNegocio(TurnoEntity te) {
 		return new Turno(JugadorDAO.getInstancia().toNegocio(te.getJugador()),
 				te.getEnvite(), CartaDAO.getInstancia().toNegocio(te.getCarta()));
+	}
+
+	public List<Turno> toNegocioAll(List<TurnoEntity> turnos) {
+		List<Turno> turnosNegocio = new ArrayList<Turno>();
+		if(turnos != null){
+			for(int i = 0;i<turnos.size();i++){
+				turnosNegocio.add(toNegocio(turnos.get(i)));
+			}
+		}
+		return turnosNegocio;
 	}
 }

@@ -3,6 +3,7 @@ package test;
 import controlador.Controlador;
 import dao.JugadorDAO;
 import dao.ParejaDAO;
+import dao.PartidoDAO;
 import dto.JugadorDTO;
 import dto.PartidoDTO;
 import enums.Categoria;
@@ -27,8 +28,8 @@ public class TestHibernate {
 		//guardarParejas();
 		//guardarPartido();
 		//iniciarPartidaLibre();
-		partido = iniciarPartidaLibreIndividual();
-		
+		//partido = iniciarPartidaLibreIndividual();
+		partido = PartidoDAO.getInstancia().buscarPartidoPorID(1);
 	}
 
 	private static Partido iniciarPartidaLibreIndividual() throws PartidoException, CartaException, JugadorException {
