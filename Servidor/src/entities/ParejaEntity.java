@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -35,22 +36,19 @@ public class ParejaEntity {
 	@ManyToOne
 	@JoinColumn(name="ID_JUGADOR2")
 	private JugadorEntity jugador2;
-
-	@ManyToMany(mappedBy="parejas")
+	
+	@OneToMany(cascade = CascadeType.ALL)
 	@Where(clause = "MODALIDAD = 'Libre'")
 	private List<PartidoEntity> partidosLibre = new ArrayList<PartidoEntity>();
 	
-	@ManyToMany(mappedBy="parejas")
+	@OneToMany(mappedBy="parejas")
 	@Where(clause = "MODALIDAD = 'Libre_individual'")
 	private List<PartidoEntity> partidosLibreIndiv = new ArrayList<PartidoEntity>();
 	
-	@ManyToMany(mappedBy="parejas")
+	@OneToMany(cascade = CascadeType.ALL)
 	@Where(clause = "MODALIDAD = 'Cerrado'")
 	private List<PartidoEntity> partidosCerrado = new ArrayList<PartidoEntity>();
-	/*
-	@ManyToMany(cascade=CascadeType.ALL)  
-    @JoinTable(name="author_book", joinColumns=@JoinColumn(name="book_id"), inverseJoinColumns=@JoinColumn(name="author_id"))  
-	*/
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "PARTIDOS_PAREJAS", joinColumns = @JoinColumn(name="_ID_PAREJA"),inverseJoinColumns=@JoinColumn(name="_ID_PARTIDO"))
 	private List<PartidoEntity> partidos = new ArrayList<PartidoEntity>();

@@ -54,6 +54,7 @@ public class PartidoDAO {
 		Partido p;
 		List<PartidoEntity> partidosE = new ArrayList<PartidoEntity>();
 		if(mod != null) {
+			//HAY QUE CORREGIR ESTO (DENTRO DEL ENTITY)
 			if(mod.equals(TipoModalidad.Cerrado)) {
 				partidosE = pe.getPartidosCerrado();
 			}else if(mod.equals(TipoModalidad.Libre)){
@@ -94,6 +95,7 @@ public class PartidoDAO {
 			parejas.add(ParejaDAO.getInstancia().toNegocio(pe.getParejas().get(i)));
 		}
 		p.setParejas(parejas);
+		p.setIdPartido(pe.getIdPartido());
 		return p;
 	}
 
@@ -168,14 +170,13 @@ public class PartidoDAO {
 		PartidoEntity partidoe;
 		try {
 				partidoe = (PartidoEntity) s.createQuery("from PartidoEntity pe where pe.idPartido = ?").setInteger(0, id).uniqueResult();
-				s.getTransaction().commit();
-				s.close();
 				if(partidoe != null){
 					p = toNegocio(partidoe);
 				}
 				else{
 					return p;
 				}
+				s.getTransaction().commit();
 			} catch (HibernateException e) {
 				e.printStackTrace();
 				throw new PartidoException("Error al buscar los partidos del jugador");

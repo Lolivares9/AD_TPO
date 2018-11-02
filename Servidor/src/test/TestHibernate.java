@@ -29,7 +29,8 @@ public class TestHibernate {
 		//guardarPartido();
 		//iniciarPartidaLibre();
 		//partido = iniciarPartidaLibreIndividual();
-		partido = PartidoDAO.getInstancia().buscarPartidoPorID(1);
+		Partido.nuevaJugada(1);
+		
 	}
 
 	private static Partido iniciarPartidaLibreIndividual() throws PartidoException, CartaException, JugadorException {

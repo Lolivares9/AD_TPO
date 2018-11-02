@@ -73,19 +73,19 @@ public class Mano {
 		int indiceChico = 0;
 		int indiceMano = 0;
 		int indiceBaza = 0;
-		Partido partidoBO = PartidoDAO.getInstancia().buscarPartidoPorID(id);
-		if(partidoBO.getChico().size() > 0){
-			indiceChico = partidoBO.getChico().size()-1;//agarro el chico actual
-			if(partidoBO.getChico().get(indiceChico).getManos().size() > 0){
-				indiceMano =  partidoBO.getChico().get(indiceChico).getManos().size()-1;//agarro la mano actual
-				Mano manoActual = partidoBO.getChico().get(indiceChico).getManos().get(indiceMano);
+		Partido partidoNegocio = PartidoDAO.getInstancia().buscarPartidoPorID(id);
+		if(partidoNegocio.getChico().size() > 0){
+			indiceChico = partidoNegocio.getChico().size()-1;//agarro el chico actual
+			if(partidoNegocio.getChico().get(indiceChico).getManos().size() > 0){
+				indiceMano =  partidoNegocio.getChico().get(indiceChico).getManos().size()-1;//agarro la mano actual
+				Mano manoActual = partidoNegocio.getChico().get(indiceChico).getManos().get(indiceMano);
 				if(manoActual.getBazas().size() > 0){
 					indiceBaza = manoActual.getBazas().size() - 1;//agarro la baza/ronda actual
 				}
 			}
 		}
-		
-		Mano manoActual = partidoBO.getChico().get(indiceChico).getManos().get(indiceMano);
+		Chico chicoActual = partidoNegocio.getChico().get(indiceChico);
+		Mano manoActual = chicoActual.getManos().get(indiceMano);
 		Baza bazaActual = manoActual.getBazas().get(indiceBaza);
 		
 		Turno turnoEnvite = null;
@@ -100,10 +100,15 @@ public class Mano {
 				return true;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_Querido)){
-				
-				//CALCULO INDIVIDUALMENTE EL TANTO DE LOS JUGADORES, Y LE SUMO LOS PUNTOS A LA PAREJA
+				if(partidoNegocio.getParejas().get(0).equals(Pareja.calcularTantoParejas(partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1)))){
+					bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + 2);
+				}
+				else{
+					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 2);
+				}
+				partidoNegocio.actualizar();
 				//PAREJA GANADORA +2 PUNTOS
-				return false;
+				return true;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_RealEnvido_Querido)){
 				//CALCULO INDIVIDUALMENTE EL TANTO DE LOS JUGADORES, Y LE SUMO LOS PUNTOS A LA PAREJA

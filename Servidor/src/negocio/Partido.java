@@ -164,12 +164,8 @@ public class Partido {
 		return chicos;
 	}
 	
-	public static PartidoDTO nuevaJugada(int id) throws PartidoException{
-		
-		
-		boolean siguienteTurno = false;
-		
-		siguienteTurno = Mano.analizarEnvitesMano(id);
-		return null;
+	public static boolean nuevaJugada(int id) throws PartidoException{
+		boolean siguienteTurno = Mano.analizarEnvitesMano(id);;
+		return siguienteTurno;
 	}
 }

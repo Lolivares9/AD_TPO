@@ -48,12 +48,8 @@ public class PartidoEntity {
 	@Column(name="ESTADO")
 	@Enumerated(EnumType.STRING)
 	private EstadoPartido estado;
-	
-	/*@ManyToMany (cascade=CascadeType.ALL)
-    @JoinTable(name = "PARTIDOS_PAREJAS", joinColumns = { @JoinColumn(name = "partidos_ID_PARTIDO") }, 
-        inverseJoinColumns = { @JoinColumn(name = "parejas_ID_PAREJA") }
-    )*/
-	@ManyToMany (cascade=CascadeType.ALL, mappedBy = "partidos")
+
+	@ManyToMany (cascade=CascadeType.ALL)
 	List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
