@@ -3,16 +3,20 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 @Entity
@@ -43,8 +47,12 @@ public class ParejaEntity {
 	@ManyToMany(mappedBy="parejas")
 	@Where(clause = "MODALIDAD = 'Cerrado'")
 	private List<PartidoEntity> partidosCerrado = new ArrayList<PartidoEntity>();
-	
-	@ManyToMany(mappedBy="parejas")
+	/*
+	@ManyToMany(cascade=CascadeType.ALL)  
+    @JoinTable(name="author_book", joinColumns=@JoinColumn(name="book_id"), inverseJoinColumns=@JoinColumn(name="author_id"))  
+	*/
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "PARTIDOS_PAREJAS", joinColumns = @JoinColumn(name="_ID_PAREJA"),inverseJoinColumns=@JoinColumn(name="_ID_PARTIDO"))
 	private List<PartidoEntity> partidos = new ArrayList<PartidoEntity>();
 
 	public ParejaEntity() {
