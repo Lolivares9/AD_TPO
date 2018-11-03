@@ -4,6 +4,7 @@ import java.util.List;
 
 import dao.BazaDAO;
 import dto.BazaDTO;
+import enums.Envite;
 
 /**
  * Soy la jugada de 1 carta de los 4 jugadores
@@ -12,7 +13,7 @@ public class Baza {
 	
 	private Integer idBaza;
 	private int numeroBaza;
-	private boolean envitePendiente;
+	private Envite enviteActual;
 	private int numJugEnvitePendiente;
 	private boolean bazaTerminada;
 	private Pareja ganadores;
@@ -39,6 +40,9 @@ public class Baza {
 		this.puntajePareja2 = puntajePareja2;
 	}
 	
+	public Baza() {
+	}
+
 	public int getNumero() {
 		return numeroBaza;
 	}
@@ -86,14 +90,6 @@ public class Baza {
 		this.turnos = turnos;
 	}
 
-	public boolean isEnvitePendiente() {
-		return envitePendiente;
-	}
-
-	public void setEnvitePendiente(boolean envitePendiente) {
-		this.envitePendiente = envitePendiente;
-	}
-
 	public int getNumJugEnvitePendiente() {
 		return numJugEnvitePendiente;
 	}
@@ -108,5 +104,13 @@ public class Baza {
 
 	public void setBazaTerminada(boolean bazaTerminada) {
 		this.bazaTerminada = bazaTerminada;
+	}
+
+	public Envite getEnviteActual() {
+		return enviteActual;
+	}
+
+	public void setEnviteActual(Envite enviteActual) {
+		this.enviteActual = enviteActual;
 	}
 }

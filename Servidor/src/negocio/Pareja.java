@@ -11,6 +11,8 @@ public class Pareja {
 	private Integer idPareja;
 	private Jugador jugador1;
 	private Jugador jugador2;
+	private List<Carta> cartasJugador1;
+	private List<Carta> cartasJugador2;
 	
 	public Pareja(Jugador jugador1, Jugador jugador2) {
 		super();
@@ -24,6 +26,10 @@ public class Pareja {
 		this.jugador2 = negocio2;
 	}
 
+	public Pareja(){
+		
+	};
+	
 	public Jugador getJugador1() {
 		return jugador1;
 	}
@@ -99,5 +105,50 @@ public class Pareja {
 			j.actualizarEstadoJugador();
 		}
 	}
+
+	public List<Carta> getCartasJugador1() {
+		return cartasJugador1;
+	}
+
+	public void setCartasJugador1(List<Carta> cartasJugador1) {
+		this.cartasJugador1 = cartasJugador1;
+	}
+
+	public List<Carta> getCartasJugador2() {
+		return cartasJugador2;
+	}
+
+	public void setCartasJugador2(List<Carta> cartasJugador2) {
+		this.cartasJugador2 = cartasJugador2;
+	}
+	
+	public static Pareja calcularTantoParejas(Pareja pareja1, Pareja pareja2){
+		Pareja parejaGanadora = null;
+		List<Carta> cartasJug1Pareja1 = pareja1.getCartasJugador1();
+		List<Carta> cartasJug2Pareja1 = pareja1.getCartasJugador2();
+		List<Carta> cartasJug1Pareja2 = pareja2.getCartasJugador1();
+		List<Carta> cartasJug2Pareja2 = pareja2.getCartasJugador2();
+		int tantoJug1Pareja1 = Jugador.calcularTantoJugadores(cartasJug1Pareja1);
+		int tantoJug2Pareja1 = Jugador.calcularTantoJugadores(cartasJug1Pareja2);
+		int tantoJug1Pareja2 = Jugador.calcularTantoJugadores(cartasJug2Pareja1);
+		int tantoJug2Pareja2 = Jugador.calcularTantoJugadores(cartasJug2Pareja2);
+		
+		if(((tantoJug1Pareja1 > tantoJug1Pareja2) && (tantoJug1Pareja1 > tantoJug2Pareja2)) || ((tantoJug2Pareja1 > tantoJug1Pareja2) && (tantoJug2Pareja1 > tantoJug2Pareja2))){
+			parejaGanadora = pareja1;
+		}
+		//ESTE CASO ES CUANDO EMPATAN EN EL ENVIDO,GANA EL QUE ES MANO
+		else if(((tantoJug1Pareja1 == tantoJug1Pareja2) || (tantoJug1Pareja1 == tantoJug2Pareja2)) || ((tantoJug2Pareja1 == tantoJug1Pareja2) || (tantoJug2Pareja1 == tantoJug2Pareja2))){
+			if(pareja1.getJugador1().getNumJugador() == 1 || pareja1.getJugador2().getNumJugador() == 1){
+				return parejaGanadora = pareja1;
+			}
+			else{
+				return parejaGanadora = pareja2;
+			}
+		}
+		
+		return parejaGanadora;
+		
+	}
+
 	
 }

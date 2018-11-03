@@ -54,16 +54,41 @@ public class CartaDAO {
 		return new ArrayList<Carta>(cartas);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Carta> obtenerCartaPorJugador(String carta1,String carta2,String carta3) throws CartaException{
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		List<CartaEntity> c;
+		List<Carta> cartasJugador = new ArrayList<Carta>();
+		try {
+			c = (List<CartaEntity>) s.createQuery("FROM CartaEntity WHERE idCarta IN ('?','?','?')").setString(0, carta1).setString(1, carta2).setString(2, carta3).list();
+			s.getTransaction().commit();
+			if(c != null){
+				for(int i = 0;i<c.size();i++){
+					cartasJugador.add(toNegocio(c.get(i)));
+				}
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+			throw new CartaException("Error al obtener las cartas.");
+		}finally{
+			s.close();
+		}
+		return cartasJugador;
+	}
+	
 	public CartaEntity toEntity(Carta carta) {
 		//TODO
 		return null;
 	}
 	
 	public Carta toNegocio(CartaEntity carta) {
-		Carta c = null;
-		c = new Carta(carta.getNumero(), carta.getPalo(), carta.getValorJuego()); 
-		c.setIdCarta(carta.getIdCarta());
-		
+		Carta c = new Carta();
+		if(carta != null){
+			c = new Carta(carta.getNumero(), carta.getPalo(), carta.getValorJuego(),carta.getValorEnvido()); 
+			c.setIdCarta(carta.getIdCarta());
+		}
 		return c;
 	}
 	

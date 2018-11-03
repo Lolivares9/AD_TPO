@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,8 +76,22 @@ public class BazaDAO {
 	}
 	
 	public Baza toNegocio(BazaEntity be) {
-		return new Baza(be.getIdBaza(), be.getNumeroBaza(), 
-				ParejaDAO.getInstancia().toNegocio(be.getGanadoresBaza()),
-				be.getPuntajePareja1(), be.getPuntajePareja2());
+		Baza baza = new Baza();
+		if(be != null){
+			return new Baza(be.getIdBaza(), be.getNumeroBaza(), 
+					ParejaDAO.getInstancia().toNegocio(be.getGanadoresBaza()),
+					be.getPuntajePareja1(), be.getPuntajePareja2(),TurnoDAO.getInstancia().toNegocioAll(be.getTurnos()));
+		}
+		return baza;
+	}
+
+	public List<Baza> toNegocioAll(List<BazaEntity> bazas) {
+		List<Baza> bazasNegocio = new ArrayList<Baza>();
+		if(bazas != null){
+			for(int i = 0;i<bazas.size();i++){
+				bazasNegocio.add(toNegocio(bazas.get(i)));
+			}
+		}
+		return bazasNegocio;
 	}
 }

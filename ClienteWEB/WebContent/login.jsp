@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>TRABAJO PRACTICO</title>
+<title>Truco Online</title>
 <link rel="shortcut icon" href="favicon.ico?" type="image/x-icon" />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -40,10 +40,20 @@
 					<input type="password" class="form-control" placeholder="Ingrese contraseña..."
 						name="password" aria-label="Contraseña" aria-describedby="basic-addon2">
 				</div>
+				<br>
 				<div class="container d-flex justify-content-center">
 					<input type="submit" value="Log in" class="btn btn-secondary w-100" />
 				</div>
+				<br>
+				<a href="AltaJugador.jsp" target="_self"> Si no estas registrado "Click Aqui"</a>
 			</form>
+			<%
+    		if(null!=request.getAttribute("errorMessage"))
+    		{
+      		 out.println("<script>alert('Usuario o contraseña incorrecta');</script>");
+      		 
+   			 }
+			%>
 		</div>
 	</section>
 	<div class="loading-overlay">

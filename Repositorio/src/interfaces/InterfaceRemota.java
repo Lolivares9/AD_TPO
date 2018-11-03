@@ -26,7 +26,7 @@ import excepciones.TurnoException;
 
 public interface InterfaceRemota extends Remote {
 	
-	public boolean altaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
+	public JugadorDTO altaJugador(JugadorDTO jugador) throws RemoteException,JugadorException;
 	
 	public boolean crearGrupo(String nombreGrupo, JugadorDTO jugador) throws RemoteException, GrupoException, JugadorException;
 	
@@ -44,7 +44,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException;
 	
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException;
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException;
 	
 	public boolean iniciarPartidaCerrada() throws RemoteException;
 	

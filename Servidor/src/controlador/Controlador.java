@@ -61,13 +61,14 @@ public class Controlador {
 		return instancia;
 	}
 
-	public void altaJugador(JugadorDTO jugador) throws JugadorException {
+	public JugadorDTO altaJugador(JugadorDTO jugador) throws JugadorException {
 		boolean datosValidos = JugadorDAO.getInstancia().validarDatos(jugador.getApodo(), jugador.getMail());
 		if(datosValidos){
 			Jugador jug = DTOMapper.getInstancia().jugadorDTOtoNegocio(jugador);
-			jug.guardar();
+			JugadorDAO.getInstancia().guardar(jug);
+			return jug.toDTO();
 		}else{
-			throw new JugadorException("Apodo y/o mail ya registrado/s.");
+			return null;
 		}
 	}
 	
@@ -134,9 +135,10 @@ public class Controlador {
 
 	/**
 	 * Entiendo que aca la pareja ya va a estar persistida (la que quiere jugar), por eso necesito su id
+	 * @throws CartaException 
 	 * */
 	//OK, FALTARIA SETEARLE A LOS JUGADORES QUE JUGANDO = TRUE
-	public Partido iniciarPartidaLibre(Pareja parej) throws ParejaException {
+	public Partido iniciarPartidaLibre(Pareja parej) throws ParejaException, CartaException {
 		Partido part = null;
 		List<Pareja> parejasDisponibles = ParejaDAO.getInstancia().buscarParejasLibres(parej);
 		List<Pareja> parejasFinales = new ArrayList<Pareja>();

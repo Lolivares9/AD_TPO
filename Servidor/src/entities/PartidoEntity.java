@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -47,7 +48,7 @@ public class PartidoEntity {
 	@Column(name="ESTADO")
 	@Enumerated(EnumType.STRING)
 	private EstadoPartido estado;
-	
+
 	@ManyToMany (cascade=CascadeType.ALL)
 	List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
 	

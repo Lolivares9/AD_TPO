@@ -12,6 +12,7 @@ import dto.ParejaDTO;
 import dto.PartidoDTO;
 import enums.EstadoPartido;
 import enums.TipoModalidad;
+import excepciones.PartidoException;
 
 /**
  * Soy la jugada de 2 o 3 chicos
@@ -161,5 +162,10 @@ public class Partido {
 		chicos.add(chico3);
 		
 		return chicos;
+	}
+	
+	public static boolean nuevaJugada(int id) throws PartidoException{
+		boolean siguienteTurno = Mano.analizarEnvitesMano(id);;
+		return siguienteTurno;
 	}
 }

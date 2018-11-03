@@ -35,9 +35,14 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	public ObjetoRemoto() throws RemoteException {}
 
 	
-	public boolean altaJugador(JugadorDTO jugador) throws RemoteException, JugadorException {
-		Controlador.getInstancia().altaJugador(jugador);
-		return false;
+	public JugadorDTO altaJugador(JugadorDTO jugador) throws RemoteException, JugadorException {
+		JugadorDTO jugLog = null;
+		try {
+			jugLog=Controlador.getInstancia().altaJugador(jugador);
+		} catch (JugadorException e) {
+			e.printStackTrace();
+		}
+		return jugLog;
 	}
 
 	//OK
@@ -73,7 +78,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	//FALTARIA TESTEAR
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException {
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException {
 		Pareja parej = null;
 		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibre(parej);
 		PartidoDTO part = partidoNuevo.toDTO();

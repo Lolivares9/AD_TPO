@@ -3,16 +3,22 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 @Entity
@@ -32,21 +38,10 @@ public class ParejaEntity {
 	@JoinColumn(name="ID_JUGADOR2")
 	private JugadorEntity jugador2;
 
-	@ManyToMany(mappedBy="parejas")
-	@Where(clause = "MODALIDAD = 'Libre'")
-	private List<PartidoEntity> partidosLibre = new ArrayList<PartidoEntity>();
-	
-	@ManyToMany(mappedBy="parejas")
-	@Where(clause = "MODALIDAD = 'Libre_individual'")
-	private List<PartidoEntity> partidosLibreIndiv = new ArrayList<PartidoEntity>();
-	
-	@ManyToMany(mappedBy="parejas")
-	@Where(clause = "MODALIDAD = 'Cerrado'")
-	private List<PartidoEntity> partidosCerrado = new ArrayList<PartidoEntity>();
-	
-	@ManyToMany(mappedBy="parejas")
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "PARTIDOS_PAREJAS", joinColumns = @JoinColumn(name="_ID_PAREJA"),inverseJoinColumns=@JoinColumn(name="_ID_PARTIDO"))
 	private List<PartidoEntity> partidos = new ArrayList<PartidoEntity>();
-
+	
 	public ParejaEntity() {
 		super();
 	}
@@ -73,30 +68,6 @@ public class ParejaEntity {
 
 	public void setJugador2(JugadorEntity jugador2) {
 		this.jugador2 = jugador2;
-	}
-
-	public List<PartidoEntity> getPartidosLibre() {
-		return partidosLibre;
-	}
-
-	public void setPartidosLibre(List<PartidoEntity> partidosLibre) {
-		this.partidosLibre = partidosLibre;
-	}
-
-	public List<PartidoEntity> getPartidosLibreIndiv() {
-		return partidosLibreIndiv;
-	}
-
-	public void setPartidosLibreIndiv(List<PartidoEntity> partidosLibreIndiv) {
-		this.partidosLibreIndiv = partidosLibreIndiv;
-	}
-
-	public List<PartidoEntity> getPartidosCerrado() {
-		return partidosCerrado;
-	}
-
-	public void setPartidosCerrado(List<PartidoEntity> partidosCerrado) {
-		this.partidosCerrado = partidosCerrado;
 	}
 
 	public List<PartidoEntity> getPartidos() {

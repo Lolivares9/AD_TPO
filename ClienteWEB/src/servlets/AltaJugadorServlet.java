@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,14 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import delegado.BusinessDelegate;
 import dto.JugadorDTO;
+import enums.Categoria;
 import excepciones.ComunicationException;
 
-/**
- * Servlet implementation class LoginServlet
- */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 2481325140950452392L;
+@WebServlet("/AltaJugadorServlet")
+public class AltaJugadorServlet  extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static JugadorDTO usuarioAlta;
+
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -28,36 +33,45 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		String jspPage = "/layout.jsp";
-		String apodo = request.getParameter("usuario");
-		String password = request.getParameter("password");
-		JugadorDTO jugLog = validarUsuario(apodo,password);
-		if(jugLog != null){
-			request.setAttribute("usuario", apodo);
-			request.setAttribute("categoria", jugLog.getCategoria().toString());
+		String jspPage = "/index.jsp";
+		String nombre = request.getParameter("nombre");
+		String apodo = request.getParameter("apodo");
+		String mail = request.getParameter("mail");
+		String contraseña = request.getParameter("pass");
+
+		if(altaUsuario(nombre,apodo,mail,contraseña)){
+			request.setAttribute("Message", "Jugador dado de alta correctamente");
 			dispatch(jspPage, request, response);
 		}
 		else{
-			jspPage = "/index.jsp";
-			request.setAttribute("errorMessage", "Usuario o Contraseña Invalida");
+			jspPage = "/AltaJugador.jsp";
+			request.setAttribute("errorMessage", "Apodo existente");
 			dispatch(jspPage, request, response);
 		}
+		
 	}
-
-	private JugadorDTO validarUsuario(String apodo, String password){
+		
+	private boolean altaUsuario(String nombre,String apodo,String mail, String contraseña){
 		JugadorDTO jug = new JugadorDTO();
+		jug.setNombre(nombre);
 		jug.setApodo(apodo);
-		jug.setPassword(password);
+		jug.setMail(mail);
+		jug.setPassword(contraseña);
+		jug.setCategoria(Categoria.Novato);
 		try {
-			JugadorDTO juglog = BusinessDelegate.getInstancia().iniciarSesion(jug);
-			if (juglog != null) {
-				return juglog;
+			JugadorDTO juglog = BusinessDelegate.getInstancia().altaJugador(jug);
+			if (juglog!=null){
+				setUsuarioAlta(juglog);
+				return true;
+			} else {
+				return false;
 			}
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return false;
 	}
+	
 	
 	protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -68,4 +82,15 @@ public class LoginServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 	}
+	
+	public static JugadorDTO getUsuarioAlta() {
+		return usuarioAlta;
+	}
+
+	public static void setUsuarioAlta(JugadorDTO usuarioAlta) {
+		AltaJugadorServlet.usuarioAlta = usuarioAlta;
+	}
+
+
+	
 }
