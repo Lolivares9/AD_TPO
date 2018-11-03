@@ -31,27 +31,26 @@ public class ActionsServlet extends HttpServlet{
     {
         String action = request.getParameter("action");
         String jspPage = "/index.jsp";
-
+        request.getParameterNames();
+        request.getAttributeNames();
+        
         if ((action == null) || (action.length() < 1))
         {
             action = "default";
         }else if ("LibreIndiv".equals(action))
         {
             try {
-				PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(LoginServlet.getUsuarioLogueado());
+				PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(request.getParameter("Categoria"), request.getParameter("Usuario"));
+				jspPage = "/partido.jsp";
 				request.setAttribute("partido", partido);
 			} catch (ComunicationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            jspPage = "/partido.jsp";
+   
         }
-        
-        
-    
         dispatch(jspPage, request, response);
     }
-	
 	
     protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

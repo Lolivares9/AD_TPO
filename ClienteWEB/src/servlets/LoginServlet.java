@@ -19,7 +19,6 @@ import excepciones.ComunicationException;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 2481325140950452392L;
-	private static JugadorDTO usuarioLogueado;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -32,7 +31,10 @@ public class LoginServlet extends HttpServlet {
 		String jspPage = "/layout.jsp";
 		String apodo = request.getParameter("usuario");
 		String password = request.getParameter("password");
-		if(validarUsuario(apodo,password)){
+		JugadorDTO jugLog = validarUsuario(apodo,password);
+		if(jugLog != null){
+			request.setAttribute("usuario", apodo);
+			request.setAttribute("categoria", jugLog.getCategoria().toString());
 			dispatch(jspPage, request, response);
 		}
 		else{
@@ -42,22 +44,19 @@ public class LoginServlet extends HttpServlet {
 		}
 	}
 
-	private boolean validarUsuario(String apodo, String password){
+	private JugadorDTO validarUsuario(String apodo, String password){
 		JugadorDTO jug = new JugadorDTO();
 		jug.setApodo(apodo);
 		jug.setPassword(password);
 		try {
 			JugadorDTO juglog = BusinessDelegate.getInstancia().iniciarSesion(jug);
 			if (juglog != null) {
-				setUsuarioLogueado(juglog);
-				return true;
-			} else {
-				return false;
+				return juglog;
 			}
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	
 	protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response)
@@ -68,13 +67,5 @@ public class LoginServlet extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			rd.forward(request, response);
 		}
-	}
-
-	public static JugadorDTO getUsuarioLogueado() {
-		return usuarioLogueado;
-	}
-
-	public static void setUsuarioLogueado(JugadorDTO usuarioLogueado) {
-		LoginServlet.usuarioLogueado = usuarioLogueado;
 	}
 }

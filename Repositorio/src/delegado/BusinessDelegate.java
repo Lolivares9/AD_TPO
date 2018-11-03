@@ -108,16 +108,19 @@ public class BusinessDelegate {
 			e.printStackTrace();
 		}
 	}
-	public PartidoDTO iniciarPartidaLibreIndividual(JugadorDTO jugador) throws ComunicationException{
+	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws ComunicationException{
 		PartidoDTO partido = null;
 		try {
-			partido = ir.iniciarPartidaLibreIndividual(jugador);
+			partido = ir.iniciarPartidaLibreIndividual(categoria, apodo);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		catch (PartidoException e) {
 			e.printStackTrace();
 		} catch (CartaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JugadorException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

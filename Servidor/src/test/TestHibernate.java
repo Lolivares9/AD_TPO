@@ -1,18 +1,10 @@
 package test;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import controlador.Controlador;
 import dao.JugadorDAO;
 import dao.ParejaDAO;
-import dao.PartidoDAO;
-import dto.JugadorDTO;
-import dto.PartidoDTO;
-import enums.Categoria;
-import enums.TipoModalidad;
 import excepciones.CartaException;
 import excepciones.JugadorException;
 import excepciones.ParejaException;
@@ -20,7 +12,6 @@ import excepciones.PartidoException;
 import negocio.Jugador;
 import negocio.Pareja;
 import negocio.Partido;
-import util.DTOMapper;
 
 public class TestHibernate {
 /*
@@ -41,15 +32,15 @@ public class TestHibernate {
 		
 	}
 
-	private static Partido iniciarPartidaLibreIndividual() throws PartidoException, CartaException, JugadorException {
-		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");
-		JugadorDTO jdto = jug.toDTO();
-		Partido part = null;
-		Categoria categ = jug.getCategoria();
-		PartidoDTO partido = Controlador.getInstancia().iniciarPartidaLibreIndividual(categ, jdto);
-		part = DTOMapper.getInstancia().partidoDTOtoNegocio(partido);
-		return part;
-	}
+//	private static Partido iniciarPartidaLibreIndividual() throws PartidoException, CartaException, JugadorException {
+//		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");
+//		JugadorDTO jdto = jug.toDTO();
+//		Partido part = null;
+//		Categoria categ = jug.getCategoria();
+//		PartidoDTO partido = Controlador.getInstancia().iniciarPartidaLibreIndividual(categ, jdto);
+//		part = DTOMapper.getInstancia().partidoDTOtoNegocio(partido);
+//		return part;
+//	}
 
 	private static void iniciarPartidaLibre() throws ParejaException, JugadorException, CartaException {
 		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");
