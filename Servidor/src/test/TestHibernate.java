@@ -1,5 +1,10 @@
 package test;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import controlador.Controlador;
 import dao.JugadorDAO;
 import dao.ParejaDAO;
@@ -7,6 +12,7 @@ import dao.PartidoDAO;
 import dto.JugadorDTO;
 import dto.PartidoDTO;
 import enums.Categoria;
+import enums.TipoModalidad;
 import excepciones.CartaException;
 import excepciones.JugadorException;
 import excepciones.ParejaException;
@@ -23,12 +29,14 @@ public class TestHibernate {
 	DBCC CHECKIDENT ('APD.dbo.PAREJAS',RESEED, 0)
 	*/
 	
-	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException {
+	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException, ParseException {
 		Partido partido = null;
 		//guardarParejas();
 		//guardarPartido();
 		//iniciarPartidaLibre();
 		//partido = iniciarPartidaLibreIndividual();
+		//partido = PartidoDAO.getInstancia().buscarPartidoPorID(1);
+		//System.out.println(partido.getParejas().get(0).getIdPareja());
 		Partido.nuevaJugada(1);
 		
 	}
@@ -43,7 +51,7 @@ public class TestHibernate {
 		return part;
 	}
 
-	private static void iniciarPartidaLibre() throws ParejaException, JugadorException {
+	private static void iniciarPartidaLibre() throws ParejaException, JugadorException, CartaException {
 		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo("Mati");
 		Jugador jug2 = JugadorDAO.getInstancia().buscarPorApodo("Kent");
 		Pareja uno = new Pareja(jug,jug2);

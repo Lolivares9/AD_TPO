@@ -10,8 +10,10 @@ import org.hibernate.SessionFactory;
 
 import entities.JugadorEntity;
 import entities.ParejaEntity;
+import excepciones.CartaException;
 import excepciones.ParejaException;
 import hbt.HibernateUtil;
+import negocio.Carta;
 import negocio.Pareja;
 import negocio.Partido;
 
@@ -104,7 +106,7 @@ public class ParejaDAO {
 		}
 	}
 	
-	public List<Pareja> buscarParejasLibres(Pareja parej) throws ParejaException{
+	public List<Pareja> buscarParejasLibres(Pareja parej) throws ParejaException, CartaException{
 		List<Integer> idParejasDisponibles = getIdParejas(parej.getIdPareja());
 		List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
 		List<Pareja> parejasNuevas = new ArrayList<Pareja>();
@@ -152,12 +154,61 @@ public class ParejaDAO {
 	public Pareja toNegocio(ParejaEntity pe){
 		Pareja p = new Pareja();
 		if(pe != null){
-			return new Pareja(pe.getIdPareja(),JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), 
+			p = new Pareja(pe.getIdPareja(),JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), 
 				JugadorDAO.getInstancia().toNegocio(pe.getJugador2()));
+			buscarCartasPareja(p);
 		}
 		return p;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	private void buscarCartasPareja(Pareja p){
+		//ME FALTA TERMINARLO. MATI
+		List<String> ids = new ArrayList<String>();
+		List<Carta> cartasJug1 = new ArrayList<Carta>();
+		List<Carta> cartasJug2 = new ArrayList<Carta>();
+		String[] jugador1 = null;
+		String[] jugador2 = null;
+		String carta1 = null;
+		String carta2 = null;
+		String carta3 = null;
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		try {
+			ids = (List<String>) s.createSQLQuery("SELECT CARTAS_JUGADOR1,CARTAS_JUGADOR2 FROM PAREJAS_CARTAS WHERE ID_PAREJA = ?").setInteger(0, p.getIdPareja()).list();
+			if(ids != null){
+				jugador1 = ids.get(0).split(",");
+				jugador2 = ids.get(1).split(",");
+				carta1 = jugador1[0];
+				carta2 = jugador1[1];
+				carta3 = jugador1[2];
+				try {
+					cartasJug1 = CartaDAO.getInstancia().obtenerCartaPorJugador(carta1, carta2, carta3);
+				} catch (CartaException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				carta1 = jugador2[0];
+				carta2 = jugador2[1];
+				carta3 = jugador2[2];
+				try {
+					cartasJug2 = CartaDAO.getInstancia().obtenerCartaPorJugador(carta1, carta2, carta3);
+				} catch (CartaException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				p.setCartasJugador1(cartasJug1);
+				p.setCartasJugador2(cartasJug2);
+				s.getTransaction().commit();
+				s.close();
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public ParejaEntity toEntity(Pareja pareja) {
 		ParejaEntity pe = new ParejaEntity();
 		

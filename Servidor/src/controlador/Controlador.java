@@ -135,9 +135,10 @@ public class Controlador {
 
 	/**
 	 * Entiendo que aca la pareja ya va a estar persistida (la que quiere jugar), por eso necesito su id
+	 * @throws CartaException 
 	 * */
 	//OK, FALTARIA SETEARLE A LOS JUGADORES QUE JUGANDO = TRUE
-	public Partido iniciarPartidaLibre(Pareja parej) throws ParejaException {
+	public Partido iniciarPartidaLibre(Pareja parej) throws ParejaException, CartaException {
 		Partido part = null;
 		List<Pareja> parejasDisponibles = ParejaDAO.getInstancia().buscarParejasLibres(parej);
 		List<Pareja> parejasFinales = new ArrayList<Pareja>();

@@ -70,9 +70,11 @@ public class Mano {
 	
 	
 	public static boolean analizarEnvitesMano(int id) throws PartidoException {
+		//ME FALTA TERMINARLO. MATI
 		int indiceChico = 0;
 		int indiceMano = 0;
 		int indiceBaza = 0;
+		int indiceTurno = 0;
 		Partido partidoNegocio = PartidoDAO.getInstancia().buscarPartidoPorID(id);
 		if(partidoNegocio.getChico().size() > 0){
 			indiceChico = partidoNegocio.getChico().size()-1;//agarro el chico actual
@@ -87,10 +89,11 @@ public class Mano {
 		Chico chicoActual = partidoNegocio.getChico().get(indiceChico);
 		Mano manoActual = chicoActual.getManos().get(indiceMano);
 		Baza bazaActual = manoActual.getBazas().get(indiceBaza);
+		indiceTurno = bazaActual.getTurnos().size()-1;
 		
 		Turno turnoEnvite = null;
-		if(bazaActual.getEnviteActual() != null){
-			turnoEnvite = bazaActual.getTurnos().get(bazaActual.getNumJugEnvitePendiente());
+		if(bazaActual.getEnviteActual() == null){
+			turnoEnvite = bazaActual.getTurnos().get(indiceTurno);
 
 			
 			

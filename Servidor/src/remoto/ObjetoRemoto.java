@@ -80,7 +80,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	//FALTARIA TESTEAR
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException {
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException {
 		Pareja parej = null;
 		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibre(parej);
 		PartidoDTO part = partidoNuevo.toDTO();

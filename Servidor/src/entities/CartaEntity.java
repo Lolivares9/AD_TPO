@@ -31,6 +31,9 @@ public class CartaEntity {
 	@Column(name="VALOR_JUEGO")
 	private int valorJuego;
 	
+	@Column(name = "VALOR_ENVIDO")
+	private int valorEnvido;
+
 	public CartaEntity() {
 		super();
 	}
@@ -67,4 +70,12 @@ public class CartaEntity {
 		this.valorJuego = valorJuego;
 	}
 	
+	public int getValorEnvido() {
+		return valorEnvido;
+	}
+
+	public void setValorEnvido(int valorEnvido) {
+		this.valorEnvido = valorEnvido;
+	}
+
 }

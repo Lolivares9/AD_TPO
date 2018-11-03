@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,23 +37,11 @@ public class ParejaEntity {
 	@ManyToOne
 	@JoinColumn(name="ID_JUGADOR2")
 	private JugadorEntity jugador2;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@Where(clause = "MODALIDAD = 'Libre'")
-	private List<PartidoEntity> partidosLibre = new ArrayList<PartidoEntity>();
-	
-	@OneToMany(mappedBy="parejas")
-	@Where(clause = "MODALIDAD = 'Libre_individual'")
-	private List<PartidoEntity> partidosLibreIndiv = new ArrayList<PartidoEntity>();
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@Where(clause = "MODALIDAD = 'Cerrado'")
-	private List<PartidoEntity> partidosCerrado = new ArrayList<PartidoEntity>();
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "PARTIDOS_PAREJAS", joinColumns = @JoinColumn(name="_ID_PAREJA"),inverseJoinColumns=@JoinColumn(name="_ID_PARTIDO"))
 	private List<PartidoEntity> partidos = new ArrayList<PartidoEntity>();
-
+	
 	public ParejaEntity() {
 		super();
 	}
@@ -79,30 +68,6 @@ public class ParejaEntity {
 
 	public void setJugador2(JugadorEntity jugador2) {
 		this.jugador2 = jugador2;
-	}
-
-	public List<PartidoEntity> getPartidosLibre() {
-		return partidosLibre;
-	}
-
-	public void setPartidosLibre(List<PartidoEntity> partidosLibre) {
-		this.partidosLibre = partidosLibre;
-	}
-
-	public List<PartidoEntity> getPartidosLibreIndiv() {
-		return partidosLibreIndiv;
-	}
-
-	public void setPartidosLibreIndiv(List<PartidoEntity> partidosLibreIndiv) {
-		this.partidosLibreIndiv = partidosLibreIndiv;
-	}
-
-	public List<PartidoEntity> getPartidosCerrado() {
-		return partidosCerrado;
-	}
-
-	public void setPartidosCerrado(List<PartidoEntity> partidosCerrado) {
-		this.partidosCerrado = partidosCerrado;
 	}
 
 	public List<PartidoEntity> getPartidos() {
