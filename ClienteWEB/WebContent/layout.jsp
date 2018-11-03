@@ -19,20 +19,20 @@ $(document).ready(function(){
 				 Categoria: categoria
 		       };
 	$("#LibreIndiv").click(function() {
-		  $.ajax({
-			  type: 'POST',
-		      url: 'ActionsServlet?action=LibreIndiv',
-		      contentType: 'application/json; charset=utf-8',
-		      dataType: 'json',
-		      data: JSON.stringify(sendInfo),
-	          success: function(response ,response2) {
-	        	  $("html").html(response2);
-                   },
-     	          error: function(response,response2) {
-     	        	 $("html").html(response2);
-                   }
-		    });
-		});
+		var input = document.createElement("input");
+		input.setAttribute("type", "hidden");
+		input.setAttribute("name", "Usuario");
+		input.setAttribute("value", user);
+		
+		var input2 = document.createElement("input");
+		input2.setAttribute("type", "hidden");
+		input2.setAttribute("name", "Categoria");
+		input2.setAttribute("value", categoria);
+
+		document.getElementById("LibreIndiv").appendChild(input);
+		document.getElementById("LibreIndiv").appendChild(input2);
+		document.forms['LibreIndiv'].submit()
+	});
 })
 
 
@@ -45,8 +45,11 @@ $(document).ready(function(){
 		<% String categoria = (String) request.getAttribute("categoria"); %>
 		<h4> Usuario logueado: <%= apodo %></h4>
 		<h4> Categoria: <%= categoria %></h4>
-			
-		<input type="button" id="LibreIndiv" value="Iniciar partida libre individual">
+		
+		  <form id="LibreIndiv" name="LibreIndiv" action="ActionsServlet?action=LibreIndiv" method="post">
+      			<input type="button" id="LibreIndiv" value="Iniciar partida libre individual" >
+     	</form> 
+		
 		<!--a href="ActionsServlet?action=LibreIndiv" target="_self">Inicia partida libre individual</a--> 
 
 </body>
