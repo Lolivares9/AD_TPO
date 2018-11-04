@@ -38,8 +38,7 @@ public class ParejaEntity {
 	@JoinColumn(name="ID_JUGADOR2")
 	private JugadorEntity jugador2;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "PARTIDOS_PAREJAS", joinColumns = @JoinColumn(name="_ID_PAREJA"),inverseJoinColumns=@JoinColumn(name="_ID_PARTIDO"))
+	@ManyToMany(mappedBy = "parejas")
 	private List<PartidoEntity> partidos = new ArrayList<PartidoEntity>();
 	
 	public ParejaEntity() {

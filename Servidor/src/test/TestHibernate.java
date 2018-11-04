@@ -5,6 +5,7 @@ import java.text.ParseException;
 import controlador.Controlador;
 import dao.JugadorDAO;
 import dao.ParejaDAO;
+import dao.PartidoDAO;
 import excepciones.CartaException;
 import excepciones.JugadorException;
 import excepciones.ParejaException;

@@ -39,6 +39,34 @@ public class ParejaDAO {
 		return true;
 	}
 	
+	public Pareja buscarParejaPorID(int id){
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		ParejaEntity pEntity = null;
+		Pareja p = null;
+		try {
+			pEntity = (ParejaEntity) s
+					.createQuery("from ParejaEntity pe where idPareja = ?")
+					.setInteger(0, id).uniqueResult();
+			s.getTransaction().commit();
+			
+			
+			if (pEntity != null) {
+				p = toNegocio(pEntity);
+				return p;
+			}else {
+				return p;		
+			}
+			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}finally {
+			s.close();
+		}
+		return p;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<ParejaEntity> buscarParejasPorJugador(Integer idJugador){
 		SessionFactory sf = HibernateUtil.getSessionFactory();
@@ -156,15 +184,16 @@ public class ParejaDAO {
 		if(pe != null){
 			p = new Pareja(pe.getIdPareja(),JugadorDAO.getInstancia().toNegocio(pe.getJugador1()), 
 				JugadorDAO.getInstancia().toNegocio(pe.getJugador2()));
-			buscarCartasPareja(p);
+			recuperarCartasPareja(p);
 		}
 		return p;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void buscarCartasPareja(Pareja p){
+	private void recuperarCartasPareja(Pareja p){
 		//ME FALTA TERMINARLO. MATI
-		List<String> ids = new ArrayList<String>();
+		List<String> numeroJug1 = new ArrayList<String>();
+		List<String> numeroJug2 = new ArrayList<String>();
 		List<Carta> cartasJug1 = new ArrayList<Carta>();
 		List<Carta> cartasJug2 = new ArrayList<Carta>();
 		String[] jugador1 = null;
@@ -176,10 +205,11 @@ public class ParejaDAO {
 		Session s = sf.openSession();
 		s.beginTransaction();
 		try {
-			ids = (List<String>) s.createSQLQuery("SELECT CARTAS_JUGADOR1,CARTAS_JUGADOR2 FROM PAREJAS_CARTAS WHERE ID_PAREJA = ?").setInteger(0, p.getIdPareja()).list();
-			if(ids != null){
-				jugador1 = ids.get(0).split(",");
-				jugador2 = ids.get(1).split(",");
+			numeroJug1 = (List<String>) s.createSQLQuery("SELECT CARTAS_JUGADOR1 FROM PAREJAS_CARTAS WHERE ID_PAREJA = ?").setInteger(0, p.getIdPareja()).list();
+			numeroJug2 = (List<String>) s.createSQLQuery("SELECT CARTAS_JUGADOR2 FROM PAREJAS_CARTAS WHERE ID_PAREJA = ?").setInteger(0, p.getIdPareja()).list();
+			if(numeroJug1 != null && numeroJug2 != null){
+				jugador1 = numeroJug1.get(0).split(",");
+				jugador2 = numeroJug2.get(0).split(",");
 				carta1 = jugador1[0];
 				carta2 = jugador1[1];
 				carta3 = jugador1[2];

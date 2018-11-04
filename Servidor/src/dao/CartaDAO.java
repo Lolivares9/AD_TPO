@@ -59,15 +59,19 @@ public class CartaDAO {
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
-		List<CartaEntity> c;
+		CartaEntity c1;
+		CartaEntity c2;
+		CartaEntity c3;
 		List<Carta> cartasJugador = new ArrayList<Carta>();
 		try {
-			c = (List<CartaEntity>) s.createQuery("FROM CartaEntity WHERE idCarta IN ('?','?','?')").setString(0, carta1).setString(1, carta2).setString(2, carta3).list();
+			c1 = (CartaEntity) s.createQuery("FROM CartaEntity WHERE idCarta = ?").setString(0, carta1).uniqueResult();
+			c2 = (CartaEntity) s.createQuery("FROM CartaEntity WHERE idCarta = ?").setString(0, carta2).uniqueResult();
+			c3 = (CartaEntity) s.createQuery("FROM CartaEntity WHERE idCarta = ?").setString(0, carta3).uniqueResult();
 			s.getTransaction().commit();
-			if(c != null){
-				for(int i = 0;i<c.size();i++){
-					cartasJugador.add(toNegocio(c.get(i)));
-				}
+			if(c1 != null && c2 != null && c3 != null){
+					cartasJugador.add(toNegocio(c1));
+					cartasJugador.add(toNegocio(c2));
+					cartasJugador.add(toNegocio(c3));
 			}
 		}catch (HibernateException e) {
 			e.printStackTrace();

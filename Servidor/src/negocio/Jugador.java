@@ -536,45 +536,48 @@ public class Jugador {
 		else if(!carta1.getPalo().equals(carta2.getPalo()) && !carta1.getPalo().equals(carta3.getPalo())){
 			if((carta1.getValorEnvido() >= carta2.getValorEnvido()) && (carta1.getValorEnvido() >= carta3.getValorEnvido())){
 				envido = carta1.getValorEnvido();
-				if(carta1.getValorEnvido() == 10 || carta1.getValorEnvido() == 11 || carta1.getValorEnvido() == 12){
-					return envido = 20;
-				}
-				else{
-					return envido;
-				}
+				return envido;
 			}
 			else if((carta2.getValorEnvido() >= carta1.getValorEnvido()) && (carta2.getValorEnvido() >= carta3.getValorEnvido())){
 				envido = carta2.getValorEnvido();
-				if(carta2.getValorEnvido() == 10 || carta2.getValorEnvido() == 11 || carta2.getValorEnvido() == 12){
-					return envido = 20;
-				}
-				else{
-					return envido;
-				}
+				return envido;
 			}
 			else if((carta3.getValorEnvido() >= carta2.getValorEnvido()) && (carta3.getValorEnvido() >= carta1.getValorEnvido())){
 				envido = carta3.getValorEnvido();
-				if(carta3.getValorEnvido() == 10 || carta3.getValorEnvido() == 11 || carta3.getValorEnvido() == 12){
-					return envido = 20;
-				}
-				else{
-					return envido;
-				}
+				return envido;
 			}
 		}
 		else if(carta1.getPalo().equals(carta2.getPalo())){
 			sumaCarta1Carta2 = carta1.getValorEnvido() + carta2.getValorEnvido();
-			envido = sumaCarta1Carta2;
+			if(carta1.getValorEnvido() != 20 && carta2.getValorEnvido() != 20){
+				sumaCarta1Carta2 = sumaCarta1Carta2 + 20;
+				envido = 20 + sumaCarta1Carta2;
+			}
+			else{
+				envido = sumaCarta1Carta2;
+			}
 			return envido;
 		}
 		else if(carta1.getPalo().equals(carta3.getPalo())){
 			sumaCarta1Carta3 = carta1.getValorEnvido() + carta3.getValorEnvido();
-			envido = sumaCarta1Carta3;
+			if(carta1.getValorEnvido() != 20 && carta3.getValorEnvido() != 20){
+				sumaCarta1Carta3 = sumaCarta1Carta3 + 20;
+				envido = sumaCarta1Carta3;
+			}
+			else{
+				envido = sumaCarta1Carta2;
+			}
 			return envido;
 		}
 		else if(carta2.getPalo().equals(carta3.getPalo())){
 			sumaCarta2Carta3 = carta2.getValorEnvido() + carta3.getValorEnvido();
-			envido = sumaCarta2Carta3;
+			if(carta2.getValorEnvido() != 20 && carta3.getValorEnvido() != 20){
+				sumaCarta2Carta3 = sumaCarta2Carta3 + 20;
+				envido = sumaCarta2Carta3;
+			}
+			else{
+				envido = sumaCarta1Carta2;
+			}
 			return envido;
 		}
 		
