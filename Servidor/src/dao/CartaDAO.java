@@ -83,8 +83,14 @@ public class CartaDAO {
 	}
 	
 	public CartaEntity toEntity(Carta carta) {
-		//TODO
-		return null;
+		CartaEntity ce = new CartaEntity();
+		ce.setIdCarta(carta.getIdCarta());
+		ce.setNumero(carta.getNumero());
+		ce.setPalo(carta.getPalo());
+		ce.setValorEnvido(carta.getValorEnvido());
+		ce.setValorJuego(carta.getValorJuego());
+		
+		return ce;
 	}
 	
 	public Carta toNegocio(CartaEntity carta) {

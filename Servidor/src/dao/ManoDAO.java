@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.BazaEntity;
 import entities.ChicoEntity;
 import entities.ManoEntity;
 import entities.ParejaEntity;
@@ -38,7 +39,7 @@ public class ManoDAO {
 
 		return true;
 	}
-	
+
 	private ManoEntity toEntity(Mano mano, Chico chico) {
 		ManoEntity me = new ManoEntity();
 		
@@ -101,5 +102,19 @@ public class ManoDAO {
 			}
 		}
 		return manosNegocio;
+	}
+
+	public ManoEntity toEntity(Mano mano) {
+		ManoEntity me = new ManoEntity();
+		me.setIdMano(mano.getIdMano());
+		me.setNumeroMano(mano.getNumeroMano());
+		if(mano.getParejaGanadora().getJugador1() != null){
+			me.setParejaGanadora(ParejaDAO.getInstancia().toEntity(mano.getParejaGanadora()));
+		}
+		for(Baza b : mano.getBazas()){
+			BazaEntity be = BazaDAO.getInstancia().toEntity(b);
+			me.getBazas().add(be);
+		}
+		return null;
 	}
 }

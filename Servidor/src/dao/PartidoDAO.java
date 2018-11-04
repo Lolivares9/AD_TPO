@@ -117,6 +117,7 @@ public class PartidoDAO {
 		}
 		p.setParejas(parejas);
 		p.setIdPartido(pe.getIdPartido());
+		p.setEstado(pe.getEstado());
 		return p;
 	}
 

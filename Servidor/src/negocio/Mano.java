@@ -105,9 +105,11 @@ public class Mano {
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_Querido)){
 				if(partidoNegocio.getParejas().get(0).equals(Pareja.calcularTantoParejas(partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1)))){
 					bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + 2);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 2);
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 2);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 2);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +2 PUNTOS

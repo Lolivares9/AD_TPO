@@ -6,10 +6,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import entities.ChicoEntity;
+import entities.ManoEntity;
 import entities.ParejaEntity;
 import excepciones.ChicoException;
 import hbt.HibernateUtil;
 import negocio.Chico;
+import negocio.Mano;
 
 
 public class ChicoDAO {
@@ -46,8 +48,14 @@ public class ChicoDAO {
 		ParejaEntity parejaGanadora = null;
 		if (chico.getParejaGanadora().getJugador1() != null) {
 			parejaGanadora = ParejaDAO.getInstancia().toEntity(chico.getParejaGanadora());
+			ce.setParejaGanadora(parejaGanadora);
 		}
-		ce.setParejaGanadora(parejaGanadora);
+		if(chico.getManos() != null){
+			for(Mano c : chico.getManos()){
+				ManoEntity m = ManoDAO.getInstancia().toEntity(c);
+				ce.getManos().add(m);
+			}
+		}
 		return ce;
 	}
 
