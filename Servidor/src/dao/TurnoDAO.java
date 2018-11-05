@@ -38,21 +38,14 @@ public class TurnoDAO {
 		return true;
 	}
 	
-	private TurnoEntity toEntity(Turno turno) {
+	public TurnoEntity toEntity(Turno turno) {
 		TurnoEntity te = new TurnoEntity();
-		
-		BazaEntity baza = BazaDAO.getInstancia().toEntity(turno.getBaza());		
-		te.setBaza(baza);
-		
 		CartaEntity carta = CartaDAO.getInstancia().toEntity(turno.getCarta());
 		te.setCarta(carta);
-		
 		te.setEnvite(turno.getEnvite());
 		te.setIdTurno(turno.getIdTurno());
-		
 		JugadorEntity jugador = JugadorDAO.getInstancia().toEntity(turno.getJugador());
 		te.setJugador(jugador);
-
 		return te;
 	}
 

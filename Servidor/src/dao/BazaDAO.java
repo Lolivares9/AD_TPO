@@ -10,9 +10,11 @@ import org.hibernate.SessionFactory;
 
 import entities.BazaEntity;
 import entities.ParejaEntity;
+import entities.TurnoEntity;
 import excepciones.BazaException;
 import hbt.HibernateUtil;
 import negocio.Baza;
+import negocio.Turno;
 
 public class BazaDAO {
 	private static BazaDAO instancia;
@@ -38,15 +40,22 @@ public class BazaDAO {
 	
 	public BazaEntity toEntity(Baza baza) {
 		BazaEntity be = new BazaEntity();
-		
+		ParejaEntity parejaGanadora = null;
 		be.setIdBaza(baza.getIdBaza());
 		be.setNumeroBaza(baza.getNumero());
 		be.setPuntajePareja1(baza.getPuntajePareja1());
 		be.setPuntajePareja2(baza.getPuntajePareja2());
-		
-		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(baza.getGanadores());
+		if(baza.getGanadores().getJugador1() != null){
+			parejaGanadora = ParejaDAO.getInstancia().toEntity(baza.getGanadores());
+		}
 		be.setGanadoresBaza((parejaGanadora));
-		
+		if(baza.getTurnos() != null){
+			for(Turno t : baza.getTurnos()){
+				TurnoEntity te = TurnoDAO.getInstancia().toEntity(t);
+				te.setIdTurno(t.getIdTurno());
+				be.getTurnos().add(te);
+			}
+		}
 		return be;
 	}
 	
