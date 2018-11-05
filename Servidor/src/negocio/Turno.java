@@ -19,8 +19,9 @@ public class Turno {
 		this.carta = carta;
 	}
 	
-	public Turno(Jugador jugador, Envite envite, Carta carta) {
+	public Turno(Integer idTurno,Jugador jugador, Envite envite, Carta carta) {
 		super();
+		this.idTurno = idTurno;
 		this.jugador = jugador;
 		this.envite = envite;
 		this.carta = carta;

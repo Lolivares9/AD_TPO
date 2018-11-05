@@ -50,11 +50,13 @@ public class BazaDAO {
 		}
 		be.setGanadoresBaza((parejaGanadora));
 		if(baza.getTurnos() != null){
+			List<TurnoEntity> turnosEntities = new ArrayList<TurnoEntity>();
 			for(Turno t : baza.getTurnos()){
 				TurnoEntity te = TurnoDAO.getInstancia().toEntity(t);
-				te.setIdTurno(t.getIdTurno());
-				be.getTurnos().add(te);
+				te.setBaza(be);
+				turnosEntities.add(te);
 			}
+			be.setTurnos(turnosEntities);
 		}
 		return be;
 	}

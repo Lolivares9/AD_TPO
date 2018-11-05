@@ -56,12 +56,6 @@ public class Chico {
 		this.manos = manos;
 	}
 
-	public boolean isFinaizado() {
-		return finalizado;
-	}
-	public void setFinaizado(boolean finaizado) {
-		this.finalizado = finaizado;
-	}
 	public Pareja getParejaGanadora() {
 		return parejaGanadora;
 	}

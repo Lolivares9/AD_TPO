@@ -111,10 +111,15 @@ public class ManoDAO {
 		if(mano.getParejaGanadora().getJugador1() != null){
 			me.setParejaGanadora(ParejaDAO.getInstancia().toEntity(mano.getParejaGanadora()));
 		}
+		List<BazaEntity> bazasentities = new ArrayList<BazaEntity>();
 		for(Baza b : mano.getBazas()){
 			BazaEntity be = BazaDAO.getInstancia().toEntity(b);
-			me.getBazas().add(be);
+			be.setMano(me);
+			bazasentities.add(be);
 		}
-		return null;
+		if(bazasentities.size() > 0){
+			me.setBazas(bazasentities);
+		}
+		return me;
 	}
 }
