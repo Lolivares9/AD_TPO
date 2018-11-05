@@ -433,6 +433,35 @@ public class Mano {
 				//PAREJA GANADORA +3 PUNTOS
 				return false;
 			}
+			
+			//*******MAZO**********
+			
+			if(turnoEnvite.getEnvite().equals(Envite.Mazo)){
+				turnoEnvite = bazaActual.getTurnos().get(indiceTurno-1);
+				if(bazaActual.getNumero() == 0){
+					if(partidoNegocio.getParejas().get(0).getJugador1().equals(turnoEnvite.getJugador()) || partidoNegocio.getParejas().get(0).getJugador2().equals(turnoEnvite.getJugador())){
+						bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + 2);
+						chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1() + 2);
+					}
+					else{
+						bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 2);
+						chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 2);
+					}
+					partidoNegocio.actualizar();
+				}else{
+					if(partidoNegocio.getParejas().get(0).getJugador1().equals(turnoEnvite.getJugador()) || partidoNegocio.getParejas().get(0).getJugador2().equals(turnoEnvite.getJugador())){
+						bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + 1);
+						chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1() + 1);
+					}
+					else{
+						bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 1);
+						chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 1);
+					}
+					partidoNegocio.actualizar();
+				}
+				return false;
+				//ACA SI ES LA PRIMER BAZA, LA PAREJA QUE (NO) SE VA AL MAZO VA A GANAR 2 PUNTOS, SINO, GANA SOLAMENTE 1
+			}
 		}
 		else{
 			return true;
