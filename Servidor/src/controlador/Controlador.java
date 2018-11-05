@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import dao.BazaDAO;
+import dao.CartaDAO;
 import dao.ChicoDAO;
 import dao.GrupoDAO;
 import dao.JugadorDAO;
@@ -125,7 +126,8 @@ public class Controlador {
 			Pareja.actualizarEstadoParejas(parejas);
 		
 			PartidoDTO pd = p.toDTO();
-			repartiCartas(pd);
+			mazo = new Mazo();
+			mazo.repartiCartas(pd);
 			return pd;
 		}
 		return null;
@@ -168,19 +170,6 @@ public class Controlador {
 		}
 		
 		return part;
-	}
-
-	public void repartiCartas(PartidoDTO pd) throws CartaException {
-		mazo = new Mazo();
-		List<ParejaDTO> parejas = pd.getParejaDTOs();
-		List<CartaDTO> cartas =  mazo.repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList());
-		//TODO meter esta logica en mazo
-		for(int i = 1; i <= 3; i++){
-			parejas.get(0).agregarCartaJug1(cartas.remove(0));
-			parejas.get(0).agregarCartaJug2(cartas.remove(0));
-			parejas.get(1).agregarCartaJug1(cartas.remove(0));
-			parejas.get(1).agregarCartaJug2(cartas.remove(0));
-		}
 	}
 
 	/**
@@ -275,5 +264,9 @@ public class Controlador {
 	
 	public Pareja evaluarBaza () {
 		return null;
+	}
+
+	public void repartiCartas(PartidoDTO pd) throws CartaException {
+		mazo.repartiCartas(pd);
 	}
 }

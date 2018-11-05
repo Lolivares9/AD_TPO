@@ -127,6 +127,8 @@ public class PartidoDAO {
 		Session s = sf.openSession();
 		s.beginTransaction();
 		s.save(pEntity);
+		partido.getParejas().get(0).setIdPareja(pEntity.getParejas().get(0).getIdPareja());
+		partido.getParejas().get(1).setIdPareja(pEntity.getParejas().get(1).getIdPareja());
 		s.getTransaction().commit();
 		s.close();
 

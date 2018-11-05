@@ -9,10 +9,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import dto.PartidoDTO;
 import entities.CartaEntity;
 import excepciones.CartaException;
 import hbt.HibernateUtil;
 import negocio.Carta;
+import negocio.Pareja;
 
 public class CartaDAO {
 	private static CartaDAO instancia;
@@ -54,7 +56,6 @@ public class CartaDAO {
 		return new ArrayList<Carta>(cartas);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Carta> obtenerCartaPorJugador(String carta1,String carta2,String carta3) throws CartaException{
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
@@ -100,6 +101,32 @@ public class CartaDAO {
 			c.setIdCarta(carta.getIdCarta());
 		}
 		return c;
+	}
+	
+	public void saveCartasParejas(Pareja p) throws CartaException {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		String cartasJug1 = "";
+		String cartasJug2 = "";
+		String c1 = String.valueOf(p.getCartasJugador1().get(0).getIdCarta());
+		String c2 = String.valueOf(p.getCartasJugador1().get(1).getIdCarta());
+		String c3 = String.valueOf(p.getCartasJugador1().get(2).getIdCarta());
+		cartasJug1 = c1+','+c2+','+c3;
+		c1 = String.valueOf(p.getCartasJugador2().get(0).getIdCarta());
+		c2 = String.valueOf(p.getCartasJugador2().get(1).getIdCarta());
+		c3 = String.valueOf(p.getCartasJugador2().get(2).getIdCarta());
+		cartasJug2 = c1+','+c2+','+c3;
+		s.beginTransaction();
+		
+		try {
+			s.createSQLQuery("INSERT INTO PAREJAS_CARTAS VALUES ("+String.valueOf(p.getIdPareja())+",'"+cartasJug1+"','"+cartasJug2+"')").executeUpdate();
+			s.getTransaction().commit();
+		}catch (HibernateException e) {
+			e.printStackTrace();
+			throw new CartaException("Error al guardar las cartas de los jugadores.");
+		}finally{
+			s.close();
+		}
 	}
 	
 }

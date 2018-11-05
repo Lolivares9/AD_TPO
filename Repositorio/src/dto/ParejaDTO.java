@@ -10,7 +10,7 @@ public class ParejaDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 8367212573800908537L;
-	
+	private Integer idPareja;
 	private JugadorDTO jugador1;
 	private JugadorDTO jugador2;
 	private List<CartaDTO> cartasJug1;
@@ -22,6 +22,13 @@ public class ParejaDTO implements Serializable {
 		this.jugador2 = jugador2;
 	}
 	
+	public ParejaDTO(Integer idPareja, JugadorDTO jug1, JugadorDTO jug2) {
+		super();
+		this.idPareja = idPareja;
+		this.jugador1 = jug1;
+		this.jugador2 = jug2;
+	}
+
 	public JugadorDTO getJugadorDTO1() {
 		return jugador1;
 	}
@@ -63,5 +70,13 @@ public class ParejaDTO implements Serializable {
 			this.cartasJug2 = new ArrayList<CartaDTO>();
 		}
 		this.cartasJug2.add(c);
+	}
+
+	public Integer getIdPareja() {
+		return idPareja;
+	}
+
+	public void setIdPareja(Integer idPareja) {
+		this.idPareja = idPareja;
 	}
 }

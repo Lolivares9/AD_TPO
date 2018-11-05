@@ -59,7 +59,7 @@ public class Carta {
 	}
 	
 	public CartaDTO toDTO() {
-		return new CartaDTO(this.numero, this.palo, this.valorJuego);
+		return new CartaDTO(this.idCarta,this.numero, this.palo, this.valorJuego);
 	}
 
 	public String toString() {
