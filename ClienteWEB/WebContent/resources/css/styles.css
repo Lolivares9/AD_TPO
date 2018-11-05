@@ -14,9 +14,29 @@ h1 {
   margin:0;
 }
 
-.cartasJugador {
+.cartasJ1{
 	position: relative;
-	left: 160.5px; top: 326px; z-index: 423; width: 100px; height: 100px;
+	float: left;
+	margin: 100px;
+	padding: 20px 0;
+	width: 29.615861214%;
+}
+
+.cartasJ2{
+	position: relative;
+	left: 700px;
+	top: 850px;
+}
+
+.cartasJ3{
+	position: relative;
+	top: 400px;
+}
+
+.cartasJ4{
+	position: relative;
+	left: 10px;
+	top: 400px;
 }
 
 img {
@@ -39,7 +59,82 @@ img {
 	cursor: pointer;
 }
 
-.mesa{
-	transform: translate(0,-110px);
-	cursor: none;
+
+
+.mesa1{
+	position: relative;
+    left: 400px;
+    top: 450px;
+    z-index: 423;
+    width: 100px;
+    height: 100px;
+}
+
+.carta{
+    width: 80px;
+    height: 130px;
+    display: block;
+    -webkit-transition: -webkit-transform 0.5s linear;
+    -moz-transition: -moz-transform 0.5s linear;
+    -ms-transition: -ms-transform 0.5s linear;
+    -o-transition: -o-transform 0.5s linear;
+    transition: transform 0.5s linear;
+}
+
+.carta-H{
+    width: 130px;
+    height: 80px;
+    display: block;
+    -webkit-transition: -webkit-transform 1s linear;
+    -moz-transition: -moz-transform 1s linear;
+    -ms-transition: -ms-transform 1s linear;
+    -o-transition: -o-transform 1s linear;
+    transition: transform 1s linear;
+}
+
+.cartasJugador{
+	display: table;
+    padding: 0;
+    text-align: left;
+    margin: 0 auto;
+}
+
+.cartasJugador-H{
+	display: grid;
+    padding: 0;
+    text-align: left;
+    margin: 0 auto;
+}
+
+ul li {
+    display:inline-block!important;
+    margin-right:2em;
+}
+
+dl,
+menu,
+ol,
+ul {
+    margin: 1em 0;
+}
+
+menu,
+ol,
+ul {
+    padding: 0 0 0 40px;
+}
+
+#jugador1 {
+    position: absolute;
+    bottom: 0;
+}
+
+#jugador3{
+    position: absolute;
+    bottom: 1;
+}
+
+.player {
+    width: 100%;
+    min-height: 180px;
 }

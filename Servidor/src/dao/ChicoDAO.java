@@ -44,7 +44,7 @@ public class ChicoDAO {
 		ce.setPuntajePareja2(chico.getPuntajePareja2());
 		
 		ParejaEntity parejaGanadora = null;
-		if (chico.getParejaGanadora().getJugador1() != null) {
+		if (chico.getParejaGanadora() != null && chico.getParejaGanadora().getJugador1() != null) {
 			parejaGanadora = ParejaDAO.getInstancia().toEntity(chico.getParejaGanadora());
 		}
 		ce.setParejaGanadora(parejaGanadora);

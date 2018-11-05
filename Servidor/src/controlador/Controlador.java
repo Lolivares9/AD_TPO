@@ -251,12 +251,12 @@ public class Controlador {
 		
 		return detallePartida;
 	}
-	/*  
-	 * 
-	 * Para qué esta el puntaje en la tabla de parejas?, las parejas se eliminan despues de que juegan, pero nosotros las podriamos reusar
-	 * si se repite una pareja, pero hay que sacarle la columna de puntaje para eso.
-	 */
 
+	
+	public PartidoDTO buscarPartidaEnLobby(){
+		
+	}
+	
 	public void buscarPartidaLibreIndividual(JugadorDTO jugador) {
 		Jugador j;
 		try {
