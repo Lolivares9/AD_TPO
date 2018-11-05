@@ -89,7 +89,7 @@ public class ChicoDAO {
 			return new Chico(ce.getNumeroChico(), ce.isFinalizado(), ParejaDAO.getInstancia().toNegocio(ce.getParejaGanadora()), ce.getPuntajePareja1(), ce.getPuntajePareja2());
 		}
 		else{
-			return new Chico(ce.getIdChico(),ce.getNumeroChico(),ManoDAO.getInstancia().manosToNegocio(ce.getManos()),ce.isFinalizado(),ParejaDAO.getInstancia().toNegocio(ce.getParejaGanadora()),ce.getPuntajePareja1(),ce.getPuntajePareja2());
+			return new Chico(ce.getIdChico(),ce.getNumeroChico(),ManoDAO.getInstancia().manosToNegocio(ce.getManos()),ce.isFinalizado(),null,ce.getPuntajePareja1(),ce.getPuntajePareja2());
 		}
 	}
 }

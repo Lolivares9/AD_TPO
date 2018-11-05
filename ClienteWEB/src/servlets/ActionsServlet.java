@@ -38,7 +38,6 @@ public class ActionsServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         String action = request.getParameter("action");
-        String jspPage = "/index.jsp";
         request.getParameterNames();
         request.getAttributeNames();
         
@@ -86,13 +85,14 @@ public class ActionsServlet extends HttpServlet{
         try {
         	String usuario = request.getParameter("Usuario");
         	//TODO Debe buscar un partido creado
-			PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(request.getParameter("Categoria"), usuario);
+			PartidoDTO partido = BusinessDelegate.getInstancia().buscarPartidaLobby(usuario);
 			String jspPage = "/partido.jsp";
 			if(partido != null){
 				armarDetallePartido(request, partido, usuario);
 				dispatch(jspPage, request, response);
 			}else {
-				
+				jspPage = "/lobby.jsp";
+				dispatch(jspPage, request, response);
 			}
         } catch (ComunicationException |ServletException |IOException e) {
 			// TODO Auto-generated catch block
@@ -134,9 +134,16 @@ public class ActionsServlet extends HttpServlet{
 				if(datos.get("apodoJugador"+i).equals(usuario)) {
 					List<CartaDTO> cartasUsr = cartasOrden.get(i);
 					int n = 1;
-					//TODO ver si es necesario mandar el id de la carta para cuando se hagan movimientos (agregar al DTO el id)
+					//TODO Hardcodeado porque falta guardar las cartas cuando se reparten
+					if(cartasUsr == null) {
+						datos.put("carta"+n++, 1+"Basto");
+						datos.put("carta"+n++, 1+"Espada");
+						datos.put("carta"+n++, 1+"Oro");
+					}else{
 					for (CartaDTO c : cartasUsr) {
+						//TODO ver si es necesario mandar el id de la carta para cuando se hagan movimientos (agregar al DTO el id)
 						datos.put("carta"+n++, c.getNumero()+""+c.getPalo());
+					}
 					}
 					break;
 				}

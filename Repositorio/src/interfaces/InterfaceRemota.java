@@ -42,6 +42,8 @@ public interface InterfaceRemota extends Remote {
 	
 	public void buscarPartidaLibreIndividual(JugadorDTO jugador)throws RemoteException, JugadorException;
 	
+	public PartidoDTO buscarPartidaLobby(String apodoJugador) throws RemoteException, PartidoException;
+	
 	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException;
 	
 	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException;

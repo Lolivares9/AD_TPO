@@ -252,9 +252,13 @@ public class Controlador {
 		return detallePartida;
 	}
 
-	
-	public PartidoDTO buscarPartidaEnLobby(){
-		
+	//TODO buscar la partida por jugador (FACU)
+	public PartidoDTO buscarPartidaLobby() throws PartidoException{
+		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
+		if(p!= null) {
+			return p.toDTO();
+		}
+		return null;
 	}
 	
 	public void buscarPartidaLibreIndividual(JugadorDTO jugador) {

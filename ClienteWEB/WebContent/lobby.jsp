@@ -43,7 +43,7 @@ $(document).ready(function(){
 <body>
 	<p>Lobby de partidos</p>
 	
-	<form id="formul" name="LibreIndiv" action="ActionsServlet?action=LibreIndiv" method="post">
+	<form id="formul" name="LibreIndiv" action="ActionsServlet?action=LibreIndivLob" method="post">
       			<input type="button" id="LibreIndiv" value="Iniciar partida libre individual" >
      </form> 
 	<div class="loading-overlay">

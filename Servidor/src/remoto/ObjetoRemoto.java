@@ -71,6 +71,10 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		Controlador.getInstancia().buscarPartidaLibreIndividual(jugador);
 	}
 	
+	
+	public PartidoDTO buscarPartidaLobby(String apodoJugador) throws RemoteException, PartidoException {
+		return Controlador.getInstancia().buscarPartidaLobby();
+	}
 	//OK
 	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException {
 		

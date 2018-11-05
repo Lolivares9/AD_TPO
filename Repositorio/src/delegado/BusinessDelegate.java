@@ -126,6 +126,16 @@ public class BusinessDelegate {
 		}
 		return partido;
 	}
+	
+	public PartidoDTO buscarPartidaLobby(String apodoJugador) throws ComunicationException{
+		PartidoDTO partido = null;
+		try {
+			partido = ir.buscarPartidaLobby(apodoJugador);
+		} catch (RemoteException | PartidoException e) {
+			e.printStackTrace();
+		}
+		return partido;
+	}
 
 	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException, CartaException{
 		PartidoDTO partido = null;
