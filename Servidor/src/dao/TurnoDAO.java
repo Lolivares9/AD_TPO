@@ -75,7 +75,7 @@ public class TurnoDAO {
 	}
 	
 	public Turno toNegocio(TurnoEntity te) {
-		return new Turno(JugadorDAO.getInstancia().toNegocio(te.getJugador()),
+		return new Turno(te.getIdTurno(),JugadorDAO.getInstancia().toNegocio(te.getJugador()),
 				te.getEnvite(), CartaDAO.getInstancia().toNegocio(te.getCarta()));
 	}
 

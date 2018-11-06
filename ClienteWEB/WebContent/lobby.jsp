@@ -12,30 +12,46 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
+	var user = "${usuario}";
+	var categoria = "${categoria}";
+	var modalidad = "${modalidad}";
+	
+	var input = document.createElement("input");
+	input.setAttribute("type", "hidden");
+	input.setAttribute("name", "usuario");
+	input.setAttribute("value", user);
+	
+	var input2 = document.createElement("input");
+	input2.setAttribute("type", "hidden");
+	input2.setAttribute("name", "categoria");
+	input2.setAttribute("value", categoria);
+	
+	var input3 = document.createElement("input");
+	input3.setAttribute("type", "hidden");
+	input3.setAttribute("name", "modalidad");
+	input3.setAttribute("value", modalidad);
+	
+	document.getElementById("formul").appendChild(input);
+	document.getElementById("formul").appendChild(input2);
+	document.getElementById("formul").appendChild(input3);
+	
 	var r = confirm("No hay suficientes jugadores disponibles, desea esperar?")
 	if (r == true) {
 		buscarPartidos();
 	} else {
-	    txt = "You pressed Cancel!";
+		volverAlMenu();
 	}
-	function buscarPartidos() {
-	    setTimeout(function () {
-	    	
-			var input = document.createElement("input");
-			input.setAttribute("type", "hidden");
-			input.setAttribute("name", "Usuario");
-			input.setAttribute("value", "faculth");
-			
-			var input2 = document.createElement("input");
-			input2.setAttribute("type", "hidden");
-			input2.setAttribute("name", "Categoria");
-			input2.setAttribute("value", "Novato");
+	function volverAlMenu(){
+		var form = document.getElementById("formul");
+		form.setAttribute("action", "ActionsServlet")
+		document.forms['formul'].submit();
+	}
 	
-			document.getElementById("formul").appendChild(input);
-			document.getElementById("formul").appendChild(input2);
-			document.forms['formul'].submit()
+	function buscarPartidos() {
+	    setTimeout(function () {	
+			document.forms['formul'].submit();
 	        buscarPartidos();
-	    }, 1000);
+	    }, 10000);
 	}
 })
 </script>

@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.hibernate.HibernateException;
@@ -41,7 +42,7 @@ public class ChicoDAO {
 		
 		ce.setIdChico(chico.getIdChico());
 		ce.setNumeroChico(chico.getNumero());
-		ce.setFinalizado(chico.isFinaizado());
+		ce.setFinalizado(chico.isFinalizado());
 		ce.setPuntajePareja1(chico.getPuntajePareja1());
 		ce.setPuntajePareja2(chico.getPuntajePareja2());
 		
@@ -51,10 +52,13 @@ public class ChicoDAO {
 			ce.setParejaGanadora(parejaGanadora);
 		}
 		if(chico.getManos() != null){
-			for(Mano c : chico.getManos()){
-				ManoEntity m = ManoDAO.getInstancia().toEntity(c);
-				ce.getManos().add(m);
+			List<ManoEntity> manosentities = new ArrayList<ManoEntity>();
+			for(Mano man : chico.getManos()){
+				ManoEntity m = ManoDAO.getInstancia().toEntity(man);
+				m.setIdChico(ce);
+				manosentities.add(m);
 			}
+			ce.setManos(manosentities);
 		}
 		return ce;
 	}

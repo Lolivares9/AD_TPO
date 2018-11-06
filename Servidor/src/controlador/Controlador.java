@@ -16,11 +16,9 @@ import dao.ParejaDAO;
 import dao.PartidoDAO;
 import dao.TurnoDAO;
 import dto.BazaDTO;
-import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
-import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
@@ -36,7 +34,6 @@ import excepciones.ParejaException;
 import excepciones.PartidoException;
 import excepciones.TurnoException;
 import negocio.Baza;
-import negocio.Carta;
 import negocio.Chico;
 import negocio.Grupo;
 import negocio.Jugador;
@@ -125,7 +122,8 @@ public class Controlador {
 			Pareja.actualizarEstadoParejas(parejas);
 		
 			PartidoDTO pd = p.toDTO();
-			repartiCartas(pd);
+			mazo = new Mazo();
+			mazo.repartiCartas(pd);
 			return pd;
 		}
 		return null;
@@ -170,19 +168,6 @@ public class Controlador {
 		return part;
 	}
 
-	public void repartiCartas(PartidoDTO pd) throws CartaException {
-		mazo = new Mazo();
-		List<ParejaDTO> parejas = pd.getParejaDTOs();
-		List<CartaDTO> cartas =  mazo.repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList());
-		//TODO meter esta logica en mazo
-		for(int i = 1; i <= 3; i++){
-			parejas.get(0).agregarCartaJug1(cartas.remove(0));
-			parejas.get(0).agregarCartaJug2(cartas.remove(0));
-			parejas.get(1).agregarCartaJug1(cartas.remove(0));
-			parejas.get(1).agregarCartaJug2(cartas.remove(0));
-		}
-	}
-
 	/**
 	 * Traer lista de partidos jugados, se puede filtar por modalidad y/o fecha
 	 * En el DTO no van a estar cargados todas las variables, porque luego puede
@@ -197,7 +182,7 @@ public class Controlador {
 	 * @throws PartidoException 
 	 */
 	public List<PartidoDTO> buscarPartidosJugados(JugadorDTO jugador, TipoModalidad mod, Date fechaInicial, Date fechaFin) throws ParejaException, PartidoException{
-		List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jugador.getId(), mod, fechaInicial, fechaFin);
+		List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jugador.getId(), mod, fechaInicial, fechaFin, null);
 		return partidos.stream().map(Partido::toDTOListar).collect(Collectors.toList());
 
 	}
@@ -252,11 +237,11 @@ public class Controlador {
 		return detallePartida;
 	}
 
-	//TODO buscar la partida por jugador (FACU)
-	public PartidoDTO buscarPartidaLobby() throws PartidoException{
-		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
-		if(p!= null) {
-			return p.toDTO();
+	public PartidoDTO buscarPartidaLobby(String apodo, String modalidad) throws PartidoException, ParejaException, JugadorException{
+		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(apodo);
+		List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jug.getId(), TipoModalidad.valueOf(modalidad), EstadoPartido.En_Proceso.name());
+		if(partidos!= null && !partidos.isEmpty()) {
+			return partidos.get(0).toDTO();
 		}
 		return null;
 	}
@@ -275,5 +260,9 @@ public class Controlador {
 	
 	public Pareja evaluarBaza () {
 		return null;
+	}
+
+	public void repartiCartas(PartidoDTO pd) throws CartaException {
+		mazo.repartiCartas(pd);
 	}
 }

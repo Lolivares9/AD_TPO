@@ -10,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
 
 import enums.Envite;
 
@@ -35,8 +37,8 @@ public class TurnoEntity {
 	@Enumerated(EnumType.STRING)
 	private Envite envite;
 	
-	@OneToOne
-	@JoinColumn(name="ID_CARTA")
+	@OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
 	private CartaEntity carta;
 	
 	public TurnoEntity() {

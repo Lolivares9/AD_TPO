@@ -55,7 +55,7 @@ public class Pareja {
 	}
 	
 	public ParejaDTO toDTO() {
-		return new ParejaDTO(jugador1.toDTO(), jugador2.toDTO());
+		return new ParejaDTO(this.idPareja,jugador1.toDTO(), jugador2.toDTO());
 	}
 
 	public static List<Pareja> distribuirParejas(List<Jugador> jugDisp) {
