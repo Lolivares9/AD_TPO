@@ -41,7 +41,7 @@ public class Mano {
 	}
 	
 	public boolean guardar(Chico chico){
-		return ManoDAO.getInstancia().guardar(this, chico);
+		return ManoDAO.getInstancia().guardar(this);
 	}
 
 	public Integer getIdMano() {
@@ -70,23 +70,20 @@ public class Mano {
 	
 	
 	public static boolean analizarEnvitesMano(int id) throws PartidoException {
-		//ME FALTA TERMINARLO. MATI
-		int indiceChico = 0;
 		int indiceMano = 0;
 		int indiceBaza = 0;
 		int indiceTurno = 0;
 		Partido partidoNegocio = PartidoDAO.getInstancia().buscarPartidoPorID(id);
 		if(partidoNegocio.getChico().size() > 0){
-			indiceChico = partidoNegocio.getChico().size()-1;//agarro el chico actual
-			if(partidoNegocio.getChico().get(indiceChico).getManos().size() > 0){
-				indiceMano =  partidoNegocio.getChico().get(indiceChico).getManos().size()-1;//agarro la mano actual
-				Mano manoActual = partidoNegocio.getChico().get(indiceChico).getManos().get(indiceMano);
+			if(partidoNegocio.getChico().get(partidoNegocio.getNumeroChicoActual()).getManos().size() > 0){
+				indiceMano =  partidoNegocio.getChico().get(partidoNegocio.getNumeroChicoActual()).getManos().size()-1;//agarro la mano actual
+				Mano manoActual = partidoNegocio.getChico().get(partidoNegocio.getNumeroChicoActual()).getManos().get(indiceMano);
 				if(manoActual.getBazas().size() > 0){
 					indiceBaza = manoActual.getBazas().size() - 1;//agarro la baza/ronda actual
 				}
 			}
 		}
-		Chico chicoActual = partidoNegocio.getChico().get(indiceChico);
+		Chico chicoActual = partidoNegocio.getChico().get(partidoNegocio.getNumeroChicoActual());
 		Mano manoActual = chicoActual.getManos().get(indiceMano);
 		Baza bazaActual = manoActual.getBazas().get(indiceBaza);
 		indiceTurno = bazaActual.getTurnos().size()-1;

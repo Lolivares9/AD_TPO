@@ -6,14 +6,12 @@ import enums.Envite;
 
 public class Turno {
 	private Integer idTurno;
-	private Baza baza;
 	private Jugador jugador;
 	private Envite envite;
 	private Carta carta;
 	
-	public Turno(Baza baza, Jugador jugador, Envite envite, Carta carta) {
+	public Turno(Jugador jugador, Envite envite, Carta carta) {
 		super();
-		this.baza = baza;
 		this.jugador = jugador;
 		this.envite = envite;
 		this.carta = carta;
@@ -27,12 +25,6 @@ public class Turno {
 		this.carta = carta;
 	}
 
-	public Baza getBaza() {
-		return baza;
-	}
-	public void setBaza(Baza baza) {
-		this.baza = baza;
-	}
 	public Jugador getJugador() {
 		return jugador;
 	}

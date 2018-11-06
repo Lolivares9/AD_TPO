@@ -43,6 +43,15 @@ public class Baza {
 	public Baza() {
 	}
 
+	public Baza(int numeroBaza, Pareja ganadores, int puntajePareja1, int puntajePareja2, List<Turno> turnos) {
+		super();
+		this.numeroBaza = numeroBaza;
+		this.ganadores = ganadores;
+		this.puntajePareja1 = puntajePareja1;
+		this.puntajePareja2 = puntajePareja2;
+		this.turnos = turnos;
+	}
+
 	public int getNumero() {
 		return numeroBaza;
 	}

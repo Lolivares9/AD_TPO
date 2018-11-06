@@ -40,7 +40,10 @@ public class TurnoDAO {
 	
 	public TurnoEntity toEntity(Turno turno) {
 		TurnoEntity te = new TurnoEntity();
-		CartaEntity carta = CartaDAO.getInstancia().toEntity(turno.getCarta());
+		CartaEntity carta = null;
+		if(turno.getCarta() != null){
+			carta = CartaDAO.getInstancia().toEntity(turno.getCarta());
+		}
 		te.setCarta(carta);
 		te.setEnvite(turno.getEnvite());
 		te.setIdTurno(turno.getIdTurno());
@@ -75,8 +78,12 @@ public class TurnoDAO {
 	}
 	
 	public Turno toNegocio(TurnoEntity te) {
-		return new Turno(te.getIdTurno(),JugadorDAO.getInstancia().toNegocio(te.getJugador()),
-				te.getEnvite(), CartaDAO.getInstancia().toNegocio(te.getCarta()));
+		Turno t = null;
+		if(te != null){
+			t = new Turno(te.getIdTurno(),JugadorDAO.getInstancia().toNegocio(te.getJugador()),
+					te.getEnvite(), CartaDAO.getInstancia().toNegocio(te.getCarta()));
+		}
+		return t;
 	}
 
 	public List<Turno> toNegocioAll(List<TurnoEntity> turnos) {

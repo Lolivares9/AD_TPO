@@ -22,6 +22,7 @@ import excepciones.PartidoException;
 public class Partido {
 	private Integer idPartido;
 	private List<Chico> chicos;
+	private int numeroChicoActual;
 	private TipoModalidad modalidad;
 	private List<Pareja> parejas;
 	private Pareja parejaGanadora;
@@ -152,8 +153,14 @@ public class Partido {
 	
 	private List<Chico> crearChicos() {
 		List <Chico> chicos = new ArrayList<Chico>();
-		
+		List <Mano> manos = new ArrayList<Mano>();
+		List <Baza> bazas = new ArrayList<Baza>();
+		Baza b = new Baza(1,null,0,0,null);
+		bazas.add(b);
+		Mano m = new Mano(1,null,bazas);
+		manos.add(m);
 		Chico chico1 = new Chico(1, false, null, 0, 0);
+		chico1.setManos(manos);
 		Chico chico2 = new Chico(2, false, null, 0, 0);
 		Chico chico3 = new Chico(3, false, null, 0, 0);
 		
@@ -164,8 +171,16 @@ public class Partido {
 		return chicos;
 	}
 	
-	public static boolean nuevaJugada(int id) throws PartidoException{
-		boolean siguienteTurno = Mano.analizarEnvitesMano(id);;
+	public boolean nuevaJugada(int id) throws PartidoException{
+		boolean siguienteTurno = Mano.analizarEnvitesMano(id);
 		return siguienteTurno;
+	}
+
+	public int getNumeroChicoActual() {
+		return numeroChicoActual;
+	}
+
+	public void setNumeroChicoActual(int chicoActual) {
+		this.numeroChicoActual = chicoActual;
 	}
 }

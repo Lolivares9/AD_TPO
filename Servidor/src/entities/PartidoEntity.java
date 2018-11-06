@@ -57,6 +57,16 @@ public class PartidoEntity {
 	@JoinColumn(name="ID_PARTIDO")
 	private List<ChicoEntity> chicos;
 	
+	@Column(name="CHICO_ACTUAL")
+	private int numeroChicoActual;
+
+	public int getNumeroChicoActual() {
+		return numeroChicoActual;
+	}
+
+	public void setNumeroChicoActual(int numeroChicoActual) {
+		this.numeroChicoActual = numeroChicoActual;
+	}
 
 	public List<ChicoEntity> getChicos() {
 		return chicos;

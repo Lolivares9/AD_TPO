@@ -47,7 +47,7 @@ public class ChicoDAO {
 		ce.setPuntajePareja2(chico.getPuntajePareja2());
 		
 		ParejaEntity parejaGanadora = null;
-		if (chico.getParejaGanadora() != null && chico.getParejaGanadora().getJugador1() != null) {
+		if (chico.getParejaGanadora() != null) {
 			parejaGanadora = ParejaDAO.getInstancia().toEntity(chico.getParejaGanadora());
 			ce.setParejaGanadora(parejaGanadora);
 		}
@@ -55,6 +55,8 @@ public class ChicoDAO {
 			List<ManoEntity> manosentities = new ArrayList<ManoEntity>();
 			for(Mano man : chico.getManos()){
 				ManoEntity m = ManoDAO.getInstancia().toEntity(man);
+				System.out.println("Imprimo Mano, numero: " + m.getNumeroMano());
+				m.setNumeroMano(m.getNumeroMano());
 				m.setIdChico(ce);
 				manosentities.add(m);
 			}
