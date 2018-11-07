@@ -90,7 +90,9 @@ public class Mano {
 		Chico chicoActual = partidoNegocio.getChico().get(indiceChico);
 		Mano manoActual = chicoActual.getManos().get(indiceMano);
 		Baza bazaActual = manoActual.getBazas().get(indiceBaza);
-		indiceTurno = bazaActual.getTurnos().size()-1;
+		if(bazaActual.getTurnos().size() > 0){
+			indiceTurno = bazaActual.getTurnos().size()-1;
+		}
 		
 		Turno turnoEnvite = null;
 		if(bazaActual.getEnviteActual() == null){
