@@ -57,10 +57,18 @@ private static void jugada(PartidoDTO pdto) throws PartidoException {
 	List <Mano> manos = null;
 	Mano mano = p.getChico().get(0).getManos().get(0);
 	Baza baza = p.getChico().get(0).getManos().get(0).getBazas().get(0);
+	
+	//En caso de que ya se haya empezado a jugar, ya tenemos el ID
+	Turno turno1 = new Turno(baza.getTurnos().get(0).getIdTurno(),pareja1Jug1,Envite.Nada,pareja1.getCartasJugador1().get(0));
+	Turno turno2 = new Turno(baza.getTurnos().get(1).getIdTurno(),pareja2Jug1,Envite.Nada,pareja2.getCartasJugador1().get(0));
+	Turno turno3 = new Turno(baza.getTurnos().get(2).getIdTurno(),pareja1Jug2,Envite.Envido,pareja1.getCartasJugador2().get(0));
+	Turno turno4 = new Turno(baza.getTurnos().get(3).getIdTurno(),pareja2Jug2,Envite.Envido_Querido,pareja2.getCartasJugador2().get(0));
+	
+	/*
 	Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,pareja1.getCartasJugador1().get(0));
 	Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,pareja2.getCartasJugador1().get(0));
 	Turno turno3 = new Turno(pareja1Jug2,Envite.Envido,null);
-	Turno turno4 = new Turno(pareja2Jug2,Envite.Envido_Querido,null);
+	Turno turno4 = new Turno(pareja2Jug2,Envite.Envido_Querido,null);*/
 	turnos.add(turno1);
 	turnos.add(turno2);
 	turnos.add(turno3);
@@ -72,8 +80,8 @@ private static void jugada(PartidoDTO pdto) throws PartidoException {
 	manos = p.getChico().get(0).getManos();
 	manos.set(0, mano);
 	p.getChico().get(0).setManos(manos);
-	p.actualizar();
-	//p.nuevaJugada(1);
+	//p.actualizar();
+	p.nuevaJugada(1);
 	
 	
 	
