@@ -156,5 +156,10 @@ public class Pareja {
 		
 	}
 
-	
+	public static Pareja calcularParejaGanadoraTruco(Pareja pareja1, Pareja pareja2){
+		Pareja parejaGanadora = null;
+		
+		
+		return parejaGanadora;
+	}
 }

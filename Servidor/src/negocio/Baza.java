@@ -122,4 +122,28 @@ public class Baza {
 	public void setEnviteActual(Envite enviteActual) {
 		this.enviteActual = enviteActual;
 	}
+	
+	public static void cartaMasAltaBaza(Baza bazaActual, Pareja pareja1, Pareja pareja2){
+		if(bazaActual.getTurnos().size() == 4){
+			Turno turno1 = bazaActual.getTurnos().get(0);
+			Turno turno2 = bazaActual.getTurnos().get(1);
+			Turno turno3 = bazaActual.getTurnos().get(2);
+			Turno turno4 = bazaActual.getTurnos().get(3);
+			Carta cartaJug1 = turno1.getCarta();
+			Carta cartaJug2 = turno2.getCarta();
+			Carta cartaJug3 = turno3.getCarta();
+			Carta cartaJug4 = turno4.getCarta();
+			
+			if((cartaJug1.getValorJuego() > cartaJug2.getValorJuego() && cartaJug1.getValorJuego() > cartaJug4.getValorJuego()) || (cartaJug3.getValorJuego() > cartaJug2.getValorJuego() && cartaJug3.getValorJuego() > cartaJug4.getValorJuego())){
+				bazaActual.setGanadores(pareja1);
+			}
+			else if((cartaJug1.getValorJuego() <= cartaJug2.getValorJuego() && cartaJug1.getValorJuego() <= cartaJug4.getValorJuego()) && (cartaJug2.getValorJuego() == cartaJug3.getValorJuego() && cartaJug2.getValorJuego() == cartaJug4.getValorJuego())){
+				bazaActual.setGanadores(null);
+			}
+			else{
+				bazaActual.setGanadores(pareja2);
+			}
+		}
+		
+	}
 }
