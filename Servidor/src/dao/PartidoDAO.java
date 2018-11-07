@@ -132,7 +132,6 @@ public class PartidoDAO {
 		p.setIdPartido(pe.getIdPartido());
 		p.setEstado(pe.getEstado());
 		p.setNumeroChicoActual(pe.getNumeroChicoActual());
-		p.setNumeroChicoActual(pe.getNumeroChicoActual());
 		return p;
 	}
 
@@ -191,10 +190,12 @@ public class PartidoDAO {
 		List<ChicoEntity> chicos = new ArrayList<ChicoEntity>();
 		if(partido.getChico() != null) {
 			for (Chico c: partido.getChico()) {
-				ChicoEntity cEntity = ChicoDAO.getInstancia().toEntity(c);
-				System.out.println("Imprimo Chico, numero: " + cEntity.getNumeroChico());
-				cEntity.setIdPartido(pe);
-				chicos.add(cEntity);
+				if(c.getManos() != null){
+					ChicoEntity cEntity = ChicoDAO.getInstancia().toEntity(c);
+					System.out.println("Imprimo Chico, numero: " + cEntity.getNumeroChico());
+					cEntity.setIdPartido(pe);
+					chicos.add(cEntity);
+				}
 			}
 		}
 		pe.setChicos(chicos);

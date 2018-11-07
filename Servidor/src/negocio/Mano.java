@@ -70,20 +70,24 @@ public class Mano {
 	
 	
 	public static boolean analizarEnvitesMano(int id) throws PartidoException {
+		int indiceChico = 0;
 		int indiceMano = 0;
 		int indiceBaza = 0;
 		int indiceTurno = 0;
 		Partido partidoNegocio = PartidoDAO.getInstancia().buscarPartidoPorID(id);
+		if(partidoNegocio.getNumeroChicoActual() > 0){
+			indiceChico = partidoNegocio.getNumeroChicoActual()-1;
+		}
 		if(partidoNegocio.getChico().size() > 0){
-			if(partidoNegocio.getChico().get(partidoNegocio.getNumeroChicoActual()).getManos().size() > 0){
-				indiceMano =  partidoNegocio.getChico().get(partidoNegocio.getNumeroChicoActual()).getManos().size()-1;//agarro la mano actual
-				Mano manoActual = partidoNegocio.getChico().get(partidoNegocio.getNumeroChicoActual()).getManos().get(indiceMano);
+			if(partidoNegocio.getChico().get(indiceChico).getManos().size() > 0){
+				indiceMano =  partidoNegocio.getChico().get(indiceChico).getManos().size()-1;//agarro la mano actual
+				Mano manoActual = partidoNegocio.getChico().get(indiceChico).getManos().get(indiceMano);
 				if(manoActual.getBazas().size() > 0){
 					indiceBaza = manoActual.getBazas().size() - 1;//agarro la baza/ronda actual
 				}
 			}
 		}
-		Chico chicoActual = partidoNegocio.getChico().get(partidoNegocio.getNumeroChicoActual());
+		Chico chicoActual = partidoNegocio.getChico().get(indiceChico);
 		Mano manoActual = chicoActual.getManos().get(indiceMano);
 		Baza bazaActual = manoActual.getBazas().get(indiceBaza);
 		indiceTurno = bazaActual.getTurnos().size()-1;
@@ -106,7 +110,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 2);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 2);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 2);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +2 PUNTOS
@@ -119,7 +123,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 5);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 5);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 5);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +5 PUNTOS
@@ -146,7 +150,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 1);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 1);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 1);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +1 PUNTOS
@@ -160,7 +164,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 3);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 3);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 3);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +3 PUNTOS
@@ -174,7 +178,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 5);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 5);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 5);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +5 PUNTOS
@@ -195,7 +199,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 4);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 4);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 4);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +4 PUNTOS
@@ -208,7 +212,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 7);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 7);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 7);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +7 PUNTOS
@@ -248,7 +252,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 2);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 2);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 2);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +2 PUNTOS
@@ -262,7 +266,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 4);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 4);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 4);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +4 PUNTOS
@@ -276,7 +280,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 4);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 4);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 4);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +4 PUNTOS
@@ -290,7 +294,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 7);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 7);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 7);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +7 PUNTOS
@@ -311,7 +315,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 3);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 3);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 3);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +3 PUNTOS
@@ -338,7 +342,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 1);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 1);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 1);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +1 PUNTOS
@@ -352,7 +356,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 3);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 3);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 3);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +3 PUNTOS
@@ -387,7 +391,7 @@ public class Mano {
 				}
 				else{
 					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 2);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 2);
+					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 2);
 				}
 				partidoNegocio.actualizar();
 				//PAREJA GANADORA +2 PUNTOS
@@ -442,7 +446,7 @@ public class Mano {
 					}
 					else{
 						bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 2);
-						chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 2);
+						chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 2);
 					}
 					partidoNegocio.actualizar();
 				}else{
@@ -452,7 +456,7 @@ public class Mano {
 					}
 					else{
 						bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 1);
-						chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + 1);
+						chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 1);
 					}
 					partidoNegocio.actualizar();
 				}

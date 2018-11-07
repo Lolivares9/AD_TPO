@@ -32,6 +32,7 @@ public class Partido {
 	public Partido(TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha,EstadoPartido estado) {
 		super();
 		this.chicos = crearChicos();
+		this.numeroChicoActual = 1;
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;

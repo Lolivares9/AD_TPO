@@ -136,6 +136,9 @@ public class Pareja {
 		if(((tantoJug1Pareja1 > tantoJug1Pareja2) && (tantoJug1Pareja1 > tantoJug2Pareja2)) || ((tantoJug2Pareja1 > tantoJug1Pareja2) && (tantoJug2Pareja1 > tantoJug2Pareja2))){
 			parejaGanadora = pareja1;
 		}
+		else if(((tantoJug1Pareja2 > tantoJug1Pareja1) && (tantoJug1Pareja2 > tantoJug2Pareja1)) || ((tantoJug2Pareja2 > tantoJug1Pareja1) && (tantoJug2Pareja2 > tantoJug2Pareja1))){
+			parejaGanadora = pareja2;
+		}
 		//ESTE CASO ES CUANDO EMPATAN EN EL ENVIDO,GANA EL QUE ES MANO
 		else if(((tantoJug1Pareja1 == tantoJug1Pareja2) || (tantoJug1Pareja1 == tantoJug2Pareja2)) || ((tantoJug2Pareja1 == tantoJug1Pareja2) || (tantoJug2Pareja1 == tantoJug2Pareja2))){
 			if(pareja1.getJugador1().getNumJugador() == 1 || pareja1.getJugador2().getNumJugador() == 1){
