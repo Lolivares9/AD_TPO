@@ -124,7 +124,7 @@ public class Baza {
 	}
 	
 	/**Aca vamos a evaluar la carta mas alta de la Baza, se seteará la pareja ganadora de la baza*/
-	public static void cartaMasAltaBaza(Baza bazaActual, Pareja pareja1, Pareja pareja2){
+	public void cartaMasAltaBaza(Baza bazaActual, Pareja pareja1, Pareja pareja2){
 		if(bazaActual.getTurnos().size() == 4){
 			Turno turno1 = bazaActual.getTurnos().get(0);
 			Turno turno2 = bazaActual.getTurnos().get(1);
@@ -138,13 +138,12 @@ public class Baza {
 			if((cartaJug1.getValorJuego() > cartaJug2.getValorJuego() && cartaJug1.getValorJuego() > cartaJug4.getValorJuego()) || (cartaJug3.getValorJuego() > cartaJug2.getValorJuego() && cartaJug3.getValorJuego() > cartaJug4.getValorJuego())){
 				bazaActual.setGanadores(pareja1);
 			}
-			else if((cartaJug1.getValorJuego() <= cartaJug2.getValorJuego() && cartaJug1.getValorJuego() <= cartaJug4.getValorJuego()) && (cartaJug2.getValorJuego() == cartaJug3.getValorJuego() && cartaJug2.getValorJuego() == cartaJug4.getValorJuego())){
-				bazaActual.setGanadores(null);
-			}
-			else{
+			else if((cartaJug2.getValorJuego() > cartaJug1.getValorJuego() && cartaJug2.getValorJuego() > cartaJug3.getValorJuego()) || (cartaJug4.getValorJuego() > cartaJug1.getValorJuego() && cartaJug4.getValorJuego() > cartaJug3.getValorJuego())){
 				bazaActual.setGanadores(pareja2);
 			}
+			else{
+				bazaActual.setGanadores(null);
+			}
 		}
-		
 	}
 }
