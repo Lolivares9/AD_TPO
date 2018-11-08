@@ -123,6 +123,7 @@ public class Baza {
 		this.enviteActual = enviteActual;
 	}
 	
+	/**Aca vamos a evaluar la carta mas alta de la Baza, se seteará la pareja ganadora de la baza*/
 	public static void cartaMasAltaBaza(Baza bazaActual, Pareja pareja1, Pareja pareja2){
 		if(bazaActual.getTurnos().size() == 4){
 			Turno turno1 = bazaActual.getTurnos().get(0);
