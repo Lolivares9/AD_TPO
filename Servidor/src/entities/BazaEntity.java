@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "BAZAS")
@@ -43,7 +45,7 @@ public class BazaEntity {
 	@Column(name="PUNTAJE_PAREJA2")
 	private int puntajePareja2;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_BAZA")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<TurnoEntity> turnos;

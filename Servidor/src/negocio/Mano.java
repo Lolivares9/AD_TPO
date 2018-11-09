@@ -72,7 +72,10 @@ public class Mano {
 		this.bazas = bazas;
 	}
 	
-	
+	public void guardar(){
+		ManoDAO.getInstancia().guardar(this);
+	}
+
 	public static boolean analizarEnvitesMano(int id) throws PartidoException {
 		int indiceChico = 0;
 		int indiceMano = 0;
@@ -336,18 +339,32 @@ public class Mano {
 					}
 					else if(manoActual.getBazas().size() == 2){
 						bazaActual.setBazaTerminada(true);
-						nuevaBaza.setNumero(3);
-						nuevaBaza.setPuntajePareja1(bazaActual.getPuntajePareja1());
-						nuevaBaza.setPuntajePareja2(bazaActual.getPuntajePareja2());
-						manoActual.getBazas().add(nuevaBaza);
+						if(manoActual.getBazas().get(0).getGanadores().equals(pareja1) && manoActual.getBazas().get(1).getGanadores().equals(pareja1)){
+							manoActual.setParejaGanadora(pareja1);
+						}
+						else if(manoActual.getBazas().get(0).getGanadores().equals(pareja2) && manoActual.getBazas().get(1).getGanadores().equals(pareja2)){
+							manoActual.setParejaGanadora(pareja2);
+						}
+						else{
+							nuevaBaza.setNumero(3);
+							nuevaBaza.setPuntajePareja1(bazaActual.getPuntajePareja1());
+							nuevaBaza.setPuntajePareja2(bazaActual.getPuntajePareja2());
+							manoActual.getBazas().add(nuevaBaza);
+						}
 						partidoNegocio.actualizar();
 					}
 					else{
 						bazaActual.setBazaTerminada(true);
-						manoActual.setParejaGanadora(bazaActual.getGanadores());
+						if((manoActual.getBazas().get(0).getGanadores().equals(pareja1) && manoActual.getBazas().get(2).getGanadores().equals(pareja1)) || 
+								(manoActual.getBazas().get(1).getGanadores().equals(pareja1) && manoActual.getBazas().get(2).getGanadores().equals(pareja1))){
+							manoActual.setParejaGanadora(pareja1);
+							chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1()+1);
+						}
+						else{
+							manoActual.setParejaGanadora(pareja2);
+							chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2()+1);
+						}
 						nuevaBaza.setNumero(1);
-						nuevaBaza.setPuntajePareja1(bazaActual.getPuntajePareja1());
-						nuevaBaza.setPuntajePareja2(bazaActual.getPuntajePareja2());
 						Mano nuevaMano = new Mano();
 						List <Baza>	bazasNuevas = new ArrayList<Baza>();
 						bazasNuevas.add(nuevaBaza);

@@ -27,7 +27,7 @@ public class TurnoEntity {
 	private Integer idTurno;
 	
 	@ManyToOne
-	@JoinColumn(name="ID_BAZA")
+	@JoinColumn(name = "ID_BAZA")
 	private BazaEntity idBaza;
 	
 	@ManyToOne
@@ -39,7 +39,7 @@ public class TurnoEntity {
 	private Envite envite;
 	
 	
-	@OneToOne(fetch=FetchType.EAGER , cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CARTA")
 	private CartaEntity carta;
 	

@@ -157,7 +157,6 @@ public class PartidoDAO {
 		s.saveOrUpdate(pEntity);
 		s.getTransaction().commit();
 		s.close();
-
 		return true;
 	}
 
@@ -192,7 +191,6 @@ public class PartidoDAO {
 			for (Chico c: partido.getChico()) {
 				if(c.getManos() != null){
 					ChicoEntity cEntity = ChicoDAO.getInstancia().toEntity(c);
-					System.out.println("Imprimo Chico, numero: " + cEntity.getNumeroChico());
 					cEntity.setIdPartido(pe);
 					chicos.add(cEntity);
 				}
