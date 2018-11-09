@@ -38,7 +38,7 @@ public class ManoEntity {
 	@JoinColumn(name="ID_PAREJA_GANADORA")
 	private ParejaEntity parejaGanadora;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_MANO")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BazaEntity> bazas;

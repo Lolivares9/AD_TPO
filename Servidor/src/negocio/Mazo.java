@@ -41,7 +41,6 @@ public class Mazo {
 		Carta c = new Carta();
 		Pareja parejaNegocio2 = new Pareja(parejas.get(1).getIdPareja(),null,null);
 		List<CartaDTO> cartas =  repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList());
-		//TODO meter esta logica en mazo
 		for(int i = 1; i <= 3; i++){
 			c = new Carta();
 			c.setIdCarta(cartas.get(0).getIdCarta());

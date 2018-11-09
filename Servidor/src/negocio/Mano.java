@@ -1,5 +1,6 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.ManoDAO;
@@ -25,6 +26,9 @@ public class Mano {
 		this.numeroMano = numeroMano;
 		this.parejaGanadora = parejaGanadora;
 		this.bazas = bazas;
+	}
+	
+	public Mano() {
 	}
 	
 	public int getNumeroMano() {
@@ -317,9 +321,44 @@ public class Mano {
 			}
 			
 			//*******NADA**********
+
 			if(turnoEnvite.getEnvite().equals(Envite.Nada) &&  (pareja1.getJugador1().getNumJugador() == 4 || pareja1.getJugador2().getNumJugador() == 4 || pareja2.getJugador1().getNumJugador() == 4 || pareja2.getJugador2().getNumJugador() == 4)){
 				bazaActual.cartaMasAltaBaza(bazaActual, partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1));
+				if(bazaActual.getGanadores() != null){
+					Baza nuevaBaza = new Baza();
+					if(manoActual.getBazas().size() == 1){
+						bazaActual.setBazaTerminada(true);
+						nuevaBaza.setNumero(2);
+						nuevaBaza.setPuntajePareja1(bazaActual.getPuntajePareja1());
+						nuevaBaza.setPuntajePareja2(bazaActual.getPuntajePareja2());
+						manoActual.getBazas().add(nuevaBaza);
+						partidoNegocio.actualizar();
+					}
+					else if(manoActual.getBazas().size() == 2){
+						bazaActual.setBazaTerminada(true);
+						nuevaBaza.setNumero(3);
+						nuevaBaza.setPuntajePareja1(bazaActual.getPuntajePareja1());
+						nuevaBaza.setPuntajePareja2(bazaActual.getPuntajePareja2());
+						manoActual.getBazas().add(nuevaBaza);
+						partidoNegocio.actualizar();
+					}
+					else{
+						bazaActual.setBazaTerminada(true);
+						manoActual.setParejaGanadora(bazaActual.getGanadores());
+						nuevaBaza.setNumero(1);
+						nuevaBaza.setPuntajePareja1(bazaActual.getPuntajePareja1());
+						nuevaBaza.setPuntajePareja2(bazaActual.getPuntajePareja2());
+						Mano nuevaMano = new Mano();
+						List <Baza>	bazasNuevas = new ArrayList<Baza>();
+						bazasNuevas.add(nuevaBaza);
+						nuevaMano.setBazas(bazasNuevas);
+						chicoActual.getManos().add(nuevaMano);
+						partidoNegocio.actualizar();
+					}
+					
+				}
 				//SI ES EL ULTIMO TURNO, ES DECIR EL JUGADOR NUMERO 4, ME FIJO A VER QUE PAREJA GANA ESA BAZA, BUSCANDO LA CARTA MAS ALTA
+				//LA PAREJA QUE GANE MAS DE 1 BAZA, GANA LA MANO
 			}
 			else{
 				return true;

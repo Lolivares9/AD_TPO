@@ -33,7 +33,6 @@ public class JugadorEntity {
 	@Column(name="MAIL")
 	private String mail;
 	
-	//TODO PONER EN LA TABLA
 	@Column(name="PASSWORD")
 	private String password;
 	
@@ -59,7 +58,9 @@ public class JugadorEntity {
 	@Column(name="BUSCANDO_LIBRE_INDIVIDUAL")
 	private boolean buscandoLibreIndividual;
 	
-	
+	@Column(name = "NUM_TURNO_PARTIDO")
+	private int numeroTurnoPartido;
+
 	@ManyToMany(mappedBy="jugadores")//Acá va el nombre de la lista de jugadores que tiene GrupoEntity
 	private List<GrupoEntity> grupos = new ArrayList<GrupoEntity>();
 	
@@ -67,13 +68,6 @@ public class JugadorEntity {
 	//@Column(name="ESTADO")
 	//enum con estados posibles (jugando, conectado...)
 	
-	public List<GrupoEntity> getGrupos() {
-		return grupos;
-	}
-
-	public void setGrupos(List<GrupoEntity> grupos) {
-		this.grupos = grupos;
-	}
 
 	public JugadorEntity() {
 		super();
@@ -93,6 +87,23 @@ public class JugadorEntity {
 		this.partidosGanados = partidosGanados;
 		this.conectado = conectado;
 		this.jugando = jugando;
+	}
+	
+	public JugadorEntity(String nombre, String apodo, String mail, String password,
+			Categoria categoria, int puntaje, int partidosJugados, int partidosGanados, boolean conectado,
+			boolean jugando,int numeroJugadorPartido) {
+		super();
+		this.nombre = nombre;
+		this.apodo = apodo;
+		this.mail = mail;
+		this.password = password;
+		this.categoria = categoria;
+		this.puntaje = puntaje;
+		this.partidosJugados = partidosJugados;
+		this.partidosGanados = partidosGanados;
+		this.conectado = conectado;
+		this.jugando = jugando;
+		this.numeroTurnoPartido = numeroJugadorPartido;
 	}
 
 	public Integer getIdJugador() {
@@ -213,4 +224,19 @@ public class JugadorEntity {
 		return true;
 	}
 	
+	public List<GrupoEntity> getGrupos() {
+		return grupos;
+	}
+
+	public void setGrupos(List<GrupoEntity> grupos) {
+		this.grupos = grupos;
+	}
+	
+	public int getNumeroJugadorPartido() {
+		return numeroTurnoPartido;
+	}
+
+	public void setNumeroJugadorPartido(int numeroJugadorPartido) {
+		this.numeroTurnoPartido = numeroJugadorPartido;
+	}
 }

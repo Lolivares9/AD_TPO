@@ -69,21 +69,24 @@ public class Pareja {
 			if(jugDisp.get(0).getCategoria().equals(inicial) && (uno.getJugador1() == null || dos.getJugador1() == null)){
 				if(uno.getJugador1() == null){
 					uno.setJugador1(jugDisp.get(0));
+					uno.getJugador1().setNumJugador(1);
 					jugDisp.remove(0);
 				}
 				else{
-					
 					dos.setJugador1(jugDisp.get(0));
+					dos.getJugador1().setNumJugador(2);
 					jugDisp.remove(0);
 				}
 			}
 			else{
 				if(uno.getJugador2() == null){
 					uno.setJugador2(jugDisp.get(0));
+					uno.getJugador2().setNumJugador(3);
 					jugDisp.remove(0);
 				}
 				else{
 					dos.setJugador2(jugDisp.get(0));
+					dos.getJugador2().setNumJugador(4);
 					jugDisp.remove(0);
 				}
 			}

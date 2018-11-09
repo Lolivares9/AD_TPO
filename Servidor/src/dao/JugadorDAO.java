@@ -41,9 +41,17 @@ public class JugadorDAO {
 	}
 	
 	public Jugador toNegocio(JugadorEntity jugador){
-		Jugador j = new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),jugador.getCategoria(),jugador.getPuntaje(),
-				jugador.getPartidosJugados(),jugador.getPartidosGanados(),jugador.isConectado(),jugador.isJugando(),jugador.isBuscandoLibreIndividual(),jugador.getPassword());
-		j.setId(jugador.getIdJugador());
+		Jugador j = null;
+		if(jugador.getNumeroJugadorPartido() != -1){
+			j = new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),jugador.getCategoria(),jugador.getPuntaje(),
+					jugador.getPartidosJugados(),jugador.getPartidosGanados(),jugador.isConectado(),jugador.isJugando(),jugador.isBuscandoLibreIndividual(),jugador.getPassword(),jugador.getNumeroJugadorPartido());
+			 j.setId(jugador.getIdJugador());
+		}
+		else{
+			 j = new Jugador(jugador.getNombre(),jugador.getApodo(),jugador.getMail(),jugador.getCategoria(),jugador.getPuntaje(),
+						jugador.getPartidosJugados(),jugador.getPartidosGanados(),jugador.isConectado(),jugador.isJugando(),jugador.isBuscandoLibreIndividual(),jugador.getPassword());
+			j.setId(jugador.getIdJugador());
+		}
 		return j;
 	}
 	
@@ -62,7 +70,9 @@ public class JugadorDAO {
 		je.setBuscandoLibreIndividual(jugador.isBuscandoLibreIndividual());
 		je.setPassword(jugador.getPassword());
 		je.setIdJugador(jugador.getId());
-		
+		if(jugador.getNumJugador() != -1){
+			je.setNumeroJugadorPartido(jugador.getNumJugador());
+		}
 		return je;
 	}
 
@@ -90,7 +100,6 @@ public class JugadorDAO {
 			}
 
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

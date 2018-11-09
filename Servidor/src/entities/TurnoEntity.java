@@ -39,7 +39,7 @@ public class TurnoEntity {
 	private Envite envite;
 	
 	
-	@OneToOne(fetch=FetchType.EAGER , cascade=CascadeType.REMOVE)
+	@OneToOne(fetch=FetchType.EAGER , cascade=CascadeType.ALL)
 	@JoinColumn(name="ID_CARTA")
 	private CartaEntity carta;
 	
