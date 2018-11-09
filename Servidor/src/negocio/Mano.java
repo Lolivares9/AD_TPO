@@ -123,11 +123,23 @@ public class Mano {
 				//PAREJA GANADORA +5 PUNTOS
 				return true;
 			}
+			else if(turnoEnvite.getEnvite().equals(Envite.Envido_RealEnvido_FaltaEnvido_Querido)){
+				Baza nuevaBaza = new Baza();
+				nuevaBaza.setNumero(1);
+				Mano nuevaMano = new Mano();
+				List <Baza>	bazasNuevas = new ArrayList<Baza>();
+				bazasNuevas.add(nuevaBaza);
+				nuevaMano.setBazas(bazasNuevas);
+				chicoActual.getManos().add(nuevaMano);
+				setearPuntajeEnvido(partidoNegocio,bazaActual,chicoActual,0,true);
+				return false;
+			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_FaltaEnvido_Querido)){
 				setearPuntajeEnvido(partidoNegocio,bazaActual,chicoActual,0,true);
 				//PAREJA GANADORA GANA CHICO
 				return false;
 			}
+
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_NoQuerido)){
 				setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,1);
 				//PAREJA GANADORA +1 PUNTOS
@@ -167,7 +179,16 @@ public class Mano {
 				return false;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.EnvidoEnvido_RealEnvido_FaltaEnvido_Querido)){
+				Baza nuevaBaza = new Baza();
+				nuevaBaza.setNumero(1);
+				Mano nuevaMano = new Mano();
+				List <Baza>	bazasNuevas = new ArrayList<Baza>();
+				bazasNuevas.add(nuevaBaza);
+				nuevaMano.setBazas(bazasNuevas);
+				chicoActual.getManos().add(nuevaMano);
+				//FALTA MODIFICAR QUE EL FALTA ENVIDO, TE DA LO QUE LE FALTA AL OTRO PARA GANAR
 				setearPuntajeEnvido(partidoNegocio,bazaActual,chicoActual,0,true);
+			
 				//PAREJA GANADORA GANA CHICO
 				return false;
 			}
@@ -401,6 +422,7 @@ public class Mano {
 		return false;
 	}
 
+	/**Si este metodo devuelve false, es porque a alguno de los jugadores le falta jugar una carta, para que se pueda evaluar los ganadores*/
 	private static boolean setearPuntajeTruco(Partido p, Baza bazaActual, Chico chicoActual, Mano manoActual, int puntaje,boolean finaliza_mano){
 		boolean faltaJugarCarta = false;
 		
@@ -426,6 +448,14 @@ public class Mano {
 						chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja2() + puntaje);
 						bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja2() + puntaje);
 					}
+					Baza nuevaBaza = new Baza();
+					nuevaBaza.setNumero(1);
+					Mano nuevaMano = new Mano();
+					List <Baza>	bazasNuevas = new ArrayList<Baza>();
+					bazasNuevas.add(nuevaBaza);
+					nuevaMano.setBazas(bazasNuevas);
+					chicoActual.getManos().add(nuevaMano);
+					p.actualizar();
 				}
 			}
 		}
@@ -446,6 +476,7 @@ public class Mano {
 			bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + puntaje);
 			chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + puntaje);
 		}
+		p.actualizar();
 	}
 	
 	private static void setearPuntajeEnvidoNOquerido(Partido p, Baza bazaActual, Chico chicoActual, int puntaje) {

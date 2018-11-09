@@ -36,7 +36,7 @@ public class TestHibernate {
 		//guardarPartido();
 		//iniciarPartidaLibre();
 		//pdto = Controlador.getInstancia().iniciarPartidaLibreIndividual(Categoria.Novato.toString(),"Chulo");
-		//jugada1(pdto);
+		jugada1(pdto);
 		//jugada2(pdto);
 		//jugada3(pdto);
 		//partido = PartidoDAO.getInstancia().buscarPartidoPorID(1);
@@ -48,8 +48,8 @@ public class TestHibernate {
 	private static void jugada1(PartidoDTO pdto) throws PartidoException {
 		Partido p = null;
 		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
-		Pareja pareja1 = p.getParejas().get(0);
-		Pareja pareja2 = p.getParejas().get(1);
+		//Pareja pareja1 = p.getParejas().get(0);
+		//Pareja pareja2 = p.getParejas().get(1);
 		Jugador pareja1Jug1 = p.getParejas().get(0).getJugador1();
 		Jugador pareja2Jug1 = p.getParejas().get(1).getJugador1();
 		Jugador pareja1Jug2 = p.getParejas().get(0).getJugador2();
@@ -60,11 +60,17 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = p.getChico().get(0).getManos().get(0).getBazas().get(0);
 		
-		//COMO ES LA PRIMERA RONDA, LO INSERTAMOS SIN ID
+		//COMO ES LA PRIMERA RONDA, LO INSERTAMOS SIN ID, EN CASO DE QUERER ACTUALIZAR EL TURNO, SE LE SETEA EL ID
+		/*
 		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,pareja1.getCartasJugador1().get(0));
 		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,pareja2.getCartasJugador1().get(0));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,pareja1.getCartasJugador2().get(0));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,pareja2.getCartasJugador2().get(0));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Truco,pareja1.getCartasJugador2().get(0));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Truco_Querido,pareja2.getCartasJugador2().get(0));*/
+		
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Envido,null);
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Real_Envido,null);
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Falta_Envido,null);
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Envido_RealEnvido_FaltaEnvido_Querido,null);
 		
 		turnos.add(turno1);
 		turnos.add(turno2);
@@ -77,7 +83,7 @@ public class TestHibernate {
 		manos = p.getChico().get(0).getManos();
 		manos.set(0, mano);
 		p.getChico().get(0).setManos(manos);
-		p.actualizar();
+		//p.actualizar();
 		p.nuevaJugada(1);
 		
 		
@@ -104,9 +110,9 @@ public class TestHibernate {
 		Baza baza = p.getChico().get(0).getManos().get(0).getBazas().get(1);
 		
 		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,pareja1.getCartasJugador1().get(1));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,pareja2.getCartasJugador1().get(1));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,pareja1.getCartasJugador2().get(1));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,pareja2.getCartasJugador2().get(1));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Truco,pareja2.getCartasJugador1().get(1));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Re_Truco,pareja1.getCartasJugador2().get(1));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Truco_QuieroRetruco_Querido,pareja2.getCartasJugador2().get(1));
 		
 		turnos.add(turno1);
 		turnos.add(turno2);
