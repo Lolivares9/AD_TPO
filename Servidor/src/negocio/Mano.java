@@ -341,9 +341,23 @@ public class Mano {
 						bazaActual.setBazaTerminada(true);
 						if(manoActual.getBazas().get(0).getGanadores().equals(pareja1) && manoActual.getBazas().get(1).getGanadores().equals(pareja1)){
 							manoActual.setParejaGanadora(pareja1);
+							chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1()+1);
+							nuevaBaza.setNumero(1);
+							Mano nuevaMano = new Mano();
+							List <Baza>	bazasNuevas = new ArrayList<Baza>();
+							bazasNuevas.add(nuevaBaza);
+							nuevaMano.setBazas(bazasNuevas);
+							chicoActual.getManos().add(nuevaMano);
 						}
 						else if(manoActual.getBazas().get(0).getGanadores().equals(pareja2) && manoActual.getBazas().get(1).getGanadores().equals(pareja2)){
 							manoActual.setParejaGanadora(pareja2);
+							chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2()+1);
+							nuevaBaza.setNumero(1);
+							Mano nuevaMano = new Mano();
+							List <Baza>	bazasNuevas = new ArrayList<Baza>();
+							bazasNuevas.add(nuevaBaza);
+							nuevaMano.setBazas(bazasNuevas);
+							chicoActual.getManos().add(nuevaMano);
 						}
 						else{
 							nuevaBaza.setNumero(3);
