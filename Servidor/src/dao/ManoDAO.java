@@ -28,8 +28,8 @@ public class ManoDAO {
 		return instancia;
 	}
 
-	public boolean guardar(Mano mano, Chico chico) {
-		ManoEntity mEntity = toEntity(mano, chico);
+	public boolean guardar(Mano mano) {
+		ManoEntity mEntity = toEntity(mano);
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();
 		s.beginTransaction();
@@ -40,20 +40,17 @@ public class ManoDAO {
 		return true;
 	}
 
-	private ManoEntity toEntity(Mano mano, Chico chico) {
-		ManoEntity me = new ManoEntity();
-		
-		me.setIdMano(mano.getIdMano());
-		me.setNumeroMano(mano.getNumeroMano());
-		
-		ChicoEntity chicoEntity = ChicoDAO.getInstancia().toEntity(chico);
-		me.setIdChico(chicoEntity);
-		
-		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(mano.getParejaGanadora());
-		me.setParejaGanadora(parejaGanadora);
-		
-		return me;
-	}
+//	public ManoEntity toEntity(Mano mano) {
+//		ManoEntity me = new ManoEntity();
+//		
+//		me.setIdMano(mano.getIdMano());
+//		me.setNumeroMano(mano.getNumeroMano());
+//		
+//		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(mano.getParejaGanadora());
+//		me.setParejaGanadora(parejaGanadora);
+//		
+//		return me;
+//	}
 
 	@SuppressWarnings("unchecked")
 	public List<Mano> buscarManosPorChico(Integer idChico) throws ManoException{
@@ -82,21 +79,24 @@ public class ManoDAO {
 	
 	public Mano toNegocio(ManoEntity me) {
 		Mano mano = null;
-		List<Baza> bazas = new ArrayList<Baza>();
+		List<Baza> bazas = null;
 		if(me.getBazas() != null){
 			bazas = BazaDAO.getInstancia().toNegocioAll(me.getBazas());
 		}
-		mano = new Mano(me.getNumeroMano(),ParejaDAO.getInstancia().toNegocio(me.getParejaGanadora()),bazas);
+		if(me.getParejaGanadora() != null){
+			mano = new Mano(me.getNumeroMano(),ParejaDAO.getInstancia().toNegocio(me.getParejaGanadora()),bazas);
+		}
+		else{
+			mano = new Mano(me.getNumeroMano(),null,bazas);
+		}
 		mano.setIdMano(me.getIdMano());
 		return mano;
 	}
 	
 	public List<Mano> manosToNegocio(List<ManoEntity> manos){
-		List<Mano> manosNegocio = new ArrayList<Mano>();
-		if(manos == null){
-			return manosNegocio;
-		}
-		else{
+		List<Mano> manosNegocio = null;
+		if(manos.size() > 0){
+			manosNegocio = new ArrayList<Mano>();
 			for(int i = 0;i<manos.size();i++){
 				manosNegocio.add(toNegocio(manos.get(i)));
 			}
@@ -108,7 +108,7 @@ public class ManoDAO {
 		ManoEntity me = new ManoEntity();
 		me.setIdMano(mano.getIdMano());
 		me.setNumeroMano(mano.getNumeroMano());
-		if(mano.getParejaGanadora().getJugador1() != null){
+		if(mano.getParejaGanadora() != null){
 			me.setParejaGanadora(ParejaDAO.getInstancia().toEntity(mano.getParejaGanadora()));
 		}
 		List<BazaEntity> bazasentities = new ArrayList<BazaEntity>();

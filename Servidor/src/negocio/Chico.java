@@ -13,11 +13,11 @@ import dto.ChicoDTO;
 public class Chico {
 	private Integer idChico;
 	private int numero;
-	private List<Mano> manos;
 	private boolean finalizado;
 	private Pareja parejaGanadora;
 	private int puntajePareja1;
 	private int puntajePareja2;
+	private List<Mano> manos;
 	
 	public Chico(int numero, boolean finalizado, Pareja parejaGanadora, int puntajePareja1, int puntajePareja2) {
 		super();

@@ -131,6 +131,7 @@ public class PartidoDAO {
 		p.setParejas(parejas);
 		p.setIdPartido(pe.getIdPartido());
 		p.setEstado(pe.getEstado());
+		p.setNumeroChicoActual(pe.getNumeroChicoActual());
 		return p;
 	}
 
@@ -156,7 +157,6 @@ public class PartidoDAO {
 		s.saveOrUpdate(pEntity);
 		s.getTransaction().commit();
 		s.close();
-
 		return true;
 	}
 
@@ -182,20 +182,22 @@ public class PartidoDAO {
 			}
 		}
 		pe.setParejas(parejas);
-		if (partido.getParejaGanadora() == null) {
-//			pe.setParejaGanadora(parejas.get(0));
+		if (partido.getParejaGanadora() != null) {
+			//pe.setParejaGanadora(parejas.get(0));
 		}
-		pe.setFecha(partido.getFecha());
 		
 		List<ChicoEntity> chicos = new ArrayList<ChicoEntity>();
 		if(partido.getChico() != null) {
 			for (Chico c: partido.getChico()) {
-				ChicoEntity cEntity = ChicoDAO.getInstancia().toEntity(c);
-				cEntity.setIdPartido(pe);
-				chicos.add(cEntity);
+				if(c.getManos() != null){
+					ChicoEntity cEntity = ChicoDAO.getInstancia().toEntity(c);
+					cEntity.setIdPartido(pe);
+					chicos.add(cEntity);
+				}
 			}
 		}
 		pe.setChicos(chicos);
+		pe.setNumeroChicoActual(partido.getNumeroChicoActual());
 		return pe;
 	}
 

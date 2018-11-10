@@ -25,7 +25,7 @@ public class Jugador {
 	private boolean jugando;
 	private boolean buscandoLibreIndividual;
 	private String password;
-	private Integer numJugador;
+	private Integer numeroTurnoPartido;
 
 	public Jugador(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
 			int partidosGanados, boolean conectado, boolean jugando,boolean buscandoLibreIndividual, String password) {
@@ -42,7 +42,23 @@ public class Jugador {
 		this.buscandoLibreIndividual = buscandoLibreIndividual;
 		this.password = password;
 	}
-
+	
+	public Jugador(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
+			int partidosGanados, boolean conectado, boolean jugando,boolean buscandoLibreIndividual, String password,int numeroJugadorPartido) {
+		super();
+		this.nombre = nombre;
+		this.apodo = apodo;
+		this.mail = mail;
+		this.categoria = categoria;
+		this.puntaje = puntaje;
+		this.partidosJugados = partidosJugados;
+		this.partidosGanados = partidosGanados;
+		this.conectado = conectado;
+		this.jugando = jugando;
+		this.buscandoLibreIndividual = buscandoLibreIndividual;
+		this.password = password;
+		this.numeroTurnoPartido = numeroJugadorPartido;
+	}
 
 	public boolean isBuscandoLibreIndividual() {
 		return buscandoLibreIndividual;
@@ -143,11 +159,11 @@ public class Jugador {
 	}
 	
 	public Integer getNumJugador() {
-		return numJugador;
+		return numeroTurnoPartido;
 	}
 
 	public void setNumJugador(Integer numJugador) {
-		this.numJugador = numJugador;
+		this.numeroTurnoPartido = numJugador;
 	}
 
 	public boolean guardar(){

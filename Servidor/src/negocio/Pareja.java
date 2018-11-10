@@ -69,21 +69,24 @@ public class Pareja {
 			if(jugDisp.get(0).getCategoria().equals(inicial) && (uno.getJugador1() == null || dos.getJugador1() == null)){
 				if(uno.getJugador1() == null){
 					uno.setJugador1(jugDisp.get(0));
+					uno.getJugador1().setNumJugador(1);
 					jugDisp.remove(0);
 				}
 				else{
-					
 					dos.setJugador1(jugDisp.get(0));
+					dos.getJugador1().setNumJugador(2);
 					jugDisp.remove(0);
 				}
 			}
 			else{
 				if(uno.getJugador2() == null){
 					uno.setJugador2(jugDisp.get(0));
+					uno.getJugador2().setNumJugador(3);
 					jugDisp.remove(0);
 				}
 				else{
 					dos.setJugador2(jugDisp.get(0));
+					dos.getJugador2().setNumJugador(4);
 					jugDisp.remove(0);
 				}
 			}
@@ -136,6 +139,9 @@ public class Pareja {
 		if(((tantoJug1Pareja1 > tantoJug1Pareja2) && (tantoJug1Pareja1 > tantoJug2Pareja2)) || ((tantoJug2Pareja1 > tantoJug1Pareja2) && (tantoJug2Pareja1 > tantoJug2Pareja2))){
 			parejaGanadora = pareja1;
 		}
+		else if(((tantoJug1Pareja2 > tantoJug1Pareja1) && (tantoJug1Pareja2 > tantoJug2Pareja1)) || ((tantoJug2Pareja2 > tantoJug1Pareja1) && (tantoJug2Pareja2 > tantoJug2Pareja1))){
+			parejaGanadora = pareja2;
+		}
 		//ESTE CASO ES CUANDO EMPATAN EN EL ENVIDO,GANA EL QUE ES MANO
 		else if(((tantoJug1Pareja1 == tantoJug1Pareja2) || (tantoJug1Pareja1 == tantoJug2Pareja2)) || ((tantoJug2Pareja1 == tantoJug1Pareja2) || (tantoJug2Pareja1 == tantoJug2Pareja2))){
 			if(pareja1.getJugador1().getNumJugador() == 1 || pareja1.getJugador2().getNumJugador() == 1){
@@ -153,5 +159,10 @@ public class Pareja {
 		
 	}
 
-	
+	public static Pareja calcularParejaGanadoraTruco(Pareja pareja1, Pareja pareja2){
+		Pareja parejaGanadora = null;
+		
+		
+		return parejaGanadora;
+	}
 }

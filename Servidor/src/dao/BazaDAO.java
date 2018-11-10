@@ -45,7 +45,7 @@ public class BazaDAO {
 		be.setNumeroBaza(baza.getNumero());
 		be.setPuntajePareja1(baza.getPuntajePareja1());
 		be.setPuntajePareja2(baza.getPuntajePareja2());
-		if(baza.getGanadores().getJugador1() != null){
+		if(baza.getGanadores() != null && baza.getGanadores().getJugador1() != null){
 			parejaGanadora = ParejaDAO.getInstancia().toEntity(baza.getGanadores());
 		}
 		be.setGanadoresBaza((parejaGanadora));
@@ -87,8 +87,9 @@ public class BazaDAO {
 	}
 	
 	public Baza toNegocio(BazaEntity be) {
-		Baza baza = new Baza();
+		Baza baza = null;
 		if(be != null){
+			baza = new Baza();
 			return new Baza(be.getIdBaza(), be.getNumeroBaza(), 
 					ParejaDAO.getInstancia().toNegocio(be.getGanadoresBaza()),
 					be.getPuntajePareja1(), be.getPuntajePareja2(),TurnoDAO.getInstancia().toNegocioAll(be.getTurnos()));

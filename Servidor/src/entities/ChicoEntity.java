@@ -47,7 +47,7 @@ public class ChicoEntity {
 	@Column(name="PUNTAJE_PAREJA2")
 	private int puntajePareja2;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_CHICO")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<ManoEntity> manos;

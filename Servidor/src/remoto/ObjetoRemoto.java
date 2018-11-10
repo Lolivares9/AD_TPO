@@ -151,6 +151,13 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 
+	@Override
+	public PartidoDTO buscarPartidaLobby(String apodoJugador) throws RemoteException, PartidoException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 	
 }

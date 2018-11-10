@@ -53,10 +53,20 @@ public class PartidoEntity {
 	@JoinTable(name = "PARTIDOS_PAREJAS", joinColumns = @JoinColumn(name="partidos_ID_PARTIDO"),inverseJoinColumns=@JoinColumn(name="parejas_ID_PAREJA"))
 	List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_PARTIDO")
 	private List<ChicoEntity> chicos;
 	
+	@Column(name="CHICO_ACTUAL")
+	private int numeroChicoActual;
+
+	public int getNumeroChicoActual() {
+		return numeroChicoActual;
+	}
+
+	public void setNumeroChicoActual(int numeroChicoActual) {
+		this.numeroChicoActual = numeroChicoActual;
+	}
 
 	public List<ChicoEntity> getChicos() {
 		return chicos;
