@@ -19,6 +19,7 @@ import delegado.BusinessDelegate;
 import dto.CartaDTO;
 import dto.ParejaDTO;
 import dto.PartidoDTO;
+import enums.TipoModalidad;
 import excepciones.ComunicationException;
 
 @WebServlet("/ActionsServlet")
@@ -43,16 +44,29 @@ public class ActionsServlet extends HttpServlet{
         
         if ((action == null) || (action.length() < 1))
         {
-            action = "default";
+    		String jspPage = "/layout.jsp";
+    		String usuario = request.getParameter("usuario");
+    		String categoria = request.getParameter("categoria");
+    		request.setAttribute("usuario", usuario);
+			request.setAttribute("categoria", categoria);
+    		dispatch(jspPage, request, response);
         }else if ("LibreIndiv".equals(action)){
         	buscarPartidaLibreIndividual(request,response);
         }else if ("LibreIndivLob".equals(action)){
         	buscarPartidaLibreIndividualLobby(request,response);
+        }else if ("GetJugada".equals(action)){
+        	getJugada(request,response);
         }
        
     }
 	
-    protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    private void getJugada(HttpServletRequest request, HttpServletResponse response) {
+    	String infoJugada = request.getParameter("apodo");
+    	String infoCarta = request.getParameter("idCarta");
+    	System.out.println(infoJugada + infoCarta);		
+	}
+
+	protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         if (jsp != null)
         {
@@ -65,13 +79,17 @@ public class ActionsServlet extends HttpServlet{
     
     private void buscarPartidaLibreIndividual(HttpServletRequest request, HttpServletResponse response) {
         try {
-        	String usuario = request.getParameter("Usuario");
-			PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(request.getParameter("Categoria"), usuario);
+        	String usuario = request.getParameter("usuario");
+        	String categoria = request.getParameter("categoria");
+			PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(categoria, usuario);
 			String jspPage = "/partido.jsp";
 			if(partido != null){
 				armarDetallePartido(request, partido, usuario);
 				dispatch(jspPage, request, response);
 			}else {
+				request.setAttribute("usuario", usuario);
+				request.setAttribute("categoria", categoria);
+				request.setAttribute("modalidad", TipoModalidad.Libre_individual.name());
 				jspPage = "/lobby.jsp";
 				dispatch(jspPage, request, response);
 			}
@@ -83,14 +101,18 @@ public class ActionsServlet extends HttpServlet{
     
     private void buscarPartidaLibreIndividualLobby(HttpServletRequest request, HttpServletResponse response) {
         try {
-        	String usuario = request.getParameter("Usuario");
-        	//TODO Debe buscar un partido creado
-			PartidoDTO partido = BusinessDelegate.getInstancia().buscarPartidaLobby(usuario);
+        	String usuario = request.getParameter("usuario");
+        	String categoria = request.getParameter("categoria");
+        	String modalidad = request.getParameter("modalidad");
+			PartidoDTO partido = BusinessDelegate.getInstancia().buscarPartidaLobby(usuario, modalidad);
 			String jspPage = "/partido.jsp";
 			if(partido != null){
 				armarDetallePartido(request, partido, usuario);
 				dispatch(jspPage, request, response);
 			}else {
+				request.setAttribute("usuario", usuario);
+				request.setAttribute("categoria", categoria);
+				request.setAttribute("modalidad", modalidad);
 				jspPage = "/lobby.jsp";
 				dispatch(jspPage, request, response);
 			}
@@ -134,6 +156,7 @@ public class ActionsServlet extends HttpServlet{
 				if(datos.get("apodoJugador"+i).equals(usuario)) {
 					List<CartaDTO> cartasUsr = cartasOrden.get(i);
 					int n = 1;
+					request.setAttribute("usuario", usuario);
 					//TODO Hardcodeado porque falta guardar las cartas cuando se reparten
 					if(cartasUsr == null) {
 						datos.put("carta"+n++, 1+"Basto");

@@ -38,9 +38,9 @@ public class TurnoEntity {
 	@Enumerated(EnumType.STRING)
 	private Envite envite;
 	
-	
 	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CARTA")
+  
 	private CartaEntity carta;
 	
 	public TurnoEntity() {

@@ -23,13 +23,13 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		altaJugador();  // OK 
+		//altaJugador();  // OK 
 		iniciarSesion(); // OK 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //OK
 		buscarPartidaLibreIndividual(); // OK
-		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
+		iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
@@ -79,22 +79,22 @@ public class Cliente {
 	}
 
 
-//	private static void iniciarPartidaLibreIndividual() {
-//		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
-//		jugador.setCategoria(Categoria.Novato);
-//		try {
-//			PartidoDTO part;
-//			part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador);
-//			if (part != null) {
-//				System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
-//			}
-//			else {
-//				System.out.println("No se puede inicializar el partido, no hay suficientes jugadores en linea.");
-//			}
-//		} catch (ComunicationException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	private static void iniciarPartidaLibreIndividual() {
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
+		jugador.setCategoria(Categoria.Novato);
+		try {
+			PartidoDTO part;
+			part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
+			if (part != null) {
+				System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
+			}
+			else {
+				System.out.println("No se puede inicializar el partido, no hay suficientes jugadores en linea.");
+			}
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	private static void buscarTodosPartidosJugados() {

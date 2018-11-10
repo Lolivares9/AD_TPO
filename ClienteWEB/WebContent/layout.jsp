@@ -21,12 +21,12 @@ $(document).ready(function(){
 	$("#LibreIndiv").click(function() {
 		var input = document.createElement("input");
 		input.setAttribute("type", "hidden");
-		input.setAttribute("name", "Usuario");
+		input.setAttribute("name", "usuario");
 		input.setAttribute("value", user);
 		
 		var input2 = document.createElement("input");
 		input2.setAttribute("type", "hidden");
-		input2.setAttribute("name", "Categoria");
+		input2.setAttribute("name", "categoria");
 		input2.setAttribute("value", categoria);
 
 		document.getElementById("LibreIndiv").appendChild(input);

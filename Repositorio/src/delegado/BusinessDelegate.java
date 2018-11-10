@@ -127,11 +127,11 @@ public class BusinessDelegate {
 		return partido;
 	}
 	
-	public PartidoDTO buscarPartidaLobby(String apodoJugador) throws ComunicationException{
+	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws ComunicationException{
 		PartidoDTO partido = null;
 		try {
-			partido = ir.buscarPartidaLobby(apodoJugador);
-		} catch (RemoteException | PartidoException e) {
+			partido = ir.buscarPartidaLobby(apodoJugador, modalidad);
+		} catch (RemoteException | PartidoException | ParejaException | JugadorException e) {
 			e.printStackTrace();
 		}
 		return partido;
