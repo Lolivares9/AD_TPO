@@ -70,7 +70,7 @@ public class JugadorDAO {
 		je.setBuscandoLibreIndividual(jugador.isBuscandoLibreIndividual());
 		je.setPassword(jugador.getPassword());
 		je.setIdJugador(jugador.getId());
-		if(jugador.getNumJugador() != -1){
+		if(jugador.getNumJugador() != null && jugador.getNumJugador() != -1){
 			je.setNumeroJugadorPartido(jugador.getNumJugador());
 		}
 		return je;

@@ -23,13 +23,13 @@ public class Cliente {
 	public static void main(String[] args) {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		//altaJugador();  // OK 
+		altaJugador();  // OK 
 		iniciarSesion(); // OK 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //OK
 		buscarPartidaLibreIndividual(); // OK
-		iniciarPartidaLibreIndividual(); //TEST OK LAUTI
+		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
