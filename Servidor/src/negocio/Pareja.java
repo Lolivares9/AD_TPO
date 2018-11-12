@@ -127,6 +127,7 @@ public class Pareja {
 	
 	public static Pareja calcularTantoParejas(Pareja pareja1, Pareja pareja2){
 		Pareja parejaGanadora = null;
+		
 		List<Carta> cartasJug1Pareja1 = pareja1.getCartasJugador1();
 		List<Carta> cartasJug2Pareja1 = pareja1.getCartasJugador2();
 		List<Carta> cartasJug1Pareja2 = pareja2.getCartasJugador1();
@@ -137,7 +138,7 @@ public class Pareja {
 		int tantoJug2Pareja2 = Jugador.calcularTantoJugadores(cartasJug2Pareja2);
 		
 		if(((tantoJug1Pareja1 > tantoJug1Pareja2) && (tantoJug1Pareja1 > tantoJug2Pareja2)) || ((tantoJug2Pareja1 > tantoJug1Pareja2) && (tantoJug2Pareja1 > tantoJug2Pareja2))){
-			parejaGanadora = pareja1;
+			parejaGanadora =pareja1;
 		}
 		else if(((tantoJug1Pareja2 > tantoJug1Pareja1) && (tantoJug1Pareja2 > tantoJug2Pareja1)) || ((tantoJug2Pareja2 > tantoJug1Pareja1) && (tantoJug2Pareja2 > tantoJug2Pareja1))){
 			parejaGanadora = pareja2;

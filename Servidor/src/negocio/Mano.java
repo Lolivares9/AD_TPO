@@ -124,13 +124,13 @@ public class Mano {
 				return true;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_RealEnvido_FaltaEnvido_Querido)){
-				Baza nuevaBaza = new Baza();
-				nuevaBaza.setNumero(1);
-				Mano nuevaMano = new Mano();
-				List <Baza>	bazasNuevas = new ArrayList<Baza>();
-				bazasNuevas.add(nuevaBaza);
-				nuevaMano.setBazas(bazasNuevas);
-				chicoActual.getManos().add(nuevaMano);
+				//Baza nuevaBaza = new Baza();
+				//nuevaBaza.setNumero(1);
+				//Mano nuevaMano = new Mano();
+				//List <Baza>	bazasNuevas = new ArrayList<Baza>();
+				//bazasNuevas.add(nuevaBaza);
+				//nuevaMano.setBazas(bazasNuevas);
+				//chicoActual.getManos().add(nuevaMano);
 				setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
 				return false;
 			}
