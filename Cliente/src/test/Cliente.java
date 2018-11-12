@@ -29,7 +29,7 @@ public class Cliente {
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //OK
 		buscarPartidaLibreIndividual(); // OK
-		//iniciarPartidaLibreIndividual(); //TEST OK LAUTI
+		iniciarPartidaLibreIndividual(); //TEST OK LAUTI
 		
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();

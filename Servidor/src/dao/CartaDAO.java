@@ -95,7 +95,7 @@ public class CartaDAO {
 	}
 	
 	public Carta toNegocio(CartaEntity carta) {
-		Carta c = new Carta();
+		Carta c = null;
 		if(carta != null){
 			c = new Carta(carta.getNumero(), carta.getPalo(), carta.getValorJuego(),carta.getValorEnvido()); 
 			c.setIdCarta(carta.getIdCarta());

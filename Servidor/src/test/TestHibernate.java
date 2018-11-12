@@ -58,7 +58,7 @@ public class TestHibernate {
 		List <Baza> bazas = null;
 		List <Mano> manos = null;
 		Mano mano = p.getChico().get(0).getManos().get(0);
-		Baza baza = p.getChico().get(0).getManos().get(0).getBazas().get(0);
+		Baza baza = mano.getBazas().get(0);
 		
 		//COMO ES LA PRIMERA RONDA, LO INSERTAMOS SIN ID, EN CASO DE QUERER ACTUALIZAR EL TURNO, SE LE SETEA EL ID
 		/*
@@ -77,13 +77,14 @@ public class TestHibernate {
 		turnos.add(turno3);
 		turnos.add(turno4);
 		baza.setTurnos(turnos);
-		bazas = p.getChico().get(0).getManos().get(0).getBazas();
-		bazas.set(0, baza);
-		mano.setBazas(bazas);
-		manos = p.getChico().get(0).getManos();
-		manos.set(0, mano);
-		p.getChico().get(0).setManos(manos);
-		//p.actualizar();
+		//Esto no va, ya esta creada la baza cuando se inicializo el partido
+		//bazas = p.getChico().get(0).getManos().get(0).getBazas();
+		//bazas.set(0, baza); 
+		//mano.setBazas(bazas);
+		//manos = p.getChico().get(0).getManos();
+		//manos.set(0, mano);
+		//p.getChico().get(0).setManos(manos);
+		p.actualizar();
 		p.nuevaJugada(1);
 		
 		

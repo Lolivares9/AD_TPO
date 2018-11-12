@@ -183,17 +183,17 @@ public class PartidoDAO {
 		}
 		pe.setParejas(parejas);
 		if (partido.getParejaGanadora() != null) {
-			//pe.setParejaGanadora(parejas.get(0));
+			pe.setParejaGanadora(ParejaDAO.getInstancia().toEntity(partido.getParejaGanadora()));
 		}
 		
 		List<ChicoEntity> chicos = new ArrayList<ChicoEntity>();
 		if(partido.getChico() != null) {
 			for (Chico c: partido.getChico()) {
-				if(c.getManos() != null){
+				//if(c.getManos() != null){ 
 					ChicoEntity cEntity = ChicoDAO.getInstancia().toEntity(c);
 					cEntity.setIdPartido(pe);
 					chicos.add(cEntity);
-				}
+				//}
 			}
 		}
 		pe.setChicos(chicos);
