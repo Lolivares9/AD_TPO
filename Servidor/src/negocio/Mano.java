@@ -132,7 +132,8 @@ public class Mano {
 				//nuevaMano.setBazas(bazasNuevas);
 				//chicoActual.getManos().add(nuevaMano);
 				setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
-				return false;
+				actualizacionJuegoPartido(partidoNegocio, chicoActual, manoActual, bazaActual);
+				return true;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_FaltaEnvido_Querido)){
 				setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
@@ -420,6 +421,20 @@ public class Mano {
 			return true;
 		}
 		return false;
+	}
+
+	private static void actualizacionJuegoPartido(Partido partidoNegocio, Chico chicoActual, Mano manoActual, Baza bazaActual) {
+		if (chicoActual.isFinalizado()) {
+			//partidoNegocio.crearNuevoChico();
+		}
+		else {
+			if (manoActual.getParejaGanadora() != null) {
+				//chicoActual.crearNuevaMano();
+			}
+			else {
+									
+			}
+		}
 	}
 
 	/**Si este metodo devuelve false, es porque a alguno de los jugadores le falta jugar una carta, para que se pueda evaluar los ganadores*/
