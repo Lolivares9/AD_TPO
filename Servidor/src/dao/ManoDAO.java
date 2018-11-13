@@ -108,6 +108,8 @@ public class ManoDAO {
 		ManoEntity me = new ManoEntity();
 		me.setIdMano(mano.getIdMano());
 		me.setNumeroMano(mano.getNumeroMano());
+		me.setPuntajePareja1(mano.getPuntajePareja1());
+		me.setPuntajePareja2(mano.getPuntajePareja2());
 		if(mano.getParejaGanadora() != null){
 			me.setParejaGanadora(ParejaDAO.getInstancia().toEntity(mano.getParejaGanadora()));
 		}

@@ -124,12 +124,13 @@ public class Mano {
 		Chico chicoActual = partidoNegocio.getChico().get(indiceChico);
 		Mano manoActual = chicoActual.getManos().get(indiceMano);
 		Baza bazaActual = manoActual.getBazas().get(indiceBaza);
+		
 		if(bazaActual.getTurnos().size() > 0){
 			indiceTurno = bazaActual.getTurnos().size()-1;
 		}
 		
 		Turno turnoEnvite = null;
-		if(bazaActual.getEnviteActual() == null){
+		if(bazaActual.getEnviteActual() == null && bazaActual.getTurnos().size() > 0){
 			turnoEnvite = bazaActual.getTurnos().get(indiceTurno);
 
 			//*******COMENZAMOS CON EL ENVIDO**********
@@ -574,10 +575,12 @@ public class Mano {
 		}else{
 			if(p.getParejas().get(0).equals(Pareja.calcularTantoParejas(p.getParejas().get(0),p.getParejas().get(1)))){
 				bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + puntaje);
-				chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja2() + puntaje);
+				manoActual.setPuntajePareja1(manoActual.getPuntajePareja1() + puntaje);
+				chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1() + puntaje);
 			}else {
 				bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + puntaje);
-				chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + puntaje);
+				manoActual.setPuntajePareja2(manoActual.getPuntajePareja2() + puntaje);
+				chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + puntaje);
 			}
 		}
 		p.actualizar();

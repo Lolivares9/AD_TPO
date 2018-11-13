@@ -172,8 +172,8 @@ public class Partido {
 		return chicos;
 	}
 	
-	public boolean nuevaJugada(int id) throws PartidoException{
-		boolean siguienteTurno = Mano.analizarEnvitesMano(id);
+	public boolean nuevaJugada() throws PartidoException{
+		boolean siguienteTurno = Mano.analizarEnvitesMano(this.idPartido);
 		return siguienteTurno;
 	}
 

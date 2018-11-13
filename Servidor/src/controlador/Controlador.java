@@ -266,4 +266,24 @@ public class Controlador {
 	public void repartiCartas(PartidoDTO pd) throws CartaException {
 		mazo.repartiCartas(pd);
 	}
+
+	public void actualizarPartido(int idPartido,List<TurnoDTO> turnos) throws PartidoException {
+		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
+		int indiceMano = 0;
+		int indiceBaza = 0;
+		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().size() > 0){
+			indiceMano = p.getChico().get(p.getNumeroChicoActual()-1).getManos().size()-1;
+		}
+		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size() > 0){
+			indiceBaza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size()-1; 
+		}
+		List<Turno> turnosNegocio = new ArrayList<Turno>();
+		for(int i = 0;i<turnos.size();i++){
+			turnosNegocio.add(DTOMapper.getInstancia().turnoDTOtoNegocio(turnos.get(i)));
+		}
+		Baza baza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().get(indiceBaza);
+		baza.setTurnos(turnosNegocio);
+		p.actualizar();
+		p.nuevaJugada();
+	}
 }

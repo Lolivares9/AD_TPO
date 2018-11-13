@@ -148,5 +148,10 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	@Override
 	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws ManoException, BazaException, TurnoException{
 		return Controlador.getInstancia().obtenerDetalleDeChico(chico);
-	}	
+	}
+
+	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws PartidoException {
+		Controlador.getInstancia().actualizarPartido(idPartido,turnos);
+	}
+
 }

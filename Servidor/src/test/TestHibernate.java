@@ -85,7 +85,7 @@ public class TestHibernate {
 		//manos.set(0, mano);
 		//p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		p.nuevaJugada(1);
+		p.nuevaJugada();
 		
 		
 		
@@ -127,7 +127,7 @@ public class TestHibernate {
 		manos.set(0, mano);
 		p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		p.nuevaJugada(1);
+		p.nuevaJugada();
 		
 		
 	}
@@ -165,7 +165,7 @@ public class TestHibernate {
 		manos.set(0, mano);
 		p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		p.nuevaJugada(1);
+		p.nuevaJugada();
 		
 	}
 

@@ -562,12 +562,15 @@ public class Jugador {
 		//COMENZAMOS A VALIDAR LOS PARES DE IGUAL PALO
 		else if(carta1.getPalo().equals(carta2.getPalo())){
 			sumaCarta1Carta2 = cargarValorEnvido (carta1, carta2);
+			envido = sumaCarta1Carta2;
 		}
 		else if(carta1.getPalo().equals(carta3.getPalo())){
 			sumaCarta1Carta3 = cargarValorEnvido (carta1, carta3);
+			envido = sumaCarta1Carta3;
 		}
 		else if(carta2.getPalo().equals(carta3.getPalo())){
 			sumaCarta2Carta3 = cargarValorEnvido (carta2, carta3);
+			envido = sumaCarta2Carta3;
 		}
 		return envido;
 	}

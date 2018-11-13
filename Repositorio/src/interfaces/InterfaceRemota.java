@@ -62,9 +62,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public boolean modificarJugador() throws RemoteException;
 
-
-
-
+	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws PartidoException,RemoteException;
 
 	
 

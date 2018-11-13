@@ -1,11 +1,16 @@
 package util;
 
+import dao.CartaDAO;
+import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.PartidoDTO;
+import dto.TurnoDTO;
+import negocio.Carta;
 import negocio.Chico;
 import negocio.Jugador;
 import negocio.Partido;
+import negocio.Turno;
 
 public class DTOMapper {
 
@@ -35,5 +40,17 @@ public class DTOMapper {
 	public Chico chicoDTOtoNegocio(ChicoDTO chicoDTO){
 		Chico chicoBO = null;
 		return chicoBO;
+	}
+	
+	public Carta cartaDTOtoNegocio(CartaDTO cartaDTO) {
+		Carta c = null;
+		if(cartaDTO != null){
+			c = CartaDAO.getInstancia().obtenerCartaPorID(cartaDTO.getIdCarta()); 
+		}
+		return c;
+	}
+
+	public Turno turnoDTOtoNegocio(TurnoDTO turno) {
+		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnvite(),cartaDTOtoNegocio(turno.getCartaDTO()));
 	}
 }

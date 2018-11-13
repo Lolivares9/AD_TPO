@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 
 import dto.PartidoDTO;
 import entities.CartaEntity;
+import entities.JugadorEntity;
 import excepciones.CartaException;
 import hbt.HibernateUtil;
 import negocio.Carta;
@@ -129,4 +130,29 @@ public class CartaDAO {
 		}
 	}
 	
+	public Carta obtenerCartaPorID(int idCarta){
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		CartaEntity centity;
+		Carta cartaNegocio = null;
+		try {
+			centity = (CartaEntity) s
+					.createQuery("from CartaEntity where idCarta = ?")
+					.setInteger(0, idCarta).uniqueResult();
+			
+			s.getTransaction().commit();
+			s.close();
+			
+			if (centity != null) {
+				cartaNegocio = this.toNegocio(centity);
+			} else {
+				return cartaNegocio;
+			}
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return cartaNegocio;
+	}
 }

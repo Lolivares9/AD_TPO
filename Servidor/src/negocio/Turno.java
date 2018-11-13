@@ -3,6 +3,7 @@ package negocio;
 import dao.TurnoDAO;
 import dto.TurnoDTO;
 import enums.Envite;
+import util.DTOMapper;
 
 public class Turno {
 	private Integer idTurno;
@@ -57,6 +58,10 @@ public class Turno {
 	}
 	
 	public TurnoDTO toDTO() {
-		return new TurnoDTO(jugador.toDTO(), envite, carta.toDTO());
+		return new TurnoDTO(idTurno, jugador.toDTO(), envite, carta.toDTO());
+	}
+	
+	public Turno toNegocio(TurnoDTO turno){
+		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnvite(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()));
 	}
 }

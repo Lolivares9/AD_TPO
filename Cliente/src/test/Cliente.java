@@ -16,21 +16,25 @@ import dto.ManoDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
+import enums.Envite;
 import excepciones.ComunicationException;
 
 public class Cliente {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ComunicationException {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		altaJugador();  // OK 
-		iniciarSesion(); // OK 
+		//altaJugador();  // OK 
+		//iniciarSesion(); // OK 
 		//crearGrupo(); // OK 
 		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //OK
-		buscarPartidaLibreIndividual(); // OK
-		iniciarPartidaLibreIndividual(); //TEST OK LAUTI
-		
+		//buscarPartidaLibreIndividual(); // OK
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
+		jugador.setCategoria(Categoria.Novato);
+		PartidoDTO part;
+		part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
+		iniciarPartidaLibreIndividual(part); //TEST OK LAUTI
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
@@ -38,6 +42,93 @@ public class Cliente {
 		
 	}
 
+	private static void iniciarPartidaLibreIndividual(PartidoDTO part) {
+		try {
+			if (part != null) {
+				System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
+				ronda1(part);
+				//ronda11(part);
+				//ronda2(part);
+				//ronda3(part);
+			}
+			else {
+				System.out.println("No se puede inicializar el partido, no hay suficientes jugadores en linea.");
+			}
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	private static void ronda3(PartidoDTO part) throws ComunicationException {
+		JugadorDTO pareja1Jug1 = part.getParejaDTOs().get(0).getJugadorDTO1();
+		JugadorDTO pareja2Jug1 = part.getParejaDTOs().get(1).getJugadorDTO1();
+		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
+		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
+		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
+		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(3));
+		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(3));
+		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug2().get(3));
+		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug2().get(3));
+		turnos.add(turno1);
+		turnos.add(turno2);
+		turnos.add(turno3);
+		turnos.add(turno4);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
+		
+	}
+
+	private static void ronda2(PartidoDTO part) throws ComunicationException {
+		JugadorDTO pareja1Jug1 = part.getParejaDTOs().get(0).getJugadorDTO1();
+		JugadorDTO pareja2Jug1 = part.getParejaDTOs().get(1).getJugadorDTO1();
+		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
+		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
+		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
+		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(1));
+		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Truco,null);
+		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Truco_Querido,null);
+		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Nada,null);
+		turnos.add(turno1);
+		turnos.add(turno2);
+		turnos.add(turno3);
+		turnos.add(turno4);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
+		
+	}
+	
+	private static void ronda11(PartidoDTO part) throws ComunicationException {
+		JugadorDTO pareja1Jug1 = part.getParejaDTOs().get(0).getJugadorDTO1();
+		JugadorDTO pareja2Jug1 = part.getParejaDTOs().get(1).getJugadorDTO1();
+		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
+		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
+		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
+		TurnoDTO turno1 = new TurnoDTO(1,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(0));
+		TurnoDTO turno2 = new TurnoDTO(2,pareja2Jug1,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(0));
+		TurnoDTO turno3 = new TurnoDTO(3,pareja1Jug2,Envite.Envido,part.getParejaDTOs().get(0).getCartasJug2().get(0));
+		TurnoDTO turno4 = new TurnoDTO(4,pareja2Jug2,Envite.Envido_Querido,part.getParejaDTOs().get(1).getCartasJug2().get(0));
+		turnos.add(turno1);
+		turnos.add(turno2);
+		turnos.add(turno3);
+		turnos.add(turno4);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
+	}
+
+	private static void ronda1(PartidoDTO part) throws ComunicationException {
+		JugadorDTO pareja1Jug1 = part.getParejaDTOs().get(0).getJugadorDTO1();
+		JugadorDTO pareja2Jug1 = part.getParejaDTOs().get(1).getJugadorDTO1();
+		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
+		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
+		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
+		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(0));
+		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(0));
+		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Envido,null);
+		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Envido_Querido,null);
+		turnos.add(turno1);
+		turnos.add(turno2);
+		turnos.add(turno3);
+		turnos.add(turno4);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
+	}
 
 	private static void buscarPartidaLibreIndividual() {
 		//MATI SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
@@ -74,24 +165,6 @@ public class Cliente {
 			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-	private static void iniciarPartidaLibreIndividual() {
-		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
-		jugador.setCategoria(Categoria.Novato);
-		try {
-			PartidoDTO part;
-			part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
-			if (part != null) {
-				System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
-			}
-			else {
-				System.out.println("No se puede inicializar el partido, no hay suficientes jugadores en linea.");
-			}
-		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
 	}

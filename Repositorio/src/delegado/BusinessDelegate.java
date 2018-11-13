@@ -218,5 +218,13 @@ public class BusinessDelegate {
 		return null;
 	}
 
+	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) {
+		try {
+			ir.nuevaJugada(idPartido,turnos);
+		} catch (PartidoException | RemoteException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 }
