@@ -5,6 +5,7 @@ import java.util.List;
 
 import dao.ManoDAO;
 import dao.PartidoDAO;
+import dto.BazaDTO;
 import dto.ManoDTO;
 import dto.PartidoDTO;
 import enums.Envite;
@@ -19,18 +20,38 @@ public class Mano {
 	private Integer idMano;
 	private int numeroMano;
 	private Pareja parejaGanadora;
+	private int puntajePareja1;
+	private int puntajePareja2;
 	private List<Baza> bazas;
 	
-	public Mano(int numeroMano, Pareja parejaGanadora,List<Baza> bazas) {
+	public Mano(int numeroMano, Pareja parejaGanadora, int puntajePareja1, int puntajePareja2,List<Baza> bazas) {
 		super();
 		this.numeroMano = numeroMano;
 		this.parejaGanadora = parejaGanadora;
+		this.puntajePareja1 = puntajePareja1;
+		this.puntajePareja2 = puntajePareja2;
 		this.bazas = bazas;
 	}
-	
+
 	public Mano() {
 	}
 	
+	public int getPuntajePareja1() {
+		return puntajePareja1;
+	}
+
+	public void setPuntajePareja1(int puntajePareja1) {
+		this.puntajePareja1 = puntajePareja1;
+	}
+
+	public int getPuntajePareja2() {
+		return puntajePareja2;
+	}
+
+	public void setPuntajePareja2(int puntajePareja2) {
+		this.puntajePareja2 = puntajePareja2;
+	}
+
 	public int getNumeroMano() {
 		return numeroMano;
 	}
@@ -61,7 +82,11 @@ public class Mano {
 	 * @return
 	 */
 	public ManoDTO toDTO() {
-		return new ManoDTO(numeroMano, parejaGanadora.toDTO());
+		List <BazaDTO> bazasDTO = new ArrayList <BazaDTO> ();
+		for (Baza b: bazas) {
+			bazasDTO.add(b.toDTO());
+		}
+		return new ManoDTO(idMano, numeroMano, parejaGanadora.toDTO(), puntajePareja1,puntajePareja2, bazasDTO);
 	}
 
 	public List<Baza> getBazas() {
@@ -425,16 +450,30 @@ public class Mano {
 
 	private static void actualizacionJuegoPartido(Partido partidoNegocio, Chico chicoActual, Mano manoActual, Baza bazaActual) {
 		if (chicoActual.isFinalizado()) {
-			//partidoNegocio.crearNuevoChico();
+			partidoNegocio.crearNuevoChico();
 		}
 		else {
 			if (manoActual.getParejaGanadora() != null) {
-				//chicoActual.crearNuevaMano();
+				chicoActual.crearNuevaMano();
 			}
 			else {
-									
+				manoActual.crearNuevaBaza();					
 			}
 		}
+		partidoNegocio.actualizar();
+	}
+
+	public void crearNuevaBaza() {
+		int indiceUltimaBaza = 0;
+		if (bazas.size() > 0) {
+			indiceUltimaBaza = bazas.size() - 1;
+			puntajePareja1 = puntajePareja1 + bazas.get(indiceUltimaBaza).getPuntajePareja1();
+			puntajePareja2 = puntajePareja2 + bazas.get(indiceUltimaBaza).getPuntajePareja2();
+			
+			//esto debe ir al jugar la baza, no al inicialziar una nueva.
+		}	
+		Baza bazaNueva = new Baza(bazas.size() + 1, null, 0, 0, null);
+		bazas.add(bazaNueva);
 	}
 
 	/**Si este metodo devuelve false, es porque a alguno de los jugadores le falta jugar una carta, para que se pueda evaluar los ganadores*/
@@ -520,9 +559,6 @@ public class Mano {
 				chicoActual.setParejaGanadora(p.getParejas().get(0));
 				chicoActual.setPuntajePareja1(30);
 				chicoActual.setFinalizado(true);
-				if (p.getNumeroChicoActual() < 3) {
-					p.setNumeroChicoActual(p.getNumeroChicoActual() + 1);
-				}
 			}
 			else{
 				bazaActual.setPuntajePareja2(30);

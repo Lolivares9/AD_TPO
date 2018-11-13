@@ -102,4 +102,14 @@ public class Chico {
 			return new ChicoDTO(numero, finalizado, null, puntajePareja1, puntajePareja2);
 		}
 	}
+
+	public void crearNuevaMano() {
+		if (manos == null) {
+			manos = new ArrayList<Mano> ();
+		}
+		
+		Mano m = new Mano(manos.size() + 1 , null, 0, 0, new ArrayList <Baza>());
+		m.crearNuevaBaza();
+		manos.add(m);
+	}
 }

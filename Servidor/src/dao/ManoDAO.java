@@ -84,10 +84,10 @@ public class ManoDAO {
 			bazas = BazaDAO.getInstancia().toNegocioAll(me.getBazas());
 		}
 		if(me.getParejaGanadora() != null){
-			mano = new Mano(me.getNumeroMano(),ParejaDAO.getInstancia().toNegocio(me.getParejaGanadora()),bazas);
+			mano = new Mano(me.getNumeroMano(),ParejaDAO.getInstancia().toNegocio(me.getParejaGanadora()),me.getPuntajePareja1(), me.getPuntajePareja2(), bazas);
 		}
 		else{
-			mano = new Mano(me.getNumeroMano(),null,bazas);
+			mano = new Mano(me.getNumeroMano(),null,me.getPuntajePareja1(), me.getPuntajePareja2(), bazas);
 		}
 		mano.setIdMano(me.getIdMano());
 		return mano;

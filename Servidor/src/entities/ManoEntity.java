@@ -38,11 +38,19 @@ public class ManoEntity {
 	@JoinColumn(name="ID_PAREJA_GANADORA")
 	private ParejaEntity parejaGanadora;
 	
+	@Column(name="PUNTAJE_PAREJA1")
+	private int puntajePareja1;
+	
+	@Column(name="PUNTAJE_PAREJA2")
+	private int puntajePareja2;
+	
+	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_MANO")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BazaEntity> bazas;
 
+	
 	public ManoEntity() {
 		super();
 	}
@@ -85,6 +93,22 @@ public class ManoEntity {
 
 	public void setBazas(List<BazaEntity> bazas) {
 		this.bazas = bazas;
+	}
+
+	public int getPuntajePareja1() {
+		return puntajePareja1;
+	}
+
+	public void setPuntajePareja1(int puntajePareja1) {
+		this.puntajePareja1 = puntajePareja1;
+	}
+
+	public int getPuntajePareja2() {
+		return puntajePareja2;
+	}
+
+	public void setPuntajePareja2(int puntajePareja2) {
+		this.puntajePareja2 = puntajePareja2;
 	}
 	
 }

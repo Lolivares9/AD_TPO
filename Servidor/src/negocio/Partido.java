@@ -158,7 +158,7 @@ public class Partido {
 		List <Baza> bazas = new ArrayList<Baza>();
 		Baza b = new Baza(1,null,0,0,null);
 		bazas.add(b);
-		Mano m = new Mano(1,null,bazas);
+		Mano m = new Mano(1,null,0,0,bazas);
 		manos.add(m);
 		Chico chico1 = new Chico(1, false, null, 0, 0);
 		chico1.setManos(manos);
@@ -183,5 +183,11 @@ public class Partido {
 
 	public void setNumeroChicoActual(int chicoActual) {
 		this.numeroChicoActual = chicoActual;
+	}
+
+	public void crearNuevoChico() {
+		Chico c = chicos.get(this.numeroChicoActual);
+		numeroChicoActual = numeroChicoActual + 1;
+		c.crearNuevaMano();
 	}
 }
