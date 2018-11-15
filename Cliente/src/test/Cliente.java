@@ -321,7 +321,8 @@ public class Cliente {
 
 	private static void llenarGrupo() throws RemoteException, JugadorException, GrupoException, ComunicationException{
 		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
-		JugadorDTO jugador = BusinessDelegate.getInstancia().buscarJugadorDTO("Matias","Chulo","boccardo2013@gmail.com","123456");
+		JugadorDTO jugador = BusinessDelegate.getInstancia().buscarJugadorDTO("Jose","Kent","a@a.a","123456");
+		jugadores.add(jugador);
 		//JugadorDTO jugador2 = 
 		
 		//jugadores.add(jugador);

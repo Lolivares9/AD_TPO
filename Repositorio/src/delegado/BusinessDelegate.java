@@ -229,7 +229,7 @@ public class BusinessDelegate {
 
 	public JugadorDTO buscarJugadorDTO(String nombre, String apodo, String mail, String contraseña) throws JugadorException, GrupoException, RemoteException {
 		try {
-			ir.buscarJugadorDTO(apodo);
+			return ir.buscarJugadorDTO(apodo);
 		}catch (JugadorException e) {
 			e.printStackTrace();
 		}

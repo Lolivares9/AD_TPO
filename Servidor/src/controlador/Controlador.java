@@ -108,7 +108,9 @@ public class Controlador {
 				}
 				return null;
 			}).collect(Collectors.toList());
-			g.setJugadores(jugNeg);
+			for(int i = 0;i<jugNeg.size();i++){
+				g.getJugadores().add(jugNeg.get(i));
+			}
 			return g.guardar();
 		}else{
 			return false;

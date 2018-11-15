@@ -170,7 +170,9 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 			gruposDTO.add(gruposJugador.get(i).toDTO());
 		}
 		JugadorDTO jugDTO = jugNegocio.toDTO();
-		jugDTO.setGrupos(gruposDTO);
+		if(gruposDTO.size() >= 1){
+			jugDTO.setGrupos(gruposDTO);
+		}
 		return jugDTO;
 	}
 

@@ -97,10 +97,20 @@ public class GrupoDAO {
 		
 		JugadorEntity admin = JugadorDAO.getInstancia().toEntity(grupo.getJugadorAdmin());
 		ge.setJugadorAdmin(admin);
+		if(admin.getGrupos() != null){
+			admin.getGrupos().add(ge);
+		}
 		
 		List<JugadorEntity> jugNeg = null;
+		JugadorEntity j = null;
 		if(grupo.getJugadores() != null && grupo.getJugadores().size() > 0) {
-			jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
+			jugNeg = new ArrayList<JugadorEntity>();
+			for(int i = 0;i<grupo.getJugadores().size();i++){
+				j = JugadorDAO.getInstancia().toEntity(grupo.getJugadores().get(i));
+				j.getGrupos().add(ge);
+				jugNeg.add(j);
+			}
+			//jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
 		}
 		
 		List<GrupoEntity> jeGrupos = new ArrayList<GrupoEntity> ();
