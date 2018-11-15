@@ -3,10 +3,14 @@ package negocio;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.GrupoDAO;
 import dao.JugadorDAO;
 import dto.JugadorDTO;
+import entities.GrupoEntity;
 import enums.Categoria;
+import excepciones.GrupoException;
 import excepciones.JugadorException;
+import util.DTOMapper;
 
 public class Jugador {
 	//El id de jugador lo puse en esta clase porque no se puede guardar si no está acá,
@@ -26,6 +30,7 @@ public class Jugador {
 	private boolean buscandoLibreIndividual;
 	private String password;
 	private Integer numeroTurnoPartido;
+	private List<Grupo> grupos;
 
 	public Jugador(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
 			int partidosGanados, boolean conectado, boolean jugando,boolean buscandoLibreIndividual, String password) {
@@ -58,6 +63,24 @@ public class Jugador {
 		this.buscandoLibreIndividual = buscandoLibreIndividual;
 		this.password = password;
 		this.numeroTurnoPartido = numeroJugadorPartido;
+
+	}
+
+	public Jugador(Integer idJugador, String apodo, String mail, String password, Categoria categoria, int puntaje,
+			int partidosJugados, int partidosGanados, boolean conectado, boolean jugando,
+			int numeroTurnoPartido, List<Grupo> grupos) {
+		super();
+		this.id = idJugador;
+		this.apodo = apodo;
+		this.mail = mail; 
+		this.password = password; 
+		this.categoria =  categoria; 
+		this.puntaje =  puntaje;
+		this.partidosJugados = partidosJugados; 
+		this.partidosGanados = partidosGanados; 
+		this.conectado = conectado;
+		this.jugando = jugando;
+		this.numeroTurnoPartido = numeroTurnoPartido; 
 	}
 
 	public boolean isBuscandoLibreIndividual() {
@@ -175,8 +198,24 @@ public class Jugador {
 		return j;
 	}
 	
-	public JugadorDTO toDTO() {
-		return new JugadorDTO(id, nombre, apodo, mail, categoria, puntaje, partidosJugados, partidosGanados, conectado, jugando, password);
+	public Integer getNumeroTurnoPartido() {
+		return numeroTurnoPartido;
+	}
+
+	public void setNumeroTurnoPartido(Integer numeroTurnoPartido) {
+		this.numeroTurnoPartido = numeroTurnoPartido;
+	}
+
+	public List<Grupo> getGrupos() {
+		return grupos;
+	}
+
+	public void setGrupos(List<Grupo> grupos) {
+		this.grupos = grupos;
+	}
+	
+	public JugadorDTO toDTO() throws GrupoException {
+		return new JugadorDTO(id, nombre, apodo, mail, categoria, puntaje, partidosJugados, partidosGanados, conectado, jugando, password, null);
 	}
 
 

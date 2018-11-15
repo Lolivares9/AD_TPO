@@ -53,7 +53,7 @@ public class BusinessDelegate {
 	}
 	
 
-	public JugadorDTO altaJugador(JugadorDTO jugador) throws ComunicationException {
+	public JugadorDTO altaJugador(JugadorDTO jugador) throws ComunicationException, GrupoException {
 		JugadorDTO jugLog = null;
 		try {
 			jugLog=ir.altaJugador(jugador);
@@ -65,7 +65,7 @@ public class BusinessDelegate {
 		return jugLog;
 	}
 
-	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws ComunicationException {
+	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws ComunicationException, GrupoException {
 		JugadorDTO jugLog = null;
 		try {
 			jugLog = ir.iniciarSesion(jugador);
@@ -108,7 +108,7 @@ public class BusinessDelegate {
 			e.printStackTrace();
 		}
 	}
-	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws ComunicationException{
+	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws ComunicationException, GrupoException{
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaLibreIndividual(categoria, apodo);
@@ -127,7 +127,7 @@ public class BusinessDelegate {
 		return partido;
 	}
 	
-	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws ComunicationException{
+	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws ComunicationException, GrupoException{
 		PartidoDTO partido = null;
 		try {
 			partido = ir.buscarPartidaLobby(apodoJugador, modalidad);
@@ -137,7 +137,7 @@ public class BusinessDelegate {
 		return partido;
 	}
 
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException, CartaException{
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException, CartaException, GrupoException{
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaLibre(pareja);
@@ -209,7 +209,7 @@ public class BusinessDelegate {
 		return Collections.<ChicoDTO>emptyList();
 	}
 	
-	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico){
+	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws GrupoException{
 		try {
 			return ir.obtenerDetalleDeChico(chico);
 		} catch (ManoException | BazaException | TurnoException | RemoteException e) {
@@ -218,13 +218,22 @@ public class BusinessDelegate {
 		return null;
 	}
 
-	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) {
+	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws GrupoException {
 		try {
 			ir.nuevaJugada(idPartido,turnos);
 		} catch (PartidoException | RemoteException e) {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public JugadorDTO buscarJugadorDTO(String nombre, String apodo, String mail, String contraseña) throws JugadorException, GrupoException, RemoteException {
+		try {
+			ir.buscarJugadorDTO(apodo);
+		}catch (JugadorException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

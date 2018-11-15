@@ -6,6 +6,7 @@ import java.util.List;
 import dao.ParejaDAO;
 import dto.ParejaDTO;
 import enums.Categoria;
+import excepciones.GrupoException;
 
 public class Pareja {
 	private Integer idPareja;
@@ -54,7 +55,7 @@ public class Pareja {
 		return ParejaDAO.getInstancia().guardar(this);
 	}
 	
-	public ParejaDTO toDTO() {
+	public ParejaDTO toDTO() throws GrupoException {
 		return new ParejaDTO(this.idPareja,jugador1.toDTO(), jugador2.toDTO());
 	}
 

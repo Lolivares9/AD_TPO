@@ -9,6 +9,7 @@ import dto.BazaDTO;
 import dto.ManoDTO;
 import dto.PartidoDTO;
 import enums.Envite;
+import excepciones.GrupoException;
 import excepciones.PartidoException;
 import util.DTOMapper;
 
@@ -80,8 +81,9 @@ public class Mano {
 	/**
 	 * Constructor para crear un DTO sin todas sus variables completas
 	 * @return
+	 * @throws GrupoException 
 	 */
-	public ManoDTO toDTO() {
+	public ManoDTO toDTO() throws GrupoException {
 		List <BazaDTO> bazasDTO = new ArrayList <BazaDTO> ();
 		for (Baza b: bazas) {
 			bazasDTO.add(b.toDTO());

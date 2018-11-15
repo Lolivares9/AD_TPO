@@ -12,6 +12,7 @@ import dto.ParejaDTO;
 import dto.PartidoDTO;
 import enums.EstadoPartido;
 import enums.TipoModalidad;
+import excepciones.GrupoException;
 import excepciones.PartidoException;
 
 /**
@@ -111,8 +112,16 @@ public class Partido {
 		return PartidoDAO.getInstancia().actualizar(this);
 	}
 	
-	public PartidoDTO toDTOListar() {
-		List<ParejaDTO> parejasDTO = parejas.stream().map(Pareja::toDTO).collect(Collectors.toList());
+	public PartidoDTO toDTOListar() throws GrupoException {
+		List<ParejaDTO> parejasDTO = parejas.stream().map(t -> {
+			try {
+				return t.toDTO();
+			} catch (GrupoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}).collect(Collectors.toList());
 		if(parejaGanadora != null) {
 			return new PartidoDTO(new ModalidadDTO(modalidad, true), parejasDTO, parejaGanadora.toDTO());
 		}else {
@@ -121,7 +130,7 @@ public class Partido {
 		
 	}
 	
-	public PartidoDTO toDTO(){
+	public PartidoDTO toDTO() throws GrupoException{
 		ModalidadDTO mod = null;
 		List<ParejaDTO> parejasDTO = new ArrayList<ParejaDTO>();
 		List<ChicoDTO> chicosDTO = new ArrayList<ChicoDTO>();

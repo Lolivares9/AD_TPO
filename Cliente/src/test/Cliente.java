@@ -1,5 +1,6 @@
 package test;
 
+import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,23 +19,25 @@ import dto.TurnoDTO;
 import enums.Categoria;
 import enums.Envite;
 import excepciones.ComunicationException;
+import excepciones.GrupoException;
+import excepciones.JugadorException;
 
 public class Cliente {
 
-	public static void main(String[] args) throws ComunicationException {
+	public static void main(String[] args) throws ComunicationException, RemoteException, JugadorException, GrupoException {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
 		//altaJugador();  // OK 
 		//iniciarSesion(); // OK 
-		//crearGrupo(); // OK 
-		//llenarGrupo(); // OK
+		//crearGrupo();
+		llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //OK
 		//buscarPartidaLibreIndividual(); // OK
-		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
-		jugador.setCategoria(Categoria.Novato);
-		PartidoDTO part;
-		part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
-		iniciarPartidaLibreIndividual(part); //TEST OK LAUTI
+		//JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
+		//jugador.setCategoria(Categoria.Novato);
+		//PartidoDTO part;
+		//part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
+		//iniciarPartidaLibreIndividual(part); //TEST OK LAUTI
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
@@ -42,7 +45,7 @@ public class Cliente {
 		
 	}
 
-	private static void iniciarPartidaLibreIndividual(PartidoDTO part) {
+	private static void iniciarPartidaLibreIndividual(PartidoDTO part) throws GrupoException {
 		try {
 			if (part != null) {
 				System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
@@ -60,7 +63,7 @@ public class Cliente {
 	}
 
 
-	private static void ronda3(PartidoDTO part) throws ComunicationException {
+	private static void ronda3(PartidoDTO part) throws ComunicationException, GrupoException {
 		JugadorDTO pareja1Jug1 = part.getParejaDTOs().get(0).getJugadorDTO1();
 		JugadorDTO pareja2Jug1 = part.getParejaDTOs().get(1).getJugadorDTO1();
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
@@ -78,7 +81,7 @@ public class Cliente {
 		
 	}
 
-	private static void ronda2(PartidoDTO part) throws ComunicationException {
+	private static void ronda2(PartidoDTO part) throws ComunicationException, GrupoException {
 		JugadorDTO pareja1Jug1 = part.getParejaDTOs().get(0).getJugadorDTO1();
 		JugadorDTO pareja2Jug1 = part.getParejaDTOs().get(1).getJugadorDTO1();
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
@@ -96,7 +99,7 @@ public class Cliente {
 		
 	}
 	
-	private static void ronda11(PartidoDTO part) throws ComunicationException {
+	private static void ronda11(PartidoDTO part) throws ComunicationException, GrupoException {
 		JugadorDTO pareja1Jug1 = part.getParejaDTOs().get(0).getJugadorDTO1();
 		JugadorDTO pareja2Jug1 = part.getParejaDTOs().get(1).getJugadorDTO1();
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
@@ -113,7 +116,7 @@ public class Cliente {
 		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
 	}
 
-	private static void ronda1(PartidoDTO part) throws ComunicationException {
+	private static void ronda1(PartidoDTO part) throws ComunicationException, GrupoException {
 		JugadorDTO pareja1Jug1 = part.getParejaDTOs().get(0).getJugadorDTO1();
 		JugadorDTO pareja2Jug1 = part.getParejaDTOs().get(1).getJugadorDTO1();
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
@@ -132,7 +135,7 @@ public class Cliente {
 
 	private static void buscarPartidaLibreIndividual() {
 		//MATI SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
-		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
 		jugador.setCategoria(Categoria.Novato);
 		try {
 			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
@@ -141,7 +144,7 @@ public class Cliente {
 			e.printStackTrace();
 		}
 		//FACU SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
-		jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
+		jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123",null);
 		jugador.setCategoria(Categoria.Novato);
 		try {
 			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
@@ -150,7 +153,7 @@ public class Cliente {
 			e.printStackTrace();
 		}
 		//LAUTI SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
-		jugador = new JugadorDTO("Lautaro","lolivares","lautiolivares@gmail.com","123");
+		jugador = new JugadorDTO("Lautaro","lolivares","lautiolivares@gmail.com","123",null);
 		jugador.setCategoria(Categoria.Novato);
 		try {
 			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
@@ -159,7 +162,7 @@ public class Cliente {
 			e.printStackTrace();
 		}
 		//ROBERTO SE ANOTA PARA BUSCAR PARTIDA LIBRE INDIVIDUAL
-		jugador = new JugadorDTO("Roberto","rober","rober@gmail.com","123");
+		jugador = new JugadorDTO("Roberto","rober","rober@gmail.com","123",null);
 		jugador.setCategoria(Categoria.Novato);
 		try {
 			BusinessDelegate.getInstancia().buscarPartidaLibreIndividual(jugador);
@@ -171,7 +174,7 @@ public class Cliente {
 
 
 	private static void buscarTodosPartidosJugados() {
-		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
+		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123",null);
 		jugador.setId(2);
 		try {
 			List<PartidoDTO> partidos = BusinessDelegate.getInstancia().buscarPartidosJugados(jugador, null, null, null);
@@ -182,7 +185,7 @@ public class Cliente {
 	}
 	
 	private static void buscarTodosPartidosJugadosConFiltro() {
-		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
+		JugadorDTO jugador = new JugadorDTO("Facundo","faculth","asd@gmail.com","123",null);
 		jugador.setId(1);
 		try {
 			//Prueba Filtrando Categorias
@@ -212,7 +215,7 @@ public class Cliente {
 		}
 	}
 	
-	private static void buscarDetalleChico() {
+	private static void buscarDetalleChico() throws GrupoException {
 		ChicoDTO chico = new ChicoDTO(1, false, null, 0, 0);
 		chico.setIdChico(1);
 		try {
@@ -232,7 +235,7 @@ public class Cliente {
 		}		
 	}
 
-	private static void iniciarSesion(){
+	private static void iniciarSesion() throws GrupoException{
 		JugadorDTO jugLog = null;
 		JugadorDTO jug = new JugadorDTO();
 		//INICIA SESION MATI
@@ -280,26 +283,26 @@ public class Cliente {
 		System.out.println(jug.getApodo() + " Inició sesión.\n");
 	}
 
-	private static void altaJugador() {
-		JugadorDTO jugador = new JugadorDTO("Matias","chulo","matias@gmail.com","123");
+	private static void altaJugador() throws GrupoException {
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","matias@gmail.com","123",null);
 		try {
 			BusinessDelegate.getInstancia().altaJugador(jugador);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
-		JugadorDTO jugador2 = new JugadorDTO("Facundo","faculth","asd@gmail.com","123");
+		JugadorDTO jugador2 = new JugadorDTO("Facundo","faculth","asd@gmail.com","123",null);
 		try {
 			BusinessDelegate.getInstancia().altaJugador(jugador2);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
-		JugadorDTO jugador3 = new JugadorDTO("Lautaro","lolivares","lautiolivares@gmail.com","123");
+		JugadorDTO jugador3 = new JugadorDTO("Lautaro","lolivares","lautiolivares@gmail.com","123",null);
 		try {
 			BusinessDelegate.getInstancia().altaJugador(jugador3);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
-		JugadorDTO jugador4 = new JugadorDTO("Roberto","rober","rober@gmail.com","123");
+		JugadorDTO jugador4 = new JugadorDTO("Roberto","rober","rober@gmail.com","123",null);
 		try {
 			BusinessDelegate.getInstancia().altaJugador(jugador4);
 		} catch (ComunicationException e) {
@@ -308,25 +311,23 @@ public class Cliente {
 	}
 	
 	private static void crearGrupo(){
-		JugadorDTO jugador = new JugadorDTO("Matias","chulo","matias@gmail.com","123");
+		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com","123456",null);
 		try {
-			BusinessDelegate.getInstancia().crearGrupo("Grupo6", jugador);
+			BusinessDelegate.getInstancia().crearGrupo("Distribuidas", jugador);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static void llenarGrupo(){
-		Categoria categ = Categoria.Novato;
-		JugadorDTO jugador = new JugadorDTO("Matias","Chulo","boccardo2013@gmail.com",categ,0,0,0,true,false,false,"segu2022");
-		jugador.setId(1);
+	private static void llenarGrupo() throws RemoteException, JugadorException, GrupoException, ComunicationException{
 		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
-		jugadores.add(jugador);
-		JugadorDTO jugador2 = new JugadorDTO("Facundo","faculth","asd@gmail.com",categ,0,0,0,true,false,false,"123");
-		jugador2.setId(2);
-		jugadores.add(jugador2);
+		JugadorDTO jugador = BusinessDelegate.getInstancia().buscarJugadorDTO("Matias","Chulo","boccardo2013@gmail.com","123456");
+		//JugadorDTO jugador2 = 
+		
+		//jugadores.add(jugador);
+		//jugadores.add(jugador2);
 		try {
-			BusinessDelegate.getInstancia().llenarGrupo("Grupo6", jugadores);
+			BusinessDelegate.getInstancia().llenarGrupo("Distribuidas", jugadores);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}

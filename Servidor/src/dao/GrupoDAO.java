@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import entities.GrupoEntity;
 import entities.JugadorEntity;
 import excepciones.GrupoException;
+import excepciones.PartidoException;
 import hbt.HibernateUtil;
 import negocio.Grupo;
 import negocio.Jugador;
@@ -98,14 +99,15 @@ public class GrupoDAO {
 		ge.setJugadorAdmin(admin);
 		
 		List<JugadorEntity> jugNeg = null;
-		if(grupo.getJugadores() != null) {
+		if(grupo.getJugadores() != null && grupo.getJugadores().size() > 0) {
 			jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
 		}
 		
 		List<GrupoEntity> jeGrupos = new ArrayList<GrupoEntity> ();
 		jeGrupos.add(ge);
-		jugNeg.get(0).setGrupos(jeGrupos);
-		jugNeg.get(1).setGrupos(jeGrupos);
+		if(jugNeg != null && jugNeg.size() >= 1){
+			jugNeg.get(0).setGrupos(jeGrupos);
+		}
 		
 		ge.setJugadores(jugNeg);
 		
@@ -113,7 +115,7 @@ public class GrupoDAO {
 	}
 	
 	public Grupo toNegocio(GrupoEntity grupo){
-		Grupo g = new Grupo();
+		Grupo g = new Grupo();		
 		Jugador jAdmin = JugadorDAO.getInstancia().toNegocio(grupo.getJugadorAdmin());
 		g.setJugadorAdmin(jAdmin);
 		g.setNombre(grupo.getNombre());
@@ -121,5 +123,30 @@ public class GrupoDAO {
 		List<Jugador> jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toNegocio(j)).collect(Collectors.toList());
 		g.setJugadores(jugNeg);
 		return g;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Grupo> buscarGruposPorJugador(Integer id) {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		List<Integer> idGrupos = new ArrayList<Integer>();
+		List<GrupoEntity> gruposEntity = new ArrayList<GrupoEntity>();
+		List<Grupo> gruposNegocio = new ArrayList<Grupo>();
+		s.beginTransaction();
+		try{
+			idGrupos = (List<Integer>) s.createSQLQuery("SELECT ID_GRUPO FROM GRUPOS WHERE ID_GRUPO IN (SELECT grupos_ID_GRUPO FROM GRUPOS_JUGADORES WHERE jugadores_ID_JUGADOR = ?)").setInteger(0, id).list();
+			if(idGrupos != null){
+				for(int i = 0;i<idGrupos.size();i++){
+					gruposEntity.add((GrupoEntity) s.createQuery("FROM GrupoEntity WHERE idGrupo = ?").setInteger(0, idGrupos.get(i)).uniqueResult());
+					gruposNegocio.add(GrupoDAO.getInstancia().toNegocio(gruposEntity.get(i)));
+				}
+				s.getTransaction().commit();
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}finally{
+			s.close();
+		}
+		return gruposNegocio;
 	}
 }

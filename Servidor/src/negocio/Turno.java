@@ -3,6 +3,7 @@ package negocio;
 import dao.TurnoDAO;
 import dto.TurnoDTO;
 import enums.Envite;
+import excepciones.GrupoException;
 import util.DTOMapper;
 
 public class Turno {
@@ -57,11 +58,11 @@ public class Turno {
 		return TurnoDAO.getInstancia().guardar(this);
 	}
 	
-	public TurnoDTO toDTO() {
+	public TurnoDTO toDTO() throws GrupoException {
 		return new TurnoDTO(idTurno, jugador.toDTO(), envite, carta.toDTO());
 	}
 	
-	public Turno toNegocio(TurnoDTO turno){
+	public Turno toNegocio(TurnoDTO turno) throws GrupoException{
 		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnvite(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()));
 	}
 }

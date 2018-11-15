@@ -6,10 +6,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,7 +32,9 @@ public class GrupoEntity {
 	@JoinColumn(name="ID_JUGADOR_ADM")
 	private JugadorEntity jugadorAdmin;
 	
-	@ManyToMany (cascade=CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "GRUPOS_JUGADORES", joinColumns = @JoinColumn(name="jugadores_ID_JUGADOR"),inverseJoinColumns=@JoinColumn(name="grupos_ID_GRUPO"))
+	
 	private List<JugadorEntity> jugadores = new ArrayList<JugadorEntity>();
 	
 

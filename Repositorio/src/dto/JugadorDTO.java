@@ -1,6 +1,7 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import enums.Categoria;
 
@@ -24,13 +25,14 @@ public class JugadorDTO implements Serializable  {
 	private boolean buscandoLibreIndividual;
 	private String password;
 	private Integer numJugador;
+	private List<GrupoDTO> grupos;
 	
 	public JugadorDTO() {
 		super();
 	}
 	
 	public JugadorDTO(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
-			int partidosGanados, boolean conectado, boolean jugando, boolean buscandoLibreIndividual,String password) {
+			int partidosGanados, boolean conectado, boolean jugando, boolean buscandoLibreIndividual,String password, List<GrupoDTO> grupos) {
 		super();
 		this.nombre = nombre;
 		this.apodo = apodo;
@@ -43,6 +45,7 @@ public class JugadorDTO implements Serializable  {
 		this.jugando = jugando;
 		this.buscandoLibreIndividual = buscandoLibreIndividual;
 		this.password = password;
+		this.grupos = grupos;
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class JugadorDTO implements Serializable  {
 	 * @param password
 	 */
 	public JugadorDTO(Integer id, String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
-			int partidosGanados, boolean conectado, boolean jugando, String password) {
+			int partidosGanados, boolean conectado, boolean jugando, String password,List<GrupoDTO> grupos) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -74,6 +77,7 @@ public class JugadorDTO implements Serializable  {
 		this.conectado = conectado;
 		this.jugando = jugando;
 		this.password = password;
+		this.grupos = grupos;
 	}
 	
 	/**
@@ -83,7 +87,7 @@ public class JugadorDTO implements Serializable  {
 	 * @param mail
 	 * @param password
 	 */
-	public JugadorDTO(String nombre, String apodo, String mail, String password) {
+	public JugadorDTO(String nombre, String apodo, String mail, String password,List<GrupoDTO> grupos) {
 		super();
 		this.nombre = nombre;
 		this.apodo = apodo;
@@ -95,6 +99,7 @@ public class JugadorDTO implements Serializable  {
 		this.conectado = false;
 		this.jugando = false;
 		this.password = password;
+		this.grupos = grupos;
 	}
 
 	public String getNombre() {
@@ -199,6 +204,14 @@ public class JugadorDTO implements Serializable  {
 
 	public void setBuscandoLibreIndividual(boolean buscandoLibreIndividual) {
 		this.buscandoLibreIndividual = buscandoLibreIndividual;
+	}
+
+	public List<GrupoDTO> getGrupos() {
+		return grupos;
+	}
+
+	public void setGrupos(List<GrupoDTO> grupos) {
+		this.grupos = grupos;
 	}	
 	
 }

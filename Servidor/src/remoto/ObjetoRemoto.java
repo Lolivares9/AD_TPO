@@ -2,13 +2,17 @@ package remoto;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import controlador.Controlador;
+import dao.GrupoDAO;
+import dao.JugadorDAO;
 import dto.BazaDTO;
 import dto.ChicoDTO;
+import dto.GrupoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
 import dto.ParejaDTO;
@@ -25,8 +29,11 @@ import excepciones.ParejaException;
 import excepciones.PartidoException;
 import excepciones.TurnoException;
 import interfaces.InterfaceRemota;
+import negocio.Grupo;
+import negocio.Jugador;
 import negocio.Pareja;
 import negocio.Partido;
+import util.DTOMapper;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota {
 
@@ -35,7 +42,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	public ObjetoRemoto() throws RemoteException {}
 
 	
-	public JugadorDTO altaJugador(JugadorDTO jugador) throws RemoteException, JugadorException {
+	public JugadorDTO altaJugador(JugadorDTO jugador) throws RemoteException, JugadorException, GrupoException {
 		JugadorDTO jugLog = null;
 		try {
 			jugLog=Controlador.getInstancia().altaJugador(jugador);
@@ -56,7 +63,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	//OK
-	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws RemoteException {
+	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws RemoteException, GrupoException {
 		JugadorDTO jugLog = null;
 		try {
 			jugLog = Controlador.getInstancia().iniciarSesion(jugador);
@@ -72,17 +79,17 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	
-	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws RemoteException, PartidoException, ParejaException, JugadorException {
+	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws RemoteException, PartidoException, ParejaException, JugadorException, GrupoException {
 		return Controlador.getInstancia().buscarPartidaLobby(apodoJugador, modalidad);
 	}
 	//OK
-	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException {
+	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException, GrupoException {
 		
 		return Controlador.getInstancia().iniciarPartidaLibreIndividual(categ,apodo);
 	}
 	
 	//FALTARIA TESTEAR
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException {
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException, GrupoException {
 		Pareja parej = null;
 		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibre(parej);
 		PartidoDTO part = partidoNuevo.toDTO();
@@ -146,12 +153,25 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	@Override
-	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws ManoException, BazaException, TurnoException{
+	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws ManoException, BazaException, TurnoException, GrupoException{
 		return Controlador.getInstancia().obtenerDetalleDeChico(chico);
 	}
 
-	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws PartidoException {
+	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws PartidoException, GrupoException {
 		Controlador.getInstancia().actualizarPartido(idPartido,turnos);
+	}
+
+	public JugadorDTO buscarJugadorDTO(String apodo)
+			throws JugadorException, GrupoException {
+		Jugador jugNegocio = JugadorDAO.getInstancia().buscarPorApodo(apodo);
+		List<Grupo> gruposJugador = GrupoDAO.getInstancia().buscarGruposPorJugador(jugNegocio.getId());
+		List<GrupoDTO> gruposDTO = new ArrayList<GrupoDTO>();
+		for(int i=0;i<gruposJugador.size();i++){
+			gruposDTO.add(gruposJugador.get(i).toDTO());
+		}
+		JugadorDTO jugDTO = jugNegocio.toDTO();
+		jugDTO.setGrupos(gruposDTO);
+		return jugDTO;
 	}
 
 }
