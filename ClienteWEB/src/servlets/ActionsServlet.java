@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,11 @@ import com.google.gson.Gson;
 
 import delegado.BusinessDelegate;
 import dto.CartaDTO;
+import dto.JugadorDTO;
 import dto.ParejaDTO;
 import dto.PartidoDTO;
+import dto.TurnoDTO;
+import enums.Envite;
 import enums.TipoModalidad;
 import excepciones.ComunicationException;
 
@@ -54,16 +58,61 @@ public class ActionsServlet extends HttpServlet{
         	buscarPartidaLibreIndividual(request,response);
         }else if ("LibreIndivLob".equals(action)){
         	buscarPartidaLibreIndividualLobby(request,response);
-        }else if ("GetJugada".equals(action)){
-        	getJugada(request,response);
+        }else if ("GuardarJugada".equals(action)){
+        	guardarJugada(request,response);
+        }else if ("GetNovedad".equals(action)){
+        	getNovedad(request,response);
         }
        
     }
 	
-    private void getJugada(HttpServletRequest request, HttpServletResponse response) {
-    	String infoJugada = request.getParameter("apodo");
-    	String infoCarta = request.getParameter("idCarta");
-    	System.out.println(infoJugada + infoCarta);		
+    private void getNovedad(HttpServletRequest request, HttpServletResponse response) {
+    	String idPartido = request.getParameter("partido");
+    	try {
+			TurnoDTO turno = BusinessDelegate.getInstancia().buscarNovedades(Integer.getInteger(idPartido));
+			if(turno != null){
+				Gson g = new Gson();
+				Map<String,String> turnoMapa = new HashMap<String, String>();
+				turnoMapa.put("carta", turno.getCartaDTO().getNumero()+""+turno.getCartaDTO().getPalo());
+				turnoMapa.put("apodo", turno.getJugadorDTO().getApodo());
+				String j = g.toJson(turnoMapa);
+
+			    response.setContentType("application/json");
+			    response.setCharacterEncoding("UTF-8");
+			    try {
+					response.getWriter().write(j);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+	}
+
+	private void guardarJugada(HttpServletRequest request, HttpServletResponse response) {
+		String idPartido = request.getParameter("partido");
+    	String apodo = request.getParameter("apodo");
+    	String carta = request.getParameter("idCarta");
+    	JugadorDTO j = new JugadorDTO();
+    	j.setApodo(apodo);
+    	CartaDTO c = new CartaDTO();
+    	c.setIdCarta(Integer.valueOf(carta));
+    	Integer idBaza = 1;
+    	Integer numTurno = 1;
+    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno, j, Envite.Nada, c); //aca va el id de baza
+    	try {
+			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), Arrays.asList(turno));
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -125,6 +174,7 @@ public class ActionsServlet extends HttpServlet{
     private void armarDetallePartido(HttpServletRequest request, PartidoDTO partido, String usuario) {
 		Gson g = new Gson();
 		request.setAttribute("idPartido", partido.getIdPartido());
+		//partido.getChicoDTO().get(0).getManos().get(0).getBazas().get(0).getNumero();//MANDAR ID de baza a la pagina
 		List<ParejaDTO> parejas = partido.getParejaDTOs();
 		Map<String,String> datos = new HashMap<String,String>();
 		List<List<CartaDTO>> cartasOrden = new ArrayList<List<CartaDTO>>();
@@ -159,14 +209,18 @@ public class ActionsServlet extends HttpServlet{
 					request.setAttribute("usuario", usuario);
 					//TODO Hardcodeado porque falta guardar las cartas cuando se reparten
 					if(cartasUsr == null) {
+						datos.put("IdCarta"+ n, ""+5);
 						datos.put("carta"+n++, 1+"Basto");
+						datos.put("IdCarta"+ n, ""+9);
 						datos.put("carta"+n++, 1+"Espada");
+						datos.put("IdCarta"+ n, ""+23);
 						datos.put("carta"+n++, 1+"Oro");
 					}else{
-					for (CartaDTO c : cartasUsr) {
-						//TODO ver si es necesario mandar el id de la carta para cuando se hagan movimientos (agregar al DTO el id)
-						datos.put("carta"+n++, c.getNumero()+""+c.getPalo());
-					}
+						for (CartaDTO c : cartasUsr) {
+							//TODO ver si es necesario mandar el id de la carta para cuando se hagan movimientos (agregar al DTO el id)
+							datos.put("IdCarta"+ n, ""+c.getIdCarta());
+							datos.put("carta"+ n++, c.getNumero()+""+c.getPalo());
+						}
 					}
 					break;
 				}

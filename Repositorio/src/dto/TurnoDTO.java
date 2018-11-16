@@ -11,6 +11,8 @@ public class TurnoDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1422007714923225296L;
 	private Integer idTurno;
+	private Integer numTurno;
+	private Integer idBaza;
 	private JugadorDTO jugador;
 	private Envite envite;
 	private CartaDTO carta;
@@ -18,6 +20,15 @@ public class TurnoDTO implements Serializable {
 	public TurnoDTO(Integer idTurno, JugadorDTO jugador, Envite envite, CartaDTO carta) {
 		super();
 		this.idTurno = idTurno;
+		this.jugador = jugador;
+		this.envite = envite;
+		this.carta = carta;
+	}
+	
+	public TurnoDTO(Integer idBaza, Integer numTurno, JugadorDTO jugador, Envite envite, CartaDTO carta) {
+		super();
+		this.setIdBaza(idBaza);
+		this.setNumTurno(numTurno);
 		this.jugador = jugador;
 		this.envite = envite;
 		this.carta = carta;
@@ -48,5 +59,21 @@ public class TurnoDTO implements Serializable {
 
 	public void setIdTurno(Integer idTurno) {
 		this.idTurno = idTurno;
+	}
+
+	public Integer getNumTurno() {
+		return numTurno;
+	}
+
+	public void setNumTurno(Integer numTurno) {
+		this.numTurno = numTurno;
+	}
+
+	public Integer getIdBaza() {
+		return idBaza;
+	}
+
+	public void setIdBaza(Integer idBaza) {
+		this.idBaza = idBaza;
 	}
 }

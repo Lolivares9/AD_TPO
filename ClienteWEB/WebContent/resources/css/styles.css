@@ -81,6 +81,18 @@ img {
     transition:all 1s;
 }
 
+.carta-V{
+    width: 80px;
+    height: 130px;
+    display: block;
+    -webkit-transition: -webkit-transform 0.5s linear;
+    -moz-transition: -moz-transform 0.5s linear;
+    -ms-transition: -ms-transform 0.5s linear;
+    -o-transition: -o-transform 0.5s linear;
+    transition:all 1s;
+    cursor: default;
+}
+
 .carta-H{
     width: 130px;
     height: 80px;
@@ -138,10 +150,6 @@ ul {
     width: 100%;
     min-height: 180px;
 }
-
-
-
-<!-- NuevaForma -->
 
 .flex-container {
   display: flex;
@@ -202,4 +210,17 @@ ul {
     -ms-transition: -ms-transform 0.5s linear;
     -o-transition: -o-transform 0.5s linear;
     transition: transform 0.5s linear;
+    cursor: default;
+}
+
+.carta-V{
+    width: 80px;
+    height: 130px;
+    display: block;
+    -webkit-transition: -webkit-transform 0.5s linear;
+    -moz-transition: -moz-transform 0.5s linear;
+    -ms-transition: -ms-transform 0.5s linear;
+    -o-transition: -o-transform 0.5s linear;
+    transition:all 1s;
+    cursor: default;
 }

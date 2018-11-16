@@ -16,19 +16,23 @@ public class CartaDTO implements Serializable {
 	private PaloCarta palo;
 	private int valorJuego;
 	
-	public CartaDTO(int numero2, PaloCarta palo, int valorJuego) {
+	public CartaDTO() {
 		super();
-		this.numero = numero2;
+	}
+	
+	public CartaDTO(int numero, PaloCarta palo, int valorJuego) {
+		super();
+		this.numero = numero;
 		this.palo = palo;
 		this.valorJuego = valorJuego;
 	}
 	
-	public CartaDTO(Integer idCarta2, int numero2, PaloCarta palo2, int valorJuego2) {
+	public CartaDTO(Integer idCarta, int numero, PaloCarta palo, int valorJuego) {
 		super();
-		this.IdCarta = idCarta2;
-		this.numero = numero2;
-		this.palo = palo2;
-		this.valorJuego = valorJuego2;
+		this.IdCarta = idCarta;
+		this.numero = numero;
+		this.palo = palo;
+		this.valorJuego = valorJuego;
 	}
 
 	public int getNumero() {

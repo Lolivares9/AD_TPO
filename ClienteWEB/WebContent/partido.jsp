@@ -17,23 +17,52 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
+	var user = "${usuario}";
+	var idPartido = "${idPartido}";
+	var detalle = JSON.parse('${detalle}');
+	var detalleMap = new Map();
+	for (let key of Object.keys(detalle)) {
+	    var value = detalle[key];
+	    detalleMap.set(key, value);
+	}
+	
+	var c1ID = detalleMap.get('IdCarta1');
+	var c2ID = detalleMap.get('IdCarta2');
+	var c3ID = detalleMap.get('IdCarta3');
+	
+	var c1 = detalleMap.get('carta1');
+	var c2 = detalleMap.get('carta2');
+	var c3 = detalleMap.get('carta3');
+	
+	$("#carta1").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c1+".png')")
+	$("#carta2").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c2+".png')")
+	$("#carta3").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c3+".png')")
 
-		
+	$("#carta1").attr("id",detalleMap.get('carta1'));
+	$("#carta2").attr("id",detalleMap.get('carta2'));
+	$("#carta3").attr("id",detalleMap.get('carta3'));
+	
 	var posCarta = 50;
-	$("#carta1").click(function() {
+	$("#"+c1).click(function() {
 		moverCarta(this);
-		$('#carta1').unbind("click");
-		pasarTurno($('#carta1').attr("id"));
+		$("#"+c1).attr("class","carta-V");
+		//$("#"+c1).unbind("click");
+		guardarJugada(c1ID);
+		buscarNovedades(idPartido);
 	})
 	
-	$("#carta2").click(function() {
+	$("#"+c2).click(function() {
 		moverCarta(this);
-		$('#carta2').unbind("click");
+		$("#"+c2).unbind("click");
+		guardarJugada(c2ID);
+		buscarNovedades(idPartido);
 	})
 	
-	$("#carta3").click(function() {
+	$("#"+c3).click(function() {
 		moverCarta(this);
-		$('#carta3').unbind("click");
+		$("#"+c3).unbind("click");
+		guardarJugada(c3ID);
+		buscarNovedades(idPartido);
 	})
 	
 	function moverCarta(id){
@@ -46,72 +75,48 @@ $(document).ready(function(){
 		posCarta = posCarta - 50;
 	}
 	
+	function guardarJugada(idC){
+		//Verificar que no sea el ultimo turno
+		var infoJugada = {
+			partido : idPartido,
+			apodo : user,
+			idCarta : idC
+		}
+		
+		$.ajax({
+			type: "POST",
+			url: "ActionsServlet?action=GuardarJugada",
+			dataType: "json",
+			data : infoJugada
+		})
+	}
+	
+	//para buscar las novedades tengo que mandar el id de baza que se creo al iniciar el partido	
+	function buscarNovedades(idPartido){
+		var infoJugada = {
+				partido : idPartido
+			}
+		$.ajax({
+			type: "POST",
+			url: "ActionsServlet?action=GetNovedad",
+			dataType: "json",
+			data : infoJugada, //Mandar numero de turno/jugada? para saber que se busque el siguiente en la base directamente
+			success: function(data){
+				 	console.log(data);
+			    	var detalleMap = new Map();
+			    	for (let key of Object.keys(data)) {
+			    	    var value = data[key];
+			    	    detalleMap.set(key, value);
+			    	}
+			    	 console.log(detalleMap);
+			    	 $("#carta22").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".png')")
+			        //Obtener del JSON si es mi turno o no, si no lo es, buscar novedades otra vez
+			}
+		})
+	}
+	
 })
 </script>
-<style>
-
-.flex-container {
-  display: flex;
-  height: 100%;
-  flex-wrap: wrap;
-  align-content: flex-end;
-  background-color: "#000000";
-}
-
-.flex-container > div {
-  width: 100px;
-  margin: 10px;
-  text-align: center;
-  line-height: 75px;
-  font-size: 30px;
-}
-
-.flex-containerIni {
-  display: flex;
-  height: 100%;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: flex-start;
-  background-color: "#000000";
-}
-
-.flex-containerIni > div {
-  width: 130px;
-  margin: 10px;
-  text-align: center;
-  line-height: 75px;
-  font-size: 30px;
-}
-
-.flex-containerSepara {
-  display: flex;
-  height: 100px;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: flex-start;
-  background-color: "#000000";
-}
-
-.flex-containerSepara  > div {
-  width: 130px;
-  margin: 10px;
-  text-align: center;
-  line-height: 75px;
-  font-size: 30px;
-}
-
-.carta-H{
-    width: 130px;
-    height: 80px;
-    display: block;
-    -webkit-transition: -webkit-transform 0.5s linear;
-    -moz-transition: -moz-transform 0.5s linear;
-    -ms-transition: -ms-transform 0.5s linear;
-    -o-transition: -o-transform 0.5s linear;
-    transition: transform 0.5s linear;
-}
-
-</style>
 <title>Partido</title>
 </head>
 <body  bgcolor="#000000">
@@ -119,13 +124,13 @@ $(document).ready(function(){
 <div>		
 <div class="flex-containerIni">
 
-  <a href="#" id= "carta31" class="carta"
+  <a href="#" id= "carta31" class="carta-V"
 			style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.png');"
 			></a>
-  <a href="#" id= "carta32" class="carta"
+  <a href="#" id= "carta32" class="carta-V"
 			style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.png');"
 			></a>
-  <a href="#" id= "carta33" class="carta"
+  <a href="#" id= "carta33" class="carta-V"
 			style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.png');"
 			></a>  
 </div>
@@ -153,13 +158,13 @@ $(document).ready(function(){
   <div>
     <div class="flex-containerIni">
         <div></div>
-          <a href="#" id= "carta31" class="carta-H"
+          <a href="#" id= "carta21" class="carta-H"
 			style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.png');"
 			></a>
-  <a href="#" id= "carta32" class="carta-H"
+  <a href="#" id= "carta22" class="carta-H"
 			style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.png');"
 			></a>
-  <a href="#" id= "carta33" class="carta-H"
+  <a href="#" id= "carta23" class="carta-H"
 			style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.png');"
 			></a> 
      </div>

@@ -7,11 +7,9 @@ import dao.ManoDAO;
 import dao.PartidoDAO;
 import dto.BazaDTO;
 import dto.ManoDTO;
-import dto.PartidoDTO;
 import enums.Envite;
 import excepciones.GrupoException;
 import excepciones.PartidoException;
-import util.DTOMapper;
 
 /**
  * Soy la jugada de 2 o 3 bazas 

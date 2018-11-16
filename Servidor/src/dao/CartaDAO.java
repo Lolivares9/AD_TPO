@@ -9,9 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import dto.PartidoDTO;
 import entities.CartaEntity;
-import entities.JugadorEntity;
 import excepciones.CartaException;
 import hbt.HibernateUtil;
 import negocio.Carta;

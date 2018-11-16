@@ -33,7 +33,6 @@ import negocio.Grupo;
 import negocio.Jugador;
 import negocio.Pareja;
 import negocio.Partido;
-import util.DTOMapper;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota {
 
@@ -157,7 +156,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return Controlador.getInstancia().obtenerDetalleDeChico(chico);
 	}
 
-	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws PartidoException, GrupoException {
+	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws PartidoException, GrupoException, JugadorException {
 		Controlador.getInstancia().actualizarPartido(idPartido,turnos);
 	}
 
@@ -176,4 +175,9 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return jugDTO;
 	}
 
+	@Override
+	public TurnoDTO buscarNovedades(Integer idPartido) throws TurnoException, GrupoException {
+		return Controlador.getInstancia().buscarNovedades(idPartido);
+	}	
+	
 }

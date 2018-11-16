@@ -53,7 +53,7 @@ public class BusinessDelegate {
 	}
 	
 
-	public JugadorDTO altaJugador(JugadorDTO jugador) throws ComunicationException, GrupoException {
+	public JugadorDTO altaJugador(JugadorDTO jugador) throws ComunicationException{
 		JugadorDTO jugLog = null;
 		try {
 			jugLog=ir.altaJugador(jugador);
@@ -61,15 +61,18 @@ public class BusinessDelegate {
 			e.printStackTrace();
 		} catch (JugadorException e) {
 			e.printStackTrace();
+		} catch (GrupoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return jugLog;
 	}
 
-	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws ComunicationException, GrupoException {
+	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws ComunicationException{
 		JugadorDTO jugLog = null;
 		try {
 			jugLog = ir.iniciarSesion(jugador);
-		} catch (RemoteException e) {
+		} catch (RemoteException | GrupoException e) {
 			e.printStackTrace();
 		}
 		return jugLog;
@@ -108,7 +111,7 @@ public class BusinessDelegate {
 			e.printStackTrace();
 		}
 	}
-	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws ComunicationException, GrupoException{
+	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws ComunicationException{
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaLibreIndividual(categoria, apodo);
@@ -123,25 +126,28 @@ public class BusinessDelegate {
 		} catch (JugadorException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (GrupoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return partido;
 	}
 	
-	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws ComunicationException, GrupoException{
+	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws ComunicationException{
 		PartidoDTO partido = null;
 		try {
 			partido = ir.buscarPartidaLobby(apodoJugador, modalidad);
-		} catch (RemoteException | PartidoException | ParejaException | JugadorException e) {
+		} catch (RemoteException | PartidoException | ParejaException | JugadorException | GrupoException e) {
 			e.printStackTrace();
 		}
 		return partido;
 	}
 
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException, CartaException, GrupoException{
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws ComunicationException{
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaLibre(pareja);
-		} catch (RemoteException | ParejaException e) {
+		} catch (RemoteException | ParejaException | GrupoException | CartaException e) {
 			e.printStackTrace();
 		}
 		return partido;
@@ -209,31 +215,41 @@ public class BusinessDelegate {
 		return Collections.<ChicoDTO>emptyList();
 	}
 	
-	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws GrupoException{
+	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws ComunicationException{
 		try {
 			return ir.obtenerDetalleDeChico(chico);
-		} catch (ManoException | BazaException | TurnoException | RemoteException e) {
+		} catch (ManoException | BazaException | TurnoException | RemoteException | GrupoException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws GrupoException {
+	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws ComunicationException {
 		try {
 			ir.nuevaJugada(idPartido,turnos);
-		} catch (PartidoException | RemoteException e) {
+		} catch (PartidoException | RemoteException | GrupoException | JugadorException e) {
 			e.printStackTrace();
 		}
 		
 	}
 
-	public JugadorDTO buscarJugadorDTO(String nombre, String apodo, String mail, String contraseña) throws JugadorException, GrupoException, RemoteException {
+	public JugadorDTO buscarJugadorDTO(String nombre, String apodo, String mail, String contraseña) throws ComunicationException {
 		try {
 			return ir.buscarJugadorDTO(apodo);
-		}catch (JugadorException e) {
+		}catch (JugadorException | GrupoException | RemoteException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public TurnoDTO buscarNovedades(Integer idPartido) throws ComunicationException{
+		try {
+			return ir.buscarNovedades(idPartido);
+		} catch (RemoteException | TurnoException | GrupoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	return null;
 	}
 
 }

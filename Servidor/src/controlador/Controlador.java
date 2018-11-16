@@ -303,7 +303,7 @@ public class Controlador {
 		mazo.repartiCartas(pd);
 	}
 
-	public void actualizarPartido(int idPartido,List<TurnoDTO> turnos) throws PartidoException, GrupoException {
+	public void actualizarPartido(int idPartido,List<TurnoDTO> turnos) throws PartidoException, GrupoException, JugadorException {
 		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
 		int indiceMano = 0;
 		int indiceBaza = 0;
@@ -314,12 +314,27 @@ public class Controlador {
 			indiceBaza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size()-1; 
 		}
 		List<Turno> turnosNegocio = new ArrayList<Turno>();
-		for(int i = 0;i<turnos.size();i++){
-			turnosNegocio.add(DTOMapper.getInstancia().turnoDTOtoNegocio(turnos.get(i)));
+		for (TurnoDTO turnoDTO : turnos) {
+			Turno turno = DTOMapper.getInstancia().FrontEndToNegocio(turnoDTO);
+			turno.setJugador(JugadorDAO.getInstancia().buscarPorApodo(turnoDTO.getJugadorDTO().getApodo()));
+			turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
+			turnosNegocio.add(turno);
+			
 		}
 		Baza baza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().get(indiceBaza);
 		baza.setTurnos(turnosNegocio);
 		p.actualizar();
 		p.nuevaJugada();
+	}
+	
+	public TurnoDTO buscarNovedades(Integer idBaza) throws TurnoException, GrupoException {
+		int siguiente = 2; //Deberia recibir el id del turno a buscar
+		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(1);//meter idBaza
+		for (Turno turno : turnos) {
+			if(turno.getIdTurno() == siguiente){
+				return turno.toDTO();
+			}
+		}
+		return null;
 	}
 }

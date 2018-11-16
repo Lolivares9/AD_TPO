@@ -27,12 +27,12 @@ public class Cliente {
 	public static void main(String[] args) throws ComunicationException, RemoteException, JugadorException, GrupoException {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		//altaJugador();  // OK 
-		//iniciarSesion(); // OK 
+		altaJugador();  // OK 
+		iniciarSesion(); // OK 
 		//crearGrupo();
-		llenarGrupo(); // OK
+		//llenarGrupo(); // OK
 		//buscarTodosPartidosJugados();  //OK
-		//buscarPartidaLibreIndividual(); // OK
+		buscarPartidaLibreIndividual(); // OK
 		//JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
 		//jugador.setCategoria(Categoria.Novato);
 		//PartidoDTO part;
