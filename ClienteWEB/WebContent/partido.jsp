@@ -26,53 +26,82 @@ $(document).ready(function(){
 	    detalleMap.set(key, value);
 	}
 	
+	//Contadores
+	var turno = 1;
+	var baza= 1; //4 jugadores tiran 1 carta
+	var mano = 1; //jugada de 2 o 3 bazas
+	var zindex= 1;
+	//
+	
 	var c1ID = detalleMap.get('IdCarta1');
 	var c2ID = detalleMap.get('IdCarta2');
 	var c3ID = detalleMap.get('IdCarta3');
+	
+	var idArray = []; //Array para saber que cartas no se jugaron
+	idArray.push(c1ID);
+	idArray.push(c2ID);
+	idArray.push(c3ID);
+	
+	var cartasPos = [];
+	cartasPos.push(c1ID);
+	cartasPos.push(c2ID);
+	cartasPos.push(c3ID);
 	
 	var c1 = detalleMap.get('carta1');
 	var c2 = detalleMap.get('carta2');
 	var c3 = detalleMap.get('carta3');
 	
-	$("#carta1").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c1+".jpg')")
-	$("#carta2").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c2+".jpg')")
-	$("#carta3").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c3+".jpg')")
+	$("#carta1").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c1+".jpg')");
+	$("#carta2").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c2+".jpg')");
+	$("#carta3").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c3+".jpg')");
 
-	$("#carta1").attr("id",detalleMap.get('carta1'));
-	$("#carta2").attr("id",detalleMap.get('carta2'));
-	$("#carta3").attr("id",detalleMap.get('carta3'));
+	$("#carta1").attr("id",c1ID);
+	$("#carta2").attr("id",c2ID);
+	$("#carta3").attr("id",c3ID);
+	
+	$("#"+c1ID).on("click", clicked);
+	$("#"+c2ID).on("click", clicked);
+	$("#"+c3ID).on("click", clicked);
+		
+	$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
+	$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
+	$("#jug2").text(detalleMap.get('apodoJugador2'));
+	$("#jug3").text(detalleMap.get('apodoJugador3'));
+	$("#jug4").text(detalleMap.get('apodoJugador4'));
+	
 	
 	var posCarta = 50;
-	$("#"+c1).click(function() {
-		moverCarta(this);
-		$("#"+c1).attr("class","carta-V");
-		//$("#"+c1).unbind("click");
-		guardarJugada(c1ID);
-		buscarNovedades(idPartido);
-	})
 	
-	$("#"+c2).click(function() {
-		moverCarta(this);
-		$("#"+c2).unbind("click");
-		guardarJugada(c2ID);
-		buscarNovedades(idPartido);
-	})
+	function clicked() {
+		deshabilitarCartas();
+		var index = $.inArray($(this).attr("id"), cartasPos);
+		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
+		moverCarta(this, index);
+		guardarJugada($(this).attr("id"));
+	}
 	
-	$("#"+c3).click(function() {
-		moverCarta(this);
-		$("#"+c3).unbind("click");
-		guardarJugada(c3ID);
-		buscarNovedades(idPartido);
-	})
+	function deshabilitarCartas(){
+		jQuery.each(idArray, function(index, value){
+			$("#"+value).off("click", clicked);
+		});
+	}
 	
-	function moverCarta(id){
-		$(id).css("-webkit-transform", "translate(" + posCarta + "px, -170px )")
-		.css("-ms-transform", "translate(" + posCarta + "px, -170px )")
-		.css("-o-transform", "translate(" + posCarta + "px, -170px )")
-		.css("-webkit-transform", "translate(" + posCarta + "px, -170px )")
-		.css("-moz-transform", "translate(" + posCarta + "px, -170px )")
-		.css("transform", "translate(" + posCarta + "px, -170px )");
-		posCarta = posCarta - 50;
+	function habilitarCartas(){
+		jQuery.each(idArray, function(index, value){
+			$("#"+value).on("click", clicked);
+		});
+	}
+
+	function moverCarta(id, index){
+		console.log(index);
+		if(index === 0){
+			$(id).css("transform", "translate(" + (posCarta+50) + "px, -140px )");
+		}else if(index === 1){
+			$(id).css("transform", "translate(" + (posCarta-50) + "px, -145px )");
+		}else{
+			$(id).css("transform", "translate(" + (posCarta-125) + "px, -150px )");
+		}
+		$(id).css('zIndex', zindex++);
 	}
 	
 	function guardarJugada(idC){
@@ -82,13 +111,18 @@ $(document).ready(function(){
 			apodo : user,
 			idCarta : idC
 		}
-		
 		$.ajax({
 			type: "POST",
 			url: "ActionsServlet?action=GuardarJugada",
 			dataType: "json",
 			data : infoJugada
-		})
+		}).always(function(){
+			//if(turno es el ultimo)
+			//hacer metodo para cambiar de baza, mostrar puntajes, etc
+			console.log("busco siguiente turno");
+			habilitarCartas();
+			//buscarNovedades(idPartido);
+		});
 	}
 	
 	//para buscar las novedades tengo que mandar el id de baza que se creo al iniciar el partido	
@@ -102,7 +136,6 @@ $(document).ready(function(){
 			dataType: "json",
 			data : infoJugada, //Mandar numero de turno/jugada? para saber que se busque el siguiente en la base directamente
 			success: function(data){
-				 	console.log(data);
 			    	var detalleMap = new Map();
 			    	for (let key of Object.keys(data)) {
 			    	    var value = data[key];
@@ -110,8 +143,17 @@ $(document).ready(function(){
 			    	}
 			    	 console.log(detalleMap);
 			    	 $("#carta22").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".jpg')")
+			    	 var miTurno = detalleMap.get('esMiTurno');
+			    	 if(miTurno === true){
+			    		 console.log("Me toca jugar");
+			    	 }else{
+			    		 console.log("NO Me toca jugar");
+			    	 }
 			        //Obtener del JSON si es mi turno o no, si no lo es, buscar novedades otra vez
-			}
+			},    
+			error: function() { 
+				buscarNovedades(idPartido);
+		    }  
 		})
 	}
 	
@@ -119,18 +161,20 @@ $(document).ready(function(){
 </script>
 <title>Partido</title>
 </head>
-<body>
+<body style="background-color: rgb(21,72,0);">
 
 <div class="game-wrapper">
 			<div class="game-panel">
 				<div class="game-header">
-					<h1>Truco argento</h1>
+					<h1>Truco</h1>
+					<p id="par1">Pareja 1:</p>
+					<p id="par2">Pareja 2:</p>
 				</div>
 				<table id="game-score">
 					<thead>
 						<tr>
-							<th contenteditable="true" class="player-one-name human-name">Pareja1</th>
-							<th class="player-two-name">Pareja2</th>
+							<th class="player-one-name human-name" style="color:white;">Pareja1</th>
+							<th class="player-two-name" style="color:white;">Pareja2</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -161,7 +205,7 @@ $(document).ready(function(){
 			<div class="game-main" style="position: relative;">
 				<div>		
 					<div class="flex-containerIni">
-
+						<p id="jug3">Jugador3</p>
 					  <a href="#" id= "carta31" class="carta-V"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.jpg');"
 								></a>
@@ -171,6 +215,7 @@ $(document).ready(function(){
 					  <a href="#" id= "carta33" class="carta-V"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.jpg');"
 								></a>  
+								<div class="div1"></div>
 					</div>
 					 <div class="flex-containerSepara"><div></div></div>
 
@@ -178,7 +223,7 @@ $(document).ready(function(){
 					<div class="flex-containerIni">
 
 						  <div class="flex-containerIni">
-						   <div></div>
+						   <p id="jug4">Jugador4</p>
 							  <a href="#" id= "carta31" class="carta-H"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.jpg');"
 								></a>
@@ -195,7 +240,7 @@ $(document).ready(function(){
 					  <div></div>
 					  <div>
 						<div class="flex-containerIni">
-							<div></div>
+							<p id="jug2">Jugador2</p>
 							  <a href="#" id= "carta21" class="carta-H"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.jpg');"
 								></a>
@@ -211,7 +256,8 @@ $(document).ready(function(){
 					</div>
 					</div>
 
-					 <div class="flex-containerSepara"><div></div></div>
+					 <div class="flex-containerSepara"><div></div><div></div></div>
+					 <div class="flex-containerSepara"><div></div><div></div></div>
 					<div class="flex-containerIni">
 					 <a href="#" id= "carta1" class="carta"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.jpg');"

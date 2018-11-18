@@ -131,6 +131,15 @@ ul {
   align-content: flex-start;
 }
 
+.flex-containerIni > p{
+    text-align: center;
+    height: 50px;
+    color: #ececf1;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-size: x-large;
+}
+
 .flex-containerIni > div {
   width: 130px;
   margin: 10px;
@@ -139,9 +148,17 @@ ul {
   font-size: 30px;
 }
 
+.flex-containerIni .div1 {
+  width: 40px;
+  margin: 10px;
+  text-align: center;
+  line-height: 75px;
+  font-size: 30px;
+}
+
 .flex-containerSepara {
     display: flex;
-    height: 100px;
+    height: 70px;
     align-items: center;
     align-content: center;
     place-content: center;
@@ -200,9 +217,11 @@ ul {
     height: 130px;
     display: block;
     transition:all 1s;
+    margin-top: 0px;
+    margin-left: 5px;
     border-style: solid;
-    border-width: 5px;
-    border-color: rgb(21,72,0);
+    border-width: 0.02px;
+    border-color: #bababa;
 }
 
 
@@ -228,10 +247,9 @@ ul {
 
 
 
-html, body, .game-wrapper, .game-main {
+html, body, .game-wrapper{
 	height:100%;
 	overflow: hidden;
-	background-color: rgb(21,72,0);
 	margin : auto;
 }
 h1, h3 {
@@ -302,6 +320,9 @@ h1 {
     overflow: hidden;
 }
 .game-main {
+	height:100%;
+	overflow: hidden;
+	margin : auto;
 	display: inline-block;
 	width:62%;
     min-width:450px;
@@ -318,7 +339,16 @@ ul li {
 .game-header h1{
 	text-align:center;
 	margin:.3em 0;
+	color: #ffffff;
 }
+
+.game-header p{
+	text-align:center;
+	height: 8px;
+	color: #ffffff;
+	margin: 10px;
+}
+
 #game-score {
 	height:10%;
 	border:1px solid white;

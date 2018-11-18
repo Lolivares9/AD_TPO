@@ -72,9 +72,10 @@ public class ActionsServlet extends HttpServlet{
 			TurnoDTO turno = BusinessDelegate.getInstancia().buscarNovedades(Integer.getInteger(idPartido));
 			if(turno != null){
 				Gson g = new Gson();
-				Map<String,String> turnoMapa = new HashMap<String, String>();
+				Map<String,Object> turnoMapa = new HashMap<String, Object>();
 				turnoMapa.put("carta", turno.getCartaDTO().getNumero()+""+turno.getCartaDTO().getPalo());
 				turnoMapa.put("apodo", turno.getJugadorDTO().getApodo());
+				turnoMapa.put("esMiTurno", true);
 				String j = g.toJson(turnoMapa);
 
 			    response.setContentType("application/json");
@@ -109,6 +110,7 @@ public class ActionsServlet extends HttpServlet{
     	TurnoDTO turno = new TurnoDTO(idBaza, numTurno, j, Envite.Nada, c); //aca va el id de baza
     	try {
 			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), Arrays.asList(turno));
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
