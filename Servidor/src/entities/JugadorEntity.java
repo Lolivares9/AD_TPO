@@ -3,10 +3,12 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,14 +63,9 @@ public class JugadorEntity {
 	@Column(name = "NUM_TURNO_PARTIDO")
 	private int numeroTurnoPartido;
 
-	@ManyToMany(mappedBy="jugadores")//Acá va el nombre de la lista de jugadores que tiene GrupoEntity
+	@ManyToMany(cascade = {CascadeType.ALL},mappedBy="jugadores")
 	private List<GrupoEntity> grupos = new ArrayList<GrupoEntity>();
 	
-	//TODO ¿?¿?¿? cambiar ultimos dos a:
-	//@Column(name="ESTADO")
-	//enum con estados posibles (jugando, conectado...)
-	
-
 	public JugadorEntity() {
 		super();
 	}

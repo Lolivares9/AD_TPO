@@ -27,12 +27,12 @@ public class Cliente {
 	public static void main(String[] args) throws ComunicationException, RemoteException, JugadorException, GrupoException {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		altaJugador();  // OK 
-		iniciarSesion(); // OK 
+		//altaJugador();  // OK 
+		//iniciarSesion(); // OK 
 		//crearGrupo();
-		//llenarGrupo(); // OK
+		ingresarNuevosMiembros(); // OK
 		//buscarTodosPartidosJugados();  //OK
-		buscarPartidaLibreIndividual(); // OK
+		//buscarPartidaLibreIndividual(); // OK
 		//JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
 		//jugador.setCategoria(Categoria.Novato);
 		//PartidoDTO part;
@@ -319,16 +319,16 @@ public class Cliente {
 		}
 	}
 
-	private static void llenarGrupo() throws RemoteException, JugadorException, GrupoException, ComunicationException{
+	private static void ingresarNuevosMiembros() throws RemoteException, JugadorException, GrupoException, ComunicationException{
 		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
-		JugadorDTO jugador = BusinessDelegate.getInstancia().buscarJugadorDTO("Jose","Kent","a@a.a","123456");
+		JugadorDTO jugador = BusinessDelegate.getInstancia().buscarJugadorDTO("Lautaro","Feto","a@a.a","123456");
 		jugadores.add(jugador);
 		//JugadorDTO jugador2 = 
 		
 		//jugadores.add(jugador);
 		//jugadores.add(jugador2);
 		try {
-			BusinessDelegate.getInstancia().llenarGrupo("Distribuidas", jugadores);
+			BusinessDelegate.getInstancia().ingresarNuevosMiembros("Distribuidas", jugadores);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}

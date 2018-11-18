@@ -79,4 +79,8 @@ public class Grupo {
 		
 		return grupoDTO;
 	}
+	
+	public void añadirJugador(Jugador j){
+		this.jugadores.add(j);
+	}
 }

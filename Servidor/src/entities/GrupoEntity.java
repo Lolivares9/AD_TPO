@@ -32,7 +32,7 @@ public class GrupoEntity {
 	@JoinColumn(name="ID_JUGADOR_ADM")
 	private JugadorEntity jugadorAdmin;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinTable(name = "GRUPOS_JUGADORES", joinColumns = @JoinColumn(name="jugadores_ID_JUGADOR"),inverseJoinColumns=@JoinColumn(name="grupos_ID_GRUPO"))
 	
 	private List<JugadorEntity> jugadores = new ArrayList<JugadorEntity>();
@@ -80,6 +80,10 @@ public class GrupoEntity {
 	
 	public void eliminarJugador(JugadorEntity jugador) {
 		this.jugadores.remove(jugador);
+	}
+	
+	public void añadirJugador(JugadorEntity jug){
+		this.jugadores.add(jug);
 	}
 
 	@Override
