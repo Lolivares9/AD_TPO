@@ -70,53 +70,10 @@ img {
     height: 100px;
 }
 
-.carta{
-    width: 80px;
-    height: 130px;
-    display: block;
-    -webkit-transition: -webkit-transform 0.5s linear;
-    -moz-transition: -moz-transform 0.5s linear;
-    -ms-transition: -ms-transform 0.5s linear;
-    -o-transition: -o-transform 0.5s linear;
-    transition:all 1s;
-}
 
-.carta-V{
-    width: 80px;
-    height: 130px;
-    display: block;
-    -webkit-transition: -webkit-transform 0.5s linear;
-    -moz-transition: -moz-transform 0.5s linear;
-    -ms-transition: -ms-transform 0.5s linear;
-    -o-transition: -o-transform 0.5s linear;
-    transition:all 1s;
-    cursor: default;
-}
 
-.carta-H{
-    width: 130px;
-    height: 80px;
-    display: block;
-    -webkit-transition: -webkit-transform 1s linear;
-    -moz-transition: -moz-transform 1s linear;
-    -ms-transition: -ms-transform 1s linear;
-    -o-transition: -o-transform 1s linear;
-    transition: transform 1s linear;
-}
 
-.cartasJugador{
-	display: table;
-    padding: 0;
-    text-align: left;
-    margin: 0 auto;
-}
 
-.cartasJugador-H{
-	display: grid;
-    padding: 0;
-    text-align: left;
-    margin: 0 auto;
-}
 
 ul li {
     display:inline-block!important;
@@ -156,7 +113,6 @@ ul {
   height: 100%;
   flex-wrap: wrap;
   align-content: flex-end;
-  background-color: "#000000";
 }
 
 .flex-container > div {
@@ -173,7 +129,6 @@ ul {
   flex-wrap: wrap;
   justify-content: center;
   align-content: flex-start;
-  background-color: "#000000";
 }
 
 .flex-containerIni > div {
@@ -185,19 +140,17 @@ ul {
 }
 
 .flex-containerSepara {
-  display: flex;
-  height: 100px;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: flex-start;
-  background-color: "#000000";
+    display: flex;
+    height: 100px;
+    align-items: center;
+    align-content: center;
+    place-content: center;
 }
 
 .flex-containerSepara  > div {
   width: 130px;
   margin: 10px;
   text-align: center;
-  line-height: 75px;
   font-size: 30px;
 }
 
@@ -205,22 +158,187 @@ ul {
     width: 130px;
     height: 80px;
     display: block;
-    -webkit-transition: -webkit-transform 0.5s linear;
-    -moz-transition: -moz-transform 0.5s linear;
-    -ms-transition: -ms-transform 0.5s linear;
-    -o-transition: -o-transform 0.5s linear;
     transition: transform 0.5s linear;
     cursor: default;
+    border-style: solid;
+    border-color: rgb(21,72,0);
+    border-right: 0px;
+    border-left: 0px;
+}
+
+.carta-H-I{
+    width: 80px;
+    height: 130px;
+    display: block;
+    transition: transform 0.5s linear;
+    cursor: default;
+   	transform: rotate(90deg);
+}
+
+.carta-H-D{
+    width: 80px;
+    height: 130px;
+    display: block;
+    transition: transform 0.5s linear;
+    cursor: default;	
+    transform: rotate(-90deg);
 }
 
 .carta-V{
     width: 80px;
     height: 130px;
     display: block;
-    -webkit-transition: -webkit-transform 0.5s linear;
-    -moz-transition: -moz-transform 0.5s linear;
-    -ms-transition: -ms-transform 0.5s linear;
-    -o-transition: -o-transform 0.5s linear;
     transition:all 1s;
     cursor: default;
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(21,72,0);
+}
+
+.carta{
+    width: 80px;
+    height: 130px;
+    display: block;
+    transition:all 1s;
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(21,72,0);
+}
+
+
+
+
+
+.cartasJugador{
+	display: table;
+    padding: 0;
+    text-align: left;
+    margin: 0 auto;
+}
+
+.cartasJugador-H{
+	display: grid;
+    padding: 0;
+    text-align: left;
+    margin: 0 auto;
+}
+
+
+
+
+
+
+html, body, .game-wrapper, .game-main {
+	height:100%;
+	overflow: hidden;
+	background-color: rgb(21,72,0);
+	margin : auto;
+}
+h1, h3 {
+	font-family:Kavoon, Helvetica;
+}
+h1 {
+}
+.game {
+	background: #3C1E13 url('../images/bg.jpg');
+	color:white;
+	font-family:Helvetica;
+}
+.game-panel {
+	display:inline-block;
+	width:35%;
+	vertical-align:top;
+	height: 100%;
+	background: none repeat scroll 0 0 #111111;
+    border-right: 2px solid white;
+    background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #111), color-stop(100%, #222)); /*#142B0F*/
+	background: -webkit-linear-gradient(bottom, #111, #000);
+	background: -moz-linear-gradient(bottom, #111, #222);
+	background: -o-linear-gradient(bottom, #111, #222);
+	background: -ms-linear-gradient(bottom, #111, #222);
+	background: linear-gradient(bottom, #111, #222);
+}
+.game-panel .box {
+	width:80%;
+	margin:.5em auto 0;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+    border: 1px solid #999;
+}
+.game-action {
+    position: absolute;
+    bottom: 0;
+    width: 35%;
+    left:0;
+}
+.game-action .cantos-panel {
+    width: 80%;
+    margin:.5em auto 0;
+    border: 1px solid #999;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-bottom: 0;
+
+}
+.box-title {
+    padding: .2em .2em 0 .2em;
+    text-align: center;
+    background: #333;
+    border-bottom: 1px solid #999;
+}
+.box-title--hidden {
+    border-bottom: 0;
+}
+.box--collapsable .box-title {
+    cursor: pointer;
+}
+.box-content {
+    padding: 3%;
+}
+.box-content--hidden {
+    padding: 0 3%;
+    overflow: hidden;
+}
+.game-main {
+	display: inline-block;
+	width:62%;
+    min-width:450px;
+	vertical-align:top;
+}
+ul li {
+    display:inline-block!important;
+    margin-right:2em;
+}
+
+.game-header {
+	height:10%;
+}
+.game-header h1{
+	text-align:center;
+	margin:.3em 0;
+}
+#game-score {
+	height:10%;
+	border:1px solid white;
+	width:80%;
+	margin:auto;
+}
+#game-score td,
+#game-score th {
+	text-align:center;
+	border:1px solid white;
+	width:50%;
+}
+#log, .log-title {
+	overflow-y:auto;
+    width: 80%;
+    margin: .2em auto;
+}
+.log-title {
+    text-align: center;
+}
+#log {
+    height:50%;
 }
