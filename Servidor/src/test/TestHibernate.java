@@ -12,6 +12,7 @@ import dto.PartidoDTO;
 import enums.Categoria;
 import enums.Envite;
 import excepciones.CartaException;
+import excepciones.GrupoException;
 import excepciones.JugadorException;
 import excepciones.ParejaException;
 import excepciones.PartidoException;
@@ -29,14 +30,14 @@ public class TestHibernate {
 	DBCC CHECKIDENT ('APD.dbo.PAREJAS',RESEED, 0)
 	*/
 	
-	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException, ParseException {
-		Partido partido = null;
-		PartidoDTO pdto = null;
+	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException, ParseException, GrupoException {
+		//Partido partido = null;
+		//PartidoDTO pdto = null;
 		//guardarParejas();
 		//guardarPartido();
 		//iniciarPartidaLibre();
 		//pdto = Controlador.getInstancia().iniciarPartidaLibreIndividual(Categoria.Novato.toString(),"Chulo");
-		jugada1(pdto);
+		//jugada1(pdto);
 		//jugada2(pdto);
 		//jugada3(pdto);
 		//partido = PartidoDAO.getInstancia().buscarPartidoPorID(1);

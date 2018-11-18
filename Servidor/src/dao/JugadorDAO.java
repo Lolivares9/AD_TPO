@@ -75,14 +75,7 @@ public class JugadorDAO {
 		if(jugador.getNumJugador() != null && jugador.getNumJugador() != -1){
 			je.setNumeroJugadorPartido(jugador.getNumJugador());
 		}
-		List <GrupoEntity> gruposEntity = new ArrayList<GrupoEntity>();
-		if(jugador.getGrupos() != null && jugador.getGrupos().size() > 0){
-			for(Grupo g : jugador.getGrupos()){
-				GrupoEntity gEntity = GrupoDAO.getInstancia().toEntity(g);
-				gruposEntity.add(gEntity);
-			}
-			je.setGrupos(gruposEntity);
-		}
+		
 		return je;
 	}
 

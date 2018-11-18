@@ -96,26 +96,18 @@ public class Controlador {
 		}
 	}
 	
-	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws GrupoException{
+	public boolean ingresarNuevosMiembros(String nombreGrupo, List<JugadorDTO> jugadores) throws GrupoException, JugadorException{
+		List<Jugador> jugadoresNegocio = new ArrayList<Jugador>();
 		Grupo g = GrupoDAO.getInstancia().buscarGrupo(nombreGrupo);
 		if(g != null){
-			List<Jugador> jugNeg = jugadores.stream().map(j -> {
-				try {
-					return DTOMapper.getInstancia().jugadorDTOtoNegocio(j);
-				} catch (GrupoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return null;
-			}).collect(Collectors.toList());
-			for(int i = 0;i<jugNeg.size();i++){
-				g.getJugadores().add(jugNeg.get(i));
+			for(int i = 0;i<jugadores.size();i++){
+				jugadoresNegocio.add(JugadorDAO.getInstancia().buscarPorApodo(jugadores.get(i).getApodo()));
+				g.añadirJugador(jugadoresNegocio.get(i));
 			}
 			return g.guardar();
-		}else{
-			return false;
-		} 
-		//Esto va directamente en el grupo?
+		}
+		
+		return false;
 	}
 
 	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws PartidoException, CartaException, JugadorException, GrupoException {

@@ -91,9 +91,9 @@ public class BusinessDelegate {
 		return false;
 	}
 	
-	public boolean llenarGrupo(String nombreGrupo, List<JugadorDTO> jugadores) throws ComunicationException {
+	public boolean ingresarNuevosMiembros(String nombreGrupo, List<JugadorDTO> jugadores) throws ComunicationException, JugadorException {
 		try {
-			ir.llenarGrupo(nombreGrupo, jugadores);
+			ir.ingresarNuevosMiembros(nombreGrupo, jugadores);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (GrupoException e) {

@@ -30,7 +30,6 @@ public class Jugador {
 	private boolean buscandoLibreIndividual;
 	private String password;
 	private Integer numeroTurnoPartido;
-	private List<Grupo> grupos;
 
 	public Jugador(String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
 			int partidosGanados, boolean conectado, boolean jugando,boolean buscandoLibreIndividual, String password) {
@@ -204,14 +203,6 @@ public class Jugador {
 
 	public void setNumeroTurnoPartido(Integer numeroTurnoPartido) {
 		this.numeroTurnoPartido = numeroTurnoPartido;
-	}
-
-	public List<Grupo> getGrupos() {
-		return grupos;
-	}
-
-	public void setGrupos(List<Grupo> grupos) {
-		this.grupos = grupos;
 	}
 	
 	public JugadorDTO toDTO() throws GrupoException {
