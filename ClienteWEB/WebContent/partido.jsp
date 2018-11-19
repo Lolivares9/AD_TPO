@@ -20,6 +20,7 @@
 $(document).ready(function(){
 	var idPartido = "${idPartido}";
 	var detalle = JSON.parse('${detalle}');
+	var idBaza = 1;// = JSON.parse('${idBaza}'); Tiene que venir al crear partido
 	var detalleMap = new Map();
 	for (let key of Object.keys(detalle)) {
 	    var value = detalle[key];
@@ -29,8 +30,9 @@ $(document).ready(function(){
 	
 	//Contadores
 	var cantTurnosJugados = 0;
+	var turnosBaza = 0;
 	var turno = 1;
-	var baza= 1; //4 jugadores tiran 1 carta
+	var numBaza= 1; //4 jugadores tiran 1 carta
 	var mano = 1; //jugada de 2 o 3 bazas
 	var zindex= 1;
 	//
@@ -87,8 +89,15 @@ $(document).ready(function(){
 	$("#"+c3ID).on("click", clicked);
 	
 	/* Nombres de los jugadores */
-	$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
-	$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
+	var numPareja = detalleMap.get('ParejaJugador1');
+	if(numPareja === "1"){
+		$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
+		$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
+	}else{
+		$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
+		$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
+	}
+	
 	$("#jug1").text(detalleMap.get('apodoJugador1'));
 	$("#jug2").text(detalleMap.get('apodoJugador2'));
 	$("#jug3").text(detalleMap.get('apodoJugador3'));
@@ -98,8 +107,12 @@ $(document).ready(function(){
 	var posCarta = 50;
 
 	function verificarTurno(){
-		if((cantTurnosJugados > 0) && (cantTurnosJugados % 4) === 0){
-			baza++;
+		if(turnosBaza === 4){
+			numBaza++;
+			turnosBaza = 0;
+			/**************************************/
+			idBaza++; // SOLO PARA PROBAR BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
+			/**************************************/
 			console.log("sumo 1 a la baza");
 		}
 		if(cantTurnosJugados === (pos-1)){
@@ -112,7 +125,7 @@ $(document).ready(function(){
 			deshabilitarCartas();
 			console.log("NO es mi Turno");
 			_log.innerHTML =  _log.innerHTML  + "<b>" +  "NO es mi Turno" + "</b> "+ '<br /> ' ;
-			getSiguienteTurno(idPartido);
+			getSiguienteTurno();
 		}
 	}
 	
@@ -129,6 +142,7 @@ $(document).ready(function(){
 		deshabilitarCartas();
 		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
 		cantTurnosJugados++;
+		turnosBaza++;
 		guardarJugada($(this).attr("id"));
 	}
 	
@@ -172,16 +186,16 @@ $(document).ready(function(){
 			//if(turno es el ultimo)
 			//hacer metodo para cambiar de baza, mostrar puntajes, etc
 			console.log("busco siguiente turno");
-			getSiguienteTurno(idPartido);
+			getSiguienteTurno();
 		});
 	}
 	
 	//para buscar las novedades tengo que mandar el id de baza que se creo al iniciar el partido	
-	function getSiguienteTurno(idPartido){
+	function getSiguienteTurno(){
 		setTimeout(function () {
 			var infoJugada = {
-					partido : idPartido,
-					numTurnos : cantTurnosJugados
+					baza : idBaza,
+					numTurnos : turnosBaza
 				}
 			$.ajax({
 				type: "POST",
@@ -197,11 +211,12 @@ $(document).ready(function(){
 				    	 console.log(detalleMap);
 				    	 var jugador = detalleMap.get('apodo');
 				    	 var cartaJugada = detalleMap.get('carta');
-				    	 
-				    	 $("#"+jugador+"c"+baza).css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".jpg')")
-				    	 $("#"+jugador+"c"+baza).css("transform", "rotate(180deg)")
 				    	 cantTurnosJugados++;
+				    	 turnosBaza++;
 				    	 verificarTurno();
+				    	 $("#"+jugador+"c"+numBaza).css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".jpg')")
+				    	 $("#"+jugador+"c"+numBaza).css("transform", "rotate(90deg)")
+				    	
 				},    
 				error: function() { 
 					//if(turno es el ultimo)

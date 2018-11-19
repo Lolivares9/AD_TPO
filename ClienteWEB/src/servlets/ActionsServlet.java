@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,10 +66,10 @@ public class ActionsServlet extends HttpServlet{
     }
 	
     private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
-    	String idPartido = request.getParameter("partido");
+    	String idBaza = request.getParameter("baza");
     	String numTurnos = request.getParameter("numTurnos");
     	try {
-			TurnoDTO turno = BusinessDelegate.getInstancia().buscarSiguienteTurno(Integer.valueOf(idPartido), Integer.valueOf(numTurnos));
+			TurnoDTO turno = BusinessDelegate.getInstancia().buscarSiguienteTurno(Integer.valueOf(idBaza), Integer.valueOf(numTurnos));
 			if(turno != null){
 				Gson g = new Gson();
 				Map<String,Object> turnoMapa = new HashMap<String, Object>();
@@ -196,7 +195,9 @@ public class ActionsServlet extends HttpServlet{
 			buscarParejaUsuario(jug2, datos, usuario);
 			ordenarParejaContraria(jug, datos);
 			cartasUsr = obtenerCartasUsuario(par2,usuario);
+			datos.put("parejaJugador1", "2");
 		}else {
+			datos.put("parejaJugador1", "1");
 			ordenarParejaContraria(jug2, datos);
 			cartasUsr = obtenerCartasUsuario(par1,usuario);
 		}
