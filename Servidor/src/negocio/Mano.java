@@ -150,13 +150,6 @@ public class Mano {
 				return true;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Envido_RealEnvido_FaltaEnvido_Querido)){
-				//Baza nuevaBaza = new Baza();
-				//nuevaBaza.setNumero(1);
-				//Mano nuevaMano = new Mano();
-				//List <Baza>	bazasNuevas = new ArrayList<Baza>();
-				//bazasNuevas.add(nuevaBaza);
-				//nuevaMano.setBazas(bazasNuevas);
-				//chicoActual.getManos().add(nuevaMano);
 				setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
 				actualizacionJuegoPartido(partidoNegocio, chicoActual, manoActual, bazaActual);
 				return true;
@@ -373,9 +366,9 @@ public class Mano {
 			
 			//*******NADA**********
 
-			if(turnoEnvite.getEnvite().equals(Envite.Nada) &&  (pareja1.getJugador1().getNumJugador() == 4 || pareja1.getJugador2().getNumJugador() == 4 || pareja2.getJugador1().getNumJugador() == 4 || pareja2.getJugador2().getNumJugador() == 4)){
+			if(turnoEnvite.getEnvite().equals(Envite.Nada)){
 				bazaActual.cartaMasAltaBaza(bazaActual, partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1));
-				if(bazaActual.getGanadores() != null){
+				if(bazaActual.getGanadores().getIdPareja() != null){
 					Baza nuevaBaza = new Baza();
 					if(manoActual.getBazas().size() == 1){
 						bazaActual.setBazaTerminada(true);
