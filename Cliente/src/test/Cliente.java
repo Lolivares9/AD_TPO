@@ -29,7 +29,7 @@ public class Cliente {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
 		//altaJugador();  // OK 
-		iniciarSesion(); // OK 
+		//iniciarSesion(); // OK 
 		//crearGrupo();
 		//ingresarNuevosMiembros(); // OK
 		//buscarTodosPartidosJugados();  //OK

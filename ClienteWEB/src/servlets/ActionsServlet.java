@@ -197,7 +197,7 @@ public class ActionsServlet extends HttpServlet{
 			ordenarParejaContraria(jug, datos);
 			cartasUsr = obtenerCartasUsuario(par2,usuario);
 		}else {
-			ordenarParejaContraria(jug, datos);
+			ordenarParejaContraria(jug2, datos);
 			cartasUsr = obtenerCartasUsuario(par1,usuario);
 		}
 		
