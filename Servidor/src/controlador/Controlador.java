@@ -322,13 +322,10 @@ public class Controlador {
 		p.nuevaJugada();
 	}
 	
-	public TurnoDTO buscarNovedades(Integer idBaza) throws TurnoException, GrupoException {
-		int siguiente = 2; //Deberia recibir el id del turno a buscar
+	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws TurnoException, GrupoException {
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(1);//meter idBaza
-		for (Turno turno : turnos) {
-			if(turno.getIdTurno() == siguiente){
-				return turno.toDTO();
-			}
+		if(turnos != null && turnos.size()>numTurnos) {
+			return turnos.get(numTurnos).toDTO();
 		}
 		return null;
 	}

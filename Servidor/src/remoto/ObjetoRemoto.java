@@ -176,8 +176,8 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	@Override
-	public TurnoDTO buscarNovedades(Integer idPartido) throws TurnoException, GrupoException {
-		return Controlador.getInstancia().buscarNovedades(idPartido);
+	public TurnoDTO buscarSiguienteTurno(Integer idPartido, Integer numTurnos) throws TurnoException, GrupoException {
+		return Controlador.getInstancia().buscarSiguienteTurno(idPartido, numTurnos);
 	}	
 	
 }

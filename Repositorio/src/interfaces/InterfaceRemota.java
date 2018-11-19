@@ -66,6 +66,6 @@ public interface InterfaceRemota extends Remote {
 
 	public JugadorDTO buscarJugadorDTO(String nombre) throws RemoteException,JugadorException, GrupoException;
 
-	public TurnoDTO buscarNovedades(Integer idPartido)throws RemoteException, TurnoException, GrupoException;
+	public TurnoDTO buscarSiguienteTurno(Integer idPartido, Integer numTurnos)throws RemoteException, TurnoException, GrupoException;
 
 }

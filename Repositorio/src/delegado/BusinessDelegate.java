@@ -242,9 +242,9 @@ public class BusinessDelegate {
 		return null;
 	}
 	
-	public TurnoDTO buscarNovedades(Integer idPartido) throws ComunicationException{
+	public TurnoDTO buscarSiguienteTurno(Integer idPartido, Integer numTurnos) throws ComunicationException{
 		try {
-			return ir.buscarNovedades(idPartido);
+			return ir.buscarSiguienteTurno(idPartido, numTurnos);
 		} catch (RemoteException | TurnoException | GrupoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

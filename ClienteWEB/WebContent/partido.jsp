@@ -25,6 +25,7 @@ $(document).ready(function(){
 	    var value = detalle[key];
 	    detalleMap.set(key, value);
 	}
+	var _log = document.getElementById('log');
 	
 	//Contadores
 	var cantTurnosJugados = 0;
@@ -33,11 +34,16 @@ $(document).ready(function(){
 	var mano = 1; //jugada de 2 o 3 bazas
 	var zindex= 1;
 	//
-	var pos = detalleMap.get('posJugador1');
+	var pos = parseInt(detalleMap.get('posJugador1'));
 	
 	var c1ID = detalleMap.get('IdCarta1');
 	var c2ID = detalleMap.get('IdCarta2');
 	var c3ID = detalleMap.get('IdCarta3');
+	
+	var apodoJug1 = detalleMap.get('apodoJugador1');
+	var apodoJug2 = detalleMap.get('apodoJugador2');
+	var apodoJug3 = detalleMap.get('apodoJugador3');
+	var apodoJug4 = detalleMap.get('apodoJugador4');
 	
 	var idArray = []; //Array para saber que cartas no se jugaron
 	idArray.push(c1ID);
@@ -53,6 +59,7 @@ $(document).ready(function(){
 	var c2 = detalleMap.get('carta2');
 	var c3 = detalleMap.get('carta3');
 	
+	/* Pongo las imagenes de las cartas del jugador */
 	$("#carta1").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c1+".jpg')");
 	$("#carta2").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c2+".jpg')");
 	$("#carta3").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c3+".jpg')");
@@ -61,10 +68,25 @@ $(document).ready(function(){
 	$("#carta2").attr("id",c2ID);
 	$("#carta3").attr("id",c3ID);
 	
+	/* Seteo los id de las cartas de cada jugador */
+	$("#carta21").attr("id",apodoJug2+"c1");
+	$("#carta22").attr("id",apodoJug2+"c2");
+	$("#carta23").attr("id",apodoJug2+"c3");
+	
+	$("#carta31").attr("id",apodoJug3+"c1");
+	$("#carta32").attr("id",apodoJug3+"c2");
+	$("#carta33").attr("id",apodoJug3+"c3");
+	
+	$("#carta41").attr("id",apodoJug4+"c1");
+	$("#carta42").attr("id",apodoJug4+"c2");
+	$("#carta43").attr("id",apodoJug4+"c3");
+	
+	/* Habilito el handler para el click*/
 	$("#"+c1ID).on("click", clicked);
 	$("#"+c2ID).on("click", clicked);
 	$("#"+c3ID).on("click", clicked);
 	
+	/* Nombres de los jugadores */
 	$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
 	$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
 	$("#jug1").text(detalleMap.get('apodoJugador1'));
@@ -79,15 +101,15 @@ $(document).ready(function(){
 		if(cantTurnosJugados === (pos-1)){
 			//Habilitar botones de envite
 			habilitarCartas();
-			pos++;
-			pos++;
-			pos++;
-			pos++;
+			baza++;
+			pos += 4;
+			_log.innerHTML =  _log.innerHTML  + "<b>" +  "Es mi Turno" + "</b> " + '<br /> ';
 			console.log("Es mi Turno");
 		}else{
 			deshabilitarCartas();
 			console.log("NO es mi Turno");
-			buscarNovedades(idPartido);
+			_log.innerHTML =  _log.innerHTML  + "<b>" +  "NO es mi Turno" + "</b> "+ '<br /> ' ;
+			getSiguienteTurno(idPartido);
 		}
 	}
 	
@@ -99,6 +121,7 @@ $(document).ready(function(){
 		var index = $.inArray($(this).attr("id"), cartasPos);
 		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
 		moverCarta(this, index);
+		cantTurnosJugados++;
 		guardarJugada($(this).attr("id"));
 	}
 	
@@ -142,47 +165,42 @@ $(document).ready(function(){
 			//if(turno es el ultimo)
 			//hacer metodo para cambiar de baza, mostrar puntajes, etc
 			console.log("busco siguiente turno");
-			buscarNovedades(idPartido);
+			getSiguienteTurno(idPartido);
 		});
 	}
 	
 	//para buscar las novedades tengo que mandar el id de baza que se creo al iniciar el partido	
-	function buscarNovedades(idPartido){
+	function getSiguienteTurno(idPartido){
 		setTimeout(function () {
 			var infoJugada = {
-					partido : idPartido
+					partido : idPartido,
+					numTurnos : cantTurnosJugados
 				}
 			$.ajax({
 				type: "POST",
 				url: "ActionsServlet?action=GetNovedad",
 				dataType: "json",
-				data : infoJugada //Mandar numero de turno/jugada? para saber que se busque el siguiente en la base directamente
-				/*success: function(data){
+				data : infoJugada, //Mandar numero de turno/jugada? para saber que se busque el siguiente en la base directamente
+				success: function(data){
 				    	var detalleMap = new Map();
 				    	for (let key of Object.keys(data)) {
 				    	    var value = data[key];
 				    	    detalleMap.set(key, value);
 				    	}
 				    	 console.log(detalleMap);
-				    	 $("#carta22").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".jpg')")
-				    	 var miTurno = detalleMap.get('esMiTurno');
-				    	 if(miTurno === true){
-				    		 console.log("Me toca jugar");
-				    	 }else{
-				    		 console.log("NO Me toca jugar");
-				    	 }
-				        //Obtener del JSON si es mi turno o no, si no lo es, buscar novedades otra vez
+				    	 var jugador = detalleMap.get('apodo');
+				    	 var cartaJugada = detalleMap.get('carta');
+				    	 
+				    	 $("#"+jugador+"c"+baza).css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".jpg')")
+				    	 cantTurnosJugados++;
+				    	 verificarTurno();
 				},    
 				error: function() { 
-					cantTurnosJugados++;
+					//if(turno es el ultimo)
+					//hacer metodo para cambiar de baza, mostrar puntajes, etc
 					verificarTurno();
-			    } */ 
-			}).always(function(){
-				//if(turno es el ultimo)
-				//hacer metodo para cambiar de baza, mostrar puntajes, etc
-				cantTurnosJugados++;
-				verificarTurno();
-			});
+			    } 
+			})
 		}, 3000);
 	}
 	
@@ -199,23 +217,23 @@ $(document).ready(function(){
 					<p id="par1">Pareja 1:</p>
 					<p id="par2">Pareja 2:</p>
 				</div>
-				<table id="game-score">
+				<table id="puntajes">
 					<thead>
 						<tr>
-							<th class="player-one-name human-name" style="color:white;">Pareja1</th>
-							<th class="player-two-name" style="color:white;">Pareja2</th>
+							<th id="JugPareja1" style="color:white;">Pareja1</th>
+							<th id="JugPareja2" style="color:white;">Pareja2</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td class="player-one-points">0</td>
-							<td class="player-two-points">0</td>
+							<td id="ptsPareja1" style="color:white;">0</td>
+							<td id="ptsPareja2" style="color:white;">0</td>
 						</tr>
 					</tbody>
 				</table>
 				<div class="game-action">
 					<fieldset id="cantos" class="cantos-panel">
-						<legend>Cantos</legend>
+						<legend  style="color:white;">Cantos</legend>
 						<input type="button" value="Envido" id="Envido" class="canto btn btn-primary" data-envido="E" style="display: inline-block;">
 						<input type="button" value="Real Envido" id="RealEnvido" class="canto btn btn-success" data-envido="R" style="display: inline-block;">
 						<input type="button" value="Falta Envido" id="FaltaEnvido" class="canto btn btn-inverse" data-envido="F" style="display: inline-block;">
@@ -223,12 +241,11 @@ $(document).ready(function(){
 						<input type="button" value="Truco" id="Truco" class="cantot btn btn-primary" data-truco="T" style="display: inline-block;">
 						<input type="button" value="Quiero re Truco" id="reTruco" class="cantot btn btn-success" data-truco="RT" style="display: none;">
 						<input type="button" value="Quiero vale 4" id="vale4" class="cantot btn btn-inverse" data-truco="V" style="display: none;">
-						<div class="label-cantos label-cantos--SN" style="display: none;">Mi respuesta ...</div>
 						<input type="button" value="Quiero" id="Quiero" class="boton btn" style="display: none;">
 						<input type="button" value="No Quiero" id="NoQuiero" class="boton btn" style="display: none;">
 					</fieldset>
 				</div>
-				<h2 class="log-title">Gameplay</h2>
+				<h2 class="log-titulo">Jugadas</h2>
 				<div id="log"></div>
 			</div>
 			<div class="game-main" style="position: relative;">
@@ -253,13 +270,13 @@ $(document).ready(function(){
 
 						  <div class="flex-containerIni">
 						   <p id="jug4">Jugador4</p>
-							  <a href="#" id= "carta31" class="carta-H"
+							  <a href="#" id= "carta41" class="carta-H"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.jpg');"
 								></a>
-					  <a href="#" id= "carta32" class="carta-H"
+					  <a href="#" id= "carta42" class="carta-H"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.jpg');"
 								></a>
-					  <a href="#" id= "carta33" class="carta-H"
+					  <a href="#" id= "carta43" class="carta-H"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.jpg');"
 								></a>  
 						  </div>

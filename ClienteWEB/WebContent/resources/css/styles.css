@@ -268,8 +268,8 @@ h1, h3 {
 }
 h1 {
 }
+
 .game {
-	background: #3C1E13 url('../images/bg.jpg');
 	color:white;
 	font-family:Helvetica;
 }
@@ -360,22 +360,23 @@ ul li {
 	margin: 10px;
 }
 
-#game-score {
+#puntajes {
 	height:10%;
 	border:1px solid white;
 	width:80%;
 	margin:auto;
 }
-#game-score td,
-#game-score th {
+#puntajes td,
+#puntajes th {
 	text-align:center;
 	border:1px solid white;
 	width:50%;
 }
-#log, .log-title {
+#log, .log-titulo {
 	overflow-y:auto;
     width: 80%;
     margin: .2em auto;
+    color: #ffffff;
 }
 .log-title {
     text-align: center;
