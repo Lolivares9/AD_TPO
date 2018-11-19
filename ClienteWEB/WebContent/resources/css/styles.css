@@ -138,6 +138,7 @@ ul {
     margin-bottom: 0px;
     margin-top: 0px;
     font-size: x-large;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 .flex-containerIni > div {
@@ -162,6 +163,16 @@ ul {
     align-items: center;
     align-content: center;
     place-content: center;
+}
+
+.flex-containerSepara > p{
+    text-align: center;
+    height: 50px;
+    color: #ececf1;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-size: x-large;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 .flex-containerSepara  > div {

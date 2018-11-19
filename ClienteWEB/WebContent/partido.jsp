@@ -27,11 +27,13 @@ $(document).ready(function(){
 	}
 	
 	//Contadores
+	var cantTurnosJugados = 0;
 	var turno = 1;
 	var baza= 1; //4 jugadores tiran 1 carta
 	var mano = 1; //jugada de 2 o 3 bazas
 	var zindex= 1;
 	//
+	var pos = detalleMap.get('posJugador1');
 	
 	var c1ID = detalleMap.get('IdCarta1');
 	var c2ID = detalleMap.get('IdCarta2');
@@ -62,15 +64,35 @@ $(document).ready(function(){
 	$("#"+c1ID).on("click", clicked);
 	$("#"+c2ID).on("click", clicked);
 	$("#"+c3ID).on("click", clicked);
-		
+	
 	$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
 	$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
+	$("#jug1").text(detalleMap.get('apodoJugador1'));
 	$("#jug2").text(detalleMap.get('apodoJugador2'));
 	$("#jug3").text(detalleMap.get('apodoJugador3'));
 	$("#jug4").text(detalleMap.get('apodoJugador4'));
 	
 	var user = detalleMap.get('apodoJugador1');
 	var posCarta = 50;
+
+	function verificarTurno(){
+		if(cantTurnosJugados === (pos-1)){
+			//Habilitar botones de envite
+			habilitarCartas();
+			pos++;
+			pos++;
+			pos++;
+			pos++;
+			console.log("Es mi Turno");
+		}else{
+			deshabilitarCartas();
+			console.log("NO es mi Turno");
+			buscarNovedades(idPartido);
+		}
+	}
+	
+	//Lo llamo al incio para ver si soy el primero en jugar
+	verificarTurno();	
 	
 	function clicked() {
 		deshabilitarCartas();
@@ -120,41 +142,48 @@ $(document).ready(function(){
 			//if(turno es el ultimo)
 			//hacer metodo para cambiar de baza, mostrar puntajes, etc
 			console.log("busco siguiente turno");
-			habilitarCartas();
-			//buscarNovedades(idPartido);
+			buscarNovedades(idPartido);
 		});
 	}
 	
 	//para buscar las novedades tengo que mandar el id de baza que se creo al iniciar el partido	
 	function buscarNovedades(idPartido){
-		var infoJugada = {
-				partido : idPartido
-			}
-		$.ajax({
-			type: "POST",
-			url: "ActionsServlet?action=GetNovedad",
-			dataType: "json",
-			data : infoJugada, //Mandar numero de turno/jugada? para saber que se busque el siguiente en la base directamente
-			success: function(data){
-			    	var detalleMap = new Map();
-			    	for (let key of Object.keys(data)) {
-			    	    var value = data[key];
-			    	    detalleMap.set(key, value);
-			    	}
-			    	 console.log(detalleMap);
-			    	 $("#carta22").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".jpg')")
-			    	 var miTurno = detalleMap.get('esMiTurno');
-			    	 if(miTurno === true){
-			    		 console.log("Me toca jugar");
-			    	 }else{
-			    		 console.log("NO Me toca jugar");
-			    	 }
-			        //Obtener del JSON si es mi turno o no, si no lo es, buscar novedades otra vez
-			},    
-			error: function() { 
-				buscarNovedades(idPartido);
-		    }  
-		})
+		setTimeout(function () {
+			var infoJugada = {
+					partido : idPartido
+				}
+			$.ajax({
+				type: "POST",
+				url: "ActionsServlet?action=GetNovedad",
+				dataType: "json",
+				data : infoJugada //Mandar numero de turno/jugada? para saber que se busque el siguiente en la base directamente
+				/*success: function(data){
+				    	var detalleMap = new Map();
+				    	for (let key of Object.keys(data)) {
+				    	    var value = data[key];
+				    	    detalleMap.set(key, value);
+				    	}
+				    	 console.log(detalleMap);
+				    	 $("#carta22").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".jpg')")
+				    	 var miTurno = detalleMap.get('esMiTurno');
+				    	 if(miTurno === true){
+				    		 console.log("Me toca jugar");
+				    	 }else{
+				    		 console.log("NO Me toca jugar");
+				    	 }
+				        //Obtener del JSON si es mi turno o no, si no lo es, buscar novedades otra vez
+				},    
+				error: function() { 
+					cantTurnosJugados++;
+					verificarTurno();
+			    } */ 
+			}).always(function(){
+				//if(turno es el ultimo)
+				//hacer metodo para cambiar de baza, mostrar puntajes, etc
+				cantTurnosJugados++;
+				verificarTurno();
+			});
+		}, 3000);
 	}
 	
 })
@@ -259,6 +288,7 @@ $(document).ready(function(){
 					 <div class="flex-containerSepara"><div></div><div></div></div>
 					 <div class="flex-containerSepara"><div></div><div></div></div>
 					<div class="flex-containerIni">
+					<p id="jug1">Jugador1</p>
 					 <a href="#" id= "carta1" class="carta"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.jpg');"
 								></a>
@@ -268,8 +298,10 @@ $(document).ready(function(){
 					 <a href="#" id= "carta3" class="carta"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.jpg');"
 								></a> 
+								<div class="div1"></div>
 					</div>
 					<div class="flex-containerSepara">
+						<!-- 
 						<div>
 							<input type="button" id="LibreIndiv" value="Quiero">
 							<input type="button" id="LibreIndiv" value="No Quiero">
@@ -286,6 +318,7 @@ $(document).ready(function(){
 							<input type="button" id="LibreIndiv" value="Re Truco">
 							<input type="button" id="LibreIndiv" value="Vale Cuatro">
 						</div>
+						-->
 					</div>
 				</div>
 			</div>
