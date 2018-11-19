@@ -70,6 +70,8 @@ public class Mazo {
 		CartaDAO.getInstancia().saveCartasParejas(parejaNegocio1);
 		CartaDAO.getInstancia().saveCartasParejas(parejaNegocio2);
 	}
+	
+	
 }
 
 
