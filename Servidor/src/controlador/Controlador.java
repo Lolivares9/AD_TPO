@@ -298,7 +298,7 @@ public class Controlador {
 		mazo.repartiCartas(p);
 	}
 
-	public void actualizarPartido(int idPartido,List<TurnoDTO> turnos) throws PartidoException, GrupoException, JugadorException {
+	public void actualizarPartido(int idPartido,TurnoDTO turnoDTO) throws PartidoException, GrupoException, JugadorException {
 		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
 		int indiceMano = 0;
 		int indiceBaza = 0;
@@ -308,16 +308,12 @@ public class Controlador {
 		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size() > 0){
 			indiceBaza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size()-1; 
 		}
-		List<Turno> turnosNegocio = new ArrayList<Turno>();
-		for (TurnoDTO turnoDTO : turnos) {
-			Turno turno = DTOMapper.getInstancia().FrontEndToNegocio(turnoDTO);
-			turno.setJugador(JugadorDAO.getInstancia().buscarPorApodo(turnoDTO.getJugadorDTO().getApodo()));
-			turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
-			turnosNegocio.add(turno);
-			
-		}
 		Baza baza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().get(indiceBaza);
-		baza.setTurnos(turnosNegocio);
+		Turno turno = DTOMapper.getInstancia().FrontEndToNegocio(turnoDTO);
+		turno.setJugador(JugadorDAO.getInstancia().buscarPorApodo(turnoDTO.getJugadorDTO().getApodo()));
+		turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
+		baza.agregarTurno(turno);		
+		
 		p.actualizar();
 		p.nuevaJugada();
 	}

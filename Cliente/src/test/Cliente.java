@@ -74,7 +74,7 @@ public class Cliente {
 		turnos.add(turno2);
 		turnos.add(turno3);
 		turnos.add(turno4);
-		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno1);
 		
 	}
 
@@ -92,7 +92,7 @@ public class Cliente {
 		turnos.add(turno2);
 		turnos.add(turno3);
 		turnos.add(turno4);
-		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno1);
 		
 	}
 	
@@ -110,7 +110,7 @@ public class Cliente {
 		turnos.add(turno2);
 		turnos.add(turno3);
 		turnos.add(turno4);
-		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno1);
 	}
 
 	private static void ronda1(PartidoDTO part) throws ComunicationException, GrupoException {
@@ -127,7 +127,7 @@ public class Cliente {
 		turnos.add(turno2);
 		turnos.add(turno3);
 		turnos.add(turno4);
-		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turnos);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno1);
 	}
 
 	private static void buscarPartidaLibreIndividual() {

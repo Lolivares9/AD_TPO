@@ -224,9 +224,9 @@ public class BusinessDelegate {
 		return null;
 	}
 
-	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws ComunicationException {
+	public void nuevaJugada(Integer idPartido, TurnoDTO turno) throws ComunicationException {
 		try {
-			ir.nuevaJugada(idPartido,turnos);
+			ir.nuevaJugada(idPartido,turno);
 		} catch (PartidoException | RemoteException | GrupoException | JugadorException e) {
 			e.printStackTrace();
 		}

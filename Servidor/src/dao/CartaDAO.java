@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -14,7 +13,6 @@ import entities.CartaEntity;
 import excepciones.CartaException;
 import hbt.HibernateUtil;
 import negocio.Carta;
-import negocio.Jugador;
 import negocio.Pareja;
 
 public class CartaDAO {

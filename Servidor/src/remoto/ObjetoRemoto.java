@@ -156,7 +156,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return Controlador.getInstancia().obtenerDetalleDeChico(chico);
 	}
 
-	public void nuevaJugada(Integer idPartido, List<TurnoDTO> turnos) throws PartidoException, GrupoException, JugadorException {
+	public void nuevaJugada(Integer idPartido, TurnoDTO turnos) throws PartidoException, GrupoException, JugadorException {
 		Controlador.getInstancia().actualizarPartido(idPartido,turnos);
 	}
 

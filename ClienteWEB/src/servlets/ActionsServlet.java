@@ -110,7 +110,7 @@ public class ActionsServlet extends HttpServlet{
     	Integer numTurno = 1;
     	TurnoDTO turno = new TurnoDTO(idBaza, numTurno, j, Envite.Nada, c); //aca va el id de baza
     	try {
-			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), Arrays.asList(turno));
+			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), turno);
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ComunicationException e) {
 			// TODO Auto-generated catch block

@@ -1,5 +1,6 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.BazaDAO;
@@ -98,6 +99,13 @@ public class Baza {
 
 	public void setTurnos(List<Turno> turnos) {
 		this.turnos = turnos;
+	}
+	
+	public void agregarTurno(Turno turno){
+		if(turnos == null){
+			turnos = new ArrayList<Turno>();
+		}
+		turnos.add(turno);
 	}
 
 	public int getNumJugEnvitePendiente() {
