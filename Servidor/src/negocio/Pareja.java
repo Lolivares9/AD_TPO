@@ -58,10 +58,8 @@ public class Pareja {
 	public ParejaDTO toDTO() throws GrupoException {
 		ParejaDTO pDTO = new ParejaDTO(this.idPareja,jugador1.toDTO(), jugador2.toDTO());
 		for(int i = 0;i<3;i++){
-			if(pDTO.getCartasJug1().size() > 1 && pDTO.getCartasJug2().size() > 1){
-				pDTO.getCartasJug1().add(cartasJugador1.get(i).toDTO());
-				pDTO.getCartasJug2().add(cartasJugador2.get(i).toDTO());
-			}
+			pDTO.getCartasJug1().add(cartasJugador1.get(i).toDTO());
+			pDTO.getCartasJug2().add(cartasJugador2.get(i).toDTO());
 		}
 		return pDTO;
 	}
