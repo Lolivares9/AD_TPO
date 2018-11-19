@@ -286,7 +286,7 @@ public class Mano {
 				return true;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Truco_Querido)){
-				if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,2,true)){
+				if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,2)){
 					return true;
 				}
 				//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
@@ -294,7 +294,7 @@ public class Mano {
 				return false;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Truco_QuieroRetruco_Querido)){
-				if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,3,true)){
+				if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,3)){
 					return true;
 				}
 				//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
@@ -302,7 +302,7 @@ public class Mano {
 				return false;
 			}
 			else if(turnoEnvite.getEnvite().equals(Envite.Truco_QuieroRetruco_QuieroValeCuatro_Querido)){
-				if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,4,true)){
+				if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,4)){
 					return true;
 				}
 				//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
@@ -471,9 +471,9 @@ public class Mano {
 	}
 
 	/**Si este metodo devuelve false, es porque a alguno de los jugadores le falta jugar una carta, para que se pueda evaluar los ganadores*/
-	private static boolean setearPuntajeTruco(Partido p, Baza bazaActual, Chico chicoActual, Mano manoActual, int puntaje,boolean finaliza_mano){
+	private static boolean setearPuntajeTruco(Partido p, Baza bazaActual, Chico chicoActual, Mano manoActual, int puntaje){
 		boolean faltaJugarCarta = false;
-		
+		boolean finaliza_mano = false;
 		for(int i = 0;i<bazaActual.getTurnos().size();i++){
 			if(bazaActual.getTurnos().get(i).getCarta() == null){
 				faltaJugarCarta = true;
@@ -482,6 +482,7 @@ public class Mano {
 		}
 		if(faltaJugarCarta == false){
 			bazaActual.cartaMasAltaBaza(bazaActual, p.getParejas().get(0), p.getParejas().get(1));
+			finaliza_mano = verificarGanadores(p.getParejas().get(0),p.getParejas().get(1),manoActual.getBazas(),bazaActual);
 			if(bazaActual.getGanadores() != null){
 				bazaActual.setBazaTerminada(true);
 				if(finaliza_mano){
@@ -510,6 +511,27 @@ public class Mano {
 		return true;
 	}
 	
+	private static boolean verificarGanadores(Pareja p1,Pareja p2,List<Baza> bazas,Baza bazaActual) {
+		boolean finaliza_mano = false;
+		if(bazaActual.getNumero() == 1){
+			return finaliza_mano;
+		}
+		else if(bazaActual.getNumero() == 2){
+			if((bazas.get(0).getGanadores().equals(p1) && bazaActual.getGanadores().equals(p1)) || (bazas.get(0).getGanadores().equals(p2) && bazaActual.getGanadores().equals(p2))){
+				return finaliza_mano = true;
+			}
+		}
+		else if(bazaActual.getNumero() == 3){
+			if((bazaActual.getGanadores().equals(p1) && bazas.get(1).getGanadores().equals(p1)) || (bazaActual.getGanadores().equals(p2) && bazas.get(1).getGanadores().equals(p2))){
+				return finaliza_mano = true;
+			}
+			else if((bazaActual.getGanadores().equals(p1) && bazas.get(0).getGanadores().equals(p1)) || (bazaActual.getGanadores().equals(p2) && bazas.get(0).getGanadores().equals(p2))){
+				return finaliza_mano = true;
+			}
+		}
+		return finaliza_mano;
+	}
+
 	private static void setearPuntajeTrucoNoQuerido(Partido p, Baza bazaActual, Chico chicoActual, int puntaje, Pareja parejaGanadora){
 		Pareja pareja1 = p.getParejas().get(0);
 		if(pareja1.equals(pareja1)){
