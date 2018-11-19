@@ -51,7 +51,7 @@ $(document).ready(function(){
 	    setTimeout(function () {	
 			document.forms['formul'].submit();
 	        buscarPartidos();
-	    }, 10000);
+	    }, 1000);
 	}
 })
 </script>

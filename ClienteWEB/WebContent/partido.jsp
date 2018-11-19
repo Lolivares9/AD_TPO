@@ -98,10 +98,13 @@ $(document).ready(function(){
 	var posCarta = 50;
 
 	function verificarTurno(){
+		if((cantTurnosJugados > 0) && (cantTurnosJugados % 4) === 0){
+			baza++;
+			console.log("sumo 1 a la baza");
+		}
 		if(cantTurnosJugados === (pos-1)){
 			//Habilitar botones de envite
 			habilitarCartas();
-			baza++;
 			pos += 4;
 			_log.innerHTML =  _log.innerHTML  + "<b>" +  "Es mi Turno" + "</b> " + '<br /> ';
 			console.log("Es mi Turno");
@@ -117,10 +120,14 @@ $(document).ready(function(){
 	verificarTurno();	
 	
 	function clicked() {
-		deshabilitarCartas();
 		var index = $.inArray($(this).attr("id"), cartasPos);
-		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
+		if(index === -1){
+			return;
+		}
+		cartasPos.splice(index, 1);
 		moverCarta(this, index);
+		deshabilitarCartas();
+		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
 		cantTurnosJugados++;
 		guardarJugada($(this).attr("id"));
 	}
@@ -192,6 +199,7 @@ $(document).ready(function(){
 				    	 var cartaJugada = detalleMap.get('carta');
 				    	 
 				    	 $("#"+jugador+"c"+baza).css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+detalleMap.get('carta')+".jpg')")
+				    	 $("#"+jugador+"c"+baza).css("transform", "rotate(180deg)")
 				    	 cantTurnosJugados++;
 				    	 verificarTurno();
 				},    
