@@ -14,31 +14,6 @@ h1 {
   margin:0;
 }
 
-.cartasJ1{
-	position: relative;
-	float: left;
-	margin: 100px;
-	padding: 20px 0;
-	width: 29.615861214%;
-}
-
-.cartasJ2{
-	position: relative;
-	left: 700px;
-	top: 850px;
-}
-
-.cartasJ3{
-	position: relative;
-	top: 400px;
-}
-
-.cartasJ4{
-	position: relative;
-	left: 10px;
-	top: 400px;
-}
-
 img {
 	max-width: 80%;
 	height: auto;
@@ -53,27 +28,6 @@ img {
 	transform-style: preserve-3d;
 	position: relative;
 }
-
-.mano{
-	position: absolute;
-	cursor: pointer;
-}
-
-
-
-.mesa1{
-	position: relative;
-    left: 400px;
-    top: 450px;
-    z-index: 423;
-    width: 100px;
-    height: 100px;
-}
-
-
-
-
-
 
 ul li {
     display:inline-block!important;
@@ -188,28 +142,12 @@ ul {
     display: block;
     transition: transform 0.5s linear;
     cursor: default;
-    border-style: solid;
-    border-color: rgb(21,72,0);
     border-right: 0px;
     border-left: 0px;
-}
-
-.carta-H-I{
-    width: 80px;
-    height: 130px;
-    display: block;
-    transition: transform 0.5s linear;
-    cursor: default;
-   	transform: rotate(90deg);
-}
-
-.carta-H-D{
-    width: 80px;
-    height: 130px;
-    display: block;
-    transition: transform 0.5s linear;
-    cursor: default;	
-    transform: rotate(-90deg);
+    border-style: solid;
+    border-width: 0.02px;
+    border-color: #bababa;
+    margin-top: 5px;
 }
 
 .carta-V{
@@ -218,9 +156,11 @@ ul {
     display: block;
     transition:all 1s;
     cursor: default;
+    margin-top: 0px;
+    margin-left: 5px;
     border-style: solid;
-    border-width: 5px;
-    border-color: rgb(21,72,0);
+    border-width: 0.02px;
+    border-color: #bababa;
 }
 
 .carta{
@@ -234,29 +174,6 @@ ul {
     border-width: 0.02px;
     border-color: #bababa;
 }
-
-
-
-
-
-.cartasJugador{
-	display: table;
-    padding: 0;
-    text-align: left;
-    margin: 0 auto;
-}
-
-.cartasJugador-H{
-	display: grid;
-    padding: 0;
-    text-align: left;
-    margin: 0 auto;
-}
-
-
-
-
-
 
 html, body, .game-wrapper{
 	height:100%;
