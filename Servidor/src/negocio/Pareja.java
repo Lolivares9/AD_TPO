@@ -19,12 +19,16 @@ public class Pareja {
 		super();
 		this.jugador1 = jugador1;
 		this.jugador2 = jugador2;
+		this.cartasJugador1 = new ArrayList<Carta>();
+		this.cartasJugador2 = new ArrayList<Carta>();
 	}
 	
 	public Pareja(Integer idPareja, Jugador negocio, Jugador negocio2) {
 		this.idPareja = idPareja;
 		this.jugador1 = negocio;
 		this.jugador2 = negocio2;
+		this.cartasJugador1 = new ArrayList<Carta>();
+		this.cartasJugador2 = new ArrayList<Carta>();
 	}
 
 	public Pareja(){
@@ -59,7 +63,7 @@ public class Pareja {
 		ParejaDTO pDTO = new ParejaDTO(this.idPareja,jugador1.toDTO(), jugador2.toDTO());
 		for(int i = 0;i<3;i++){
 			pDTO.getCartasJug1().add(cartasJugador1.get(i).toDTO());
-			pDTO.getCartasJug2().add(cartasJugador2.get(i).toDTO());
+			pDTO.getCartasJug2().add(cartasJugador2.get(i).toDTO());	
 		}
 		return pDTO;
 	}

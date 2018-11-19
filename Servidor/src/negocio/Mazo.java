@@ -31,36 +31,32 @@ public class Mazo {
 		}
 		return cartasRepartir;
 	}
-	public void repartiCartas(PartidoDTO pd) throws CartaException {
-		List<ParejaDTO> parejas = pd.getParejaDTOs();
-		Pareja parejaNegocio1 = new Pareja(parejas.get(0).getIdPareja(),null,null);
+	public void repartiCartas(Partido pd) throws CartaException {
+		List<Pareja> parejas = pd.getParejas();
+		Pareja parejaNegocio1 = pd.getParejas().get(0);
 		List<Carta> cartasJugador1Pareja1 = new ArrayList<Carta>();
 		List<Carta> cartasJugador2Pareja1 = new ArrayList<Carta>();
 		List<Carta> cartasJugador1Pareja2 = new ArrayList<Carta>();
 		List<Carta> cartasJugador2Pareja2 = new ArrayList<Carta>();
 		Carta c = new Carta();
-		Pareja parejaNegocio2 = new Pareja(parejas.get(1).getIdPareja(),null,null);
-		List<CartaDTO> cartas =  repartiCartas().stream().map(Carta::toDTO).collect(Collectors.toList());
+		Pareja parejaNegocio2 = pd.getParejas().get(1);
+		List<Carta> cartas = repartiCartas();
 		for(int i = 1; i <= 3; i++){
-			c = new Carta();
-			c.setIdCarta(cartas.get(0).getIdCarta());
+			c = cartas.get(0);
 			cartasJugador1Pareja1.add(c);
-			parejas.get(0).agregarCartaJug1(cartas.remove(0));
+			parejas.get(0).getCartasJugador1().add(cartas.remove(0));
 			
-			c = new Carta();
-			c.setIdCarta(cartas.get(0).getIdCarta());
+			c = cartas.get(0);
 			cartasJugador2Pareja1.add(c);
-			parejas.get(0).agregarCartaJug2(cartas.remove(0));
+			parejas.get(0).getCartasJugador2().add(cartas.remove(0));
 			
-			c = new Carta();
-			c.setIdCarta(cartas.get(0).getIdCarta());
+			c = cartas.get(0);
 			cartasJugador1Pareja2.add(c);
-			parejas.get(1).agregarCartaJug1(cartas.remove(0));
+			parejas.get(1).getCartasJugador1().add(cartas.remove(0));
 			
-			c = new Carta();
-			c.setIdCarta(cartas.get(0).getIdCarta());
+			c = cartas.get(0);
 			cartasJugador2Pareja2.add(c);
-			parejas.get(1).agregarCartaJug2(cartas.remove(0));
+			parejas.get(1).getCartasJugador2().add(cartas.remove(0));
 			
 		}
 		parejaNegocio1.setCartasJugador1(cartasJugador1Pareja1);

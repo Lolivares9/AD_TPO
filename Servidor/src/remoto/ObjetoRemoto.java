@@ -108,7 +108,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 
 	@Override
-	public void repartirCartas(PartidoDTO pd) throws RemoteException {
+	public void repartirCartas(PartidoDTO pd) throws RemoteException, PartidoException {
 		try {
 			Controlador.getInstancia().repartiCartas(pd);
 		} catch (CartaException e) {

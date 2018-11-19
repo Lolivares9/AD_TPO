@@ -52,7 +52,7 @@ public interface InterfaceRemota extends Remote {
 	
 	public boolean buscarJugDisponibles() throws RemoteException;
 	
-	public void repartirCartas(PartidoDTO pd) throws RemoteException, CartaException;
+	public void repartirCartas(PartidoDTO pd) throws RemoteException, CartaException, PartidoException;
 	
 	public boolean nuevaMano() throws RemoteException;
 

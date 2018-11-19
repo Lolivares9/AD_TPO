@@ -164,7 +164,7 @@ public class BusinessDelegate {
 	}
 
 
-	public void repartirCartas(PartidoDTO pd) throws ComunicationException {
+	public void repartirCartas(PartidoDTO pd) throws ComunicationException, PartidoException {
 		try {
 			ir.repartirCartas(pd);
 		} catch (RemoteException e) {

@@ -21,6 +21,7 @@ import enums.Envite;
 import excepciones.ComunicationException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
+import excepciones.PartidoException;
 
 public class Cliente {
 
@@ -222,7 +223,7 @@ public class Cliente {
 		
 	}
 
-	private static void repartirCartas() {
+	private static void repartirCartas() throws PartidoException {
 		try {
 			BusinessDelegate.getInstancia().repartirCartas(null);
 		} catch (ComunicationException e) {

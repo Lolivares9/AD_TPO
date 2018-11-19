@@ -124,10 +124,12 @@ public class Controlador {
 			Partido p =  new Partido(TipoModalidad.Libre_individual, parejas, null, new Date(), EstadoPartido.En_Proceso);
 			p.guardar();
 			Pareja.actualizarEstadoParejas(parejas);
-		
-			PartidoDTO pd = p.toDTO();
 			mazo = new Mazo();
-			mazo.repartiCartas(pd);
+			mazo.repartiCartas(p);
+			
+			PartidoDTO pd = p.toDTO();
+			
+			
 			return pd;
 		}
 		return null;
@@ -291,8 +293,9 @@ public class Controlador {
 		return null;
 	}
 
-	public void repartiCartas(PartidoDTO pd) throws CartaException {
-		mazo.repartiCartas(pd);
+	public void repartiCartas(PartidoDTO pd) throws CartaException, PartidoException {
+		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(pd.getIdPartido());
+		mazo.repartiCartas(p);
 	}
 
 	public void actualizarPartido(int idPartido,List<TurnoDTO> turnos) throws PartidoException, GrupoException, JugadorException {
