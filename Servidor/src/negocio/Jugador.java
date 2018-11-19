@@ -3,14 +3,11 @@ package negocio;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.GrupoDAO;
 import dao.JugadorDAO;
 import dto.JugadorDTO;
-import entities.GrupoEntity;
 import enums.Categoria;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
-import util.DTOMapper;
 
 public class Jugador {
 	//El id de jugador lo puse en esta clase porque no se puede guardar si no está acá,
@@ -206,7 +203,7 @@ public class Jugador {
 	}
 	
 	public JugadorDTO toDTO() throws GrupoException {
-		return new JugadorDTO(id, nombre, apodo, mail, categoria, puntaje, partidosJugados, partidosGanados, conectado, jugando, password, null);
+		return new JugadorDTO(id, nombre, apodo, mail, categoria, puntaje, partidosJugados, partidosGanados, conectado, jugando, password, null, numeroTurnoPartido);
 	}
 
 

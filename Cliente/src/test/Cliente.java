@@ -27,16 +27,16 @@ public class Cliente {
 	public static void main(String[] args) throws ComunicationException, RemoteException, JugadorException, GrupoException {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		altaJugador();  // OK 
+		//altaJugador();  // OK 
 		iniciarSesion(); // OK 
 		//crearGrupo();
 		//ingresarNuevosMiembros(); // OK
 		//buscarTodosPartidosJugados();  //OK
 		buscarPartidaLibreIndividual(); // OK
-		//JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456");
-		//jugador.setCategoria(Categoria.Novato);
-		//PartidoDTO part;
-		//part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
+		jugador.setCategoria(Categoria.Novato);
+		PartidoDTO part;
+		part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
 		//iniciarPartidaLibreIndividual(part); //TEST OK LAUTI
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
@@ -46,19 +46,15 @@ public class Cliente {
 	}
 
 	private static void iniciarPartidaLibreIndividual(PartidoDTO part) throws GrupoException {
-		try {
-			if (part != null) {
-				System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
-				ronda1(part);
-				//ronda11(part);
-				//ronda2(part);
-				//ronda3(part);
-			}
-			else {
-				System.out.println("No se puede inicializar el partido, no hay suficientes jugadores en linea.");
-			}
-		} catch (ComunicationException e) {
-			e.printStackTrace();
+		if (part != null) {
+			System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
+			//ronda1(part);
+			//ronda11(part);
+			//ronda2(part);
+			//ronda3(part);
+		}
+		else {
+			System.out.println("No se puede inicializar el partido, no hay suficientes jugadores en linea.");
 		}
 	}
 

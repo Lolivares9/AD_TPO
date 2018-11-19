@@ -11,13 +11,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/styles.css"></link>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-	var user = "${usuario}";
 	var idPartido = "${idPartido}";
 	var detalle = JSON.parse('${detalle}');
 	var detalleMap = new Map();
@@ -69,7 +69,7 @@ $(document).ready(function(){
 	$("#jug3").text(detalleMap.get('apodoJugador3'));
 	$("#jug4").text(detalleMap.get('apodoJugador4'));
 	
-	
+	var user = detalleMap.get('apodoJugador1');
 	var posCarta = 50;
 	
 	function clicked() {

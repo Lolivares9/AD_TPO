@@ -64,7 +64,7 @@ public class JugadorDTO implements Serializable  {
 	 * @param password
 	 */
 	public JugadorDTO(Integer id, String nombre, String apodo, String mail, Categoria categoria, int puntaje, int partidosJugados,
-			int partidosGanados, boolean conectado, boolean jugando, String password,List<GrupoDTO> grupos) {
+			int partidosGanados, boolean conectado, boolean jugando, String password,List<GrupoDTO> grupos , Integer numJugador) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -78,6 +78,7 @@ public class JugadorDTO implements Serializable  {
 		this.jugando = jugando;
 		this.password = password;
 		this.grupos = grupos;
+		this.numJugador = numJugador;
 	}
 	
 	/**

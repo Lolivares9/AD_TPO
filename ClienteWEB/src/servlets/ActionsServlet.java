@@ -179,55 +179,122 @@ public class ActionsServlet extends HttpServlet{
 		//partido.getChicoDTO().get(0).getManos().get(0).getBazas().get(0).getNumero();//MANDAR ID de baza a la pagina
 		List<ParejaDTO> parejas = partido.getParejaDTOs();
 		Map<String,String> datos = new HashMap<String,String>();
-		List<List<CartaDTO>> cartasOrden = new ArrayList<List<CartaDTO>>();
+		//List<List<CartaDTO>> cartasOrden = new ArrayList<List<CartaDTO>>();
+		
 		ParejaDTO par1 = parejas.get(0);
 		ParejaDTO par2 = parejas.get(1);
-			datos.put("apodoJugador1", par1.getJugadorDTO1().getApodo());
-			datos.put("idJugador1", par1.getJugadorDTO1().getId().toString());
-			datos.put("catJugador1", par1.getJugadorDTO1().getCategoria().toString());
-			
-			datos.put("apodoJugador3", par1.getJugadorDTO2().getApodo());
-			datos.put("idJugador3", par1.getJugadorDTO2().getId().toString());
-			datos.put("catJugador3", par1.getJugadorDTO2().getCategoria().toString());
-			
-			datos.put("apodoJugador2", par2.getJugadorDTO1().getApodo());
-			datos.put("idJugador2", par2.getJugadorDTO1().getId().toString());
-			datos.put("catJugador2", par2.getJugadorDTO1().getCategoria().toString());
-			
-			datos.put("apodoJugador4", par2.getJugadorDTO2().getApodo());
-			datos.put("idJugador4", par2.getJugadorDTO2().getId().toString());
-			datos.put("catJugador4", par2.getJugadorDTO2().getCategoria().toString());
-			
-			cartasOrden.add(par1.getCartasJug1());
-			cartasOrden.add(par2.getCartasJug1());
-			cartasOrden.add(par1.getCartasJug2());
-			cartasOrden.add(par2.getCartasJug2());
-			//Los otros jugadores estaran en modo busqueda pegandole constantemente a este metodo hasta que encuentre partido,
-			//entonces le enviamos las cartas que correspondan al jugador que hace la peticion
-			for (int i = 1; i <= 4; i++) {
-				if(datos.get("apodoJugador"+i).equals(usuario)) {
-					List<CartaDTO> cartasUsr = cartasOrden.get(i);
-					int n = 1;
-					request.setAttribute("usuario", usuario);
-					//TODO Hardcodeado porque falta guardar las cartas cuando se reparten
-					if(cartasUsr == null) {
-						datos.put("IdCarta"+ n, ""+5);
-						datos.put("carta"+n++, 1+"Basto");
-						datos.put("IdCarta"+ n, ""+9);
-						datos.put("carta"+n++, 1+"Espada");
-						datos.put("IdCarta"+ n, ""+23);
-						datos.put("carta"+n++, 1+"Oro");
-					}else{
-						for (CartaDTO c : cartasUsr) {
-							//TODO ver si es necesario mandar el id de la carta para cuando se hagan movimientos (agregar al DTO el id)
-							datos.put("IdCarta"+ n, ""+c.getIdCarta());
-							datos.put("carta"+ n++, c.getNumero()+""+c.getPalo());
-						}
-					}
-					break;
-				}
-			}						
+		List<JugadorDTO> jug = new ArrayList<JugadorDTO>();
+		jug.add(par1.getJugadorDTO1());
+		jug.add(par1.getJugadorDTO2());
+		
+		List<JugadorDTO> jug2 = new ArrayList<JugadorDTO>();
+		jug2.add(par2.getJugadorDTO1());
+		jug2.add(par2.getJugadorDTO2());
+		
+		List<CartaDTO> cartasUsr = null;
+		if(!buscarParejaUsuario(jug, datos, usuario)) {
+			buscarParejaUsuario(jug2, datos, usuario);
+			ordenarParejaContraria(jug, datos);
+			cartasUsr = obtenerCartasUsuario(par2,usuario);
+		}else {
+			ordenarParejaContraria(jug, datos);
+			cartasUsr = obtenerCartasUsuario(par1,usuario);
+		}
+		
+		int n = 1;
+		if(cartasUsr == null) {
+			datos.put("IdCarta"+ n, ""+5);
+			datos.put("carta"+n++, 1+"Basto");
+			datos.put("IdCarta"+ n, ""+9);
+			datos.put("carta"+n++, 1+"Espada");
+			datos.put("IdCarta"+ n, ""+23);
+			datos.put("carta"+n++, 1+"Oro");
+		}else {
+			for (CartaDTO c : cartasUsr) {
+				//TODO ver si es necesario mandar el id de la carta para cuando se hagan movimientos (agregar al DTO el id)
+				datos.put("IdCarta"+ n, ""+c.getIdCarta());
+				datos.put("carta"+ n++, c.getNumero()+""+c.getPalo());
+			}
+		}
+		
+//		cartasOrden.add(par1.getCartasJug1());
+//		cartasOrden.add(par2.getCartasJug1());
+//		cartasOrden.add(par1.getCartasJug2());
+//		cartasOrden.add(par2.getCartasJug2());
+//			//Los otros jugadores estaran en modo busqueda pegandole constantemente a este metodo hasta que encuentre partido,
+//			//entonces le enviamos las cartas que correspondan al jugador que hace la peticion
+//			for (int i = 1; i <= 4; i++) {
+//				if(datos.get("apodoJugador"+i).equals(usuario)) {
+//					List<CartaDTO> cartasUsr = cartasOrden.get(i-1);
+//					int n = 1;
+//					request.setAttribute("usuario", usuario);
+//					//TODO Hardcodeado porque falta guardar las cartas cuando se reparten
+//					if(cartasUsr == null) {
+//						datos.put("IdCarta"+ n, ""+5);
+//						datos.put("carta"+n++, 1+"Basto");
+//						datos.put("IdCarta"+ n, ""+9);
+//						datos.put("carta"+n++, 1+"Espada");
+//						datos.put("IdCarta"+ n, ""+23);
+//						datos.put("carta"+n++, 1+"Oro");
+//					}else{
+//						for (CartaDTO c : cartasUsr) {
+//							//TODO ver si es necesario mandar el id de la carta para cuando se hagan movimientos (agregar al DTO el id)
+//							datos.put("IdCarta"+ n, ""+c.getIdCarta());
+//							datos.put("carta"+ n++, c.getNumero()+""+c.getPalo());
+//						}
+//					}
+//					break;
+//				}
+//			}						
 			String  detallePartido = g.toJson(datos);
 			request.setAttribute("detalle", detallePartido);
+    }
+    
+    private List<CartaDTO> obtenerCartasUsuario(ParejaDTO par, String usuario) {
+    	if(par.getJugadorDTO1().getApodo().equals(usuario)){
+    		return par.getCartasJug1();
+    	}else {
+    		return par.getCartasJug2();
+    	}
+	}
+
+	private void ordenarParejaContraria(List<JugadorDTO> jug, Map<String, String> datos) {
+    		int primero = 0;
+    		int segundo = 0;
+			if(jug.get(0).getNumJugador() < jug.get(1).getNumJugador()) {
+				segundo++;
+			}else{
+				primero++;
+			}
+			datos.put("apodoJugador2", jug.get(primero).getApodo());
+			datos.put("idJugador2", jug.get(primero).getId().toString());
+			datos.put("catJugador2", jug.get(primero).getCategoria().toString());
+			datos.put("posJugador2", jug.get(primero).toString());
+			datos.put("apodoJugador4", jug.get(segundo).getApodo());
+			datos.put("idJugador4", jug.get(segundo).getId().toString());
+			datos.put("catJugador4", jug.get(segundo).getCategoria().toString());
+			datos.put("posJugador4", jug.get(segundo).toString());
+	}
+
+	private boolean buscarParejaUsuario(List<JugadorDTO> jug, Map<String, String> datos, String usuario) {
+		boolean parUsuario = false;
+		for (JugadorDTO jugadorDTO : jug) {
+			if(jugadorDTO.getApodo().equals(usuario)) {
+				datos.put("apodoJugador1", jugadorDTO.getApodo());
+				datos.put("idJugador1", jugadorDTO.getId().toString());
+				datos.put("catJugador1", jugadorDTO.getCategoria().toString());
+				datos.put("posJugador1", jugadorDTO.getNumJugador().toString());
+				jug.remove(jugadorDTO);
+				parUsuario = true;
+				break;
+			}
+		}
+		if(parUsuario){
+			datos.put("apodoJugador3", jug.get(0).getApodo());
+			datos.put("idJugador3", jug.get(0).getId().toString());
+			datos.put("catJugador3", jug.get(0).getCategoria().toString());
+			datos.put("posJugador3", jug.get(0).getNumJugador().toString());
+		}
+		return parUsuario;
     }
 }
