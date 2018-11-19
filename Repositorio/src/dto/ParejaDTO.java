@@ -27,6 +27,8 @@ public class ParejaDTO implements Serializable {
 		this.idPareja = idPareja;
 		this.jugador1 = jug1;
 		this.jugador2 = jug2;
+		this.cartasJug1 = new ArrayList<CartaDTO>();
+		this.cartasJug2 = new ArrayList<CartaDTO>();
 	}
 
 	public JugadorDTO getJugadorDTO1() {

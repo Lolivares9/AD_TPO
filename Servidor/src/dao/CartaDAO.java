@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -13,6 +14,7 @@ import entities.CartaEntity;
 import excepciones.CartaException;
 import hbt.HibernateUtil;
 import negocio.Carta;
+import negocio.Jugador;
 import negocio.Pareja;
 
 public class CartaDAO {
@@ -116,9 +118,14 @@ public class CartaDAO {
 		c3 = String.valueOf(p.getCartasJugador2().get(2).getIdCarta());
 		cartasJug2 = c1+','+c2+','+c3;
 		s.beginTransaction();
-		
+		List<Integer> existe = new ArrayList<Integer>();
 		try {
-			s.createSQLQuery("INSERT INTO PAREJAS_CARTAS VALUES ("+String.valueOf(p.getIdPareja())+",'"+cartasJug1+"','"+cartasJug2+"')").executeUpdate();
+			existe = s.createSQLQuery("SELECT ID_PAREJA FROM PAREJAS_CARTAS WHERE ID_PAREJA = ?").setString(0, String.valueOf(p.getIdPareja())).list();
+			if(existe.size() == 0){
+				s.createSQLQuery("INSERT INTO PAREJAS_CARTAS VALUES ("+String.valueOf(p.getIdPareja())+",'"+cartasJug1+"','"+cartasJug2+"')").executeUpdate();
+			}else{
+				s.createSQLQuery("UPDATE PAREJAS_CARTAS SET CARTAS_JUGADOR1 = ('"+ cartasJug1 +"'), CARTAS_JUGADOR2 = ('"+ cartasJug2 +"') WHERE ID_PAREJA = ?").setString(0, String.valueOf(p.getIdPareja())).executeUpdate();
+			}
 			s.getTransaction().commit();
 		}catch (HibernateException e) {
 			e.printStackTrace();
