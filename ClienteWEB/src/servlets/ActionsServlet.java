@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import delegado.BusinessDelegate;
+import dto.BazaDTO;
 import dto.CartaDTO;
 import dto.JugadorDTO;
 import dto.ParejaDTO;
@@ -61,6 +62,8 @@ public class ActionsServlet extends HttpServlet{
         	guardarJugada(request,response);
         }else if ("GetNovedad".equals(action)){
         	getSiguienteTurno(request,response);
+        }else if ("ResultadoBaza".equals(action)){
+        	resultadoBaza(request,response);
         }
        
     }
@@ -69,13 +72,14 @@ public class ActionsServlet extends HttpServlet{
     	String idBaza = request.getParameter("baza");
     	String numTurnos = request.getParameter("numTurnos");
     	try {
+    		//En el servidor ver si no termino la mano ya, y mandar un flag en el turno para que en la web se cargue otra mano
 			TurnoDTO turno = BusinessDelegate.getInstancia().buscarSiguienteTurno(Integer.valueOf(idBaza), Integer.valueOf(numTurnos));
 			if(turno != null){
 				Gson g = new Gson();
 				Map<String,Object> turnoMapa = new HashMap<String, Object>();
 				turnoMapa.put("carta", turno.getCartaDTO().getNumero()+""+turno.getCartaDTO().getPalo());
 				turnoMapa.put("apodo", turno.getJugadorDTO().getApodo());
-				turnoMapa.put("esMiTurno", true);
+				turnoMapa.put("esMiTurno", true); 
 				String j = g.toJson(turnoMapa);
 
 			    response.setContentType("application/json");
@@ -173,6 +177,21 @@ public class ActionsServlet extends HttpServlet{
 		}     
     }
     
+    private void resultadoBaza(HttpServletRequest request, HttpServletResponse response) {
+    	//TODO
+    	Gson g = new Gson();
+    	Map<String,Object> datos = new HashMap<String,Object>();
+    	String idBaza = request.getParameter("idBaza");
+    	
+    	BazaDTO baza = new BazaDTO(0, null, 0, 0);//Traer baza de server con idBaza
+    	datos.put("puntajeP1", baza.getPuntajePareja1());
+    	datos.put("puntajeP2", baza.getPuntajePareja2());
+    	datos.put("parejaGanadora", baza.getGanadores());
+    	
+		String  result = g.toJson(datos);
+		request.setAttribute("resultados", result);
+    }
+    
     private void armarDetallePartido(HttpServletRequest request, PartidoDTO partido, String usuario) {
 		Gson g = new Gson();
 		request.setAttribute("idPartido", partido.getIdPartido());
@@ -192,10 +211,10 @@ public class ActionsServlet extends HttpServlet{
 		
 		List<CartaDTO> cartasUsr = null;
 		if(!buscarParejaUsuario(jug, datos, usuario)) {
+			datos.put("parejaJugador1", "2");
 			buscarParejaUsuario(jug2, datos, usuario);
 			ordenarParejaContraria(jug, datos);
 			cartasUsr = obtenerCartasUsuario(par2,usuario);
-			datos.put("parejaJugador1", "2");
 		}else {
 			datos.put("parejaJugador1", "1");
 			ordenarParejaContraria(jug2, datos);
@@ -222,19 +241,31 @@ public class ActionsServlet extends HttpServlet{
 	private void ordenarParejaContraria(List<JugadorDTO> jug, Map<String, String> datos) {
     		int primero = 0;
     		int segundo = 0;
+    		String pareja = datos.get("parejaJugador1");
 			if(jug.get(0).getNumJugador() < jug.get(1).getNumJugador()) {
 				segundo++;
 			}else{
 				primero++;
 			}
-			datos.put("apodoJugador2", jug.get(primero).getApodo());
-			datos.put("idJugador2", jug.get(primero).getId().toString());
-			datos.put("catJugador2", jug.get(primero).getCategoria().toString());
-			datos.put("posJugador2", jug.get(primero).toString());
-			datos.put("apodoJugador4", jug.get(segundo).getApodo());
-			datos.put("idJugador4", jug.get(segundo).getId().toString());
-			datos.put("catJugador4", jug.get(segundo).getCategoria().toString());
-			datos.put("posJugador4", jug.get(segundo).toString());
+			if(pareja.equals("1")){
+				datos.put("apodoJugador2", jug.get(primero).getApodo());
+				datos.put("idJugador2", jug.get(primero).getId().toString());
+				datos.put("catJugador2", jug.get(primero).getCategoria().toString());
+				datos.put("posJugador2", jug.get(primero).toString());
+				datos.put("apodoJugador4", jug.get(segundo).getApodo());
+				datos.put("idJugador4", jug.get(segundo).getId().toString());
+				datos.put("catJugador4", jug.get(segundo).getCategoria().toString());
+				datos.put("posJugador4", jug.get(segundo).toString());
+			}else{			
+				datos.put("apodoJugador4", jug.get(primero).getApodo());
+				datos.put("idJugador4", jug.get(primero).getId().toString());
+				datos.put("catJugador4", jug.get(primero).getCategoria().toString());
+				datos.put("posJugador4", jug.get(primero).toString());
+				datos.put("apodoJugador2", jug.get(segundo).getApodo());
+				datos.put("idJugador2", jug.get(segundo).getId().toString());
+				datos.put("catJugador2", jug.get(segundo).getCategoria().toString());
+				datos.put("posJugador2", jug.get(segundo).toString());
+			}
 	}
 
 	private boolean buscarParejaUsuario(List<JugadorDTO> jug, Map<String, String> datos, String usuario) {
