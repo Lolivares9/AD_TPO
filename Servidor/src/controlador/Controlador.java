@@ -23,6 +23,7 @@ import dto.ManoDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
+import enums.Envite;
 import enums.EstadoPartido;
 import enums.TipoModalidad;
 import excepciones.BazaException;
@@ -249,7 +250,7 @@ public class Controlador {
 				List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(b.getIdBaza());
 				
 				for(Turno t : turnos) {
-					System.out.println(t.getJugador().getApodo()+ " cantó "+t.getEnvite()+ " y jugó un "+ t.getCarta().toString());
+					System.out.println(t.getJugador().getApodo()+  (!t.getEnviteTantos().equals(Envite.Nada) ? " cantó " + t.getEnviteTantos() + " y " : " ") + (!t.getEnviteJuego().equals(Envite.Nada) ? " cantó "  + t.getEnviteJuego() + " y ": " ") + " jugó un "+ t.getCarta().toString());
 				}
 				detalleMano.put(b.toDTO(), turnos.stream().map(t -> {
 					try {
@@ -300,6 +301,7 @@ public class Controlador {
 
 	public void actualizarPartido(int idPartido,TurnoDTO turnoDTO) throws PartidoException, GrupoException, JugadorException {
 		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
+		Jugador jugadorTurno = DTOMapper.getInstancia().jugadorDTOtoNegocio(turnoDTO.getJugador());
 		int indiceMano = 0;
 		int indiceBaza = 0;
 		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().size() > 0){
@@ -309,15 +311,35 @@ public class Controlador {
 			indiceBaza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size()-1; 
 		}
 		Baza baza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().get(indiceBaza);
-		Turno turno = DTOMapper.getInstancia().FrontEndToNegocio(turnoDTO);
-		turno.setJugador(JugadorDAO.getInstancia().buscarPorApodo(turnoDTO.getJugadorDTO().getApodo()));
-		turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
-		baza.agregarTurno(turno);		
+		
+		Turno turno = null;
+		for (Turno t : baza.getTurnos()){
+			if (t.getJugador().equals(jugadorTurno)) {
+				turno = t;
+			}
+		}
+		
+		if (turno == null) {
+			turno = DTOMapper.getInstancia().FrontEndToNegocio(turnoDTO);
+			turno.setJugador(JugadorDAO.getInstancia().buscarPorApodo(turnoDTO.getJugadorDTO().getApodo()));
+			if (turno.getCarta() != null )
+				turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
+			baza.agregarTurno(turno);	
+		}
+		
+		turno.setearEnviteActual (turnoDTO.getEnviteActual());
 		
 		p.actualizar();
-		p.nuevaJugada();
+		if (turnoDTO.getEnviteActual().toString().contains("Envido")) {
+			p.nuevaJugadaTantos();
+		}
+		else {
+			p.nuevaJugadaJuego();
+		}
 	}
 	
+
+
 	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws TurnoException, GrupoException {
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);
 		if(turnos != null && turnos.size()>numTurnos) {

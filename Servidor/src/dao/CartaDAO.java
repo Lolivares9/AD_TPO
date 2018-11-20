@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
 import entities.CartaEntity;
+import enums.PaloCarta;
 import excepciones.CartaException;
 import hbt.HibernateUtil;
 import negocio.Carta;
@@ -144,6 +144,31 @@ public class CartaDAO {
 					.createQuery("from CartaEntity where idCarta = ?")
 					.setInteger(0, idCarta).uniqueResult();
 			
+			s.getTransaction().commit();
+			s.close();
+			
+			if (centity != null) {
+				cartaNegocio = this.toNegocio(centity);
+			} else {
+				return cartaNegocio;
+			}
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return cartaNegocio;
+	}
+	
+	public Carta obtenerCartaPorNumeroyPalo(int numero, PaloCarta palo){
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		CartaEntity centity;
+		Carta cartaNegocio = null;
+		try {
+			centity = (CartaEntity) ((Query) s
+					.createQuery("from CartaEntity where numero = ? and palo = ?")
+					.setInteger(0, numero).uniqueResult()).setString(1, palo.toString()).uniqueResult();			
 			s.getTransaction().commit();
 			s.close();
 			

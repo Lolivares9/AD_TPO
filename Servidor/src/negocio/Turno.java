@@ -9,21 +9,24 @@ import util.DTOMapper;
 public class Turno {
 	private Integer idTurno;
 	private Jugador jugador;
-	private Envite envite;
+	private Envite enviteTantos;
+	private Envite enviteJuego;
 	private Carta carta;
 	
-	public Turno(Jugador jugador, Envite envite, Carta carta) {
+	public Turno(Jugador jugador, Envite enviteTantos,Envite enviteJuego, Carta carta) {
 		super();
 		this.jugador = jugador;
-		this.envite = envite;
+		this.enviteTantos = enviteTantos;
+		this.enviteJuego = enviteJuego;
 		this.carta = carta;
 	}
 	
-	public Turno(Integer idTurno,Jugador jugador, Envite envite, Carta carta) {
+	public Turno(Integer idTurno,Jugador jugador, Envite enviteTantos,Envite enviteJuego, Carta carta) {
 		super();
 		this.idTurno = idTurno;
 		this.jugador = jugador;
-		this.envite = envite;
+		this.enviteTantos = enviteTantos;
+		this.enviteJuego = enviteJuego;
 		this.carta = carta;
 	}
 
@@ -33,12 +36,23 @@ public class Turno {
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
-	public Envite getEnvite() {
-		return envite;
+
+	public Envite getEnviteTantos() {
+		return enviteTantos;
 	}
-	public void setEnvite(Envite envite) {
-		this.envite = envite;
+
+	public void setEnviteTantos(Envite enviteTantos) {
+		this.enviteTantos = enviteTantos;
 	}
+
+	public Envite getEnviteJuego() {
+		return enviteJuego;
+	}
+
+	public void setEnviteJuego(Envite enviteJuego) {
+		this.enviteJuego = enviteJuego;
+	}
+
 	public Carta getCarta() {
 		return carta;
 	}
@@ -59,10 +73,19 @@ public class Turno {
 	}
 	
 	public TurnoDTO toDTO() throws GrupoException {
-		return new TurnoDTO(idTurno, jugador.toDTO(), envite, carta.toDTO());
+		return new TurnoDTO(idTurno, jugador.toDTO(), enviteTantos, enviteJuego, carta.toDTO());
 	}
 	
 	public Turno toNegocio(TurnoDTO turno) throws GrupoException{
-		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnvite(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()));
+		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnviteTantos(), turno.getEnviteJuego(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()));
+	}
+
+	public void setearEnviteActual(Envite enviteActual) {
+		if (enviteActual.toString().contains("Envido")) {
+			this.setEnviteTantos(enviteActual);
+		}
+		else {
+			this.setEnviteJuego(enviteActual);
+		}
 	}
 }

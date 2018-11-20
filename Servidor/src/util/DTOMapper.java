@@ -65,11 +65,11 @@ public class DTOMapper {
 	}
 
 	public Turno turnoDTOtoNegocio(TurnoDTO turno) throws GrupoException {
-		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnvite(),cartaDTOtoNegocio(turno.getCartaDTO()));
+		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnviteTantos(), turno.getEnviteJuego(),cartaDTOtoNegocio(turno.getCartaDTO()));
 	}
 	
 	public Turno FrontEndToNegocio(TurnoDTO turno) throws GrupoException {
-		return new Turno(turno.getIdTurno(),null,turno.getEnvite(),null);
+		return new Turno(turno.getIdTurno(),null,turno.getEnviteTantos(), turno.getEnviteJuego(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()));
 	}
 
 	public List<GrupoDTO> gruposToDTO(List<Grupo> grupos) throws GrupoException {

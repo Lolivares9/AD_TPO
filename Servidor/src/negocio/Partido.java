@@ -181,11 +181,6 @@ public class Partido {
 		return chicos;
 	}
 	
-	public boolean nuevaJugada() throws PartidoException{
-		boolean siguienteTurno = Mano.analizarEnvitesMano(this.idPartido);
-		return siguienteTurno;
-	}
-
 	public int getNumeroChicoActual() {
 		return numeroChicoActual;
 	}
@@ -199,4 +194,15 @@ public class Partido {
 		numeroChicoActual = numeroChicoActual + 1;
 		c.crearNuevaMano();
 	}
+
+	public boolean nuevaJugadaTantos() {
+		boolean siguienteTurno = Mano.analizarEnviteTantos(this);
+		return siguienteTurno;
+	}
+
+	public boolean nuevaJugadaJuego() {
+		boolean siguienteTurno = Mano.analizarEnviteJuego(this);
+		return siguienteTurno;
+	}
+	
 }

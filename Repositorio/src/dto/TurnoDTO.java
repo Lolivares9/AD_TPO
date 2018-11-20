@@ -14,23 +14,27 @@ public class TurnoDTO implements Serializable {
 	private Integer numTurno;
 	private Integer idBaza;
 	private JugadorDTO jugador;
-	private Envite envite;
+	private Envite enviteTantos;
+	private Envite enviteJuego;
+	private Envite enviteActual;
 	private CartaDTO carta;
 
-	public TurnoDTO(Integer idTurno, JugadorDTO jugador, Envite envite, CartaDTO carta) {
+	public TurnoDTO(Integer idTurno, JugadorDTO jugador, Envite enviteTantos, Envite enviteJuego, CartaDTO carta) {
 		super();
 		this.idTurno = idTurno;
 		this.jugador = jugador;
-		this.envite = envite;
+		this.enviteTantos = enviteTantos;
+		this.enviteJuego = enviteJuego;
 		this.carta = carta;
 	}
 	
-	public TurnoDTO(Integer idBaza, Integer numTurno, JugadorDTO jugador, Envite envite, CartaDTO carta) {
+	public TurnoDTO(Integer idBaza, Integer numTurno, JugadorDTO jugador,Envite enviteTantos, Envite enviteJuego, CartaDTO carta) {
 		super();
 		this.setIdBaza(idBaza);
 		this.setNumTurno(numTurno);
 		this.jugador = jugador;
-		this.envite = envite;
+		this.enviteTantos = enviteTantos;
+		this.enviteJuego = enviteJuego;
 		this.carta = carta;
 	}
 	
@@ -40,12 +44,47 @@ public class TurnoDTO implements Serializable {
 	public void setJugadorDTO(JugadorDTO jugador) {
 		this.jugador = jugador;
 	}
-	public Envite getEnvite() {
-		return envite;
+
+	public JugadorDTO getJugador() {
+		return jugador;
 	}
-	public void setEnvite(Envite envite) {
-		this.envite = envite;
+
+	public void setJugador(JugadorDTO jugador) {
+		this.jugador = jugador;
 	}
+
+	public Envite getEnviteTantos() {
+		return enviteTantos;
+	}
+
+	public void setEnviteTantos(Envite enviteTantos) {
+		this.enviteTantos = enviteTantos;
+	}
+
+	public Envite getEnviteJuego() {
+		return enviteJuego;
+	}
+
+	public void setEnviteJuego(Envite enviteJuego) {
+		this.enviteJuego = enviteJuego;
+	}
+
+	public Envite getEnviteActual() {
+		return enviteActual;
+	}
+
+	public void setEnviteActual(Envite enviteActual) {
+		this.enviteActual = enviteActual;
+	}
+
+	public CartaDTO getCarta() {
+		return carta;
+	}
+
+	public void setCarta(CartaDTO carta) {
+		this.carta = carta;
+	}
+
 	public CartaDTO getCartaDTO() {
 		return carta;
 	}

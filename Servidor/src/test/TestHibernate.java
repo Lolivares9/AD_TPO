@@ -68,10 +68,10 @@ public class TestHibernate {
 		Turno turno3 = new Turno(pareja1Jug2,Envite.Truco,pareja1.getCartasJugador2().get(0));
 		Turno turno4 = new Turno(pareja2Jug2,Envite.Truco_Querido,pareja2.getCartasJugador2().get(0));*/
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Envido,null);
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Real_Envido,null);
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Falta_Envido,null);
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Envido_RealEnvido_FaltaEnvido_Querido,null);
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Envido, Envite.Nada,null);
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Real_Envido,Envite.Nada,null);
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Falta_Envido,Envite.Nada,null);
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Envido_RealEnvido_FaltaEnvido_Querido,Envite.Nada,null);
 		
 		turnos.add(turno1);
 		turnos.add(turno2);
@@ -86,7 +86,7 @@ public class TestHibernate {
 		//manos.set(0, mano);
 		//p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		p.nuevaJugada();
+		p.nuevaJugadaTantos();
 		
 		
 		
@@ -111,10 +111,10 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = p.getChico().get(0).getManos().get(0).getBazas().get(1);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,pareja1.getCartasJugador1().get(1));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Truco,pareja2.getCartasJugador1().get(1));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Re_Truco,pareja1.getCartasJugador2().get(1));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Truco_QuieroRetruco_Querido,pareja2.getCartasJugador2().get(1));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,Envite.Nada,pareja1.getCartasJugador1().get(1));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Truco,pareja2.getCartasJugador1().get(1));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Re_Truco,pareja1.getCartasJugador2().get(1));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Truco_QuieroRetruco_Querido,pareja2.getCartasJugador2().get(1));
 		
 		turnos.add(turno1);
 		turnos.add(turno2);
@@ -128,7 +128,7 @@ public class TestHibernate {
 		manos.set(0, mano);
 		p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		p.nuevaJugada();
+		p.nuevaJugadaJuego();
 		
 		
 	}
@@ -149,10 +149,10 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = p.getChico().get(0).getManos().get(0).getBazas().get(2);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,pareja1.getCartasJugador1().get(2));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,pareja2.getCartasJugador1().get(2));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,pareja1.getCartasJugador2().get(2));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,pareja2.getCartasJugador2().get(2));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,Envite.Nada,pareja1.getCartasJugador1().get(2));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(2));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(2));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(2));
 		
 		turnos.add(turno1);
 		turnos.add(turno2);
@@ -166,7 +166,7 @@ public class TestHibernate {
 		manos.set(0, mano);
 		p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		p.nuevaJugada();
+		p.nuevaJugadaJuego();
 		
 	}
 

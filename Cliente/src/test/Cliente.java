@@ -11,6 +11,7 @@ import java.util.Map;
 
 import delegado.BusinessDelegate;
 import dto.BazaDTO;
+import dto.CartaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
@@ -18,6 +19,7 @@ import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
 import enums.Envite;
+import enums.PaloCarta;
 import excepciones.ComunicationException;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
@@ -33,19 +35,21 @@ public class Cliente {
 		//crearGrupo();
 		//ingresarNuevosMiembros(); // OK
 		//buscarTodosPartidosJugados();  //OK
-		buscarPartidaLibreIndividual(); // OK
-		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
-		jugador.setCategoria(Categoria.Novato);
-		PartidoDTO part;
-		part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
-		//iniciarPartidaLibreIndividual(part); //TEST OK LAUTI
+		//buscarPartidaLibreIndividual(); // OK
+	
+		/*Crear partido libre individual*/
+		//JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
+		//jugador.setCategoria(Categoria.Novato);
+		//PartidoDTO part;
+		//part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
+	
+	
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
 		//buscarChicosPorPartido();
 		//buscarDetalleChico();
 		
 	}
-
 	private static void iniciarPartidaLibreIndividual(PartidoDTO part) throws GrupoException {
 		if (part != null) {
 			System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
@@ -66,10 +70,10 @@ public class Cliente {
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
 		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
 		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
-		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(3));
-		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(3));
-		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug2().get(3));
-		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug2().get(3));
+		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(3));
+		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(3));
+		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug2().get(3));
+		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug2().get(3));
 		turnos.add(turno1);
 		turnos.add(turno2);
 		turnos.add(turno3);
@@ -84,10 +88,10 @@ public class Cliente {
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
 		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
 		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
-		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(1));
-		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Truco,null);
-		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Truco_Querido,null);
-		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Nada,null);
+		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(1));
+		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,Envite.Truco,null);
+		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Nada,Envite.Truco_Querido,null);
+		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Nada,Envite.Nada,null);
 		turnos.add(turno1);
 		turnos.add(turno2);
 		turnos.add(turno3);
@@ -102,10 +106,10 @@ public class Cliente {
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
 		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
 		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
-		TurnoDTO turno1 = new TurnoDTO(1,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(0));
-		TurnoDTO turno2 = new TurnoDTO(2,pareja2Jug1,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(0));
-		TurnoDTO turno3 = new TurnoDTO(3,pareja1Jug2,Envite.Envido,part.getParejaDTOs().get(0).getCartasJug2().get(0));
-		TurnoDTO turno4 = new TurnoDTO(4,pareja2Jug2,Envite.Envido_Querido,part.getParejaDTOs().get(1).getCartasJug2().get(0));
+		TurnoDTO turno1 = new TurnoDTO(1,pareja1Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(0));
+		TurnoDTO turno2 = new TurnoDTO(2,pareja2Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(0));
+		TurnoDTO turno3 = new TurnoDTO(3,pareja1Jug2,Envite.Envido,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug2().get(0));
+		TurnoDTO turno4 = new TurnoDTO(4,pareja2Jug2,Envite.Envido_Querido,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug2().get(0));
 		turnos.add(turno1);
 		turnos.add(turno2);
 		turnos.add(turno3);
@@ -119,10 +123,10 @@ public class Cliente {
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
 		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
 		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
-		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(0));
-		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(0));
-		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Envido,null);
-		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Envido_Querido,null);
+		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(0));
+		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(0));
+		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Envido,Envite.Nada,null);
+		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Envido_Querido,Envite.Nada,null);
 		turnos.add(turno1);
 		turnos.add(turno2);
 		turnos.add(turno3);

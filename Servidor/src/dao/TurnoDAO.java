@@ -45,7 +45,8 @@ public class TurnoDAO {
 			carta = CartaDAO.getInstancia().toEntity(turno.getCarta());
 		}
 		te.setCarta(carta);
-		te.setEnvite(turno.getEnvite());
+		te.setEnviteTantos(turno.getEnviteTantos());
+		te.setEnviteJuego(turno.getEnviteJuego());
 		te.setIdTurno(turno.getIdTurno());
 		JugadorEntity jugador = JugadorDAO.getInstancia().toEntity(turno.getJugador());
 		te.setJugador(jugador);
@@ -81,7 +82,7 @@ public class TurnoDAO {
 		Turno t = null;
 		if(te != null){
 			t = new Turno(te.getIdTurno(),JugadorDAO.getInstancia().toNegocio(te.getJugador()),
-					te.getEnvite(), CartaDAO.getInstancia().toNegocio(te.getCarta()));
+					te.getEnviteTantos(),te.getEnviteJuego(), CartaDAO.getInstancia().toNegocio(te.getCarta()));
 		}
 		return t;
 	}
