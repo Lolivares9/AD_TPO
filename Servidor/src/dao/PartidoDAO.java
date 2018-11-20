@@ -160,6 +160,7 @@ public class PartidoDAO {
 		return true;
 	}
 
+
 	private PartidoEntity toEntity(Partido partido) {
 		PartidoEntity pe = new PartidoEntity();
 		
@@ -176,6 +177,8 @@ public class PartidoDAO {
 		List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();
 		if(partido.getParejas() != null) {
 			for (Pareja p: partido.getParejas()) {
+				p.getJugador1().guardar();
+				p.getJugador2().guardar();
 				ParejaEntity pEntity = ParejaDAO.getInstancia().toEntity(p);
 				pEntity.getPartidos().add(pe);
 				parejas.add(pEntity);

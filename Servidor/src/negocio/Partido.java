@@ -195,13 +195,13 @@ public class Partido {
 		c.crearNuevaMano();
 	}
 
-	public boolean nuevaJugadaTantos() {
-		boolean siguienteTurno = Mano.analizarEnviteTantos(this);
+	public boolean nuevaJugadaTantos(Turno turno) throws PartidoException {
+		boolean siguienteTurno = Mano.analizarEnviteTantos(this.idPartido, turno);
 		return siguienteTurno;
 	}
 
-	public boolean nuevaJugadaJuego() {
-		boolean siguienteTurno = Mano.analizarEnviteJuego(this);
+	public boolean nuevaJugadaJuego(Turno turno) throws PartidoException {
+		boolean siguienteTurno = Mano.analizarEnviteJuego(this.idPartido, turno);
 		return siguienteTurno;
 	}
 	

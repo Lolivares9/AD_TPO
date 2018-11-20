@@ -42,7 +42,7 @@ public class Cliente {
 		jugador.setCategoria(Categoria.Novato);
 		PartidoDTO part;
 		part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
-	
+		iniciarPartidaLibreIndividual(part);
 	
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
@@ -53,7 +53,12 @@ public class Cliente {
 	private static void iniciarPartidaLibreIndividual(PartidoDTO part) throws GrupoException {
 		if (part != null) {
 			System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
-			//ronda1(part);
+			try {
+				ronda1(part);
+			} catch (ComunicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//ronda11(part);
 			//ronda2(part);
 			//ronda3(part);
@@ -123,15 +128,23 @@ public class Cliente {
 		JugadorDTO pareja1Jug2 = part.getParejaDTOs().get(0).getJugadorDTO2();
 		JugadorDTO pareja2Jug2 = part.getParejaDTOs().get(1).getJugadorDTO2();
 		List <TurnoDTO> turnos = new ArrayList<TurnoDTO>();
-		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(0));
-		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(0));
-		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Envido,Envite.Nada,null);
-		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Envido_Querido,Envite.Nada,null);
+		TurnoDTO turno1 = new TurnoDTO(null,pareja1Jug1,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug1().get(0));
+		TurnoDTO turno2 = new TurnoDTO(null,pareja2Jug1,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug1().get(0));
+		TurnoDTO turno3 = new TurnoDTO(null,pareja1Jug2,Envite.Envido,null);
+		TurnoDTO turno4 = new TurnoDTO(null,pareja2Jug2,Envite.Envido_Querido,null);
+		TurnoDTO turno33 = new TurnoDTO(null,pareja1Jug2,Envite.Nada,part.getParejaDTOs().get(0).getCartasJug2().get(0));
+		TurnoDTO turno44 = new TurnoDTO(null,pareja2Jug2,Envite.Nada,part.getParejaDTOs().get(1).getCartasJug2().get(0));
 		turnos.add(turno1);
 		turnos.add(turno2);
 		turnos.add(turno3);
 		turnos.add(turno4);
 		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno1);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno2);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno3);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno4);
+		
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno33);
+		BusinessDelegate.getInstancia().nuevaJugada(part.getIdPartido(),turno44);
 	}
 
 	private static void buscarPartidaLibreIndividual() {

@@ -134,7 +134,6 @@ public class Baza {
 	
 	/**Aca vamos a evaluar la carta mas alta de la Baza, se seteará la pareja ganadora de la baza*/
 	public void cartaMasAltaBaza(Baza bazaActual, Pareja pareja1, Pareja pareja2){
-		if(bazaActual.getTurnos().size() == 4){
 			Turno turno1 = bazaActual.getTurnos().get(0);
 			Turno turno2 = bazaActual.getTurnos().get(1);
 			Turno turno3 = bazaActual.getTurnos().get(2);
@@ -145,14 +144,37 @@ public class Baza {
 			Carta cartaJug4 = turno4.getCarta();
 			
 			if((cartaJug1.getValorJuego() > cartaJug2.getValorJuego() && cartaJug1.getValorJuego() > cartaJug4.getValorJuego()) || (cartaJug3.getValorJuego() > cartaJug2.getValorJuego() && cartaJug3.getValorJuego() > cartaJug4.getValorJuego())){
+				if(cartaJug1.getValorJuego() > cartaJug3.getValorJuego()){
+					pareja1.getJugador1().setNumeroTurnoPartido(1);
+					pareja2.getJugador1().setNumeroTurnoPartido(2);
+					pareja1.getJugador2().setNumeroTurnoPartido(3);
+					pareja2.getJugador2().setNumeroTurnoPartido(4);
+				}
+				else if(cartaJug3.getValorJuego() > cartaJug1.getValorJuego()){
+					pareja1.getJugador2().setNumeroTurnoPartido(1);
+					pareja2.getJugador2().setNumeroTurnoPartido(2);
+					pareja1.getJugador1().setNumeroTurnoPartido(3);
+					pareja2.getJugador1().setNumeroTurnoPartido(4);
+				}
 				bazaActual.setGanadores(pareja1);
 			}
 			else if((cartaJug2.getValorJuego() > cartaJug1.getValorJuego() && cartaJug2.getValorJuego() > cartaJug3.getValorJuego()) || (cartaJug4.getValorJuego() > cartaJug1.getValorJuego() && cartaJug4.getValorJuego() > cartaJug3.getValorJuego())){
+				if(cartaJug2.getValorJuego() > cartaJug4.getValorJuego()){
+					pareja2.getJugador1().setNumeroTurnoPartido(1);
+					pareja1.getJugador2().setNumeroTurnoPartido(2);
+					pareja2.getJugador2().setNumeroTurnoPartido(3);
+					pareja1.getJugador1().setNumeroTurnoPartido(4);
+				}
+				else if(cartaJug4.getValorJuego() > cartaJug2.getValorJuego()){
+					pareja2.getJugador2().setNumeroTurnoPartido(1);
+					pareja1.getJugador1().setNumeroTurnoPartido(2);
+					pareja2.getJugador1().setNumeroTurnoPartido(3);
+					pareja1.getJugador2().setNumeroTurnoPartido(4);
+				}
 				bazaActual.setGanadores(pareja2);
 			}
 			else{
 				bazaActual.setGanadores(null);
 			}
 		}
-	}
 }

@@ -314,8 +314,9 @@ public class Controlador {
 		
 		Turno turno = null;
 		for (Turno t : baza.getTurnos()){
-			if (t.getJugador().equals(jugadorTurno)) {
+			if (t.getJugador().getId().equals(jugadorTurno.getId())) {
 				turno = t;
+				break;
 			}
 		}
 		
@@ -326,15 +327,17 @@ public class Controlador {
 				turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
 			baza.agregarTurno(turno);	
 		}
-		
+		else if (turno.getCarta() == null && turnoDTO.getCartaDTO() != null) {
+			turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
+		}
 		turno.setearEnviteActual (turnoDTO.getEnviteActual());
 		
 		p.actualizar();
 		if (turnoDTO.getEnviteActual().toString().contains("Envido")) {
-			p.nuevaJugadaTantos();
+			p.nuevaJugadaTantos(turno);
 		}
 		else {
-			p.nuevaJugadaJuego();
+			p.nuevaJugadaJuego(turno);
 		}
 	}
 	
