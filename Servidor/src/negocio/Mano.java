@@ -102,12 +102,14 @@ public class Mano {
 	}
 	
 	private static void actualizacionJuegoPartido(Partido partidoNegocio, Chico chicoActual, Mano manoActual, Baza bazaActual) {
-		if (chicoActual.isFinalizado()) {
-			partidoNegocio.crearNuevoChico();
-		}
-		else {
+		if (bazaActual.isBazaTerminada()) {
 			if (manoActual.getParejaGanadora() != null) {
-				chicoActual.crearNuevaMano();
+				if (chicoActual.isFinalizado()) {
+					partidoNegocio.crearNuevoChico();
+				}
+				else {
+					chicoActual.crearNuevaMano();
+				}
 			}
 			else {
 				manoActual.crearNuevaBaza();					
@@ -120,10 +122,7 @@ public class Mano {
 		int indiceChico = 0;
 		int indiceMano = 0;
 		int indiceBaza = 0;
-		int indiceTurno = 0;
 		Partido partidoNegocio = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
-		Pareja pareja1 = partidoNegocio.getParejas().get(0);
-		Pareja pareja2 = partidoNegocio.getParejas().get(1);
 		if(partidoNegocio.getNumeroChicoActual() > 0){
 			indiceChico = partidoNegocio.getNumeroChicoActual()-1;
 		}
@@ -139,11 +138,7 @@ public class Mano {
 		Chico chicoActual = partidoNegocio.getChico().get(indiceChico);
 		Mano manoActual = chicoActual.getManos().get(indiceMano);
 		Baza bazaActual = manoActual.getBazas().get(indiceBaza);
-		
-		if(bazaActual.getTurnos().size() > 0){
-			indiceTurno = bazaActual.getTurnos().size()-1;
-		}
-		
+				
 		Turno turnoEnvite = null;
 		for (Turno t: bazaActual.getTurnos()) {
 			if (t.getJugador().getId().equals(turnoActual.getJugador().getId())) {
@@ -151,158 +146,32 @@ public class Mano {
 				break;
 			}
 		}
-		/*if(bazaActual.getEnviteActual() == null && bazaActual.getTurnos().size() > 0){
-			turnoEnvite = bazaActual.getTurnos().get(indiceTurno);
-		}*/
 		
-		//*******COMENZAMOS CON EL ENVIDO**********
+		bazaActual.analizarEnviteTantos(partidoNegocio,turnoEnvite);
 		
-		if(turnoEnvite.getEnviteTantos().equals(Envite.Envido)){
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.Envido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,2,false);
-			//PAREJA GANADORA +2 PUNTOS
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.Envido_RealEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,5,false);
-			partidoNegocio.actualizar();
-			//PAREJA GANADORA +5 PUNTOS
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.Envido_RealEnvido_FaltaEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
-			actualizacionJuegoPartido(partidoNegocio, chicoActual, manoActual, bazaActual);
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.Envido_FaltaEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
-			//PAREJA GANADORA GANA CHICO
-			return false;
-		}
-
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.Envido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,1);
-			//PAREJA GANADORA +1 PUNTOS
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.Envido_RealEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,3);
-			//PAREJA GANADORA +3 PUNTOS
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.Envido_FaltaEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,5);
-			//PAREJA GANADORA +5 PUNTOS
-			return true;
-		}
+		manoActual.cargarMovimientoBaza(bazaActual,partidoNegocio);
+		chicoActual.cargarMovimientoMano(manoActual,partidoNegocio);
+		partidoNegocio.cargarMovimientoChico(chicoActual);
 		
+		actualizacionJuegoPartido(partidoNegocio, chicoActual, manoActual, bazaActual);
 		
-		
-		//*******COMENZAMOS CON EL ENVIDO ENVIDO**********
-		
-		if(turnoEnvite.getEnviteTantos().equals(Envite.Envido_Envido)){
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.EnvidoEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,4,false);
-			//PAREJA GANADORA +4 PUNTOS
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.EnvidoEnvido_RealEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,7,false);
-			//PAREJA GANADORA +7 PUNTOS
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.EnvidoEnvido_FaltaEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
-			//PAREJA GANADORA GANA CHICO
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.EnvidoEnvido_RealEnvido_FaltaEnvido_Querido)){
-			Baza nuevaBaza = new Baza();
-			nuevaBaza.setNumero(1);
-			Mano nuevaMano = new Mano();
-			List <Baza>	bazasNuevas = new ArrayList<Baza>();
-			bazasNuevas.add(nuevaBaza);
-			nuevaMano.setBazas(bazasNuevas);
-			chicoActual.getManos().add(nuevaMano);
-			//FALTA MODIFICAR QUE EL FALTA ENVIDO, TE DA LO QUE LE FALTA AL OTRO PARA GANAR
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
-		
-			//PAREJA GANADORA GANA CHICO
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.EnvidoEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,2);
-			//PAREJA GANADORA +2 PUNTOS
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.EnvidoEnvido_RealEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,4);
-			//PAREJA GANADORA +4 PUNTOS
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.EnvidoEnvido_FaltaEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,4);
-			//PAREJA GANADORA +4 PUNTOS
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.EnvidoEnvido_RealEnvido_FaltaEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,7);
-			//PAREJA GANADORA +7 PUNTOS
-			return false;
-		}
-
-		
-		
-		//*******COMENZAMOS CON EL REAL ENVIDO**********
-		
-		if(turnoEnvite.getEnviteTantos().equals(Envite.Real_Envido)){
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.RealEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,3,false);
-			//PAREJA GANADORA +3 PUNTOS
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.RealEnvido_FaltaEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
-			//PAREJA GANADORA GANA PARTIDO
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.RealEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,1);
-			//PAREJA GANADORA +1 PUNTOS
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.RealEnvido_FaltaEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,3);
-			//PAREJA GANADORA +3 PUNTOS
-			return false;
-		}
-
-		
-		
-		//*******COMENZAMOS CON EL FALTA ENVIDO**********
-		
-		if(turnoEnvite.getEnviteTantos().equals(Envite.Falta_Envido)){
-			return true;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.FaltaEnvido_Querido)){
-			setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,3,true);
-			//PAREJA GANADORA GANA CHICO
-			return false;
-		}
-		else if(turnoEnvite.getEnviteTantos().equals(Envite.FaltaEnvido_NoQuerido)){
-			setearPuntajeEnvidoNOquerido(partidoNegocio,bazaActual,chicoActual,2);
-			//PAREJA GANADORA +2 PUNTOS
-			return false;
-		}
 		return true;
 	}
 	
+	private void cargarMovimientoBaza(Baza bazaActual, Partido p) {
+		if (bazaActual.getGanadores().getIdPareja() != null) {
+			
+			this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
+			this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());	
+			
+			boolean finalizaMano = isFinalizaMano(p.getParejas().get(0),p.getParejas().get(1),this.getBazas(),bazaActual);
+			if(finalizaMano){
+				this.setParejaGanadora(bazaActual.getGanadores());
+			}
+		}
+		
+	}
+
 	public static boolean analizarEnviteJuego(int idPartido, Turno turnoActual) throws PartidoException {
 		int indiceChico = 0;
 		int indiceMano = 0;
@@ -338,327 +207,46 @@ public class Mano {
 				break;
 			}
 		}
-		/*
-		if(bazaActual.getEnviteActual() == null && bazaActual.getTurnos().size() > 0){
-			turnoEnvite = bazaActual.getTurnos().get(indiceTurno);
-		}
-		*/
-		//*******COMENZAMOS CON EL TRUCO**********
+		bazaActual.analizarEnviteJuego(partidoNegocio,turnoEnvite);
 		
-		if(turnoEnvite.getEnviteJuego().equals(Envite.Truco)){
-			return true;
-		}
-		else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_Querido)){
-			if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,2)){
-				return true;
-			}
-			//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
-			//PAREJA GANADORA +2 PUNTOS
-		}
-		else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_QuieroRetruco_Querido)){
-			if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,3)){
-				return true;
-			}
-			//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
-			//PAREJA GANADORA +3 PUNTOS
-		}
-		else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_QuieroRetruco_QuieroValeCuatro_Querido)){
-			if(setearPuntajeTruco(partidoNegocio,bazaActual,chicoActual,manoActual,4)){
-				return true;
-			}
-			//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
-			//PAREJA GANADORA +4 PUNTOS
-		}
-		else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_NoQuerido)){
-			if(pareja1.getJugador1().equals(turnoEnvite.getJugador()) || pareja1.getJugador1().equals(turnoEnvite.getJugador())){
-				setearPuntajeTrucoNoQuerido(partidoNegocio,bazaActual,chicoActual,1,pareja1);
-			}
-			else{
-				setearPuntajeTrucoNoQuerido(partidoNegocio,bazaActual,chicoActual,1,pareja2);
-			}
-			//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
-			//PAREJA GANADORA +1 PUNTOS
-		}
-		else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_QuieroRetruco_NoQuerido)){
-			if(pareja1.getJugador1().equals(turnoEnvite.getJugador()) || pareja1.getJugador1().equals(turnoEnvite.getJugador())){
-				setearPuntajeTrucoNoQuerido(partidoNegocio,bazaActual,chicoActual,2,pareja1);
-			}
-			else{
-				setearPuntajeTrucoNoQuerido(partidoNegocio,bazaActual,chicoActual,2,pareja2);
-			}
-			//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
-			//PAREJA GANADORA +2 PUNTOS
-		}
-		else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_QuieroRetruco_QuieroValeCuatro_NoQuerido)){
-			if(pareja1.getJugador1().equals(turnoEnvite.getJugador()) || pareja1.getJugador1().equals(turnoEnvite.getJugador())){
-				setearPuntajeTrucoNoQuerido(partidoNegocio,bazaActual,chicoActual,3,pareja1);
-			}
-			else{
-				setearPuntajeTrucoNoQuerido(partidoNegocio,bazaActual,chicoActual,3,pareja2);
-			}
-			//TOMO LAS CARTAS DE LA BAZA ACTUAL (RECORDAR QUE TIENE QUE HABER 4 CARTAS SOBRE EL TABLERO) Y ME FIJO QUE PAREJA GANA, Y LA QUE GANA, GANA LA MANO
-			//PAREJA GANADORA +3 PUNTOS
-		}
+		manoActual.cargarMovimientoBaza(bazaActual,partidoNegocio);
+		chicoActual.cargarMovimientoMano(manoActual,partidoNegocio);
+		partidoNegocio.cargarMovimientoChico(chicoActual);
 		
-		//*******MAZO**********
-		
-		else if(turnoEnvite.getEnviteJuego().equals(Envite.Mazo)){
-			turnoEnvite = bazaActual.getTurnos().get(indiceTurno-1);
-			if(bazaActual.getNumero() == 0){
-				setearPuntajeEnvido(partidoNegocio,manoActual,bazaActual,chicoActual,0,true);
-			}else{
-				if(pareja1.getJugador1().equals(turnoEnvite.getJugador()) || pareja1.getJugador2().equals(turnoEnvite.getJugador())){
-					bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + 1);
-					chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1() + 1);
-				}
-				else{
-					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + 1);
-					chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + 1);
-				}
-				partidoNegocio.actualizar();
-			}
-			//ACA SI ES LA PRIMER BAZA, LA PAREJA QUE (NO) SE VA AL MAZO VA A GANAR 2 PUNTOS, SINO, GANA SOLAMENTE 1
-		}
-		
-		//*******NADA**********
-
-		else if(turnoEnvite.getEnviteJuego().equals(Envite.Nada)){
-			if(bazaActual.getTurnos().size() == 4){
-				Turno turno1 = bazaActual.getTurnos().get(0);
-				Turno turno2 = bazaActual.getTurnos().get(1);
-				Turno turno3 = bazaActual.getTurnos().get(2);
-				Turno turno4 = bazaActual.getTurnos().get(3);
-				Carta cartaJug1 = turno1.getCarta();
-				Carta cartaJug2 = turno2.getCarta();
-				Carta cartaJug3 = turno3.getCarta();
-				Carta cartaJug4 = turno4.getCarta();
-				if (cartaJug1 != null && cartaJug2 != null && cartaJug3 != null && cartaJug4 != null ) {
-					bazaActual.cartaMasAltaBaza(bazaActual, partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1));
-				}
-			}
-			
-			if(bazaActual.getGanadores().getIdPareja() != null){
-				if (bazaActual.getGanadores().equals(pareja1)) {
-					bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + 1 );
-				}
-				else {
-					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 1 );
-				}
-				Baza nuevaBaza = new Baza();
-				if(manoActual.getBazas().size() == 1){
-					bazaActual.setBazaTerminada(true);
-					nuevaBaza.setNumero(2);
-					nuevaBaza.setPuntajePareja1(0); 
-					nuevaBaza.setPuntajePareja2(0);
-					
-					//nuevaBaza.setPuntajePareja1(bazaActual.getPuntajePareja1()); 
-					//nuevaBaza.setPuntajePareja2(bazaActual.getPuntajePareja2());
-					/*ESTO ME PARECE QUE NO VA, LA BAZA NO TIENE QUE ARRASTRAR PUNTAJE DE LA BAZA ANTERIOR
-					CUANDO SE CIERRA LA MANO PORQUE SE JUGARON LAS BAZAS, AHI SE RECORRE
-					*/
-					manoActual.getBazas().add(nuevaBaza);
-					partidoNegocio.actualizar();
-				}
-				else if(manoActual.getBazas().size() == 2){
-					bazaActual.setBazaTerminada(true);
-					if(manoActual.getBazas().get(0).getGanadores().equals(pareja1) && manoActual.getBazas().get(1).getGanadores().equals(pareja1)){
-						manoActual.setParejaGanadora(pareja1);
-						chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1()+1);
-						nuevaBaza.setNumero(1);
-						Mano nuevaMano = new Mano();
-						List <Baza>	bazasNuevas = new ArrayList<Baza>();
-						bazasNuevas.add(nuevaBaza);
-						nuevaMano.setBazas(bazasNuevas);
-						chicoActual.getManos().add(nuevaMano);
-					}
-					else if(manoActual.getBazas().get(0).getGanadores().equals(pareja2) && manoActual.getBazas().get(1).getGanadores().equals(pareja2)){
-						manoActual.setParejaGanadora(pareja2);
-						chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2()+1);
-						nuevaBaza.setNumero(1);
-						Mano nuevaMano = new Mano();
-						List <Baza>	bazasNuevas = new ArrayList<Baza>();
-						bazasNuevas.add(nuevaBaza);
-						nuevaMano.setBazas(bazasNuevas);
-						chicoActual.getManos().add(nuevaMano);
-					}
-					else{
-						nuevaBaza.setNumero(3);
-						nuevaBaza.setPuntajePareja1(bazaActual.getPuntajePareja1());
-						nuevaBaza.setPuntajePareja2(bazaActual.getPuntajePareja2());
-						manoActual.getBazas().add(nuevaBaza);
-					}
-					partidoNegocio.actualizar();
-				}
-				else{
-					bazaActual.setBazaTerminada(true);
-					if((manoActual.getBazas().get(0).getGanadores().equals(pareja1) && manoActual.getBazas().get(2).getGanadores().equals(pareja1)) || 
-							(manoActual.getBazas().get(1).getGanadores().equals(pareja1) && manoActual.getBazas().get(2).getGanadores().equals(pareja1))){
-						manoActual.setParejaGanadora(pareja1);
-						chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1()+1);
-					}
-					else{
-						manoActual.setParejaGanadora(pareja2);
-						chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2()+1);
-					}
-					nuevaBaza.setNumero(1);
-					Mano nuevaMano = new Mano();
-					List <Baza>	bazasNuevas = new ArrayList<Baza>();
-					bazasNuevas.add(nuevaBaza);
-					nuevaMano.setBazas(bazasNuevas);
-					chicoActual.getManos().add(nuevaMano);
-					partidoNegocio.actualizar();
-				}
-				
-			}
-			//SI ES EL ULTIMO TURNO, ES DECIR EL JUGADOR NUMERO 4, ME FIJO A VER QUE PAREJA GANA ESA BAZA, BUSCANDO LA CARTA MAS ALTA
-			//LA PAREJA QUE GANE MAS DE 1 BAZA, GANA LA MANO
-		}
-		
+		actualizacionJuegoPartido(partidoNegocio, chicoActual, manoActual, bazaActual);		
 		return false;
 	}
 	
 	public void crearNuevaBaza() {
 		int indiceUltimaBaza = 0;
-		if (bazas.size() > 0) {
-			indiceUltimaBaza = bazas.size() - 1;
-			puntajePareja1 = puntajePareja1 + bazas.get(indiceUltimaBaza).getPuntajePareja1();
-			puntajePareja2 = puntajePareja2 + bazas.get(indiceUltimaBaza).getPuntajePareja2();
-			
-			//esto debe ir al jugar la baza, no al inicialziar una nueva.
-		}	
 		Baza bazaNueva = new Baza(bazas.size() + 1, null, 0, 0, null);
 		bazas.add(bazaNueva);
 	}
 
-	/**Si este metodo devuelve false, es porque a alguno de los jugadores le falta jugar una carta, para que se pueda evaluar los ganadores*/
-	private static boolean setearPuntajeTruco(Partido p, Baza bazaActual, Chico chicoActual, Mano manoActual, int puntaje){
-		boolean faltaJugarCarta = false;
-		boolean finaliza_mano = false;
-		for(int i = 0;i<bazaActual.getTurnos().size();i++){
-			if(bazaActual.getTurnos().get(i).getCarta() == null){
-				faltaJugarCarta = true;
-				break;
-			}
-		}
-		if(faltaJugarCarta == false){
-			bazaActual.cartaMasAltaBaza(bazaActual, p.getParejas().get(0), p.getParejas().get(1));
-			finaliza_mano = verificarGanadores(p.getParejas().get(0),p.getParejas().get(1),manoActual.getBazas(),bazaActual);
-			if(bazaActual.getGanadores() != null){
-				bazaActual.setBazaTerminada(true);
-				if(finaliza_mano){
-					manoActual.setParejaGanadora(bazaActual.getGanadores());
-					if(manoActual.getParejaGanadora().equals(p.getParejas().get(0))){
-						bazaActual.setGanadores(p.getParejas().get(0));
-						chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1() + puntaje);
-						bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + puntaje);
-					}
-					else{
-						bazaActual.setGanadores(p.getParejas().get(1));
-						chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja2() + puntaje);
-						bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja2() + puntaje);
-					}
-					Baza nuevaBaza = new Baza();
-					nuevaBaza.setNumero(1);
-					Mano nuevaMano = new Mano();
-					List <Baza>	bazasNuevas = new ArrayList<Baza>();
-					bazasNuevas.add(nuevaBaza);
-					nuevaMano.setBazas(bazasNuevas);
-					chicoActual.getManos().add(nuevaMano);
-					p.actualizar();
-				}
-			}
-		}
-		return true;
-	}
-	
-	private static boolean verificarGanadores(Pareja p1,Pareja p2,List<Baza> bazas,Baza bazaActual) {
+	private boolean isFinalizaMano(Pareja p1,Pareja p2,List<Baza> bazas,Baza bazaActual) {
 		boolean finaliza_mano = false;
 		if(bazaActual.getNumero() == 1){
-			return finaliza_mano;
+			finaliza_mano = false;
 		}
 		else if(bazaActual.getNumero() == 2){
 			if((bazas.get(0).getGanadores().equals(p1) && bazaActual.getGanadores().equals(p1)) || (bazas.get(0).getGanadores().equals(p2) && bazaActual.getGanadores().equals(p2))){
-				return finaliza_mano = true;
+				finaliza_mano = true;
 			}
 		}
 		else if(bazaActual.getNumero() == 3){
 			if((bazaActual.getGanadores().equals(p1) && bazas.get(1).getGanadores().equals(p1)) || (bazaActual.getGanadores().equals(p2) && bazas.get(1).getGanadores().equals(p2))){
-				return finaliza_mano = true;
+				finaliza_mano = true;
 			}
 			else if((bazaActual.getGanadores().equals(p1) && bazas.get(0).getGanadores().equals(p1)) || (bazaActual.getGanadores().equals(p2) && bazas.get(0).getGanadores().equals(p2))){
-				return finaliza_mano = true;
+				finaliza_mano = true;
 			}
 		}
 		return finaliza_mano;
 	}
 
-	private static void setearPuntajeTrucoNoQuerido(Partido p, Baza bazaActual, Chico chicoActual, int puntaje, Pareja parejaGanadora){
-		Pareja pareja1 = p.getParejas().get(0);
-		if(pareja1.equals(pareja1)){
-			bazaActual.setBazaTerminada(true);
-			bazaActual.setGanadores(p.getParejas().get(0));
-			bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + puntaje);
-			chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1() + puntaje);
-		}
-		else{
-			bazaActual.setBazaTerminada(true);
-			bazaActual.setGanadores(p.getParejas().get(1));
-			bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + puntaje);
-			chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + puntaje);
-		}
-		p.actualizar();
-	}
 	
-	private static void setearPuntajeEnvidoNOquerido(Partido p, Baza bazaActual, Chico chicoActual, int puntaje) {
-		int indiceTurno=0;
-		indiceTurno = bazaActual.getTurnos().size()-1;
-		Turno turnoEnvite = null;
-		turnoEnvite = bazaActual.getTurnos().get(indiceTurno-1);
-		if(p.getParejas().get(0).getJugador1().equals(turnoEnvite.getJugador()) || p.getParejas().get(0).getJugador2().equals(turnoEnvite.getJugador())){
-			bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + puntaje);
-			chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1() + puntaje);
-		}
-		else{
-			bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja1() + puntaje);
-			chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja1() + puntaje);
-		}
-		p.actualizar();
-		
-	}
 
-	private static void setearPuntajeEnvido(Partido p, Mano manoActual, Baza bazaActual, Chico chicoActual, int puntaje,boolean finaliza_chico) {
-		if(finaliza_chico){
-			if(p.getParejas().get(0).equals(Pareja.calcularTantoParejas(p.getParejas().get(0), p.getParejas().get(1)))){
-				bazaActual.setPuntajePareja1(30);
-				bazaActual.setGanadores(p.getParejas().get(0));
-				manoActual.setParejaGanadora(p.getParejas().get(0));
-				chicoActual.setParejaGanadora(p.getParejas().get(0));
-				chicoActual.setPuntajePareja1(30);
-				chicoActual.setFinalizado(true);
-			}
-			else{
-				bazaActual.setPuntajePareja2(30);
-				bazaActual.setGanadores(p.getParejas().get(1));
-				manoActual.setParejaGanadora(p.getParejas().get(1));
-				chicoActual.setParejaGanadora(p.getParejas().get(1));
-				chicoActual.setPuntajePareja2(30);
-				chicoActual.setFinalizado(true);
-				if (p.getNumeroChicoActual() < 3) {
-					p.setNumeroChicoActual(p.getNumeroChicoActual() + 1);
-				}
-			}
-		}else{
-			if(p.getParejas().get(0).equals(Pareja.calcularTantoParejas(p.getParejas().get(0),p.getParejas().get(1)))){
-				bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + puntaje);
-				manoActual.setPuntajePareja1(manoActual.getPuntajePareja1() + puntaje);
-				chicoActual.setPuntajePareja1(chicoActual.getPuntajePareja1() + puntaje);
-			}else {
-				bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + puntaje);
-				manoActual.setPuntajePareja2(manoActual.getPuntajePareja2() + puntaje);
-				chicoActual.setPuntajePareja2(chicoActual.getPuntajePareja2() + puntaje);
-			}
-		}
-		p.actualizar();
-	}
+
+
 
 }

@@ -204,5 +204,38 @@ public class Partido {
 		boolean siguienteTurno = Mano.analizarEnviteJuego(this.idPartido, turno);
 		return siguienteTurno;
 	}
-	
+
+	public void cargarMovimientoChico(Chico chicoActual) {
+		if (chicoActual.isFinalizado()) {
+			if (isFinalizaPartido(chicoActual)) {
+				parejaGanadora = chicoActual.getParejaGanadora();
+			}else {
+				crearNuevoChico();
+			}
+		}
+	}
+	private boolean isFinalizaPartido(Chico chicoActual) {
+		Pareja p1 = this.getParejas().get(0);
+		Pareja p2 = this.getParejas().get(1);
+		
+		boolean finalizaPartido = false;
+		if(getNumeroChicoActual()== 1){
+			finalizaPartido = false;
+		}
+		else if(getNumeroChicoActual()== 2){
+			if((this.getChico().get(0).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1)) || this.getChico().get(0).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2)){
+				finalizaPartido = true;
+			}
+		}
+		else if(getNumeroChicoActual()== 3){
+			if( (this.getChico().get(0).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1))|| (this.getChico().get(1).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1)) ){
+				finalizaPartido = true;
+			}
+			else if((this.getChico().get(0).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2))|| (this.getChico().get(1).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2)) ){
+				finalizaPartido = true;
+			}
+		}
+		return finalizaPartido;
+	}
+
 }

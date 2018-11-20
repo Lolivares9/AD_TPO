@@ -113,4 +113,25 @@ public class Chico {
 		m.crearNuevaBaza();
 		manos.add(m);
 	}
+
+	public void cargarMovimientoMano(Mano manoActual, Partido p) {
+		
+		Pareja pareja1 = p.getParejas().get(0);
+		Pareja pareja2 = p.getParejas().get(1);
+		
+		if (manoActual.getParejaGanadora() != null) {
+			
+			this.setPuntajePareja1(puntajePareja1 + manoActual.getPuntajePareja1());
+			this.setPuntajePareja2(puntajePareja2 +manoActual.getPuntajePareja2());
+			
+			if (manoActual.getPuntajePareja1() == 30) {
+				this.setParejaGanadora(pareja1);
+				this.setFinalizado(true);
+			}
+			else if (manoActual.getPuntajePareja2() == 30) {
+				this.setParejaGanadora(pareja2);
+				this.setFinalizado(true);
+			}
+		}
+	}
 }
