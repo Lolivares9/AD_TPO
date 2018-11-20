@@ -30,18 +30,18 @@ public class Cliente {
 	public static void main(String[] args) throws ComunicationException, RemoteException, JugadorException, GrupoException {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		//altaJugador();  // OK 
-		//iniciarSesion(); // OK 
+		altaJugador();  // OK 
+		iniciarSesion(); // OK 
 		//crearGrupo();
 		//ingresarNuevosMiembros(); // OK
 		//buscarTodosPartidosJugados();  //OK
-		//buscarPartidaLibreIndividual(); // OK
+		buscarPartidaLibreIndividual(); // OK
 	
 		/*Crear partido libre individual*/
-		//JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
-		//jugador.setCategoria(Categoria.Novato);
-		//PartidoDTO part;
-		//part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
+		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
+		jugador.setCategoria(Categoria.Novato);
+		PartidoDTO part;
+		part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
 	
 	
 		//repartirCartas();
