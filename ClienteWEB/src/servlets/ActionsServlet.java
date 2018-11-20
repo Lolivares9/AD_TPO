@@ -192,10 +192,10 @@ public class ActionsServlet extends HttpServlet{
 		
 		List<CartaDTO> cartasUsr = null;
 		if(!buscarParejaUsuario(jug, datos, usuario)) {
+			datos.put("parejaJugador1", "2");
 			buscarParejaUsuario(jug2, datos, usuario);
 			ordenarParejaContraria(jug, datos);
 			cartasUsr = obtenerCartasUsuario(par2,usuario);
-			datos.put("parejaJugador1", "2");
 		}else {
 			datos.put("parejaJugador1", "1");
 			ordenarParejaContraria(jug2, datos);
@@ -222,19 +222,31 @@ public class ActionsServlet extends HttpServlet{
 	private void ordenarParejaContraria(List<JugadorDTO> jug, Map<String, String> datos) {
     		int primero = 0;
     		int segundo = 0;
+    		String pareja = datos.get("parejaJugador1");
 			if(jug.get(0).getNumJugador() < jug.get(1).getNumJugador()) {
 				segundo++;
 			}else{
 				primero++;
 			}
-			datos.put("apodoJugador2", jug.get(primero).getApodo());
-			datos.put("idJugador2", jug.get(primero).getId().toString());
-			datos.put("catJugador2", jug.get(primero).getCategoria().toString());
-			datos.put("posJugador2", jug.get(primero).toString());
-			datos.put("apodoJugador4", jug.get(segundo).getApodo());
-			datos.put("idJugador4", jug.get(segundo).getId().toString());
-			datos.put("catJugador4", jug.get(segundo).getCategoria().toString());
-			datos.put("posJugador4", jug.get(segundo).toString());
+			if(pareja.equals("1")){
+				datos.put("apodoJugador2", jug.get(primero).getApodo());
+				datos.put("idJugador2", jug.get(primero).getId().toString());
+				datos.put("catJugador2", jug.get(primero).getCategoria().toString());
+				datos.put("posJugador2", jug.get(primero).toString());
+				datos.put("apodoJugador4", jug.get(segundo).getApodo());
+				datos.put("idJugador4", jug.get(segundo).getId().toString());
+				datos.put("catJugador4", jug.get(segundo).getCategoria().toString());
+				datos.put("posJugador4", jug.get(segundo).toString());
+			}else{			
+				datos.put("apodoJugador4", jug.get(primero).getApodo());
+				datos.put("idJugador4", jug.get(primero).getId().toString());
+				datos.put("catJugador4", jug.get(primero).getCategoria().toString());
+				datos.put("posJugador4", jug.get(primero).toString());
+				datos.put("apodoJugador2", jug.get(segundo).getApodo());
+				datos.put("idJugador2", jug.get(segundo).getId().toString());
+				datos.put("catJugador2", jug.get(segundo).getCategoria().toString());
+				datos.put("posJugador2", jug.get(segundo).toString());
+			}
 	}
 
 	private boolean buscarParejaUsuario(List<JugadorDTO> jug, Map<String, String> datos, String usuario) {

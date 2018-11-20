@@ -1,12 +1,3 @@
-<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
- <%@ page import= "dto.CartaDTO"%>
- <%@ page import= "dto.PartidoDTO"%>
-  <%@ page import= "dto.ParejaDTO"%>
-    <%@ page import= "dto.JugadorDTO"%>
- <%@ page import= "java.util.ArrayList"%>
- <%@ page import= "java.util.List"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -100,7 +91,7 @@ $(document).ready(function(){
 	$("#"+c3ID).on("click", clicked);
 	
 	/* Nombres de los jugadores */
-	var numPareja = detalleMap.get('ParejaJugador1');
+	var numPareja = detalleMap.get('parejaJugador1');
 	if(numPareja === "1"){
 		$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
 		$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
@@ -118,14 +109,13 @@ $(document).ready(function(){
 
 	
 	var user = detalleMap.get('apodoJugador1');
-	var posCarta = 50;
 
 	function verificarTurno(){
 		if(turnosBaza === 4){
 			numBaza++;
 			turnosBaza = 0;
 			/**************************************/
-			idBaza++; // SOLO PARA PROBAR BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
+			idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
 			/**************************************/
 			console.log("sumo 1 a la baza");
 		}
@@ -147,12 +137,11 @@ $(document).ready(function(){
 	verificarTurno();	
 	
 	function clicked() {
-		var index = $.inArray($(this).attr("id"), cartasPos);
+		var index = $.inArray($(this).attr("id"), idArray);
 		if(index === -1){
 			return;
 		}
-		cartasPos.splice(index, 1);
-		moverCarta(this, index);
+		moverCarta(this);
 		deshabilitarCartas();
 		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
 		cantTurnosJugados++;
@@ -172,16 +161,16 @@ $(document).ready(function(){
 		});
 	}
 
-	function moverCarta(id, index){
-		console.log(index);
+	function moverCarta(carta){
+		var index = $.inArray($(carta).attr("id"), cartasPos);
 		if(index === 0){
-			$(id).css("transform", "translate(" + (posCarta+50) + "px, -140px )");
+			$(carta).css("transform", "translate(65px, -140px )");
 		}else if(index === 1){
-			$(id).css("transform", "translate(" + (posCarta-50) + "px, -145px )");
+			$(carta).css("transform", "translate(0px, -145px )");
 		}else{
-			$(id).css("transform", "translate(" + (posCarta-125) + "px, -150px )");
+			$(carta).css("transform", "translate(-65px, -150px )");
 		}
-		$(id).css('zIndex', zindex++);
+		$(carta).css('zIndex', zindex++);
 	}
 	
 	function mostrarCartaJugador(jugador, cartaJugada){
@@ -209,11 +198,11 @@ $(document).ready(function(){
 		}else if(pos === "A"){
 			 $("#"+jugador+"c"+numBaza).css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+cartaJugada+".jpg')");
 			 if(numBaza === 1){
-		    	 	$("#"+jugador+"c"+numBaza).css("transform", "translate(60px, 140px)");
+		    	 	$("#"+jugador+"c"+numBaza).css("transform", "translate(65px, 140px)");
 				 }else if(numBaza === 2){
 					 $("#"+jugador+"c"+numBaza).css("transform", "translate(0px, 145px)");
 				 }else{
-					 $("#"+jugador+"c"+numBaza).css("transform", "translate(-60px, 150px)");
+					 $("#"+jugador+"c"+numBaza).css("transform", "translate(-65px, 150px)");
 				 }
 		}
 
@@ -250,7 +239,7 @@ $(document).ready(function(){
 				type: "POST",
 				url: "ActionsServlet?action=GetNovedad",
 				dataType: "json",
-				data : infoJugada, //Mandar numero de turno/jugada? para saber que se busque el siguiente en la base directamente
+				data : infoJugada,
 				success: function(data){
 				    	var detalleMap = new Map();
 				    	for (let key of Object.keys(data)) {
