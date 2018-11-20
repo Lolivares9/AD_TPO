@@ -99,8 +99,6 @@ $(document).ready(function(){
 		$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
 		$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
 	}
-	
-	
 
 	$("#jug1").text(apodoJug1);
 	$("#jug2").text(apodoJug2);
@@ -112,7 +110,8 @@ $(document).ready(function(){
 
 	function verificarTurno(){
 		if(turnosBaza === 4){
-			numBaza++;
+			numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
+			//Traer la siguiente baza con el orden actualizado segun el que tiro la carta más alta
 			turnosBaza = 0;
 			/**************************************/
 			idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
@@ -241,6 +240,7 @@ $(document).ready(function(){
 				dataType: "json",
 				data : infoJugada,
 				success: function(data){
+						//Validar que la mano no haya terminado (una de las parejas ya gano dos bazas)
 				    	var detalleMap = new Map();
 				    	for (let key of Object.keys(data)) {
 				    	    var value = data[key];

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import delegado.BusinessDelegate;
+import dto.BazaDTO;
 import dto.CartaDTO;
 import dto.JugadorDTO;
 import dto.ParejaDTO;
@@ -61,6 +62,8 @@ public class ActionsServlet extends HttpServlet{
         	guardarJugada(request,response);
         }else if ("GetNovedad".equals(action)){
         	getSiguienteTurno(request,response);
+        }else if ("ResultadoBaza".equals(action)){
+        	resultadoBaza(request,response);
         }
        
     }
@@ -69,13 +72,14 @@ public class ActionsServlet extends HttpServlet{
     	String idBaza = request.getParameter("baza");
     	String numTurnos = request.getParameter("numTurnos");
     	try {
+    		//En el servidor ver si no termino la mano ya, y mandar un flag en el turno para que en la web se cargue otra mano
 			TurnoDTO turno = BusinessDelegate.getInstancia().buscarSiguienteTurno(Integer.valueOf(idBaza), Integer.valueOf(numTurnos));
 			if(turno != null){
 				Gson g = new Gson();
 				Map<String,Object> turnoMapa = new HashMap<String, Object>();
 				turnoMapa.put("carta", turno.getCartaDTO().getNumero()+""+turno.getCartaDTO().getPalo());
 				turnoMapa.put("apodo", turno.getJugadorDTO().getApodo());
-				turnoMapa.put("esMiTurno", true);
+				turnoMapa.put("esMiTurno", true); 
 				String j = g.toJson(turnoMapa);
 
 			    response.setContentType("application/json");
@@ -171,6 +175,21 @@ public class ActionsServlet extends HttpServlet{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}     
+    }
+    
+    private void resultadoBaza(HttpServletRequest request, HttpServletResponse response) {
+    	//TODO
+    	Gson g = new Gson();
+    	Map<String,Object> datos = new HashMap<String,Object>();
+    	String idBaza = request.getParameter("idBaza");
+    	
+    	BazaDTO baza = new BazaDTO(0, null, 0, 0);//Traer baza de server con idBaza
+    	datos.put("puntajeP1", baza.getPuntajePareja1());
+    	datos.put("puntajeP2", baza.getPuntajePareja2());
+    	datos.put("parejaGanadora", baza.getGanadores());
+    	
+		String  result = g.toJson(datos);
+		request.setAttribute("resultados", result);
     }
     
     private void armarDetallePartido(HttpServletRequest request, PartidoDTO partido, String usuario) {
