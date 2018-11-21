@@ -346,7 +346,7 @@ public class Controlador {
 		}
 	}
 	
-
+	
 
 	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws TurnoException, GrupoException {
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);

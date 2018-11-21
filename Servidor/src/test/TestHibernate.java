@@ -68,27 +68,29 @@ public class TestHibernate {
 		Turno turno3 = new Turno(pareja1Jug2,Envite.Truco,pareja1.getCartasJugador2().get(0));
 		Turno turno4 = new Turno(pareja2Jug2,Envite.Truco_Querido,pareja2.getCartasJugador2().get(0));*/
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Envido, Envite.Nada,pareja1.getCartasJugador1().get(0));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Envido_Querido,Envite.Nada,pareja2.getCartasJugador1().get(0));
 		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0));
 		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0));
 		
 		turnos.add(turno1);
 		baza.setTurnos(turnos);
 		p.actualizar();
-		p.nuevaJugadaJuego(turno1);
+		p.nuevaJugadaTantos(turno1);
 		
 		turnos.get(0).setIdTurno(1);
 		baza.getTurnos().add(turno2);
 		p.actualizar();
-		p.nuevaJugadaJuego(turno2);
+		p.nuevaJugadaTantos(turno2);
 		
-		turnos.get(1).setIdTurno(2);
+		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
+		
 		baza.getTurnos().add(turno3);
 		p.actualizar();
 		p.nuevaJugadaJuego(turno3);
+
+		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
 		
-		turnos.get(2).setIdTurno(3);
 		baza.getTurnos().add(turno4);
 		p.actualizar();
 		p.nuevaJugadaJuego(turno4);

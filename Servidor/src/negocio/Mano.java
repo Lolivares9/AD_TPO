@@ -165,17 +165,23 @@ public class Mano {
 					this.setParejaGanadora(bazaActual.getGanadores());
 				}
 			}
+			else{
+				this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
+				this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());
+			}
 		}
+		
 	}
 
 	private boolean verificarPuntajeSinEnvites(Mano manoActual,Baza bazaActual) {
 		boolean sumoUno = true;
 		if(manoActual.getBazas().size() >= 2){
+			bucle1:
 			for(int i = 0;i<manoActual.getBazas().size();i++){
 				for(int x = 0;x<manoActual.getBazas().get(i).getTurnos().size();x++){
 					if(!manoActual.getBazas().get(i).getTurnos().get(x).getEnviteJuego().equals(Envite.Nada)){
 						sumoUno = false;
-						break;
+						break bucle1;
 					}
 				}
 			}
