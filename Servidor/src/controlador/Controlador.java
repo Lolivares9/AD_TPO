@@ -299,9 +299,10 @@ public class Controlador {
 		mazo.repartiCartas(p);
 	}
 
+	//En la web tengo solo el apodo del jugador, asi que mando el TurnoDTO con el apodo seteado y hay que buscarlo primero
 	public void actualizarPartido(int idPartido,TurnoDTO turnoDTO) throws PartidoException, GrupoException, JugadorException {
 		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
-		Jugador jugadorTurno = DTOMapper.getInstancia().jugadorDTOtoNegocio(turnoDTO.getJugador());
+		Jugador jugadorTurno = JugadorDAO.getInstancia().buscarPorApodo(turnoDTO.getJugadorDTO().getApodo());
 		int indiceMano = 0;
 		int indiceBaza = 0;
 		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().size() > 0){
@@ -322,7 +323,7 @@ public class Controlador {
 		
 		if (turno == null) {
 			turno = DTOMapper.getInstancia().FrontEndToNegocio(turnoDTO);
-			turno.setJugador(JugadorDAO.getInstancia().buscarPorApodo(turnoDTO.getJugadorDTO().getApodo()));
+			turno.setJugador(jugadorTurno);
 			if (turno.getCarta() != null )
 				turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
 			baza.agregarTurno(turno);	
@@ -330,7 +331,11 @@ public class Controlador {
 		else if (turno.getCarta() == null && turnoDTO.getCartaDTO() != null) {
 			turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
 		}
-		turno.setearEnviteActual (turnoDTO.getEnviteActual());
+		//En la web si no se canto nada, el envite actual llega null
+		if(turnoDTO.getEnviteActual() == null) {
+			turnoDTO.setEnviteActual(Envite.Nada);
+		}
+		turno.setearEnviteActual(turnoDTO.getEnviteActual());
 		
 		p.actualizar();
 		if (turnoDTO.getEnviteActual().toString().contains("Envido")) {

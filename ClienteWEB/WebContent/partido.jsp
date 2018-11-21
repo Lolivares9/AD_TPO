@@ -109,15 +109,9 @@ $(document).ready(function(){
 	var user = detalleMap.get('apodoJugador1');
 
 	function verificarTurno(){
-		if(turnosBaza === 4){
-			numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
-			//Traer la siguiente baza con el orden actualizado segun el que tiro la carta más alta
-			turnosBaza = 0;
-			/**************************************/
-			idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
-			/**************************************/
-			console.log("sumo 1 a la baza");
-		}
+		/*if(turnosBaza === 4){
+			finalizoBaza();
+		}*/
 		if(cantTurnosJugados === (pos-1)){
 			//Habilitar botones de envite
 			habilitarCartas();
@@ -130,6 +124,33 @@ $(document).ready(function(){
 			_log.innerHTML =  _log.innerHTML  + "<b>" +  "NO es mi Turno" + "</b> "+ '<br /> ' ;
 			getSiguienteTurno();
 		}
+	}
+	
+	function actualizarDatos(data){
+		console.log("actualizo datos"+data.get("flag"))
+		var flag = data.get("flag");
+		if(flag === "Baza"){
+			pos = parseInt(detalleMap.get('posJugador1')); //Actualizo mi numero de turno
+			//Tengo que actualizar id de baza
+			cantTurnosJugados = 0;
+		}else if (flag === "Mano"){
+			//Buscar datos de Mano nueva
+		}else if (flag === "Partida"){
+			//Buscar datos de partida nueva
+			//Decir quien gano antes
+		}//Otro else para ver si termino partido???
+		//Traer la siguiente baza con el orden actualizado segun el que tiro la carta más alta
+		turnosBaza = 0;
+		/**************************************/
+		idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
+		/**************************************/
+		console.log("sumo 1 a la baza");
+		verificarTurno();
+	}
+	
+	function finalizoBaza(){
+		numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
+		buscarPartidoActualizado();
 	}
 	
 	//Lo llamo al incio para ver si soy el primero en jugar
@@ -207,6 +228,35 @@ $(document).ready(function(){
 
 	}
 	
+	function buscarPartidoActualizado(){
+		var infoJugada = {
+			usuario : detalleMap.get('apodoJugador1'),
+			modalidad : "Libre_individual"
+		}
+		$.ajax({
+			type: "POST",
+			url: "ActionsServlet?action=BuscarActualizacion",
+			dataType: "json",
+			data : infoJugada,
+			success: function(data){
+				console.log(data);
+				return data;    	
+		},    
+		error: function() { 
+			console.log(data);
+			return data;
+	    } 
+		}).always(function(data){
+			console.log(data);
+	    	var detalleMap = new Map();
+	    	for (let key of Object.keys(data)) {
+	    	    var value = data[key];
+	    	    detalleMap.set(key, value);
+	    	}
+			actualizarDatos(detalleMap);
+		});
+	}
+	
 	function guardarJugada(idC){
 		//Verificar que no sea el ultimo turno
 		var infoJugada = {
@@ -251,8 +301,12 @@ $(document).ready(function(){
 				    	 var cartaJugada = detalleMap.get('carta');
 				    	 cantTurnosJugados++;
 				    	 turnosBaza++;
-				    	 mostrarCartaJugador(jugador, cartaJugada);		
-				    	 verificarTurno();	    	
+				    	 mostrarCartaJugador(jugador, cartaJugada);
+				 		if(turnosBaza === 4){
+							finalizoBaza();
+						}else{
+				    	 	verificarTurno();
+						}
 				},    
 				error: function() { 
 					//if(turno es el ultimo)

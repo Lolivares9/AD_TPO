@@ -64,11 +64,40 @@ public class ActionsServlet extends HttpServlet{
         	getSiguienteTurno(request,response);
         }else if ("ResultadoBaza".equals(action)){
         	resultadoBaza(request,response);
-        }
-       
+        }else if ("BuscarActualizacion".equals(action)){
+        	buscarActualizacion(request,response);
+        }       
     }
 	
-    private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
+    private void buscarActualizacion(HttpServletRequest request, HttpServletResponse response) {
+    	try {
+    		Gson g = new Gson();
+    		Map<String,String> datosActualizados = new HashMap<String, String>();
+        	String usuario = request.getParameter("usuario");
+        	String modalidad = request.getParameter("modalidad");
+			PartidoDTO partido = BusinessDelegate.getInstancia().buscarPartidaLobby(usuario, modalidad);
+			if(partido != null){
+				//Si el partido tiene un distinto id al que esta en la web, es porque se termino el partido (ver si termino partida)
+				//Capaz no hay que armar el mapa entero cuando se cambia de baza porque toda la logica de cartas no es necesario
+				datosActualizados = armarDatosPartido(partido, usuario);
+				datosActualizados.put("flag", "Baza");
+			}
+			String j = g.toJson(datosActualizados);
+		    response.setContentType("application/json");
+		    response.setCharacterEncoding("UTF-8");
+		    try {
+				response.getWriter().write(j);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ComunicationException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
     	String idBaza = request.getParameter("baza");
     	String numTurnos = request.getParameter("numTurnos");
     	try {
@@ -139,7 +168,7 @@ public class ActionsServlet extends HttpServlet{
 			PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(categoria, usuario);
 			String jspPage = "/partido.jsp";
 			if(partido != null){
-				armarDetallePartido(request, partido, usuario);
+				armarResponsePartido(request, partido, usuario);
 				dispatch(jspPage, request, response);
 			}else {
 				request.setAttribute("usuario", usuario);
@@ -162,7 +191,7 @@ public class ActionsServlet extends HttpServlet{
 			PartidoDTO partido = BusinessDelegate.getInstancia().buscarPartidaLobby(usuario, modalidad);
 			String jspPage = "/partido.jsp";
 			if(partido != null){
-				armarDetallePartido(request, partido, usuario);
+				armarResponsePartido(request, partido, usuario);
 				dispatch(jspPage, request, response);
 			}else {
 				request.setAttribute("usuario", usuario);
@@ -192,10 +221,16 @@ public class ActionsServlet extends HttpServlet{
 		request.setAttribute("resultados", result);
     }
     
-    private void armarDetallePartido(HttpServletRequest request, PartidoDTO partido, String usuario) {
-		Gson g = new Gson();
+    private void armarResponsePartido(HttpServletRequest request, PartidoDTO partido, String usuario){
+    	Gson g = new Gson();
 		request.setAttribute("idPartido", partido.getIdPartido());
 		//partido.getChicoDTO().get(0).getManos().get(0).getBazas().get(0).getNumero();//MANDAR ID de baza a la pagina
+		Map<String,String> datos = armarDatosPartido(partido, usuario);
+		String  detallePartido = g.toJson(datos);
+		request.setAttribute("detalle", detallePartido);
+    }
+    
+    private Map<String,String> armarDatosPartido(PartidoDTO partido, String usuario) {
 		List<ParejaDTO> parejas = partido.getParejaDTOs();
 		Map<String,String> datos = new HashMap<String,String>();
 		
@@ -225,9 +260,8 @@ public class ActionsServlet extends HttpServlet{
 		for (CartaDTO c : cartasUsr) {
 			datos.put("IdCarta"+ n, ""+c.getIdCarta());
 			datos.put("carta"+ n++, c.getNumero()+""+c.getPalo());
-		}			
-		String  detallePartido = g.toJson(datos);
-		request.setAttribute("detalle", detallePartido);
+		}
+		return datos;
     }
     
     private List<CartaDTO> obtenerCartasUsuario(ParejaDTO par, String usuario) {
