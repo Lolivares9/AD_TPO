@@ -176,16 +176,6 @@ public class Baza {
 			else{
 				this.setGanadores(null);
 			}
-			
-			//una vez que se calculo la pareja ganadora evaluo los puntajes
-			/*if(bazaActual.getGanadores() != null){
-				if (bazaActual.getGanadores().equals(pareja1)) {
-					bazaActual.setPuntajePareja1(bazaActual.getPuntajePareja1() + 1 );
-				}
-				else {
-					bazaActual.setPuntajePareja2(bazaActual.getPuntajePareja2() + 1 );
-				}
-			}*/
 		}
 
 	public boolean analizarEnviteTantos(Partido partidoNegocio, Turno turnoEnvite) {
@@ -434,14 +424,19 @@ public class Baza {
 				//*******MAZO**********
 				
 				else if(turnoEnvite.getEnviteJuego().equals(Envite.Mazo)){
-					if(this.getNumero() == 0){
-						setearPuntajeEnvido(partidoNegocio,0,true);
-					}else{
+					if(this.getNumero() == 1){
 						if(pareja1.getJugador1().equals(turnoEnvite.getJugador()) || pareja1.getJugador2().equals(turnoEnvite.getJugador())){
-							this.setPuntajePareja1(this.getPuntajePareja1() + 1);
+							this.setPuntajePareja2(this.getPuntajePareja2() + 1);
 						}
 						else{
-							this.setPuntajePareja2(this.getPuntajePareja1() + 1);
+							this.setPuntajePareja1(this.getPuntajePareja1() + 1);
+						}
+					}else{
+						if(pareja1.getJugador1().equals(turnoEnvite.getJugador()) || pareja1.getJugador2().equals(turnoEnvite.getJugador())){
+							this.setPuntajePareja2(this.getPuntajePareja2() + 1);
+						}
+						else{
+							this.setPuntajePareja1(this.getPuntajePareja1() + 1);
 						}
 					}
 					//ACA SI ES LA PRIMER BAZA, LA PAREJA QUE (NO) SE VA AL MAZO VA A GANAR 2 PUNTOS, SINO, GANA SOLAMENTE 1
@@ -464,15 +459,10 @@ public class Baza {
 						}
 					}
 					
-					if(this.getGanadores().getIdPareja() != null){
-						if (this.getGanadores().equals(pareja1)) {
-							
-							this.setPuntajePareja1(this.getPuntajePareja1() + 1 );
+					if(this.getGanadores() != null){
+						if(this.getGanadores().getIdPareja() != null){
+							this.setBazaTerminada(true);
 						}
-						else {
-							this.setPuntajePareja2(this.getPuntajePareja2() + 1 );
-						}
-						this.setBazaTerminada(true);
 					}
 				}
 				//SI ES EL ULTIMO TURNO, ES DECIR EL JUGADOR NUMERO 4, ME FIJO A VER QUE PAREJA GANA ESA BAZA, BUSCANDO LA CARTA MAS ALTA

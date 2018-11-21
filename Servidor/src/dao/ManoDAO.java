@@ -40,18 +40,6 @@ public class ManoDAO {
 		return true;
 	}
 
-//	public ManoEntity toEntity(Mano mano) {
-//		ManoEntity me = new ManoEntity();
-//		
-//		me.setIdMano(mano.getIdMano());
-//		me.setNumeroMano(mano.getNumeroMano());
-//		
-//		ParejaEntity parejaGanadora = ParejaDAO.getInstancia().toEntity(mano.getParejaGanadora());
-//		me.setParejaGanadora(parejaGanadora);
-//		
-//		return me;
-//	}
-
 	@SuppressWarnings("unchecked")
 	public List<Mano> buscarManosPorChico(Integer idChico) throws ManoException{
 		SessionFactory sf = HibernateUtil.getSessionFactory();

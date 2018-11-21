@@ -32,25 +32,25 @@ public class TestHibernate {
 	
 	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException, ParseException, GrupoException {
 		//Partido partido = null;
-		//PartidoDTO pdto = null;
+		PartidoDTO pdto = null;
 		//guardarParejas();
 		//guardarPartido();
 		//iniciarPartidaLibre();
-		//pdto = Controlador.getInstancia().iniciarPartidaLibreIndividual(Categoria.Novato.toString(),"Chulo");
-		//jugada1(pdto);
-		//jugada2(pdto);
-		//jugada3(pdto);
+		pdto = Controlador.getInstancia().iniciarPartidaLibreIndividual(Categoria.Novato.toString(),"Chulo");
+		baza1(pdto);
+		baza2(pdto);
+		baza3(pdto);
 		//partido = PartidoDAO.getInstancia().buscarPartidoPorID(1);
 		//System.out.println(partido.getParejas().get(0).getIdPareja());
 		//Partido.nuevaJugada(1);
 		
 	}
 
-	private static void jugada1(PartidoDTO pdto) throws PartidoException {
+	private static void baza1(PartidoDTO pdto) throws PartidoException {
 		Partido p = null;
 		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
-		//Pareja pareja1 = p.getParejas().get(0);
-		//Pareja pareja2 = p.getParejas().get(1);
+		Pareja pareja1 = p.getParejas().get(0);
+		Pareja pareja2 = p.getParejas().get(1);
 		Jugador pareja1Jug1 = p.getParejas().get(0).getJugador1();
 		Jugador pareja2Jug1 = p.getParejas().get(1).getJugador1();
 		Jugador pareja1Jug2 = p.getParejas().get(0).getJugador2();
@@ -68,25 +68,32 @@ public class TestHibernate {
 		Turno turno3 = new Turno(pareja1Jug2,Envite.Truco,pareja1.getCartasJugador2().get(0));
 		Turno turno4 = new Turno(pareja2Jug2,Envite.Truco_Querido,pareja2.getCartasJugador2().get(0));*/
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Envido, Envite.Nada,null);
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Real_Envido,Envite.Nada,null);
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Falta_Envido,Envite.Nada,null);
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Envido_RealEnvido_FaltaEnvido_Querido,Envite.Nada,null);
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0));
 		
 		turnos.add(turno1);
-		turnos.add(turno2);
-		turnos.add(turno3);
-		turnos.add(turno4);
 		baza.setTurnos(turnos);
-		//Esto no va, ya esta creada la baza cuando se inicializo el partido
-		//bazas = p.getChico().get(0).getManos().get(0).getBazas();
-		//bazas.set(0, baza); 
-		//mano.setBazas(bazas);
-		//manos = p.getChico().get(0).getManos();
-		//manos.set(0, mano);
-		//p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		//p.nuevaJugadaTantos();
+		p.nuevaJugadaJuego(turno1);
+		
+		turnos.get(0).setIdTurno(1);
+		baza.getTurnos().add(turno2);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno2);
+		
+		turnos.get(1).setIdTurno(2);
+		baza.getTurnos().add(turno3);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno3);
+		
+		turnos.get(2).setIdTurno(3);
+		baza.getTurnos().add(turno4);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno4);
+		
+		
 		
 		
 		
@@ -96,7 +103,7 @@ public class TestHibernate {
 		
 	}
 	
-	private static void jugada2(PartidoDTO pdto) throws PartidoException {
+	private static void baza2(PartidoDTO pdto) throws PartidoException {
 		Partido p = null;
 		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
 		Pareja pareja1 = p.getParejas().get(0);
@@ -109,32 +116,45 @@ public class TestHibernate {
 		List <Baza> bazas = null;
 		List <Mano> manos = null;
 		Mano mano = p.getChico().get(0).getManos().get(0);
-		Baza baza = p.getChico().get(0).getManos().get(0).getBazas().get(1);
+		Baza baza = mano.getBazas().get(1);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,Envite.Nada,pareja1.getCartasJugador1().get(1));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Truco,pareja2.getCartasJugador1().get(1));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Re_Truco,pareja1.getCartasJugador2().get(1));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Truco_QuieroRetruco_Querido,pareja2.getCartasJugador2().get(1));
+		//COMO ES LA PRIMERA RONDA, LO INSERTAMOS SIN ID, EN CASO DE QUERER ACTUALIZAR EL TURNO, SE LE SETEA EL ID
+		/*
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,pareja1.getCartasJugador1().get(0));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,pareja2.getCartasJugador1().get(0));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Truco,pareja1.getCartasJugador2().get(0));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Truco_Querido,pareja2.getCartasJugador2().get(0));*/
+		
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(1));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(1));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(1));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(1));
 		
 		turnos.add(turno1);
-		turnos.add(turno2);
-		turnos.add(turno3);
-		turnos.add(turno4);
 		baza.setTurnos(turnos);
-		bazas = p.getChico().get(0).getManos().get(0).getBazas();
-		bazas.set(1, baza);
-		mano.setBazas(bazas);
-		manos = p.getChico().get(0).getManos();
-		manos.set(0, mano);
-		p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		//p.nuevaJugadaJuego();
+		p.nuevaJugadaJuego(turno1);
+		
+		turnos.get(0).setIdTurno(5);
+		baza.getTurnos().add(turno2);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno2);
+		
+		turnos.get(1).setIdTurno(6);
+		baza.getTurnos().add(turno3);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno3);
+		
+		turnos.get(2).setIdTurno(7);
+		baza.getTurnos().add(turno4);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno4);
 		
 		
 	}
 	
 
-	private static void jugada3(PartidoDTO pdto) throws PartidoException {
+	private static void baza3(PartidoDTO pdto) throws PartidoException {
 		Partido p = null;
 		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
 		Pareja pareja1 = p.getParejas().get(0);
@@ -147,27 +167,39 @@ public class TestHibernate {
 		List <Baza> bazas = null;
 		List <Mano> manos = null;
 		Mano mano = p.getChico().get(0).getManos().get(0);
-		Baza baza = p.getChico().get(0).getManos().get(0).getBazas().get(2);
+		Baza baza = mano.getBazas().get(2);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,Envite.Nada,pareja1.getCartasJugador1().get(2));
+		//COMO ES LA PRIMERA RONDA, LO INSERTAMOS SIN ID, EN CASO DE QUERER ACTUALIZAR EL TURNO, SE LE SETEA EL ID
+		/*
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada,pareja1.getCartasJugador1().get(0));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,pareja2.getCartasJugador1().get(0));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Truco,pareja1.getCartasJugador2().get(0));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Truco_Querido,pareja2.getCartasJugador2().get(0));*/
+		
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(2));
 		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(2));
 		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(2));
 		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(2));
 		
 		turnos.add(turno1);
-		turnos.add(turno2);
-		turnos.add(turno3);
-		turnos.add(turno4);
 		baza.setTurnos(turnos);
-		bazas = p.getChico().get(0).getManos().get(0).getBazas();
-		bazas.set(2, baza);
-		mano.setBazas(bazas);
-		manos = p.getChico().get(0).getManos();
-		manos.set(0, mano);
-		p.getChico().get(0).setManos(manos);
 		p.actualizar();
-		//p.nuevaJugadaJuego();
+		p.nuevaJugadaJuego(turno1);
 		
+		turnos.get(0).setIdTurno(9);
+		baza.getTurnos().add(turno2);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno2);
+		
+		turnos.get(1).setIdTurno(10);
+		baza.getTurnos().add(turno3);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno3);
+		
+		turnos.get(2).setIdTurno(11);
+		baza.getTurnos().add(turno4);
+		p.actualizar();
+		p.nuevaJugadaJuego(turno4);
 	}
 
 
