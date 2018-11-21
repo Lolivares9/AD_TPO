@@ -155,16 +155,17 @@ public class Mano {
 	}
 	
 	private void cargarMovimientoBaza(Baza bazaActual, Partido p) {
-		if (bazaActual.getGanadores().getIdPareja() != null) {
-			this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
-			this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());	
-			
-			boolean finalizaMano = isFinalizaMano(p.getParejas().get(0),p.getParejas().get(1),this.getBazas(),bazaActual);
-			if(finalizaMano){
-				this.setParejaGanadora(bazaActual.getGanadores());
+		if (bazaActual.getGanadores() != null) {
+			if(bazaActual.getGanadores().getIdPareja() != null){
+				this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
+				this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());	
+				
+				boolean finalizaMano = isFinalizaMano(p.getParejas().get(0),p.getParejas().get(1),this.getBazas(),bazaActual);
+				if(finalizaMano){
+					this.setParejaGanadora(bazaActual.getGanadores());
+				}
 			}
 		}
-		
 	}
 
 	private boolean verificarPuntajeSinEnvites(Mano manoActual,Baza bazaActual) {
