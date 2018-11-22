@@ -23,7 +23,7 @@ $(document).ready(function(){
 	var cantTurnosJugados = 0;
 	var turnosBaza = 0;
 	var numBaza= 1; //4 jugadores tiran 1 carta
-	var mano = 1; //jugada de 2 o 3 bazas
+	var numMano = 1; //jugada de 2 o 3 bazas
 	var zindex= 1;
 	//
 	var pos = parseInt(detalleMap.get('posJugador1'));
@@ -31,6 +31,8 @@ $(document).ready(function(){
 	var c1ID = detalleMap.get('IdCarta1');
 	var c2ID = detalleMap.get('IdCarta2');
 	var c3ID = detalleMap.get('IdCarta3');
+	
+	var usuario = detalleMap.get('apodoJugador1'); //El usuario siempre va a tener asignado el Jugador1
 	
 	var apodoJug1 = detalleMap.get('apodoJugador1');
 	var apodoJug2 = detalleMap.get('apodoJugador2');
@@ -130,7 +132,9 @@ $(document).ready(function(){
 		console.log("actualizo datos"+data.get("flag"))
 		var flag = data.get("flag");
 		if(flag === "Baza"){
-			pos = parseInt(detalleMap.get('posJugador1')); //Actualizo mi numero de turno
+			numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
+			console.log("actualizo datos pos: "+data.get('posJugador1'))
+			pos = parseInt(data.get('posJugador1')); //Actualizo mi numero de turno
 			//Tengo que actualizar id de baza
 			cantTurnosJugados = 0;
 		}else if (flag === "Mano"){
@@ -149,7 +153,6 @@ $(document).ready(function(){
 	}
 	
 	function finalizoBaza(){
-		numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
 		buscarPartidoActualizado();
 	}
 	
@@ -166,7 +169,7 @@ $(document).ready(function(){
 		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
 		cantTurnosJugados++;
 		turnosBaza++;
-		guardarJugada($(this).attr("id"));
+		guardarJugada($(this).attr("id"));		
 	}
 	
 	function deshabilitarCartas(){
@@ -230,8 +233,10 @@ $(document).ready(function(){
 	
 	function buscarPartidoActualizado(){
 		var infoJugada = {
-			usuario : detalleMap.get('apodoJugador1'),
-			modalidad : "Libre_individual"
+			numBazas : numBaza,
+			numManos : numMano,
+			idPartido : idPartido,
+			usuario : usuario
 		}
 		$.ajax({
 			type: "POST",
@@ -273,7 +278,11 @@ $(document).ready(function(){
 			//if(turno es el ultimo)
 			//hacer metodo para cambiar de baza, mostrar puntajes, etc
 			console.log("busco siguiente turno");
-			getSiguienteTurno();
+			if(turnosBaza === 4){
+				finalizoBaza();
+			}else{
+				getSiguienteTurno();
+			}
 		});
 	}
 	

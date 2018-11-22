@@ -73,14 +73,20 @@ public class ActionsServlet extends HttpServlet{
     	try {
     		Gson g = new Gson();
     		Map<String,String> datosActualizados = new HashMap<String, String>();
+        	String numBazas = request.getParameter("numBazas");
+        	String numManos = request.getParameter("numManos");
+        	String idPartido = request.getParameter("idPartido");
         	String usuario = request.getParameter("usuario");
-        	String modalidad = request.getParameter("modalidad");
-			PartidoDTO partido = BusinessDelegate.getInstancia().buscarPartidaLobby(usuario, modalidad);
-			if(partido != null){
+			Map<String,Object> datos = BusinessDelegate.getInstancia().buscarActualizacion(Integer.parseInt(idPartido), Integer.parseInt(numBazas), Integer.parseInt(numManos));
+			if(datos != null){
+				if(datos.get("flag").equals("Baza")) {
+					datosActualizados.put("flag", "Baza");//TEST
+					datosActualizados.putAll(armarDatosJugadores((List<ParejaDTO>) datos.get("parejas"),usuario));
+				}
 				//Si el partido tiene un distinto id al que esta en la web, es porque se termino el partido (ver si termino partida)
 				//Capaz no hay que armar el mapa entero cuando se cambia de baza porque toda la logica de cartas no es necesario
-				datosActualizados = armarDatosPartido(partido, usuario);
-				datosActualizados.put("flag", "Baza");
+				/*datosActualizados = armarDatosPartido(partido, usuario);
+				datosActualizados.put("flag", "Baza");*/
 			}
 			String j = g.toJson(datosActualizados);
 		    response.setContentType("application/json");
@@ -140,7 +146,7 @@ public class ActionsServlet extends HttpServlet{
     	c.setIdCarta(Integer.valueOf(carta));
     	Integer idBaza = 1;
     	Integer numTurno = 1;
-    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno, j, Envite.Nada, c); //aca va el id de baza
+    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno,  j, Envite.Nada, Envite.Nada, c); //aca va el id de baza
     	try {
 			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), turno);
 			response.setStatus(HttpServletResponse.SC_OK);
@@ -261,6 +267,31 @@ public class ActionsServlet extends HttpServlet{
 			datos.put("IdCarta"+ n, ""+c.getIdCarta());
 			datos.put("carta"+ n++, c.getNumero()+""+c.getPalo());
 		}
+		return datos;
+    }
+    
+    private Map<String,String> armarDatosJugadores(List<ParejaDTO> parejas, String usuario) {
+		Map<String,String> datos = new HashMap<String,String>();
+		
+		ParejaDTO par1 = parejas.get(0);
+		ParejaDTO par2 = parejas.get(1);
+		List<JugadorDTO> jug = new ArrayList<JugadorDTO>();
+		jug.add(par1.getJugadorDTO1());
+		jug.add(par1.getJugadorDTO2());
+		
+		List<JugadorDTO> jug2 = new ArrayList<JugadorDTO>();
+		jug2.add(par2.getJugadorDTO1());
+		jug2.add(par2.getJugadorDTO2());
+		
+		if(!buscarParejaUsuario(jug, datos, usuario)) {
+			datos.put("parejaJugador1", "2");
+			buscarParejaUsuario(jug2, datos, usuario);
+			ordenarParejaContraria(jug, datos);
+		}else {
+			datos.put("parejaJugador1", "1");
+			ordenarParejaContraria(jug2, datos);
+		}
+		
 		return datos;
     }
     

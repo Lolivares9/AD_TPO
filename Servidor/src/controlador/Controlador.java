@@ -20,6 +20,7 @@ import dto.BazaDTO;
 import dto.ChicoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
+import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
@@ -346,7 +347,35 @@ public class Controlador {
 		}
 	}
 	
-	
+	public Map<String,Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws PartidoException, GrupoException{
+		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
+		int indiceMano = numManos-1;
+		int indiceBaza = 0;
+		Map<String,Object> response = new HashMap<String, Object>();
+		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size() > 0){
+			indiceBaza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size(); 
+		}
+		if(indiceBaza > 0 && (indiceBaza > numBazas)) {
+			//devuelvo nuevo orden
+			response.put("flag", "Baza");
+			List<ParejaDTO> par = new ArrayList<ParejaDTO>();
+			for (Pareja parN : p.getParejas()) {
+				par.add(parN.toDTO());
+			}
+			response.put("parejas", par);
+			response.put("idBaza", p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().get(numBazas).getIdBaza());
+			return response;
+		}
+		
+		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().size() > 0){
+			indiceMano = p.getChico().get(p.getNumeroChicoActual()-1).getManos().size();
+		}
+		if(indiceMano > 0 && (indiceMano > numManos)) {
+			//devuelvo nueva mano
+		}
+		//si el numBazas y numManos es igual, significa que el partido termino?
+		return null;
+	}
 
 	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws TurnoException, GrupoException {
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);

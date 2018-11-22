@@ -251,5 +251,15 @@ public class BusinessDelegate {
 		}
 	return null;
 	}
+	
+	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos){
+		try {
+			return ir.buscarActualizacion(idPartido, numBazas, numManos);
+		} catch (RemoteException | PartidoException | GrupoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	return null;
+	}
 
 }

@@ -180,4 +180,8 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return Controlador.getInstancia().buscarSiguienteTurno(idPartido, numTurnos);
 	}	
 	
+	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws PartidoException, GrupoException{
+		return Controlador.getInstancia().buscarActualizacion(idPartido, numBazas, numManos);
+	}	
+	
 }
