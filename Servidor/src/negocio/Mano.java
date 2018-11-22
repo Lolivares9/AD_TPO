@@ -118,6 +118,7 @@ public class Mano {
 		int indiceChico = 0;
 		int indiceMano = 0;
 		int indiceBaza = 0;
+		int puntajeP1 = 0,puntajeP2 = 0;
 		Partido partidoNegocio = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
 		if(partidoNegocio.getNumeroChicoActual() > 0){
 			indiceChico = partidoNegocio.getNumeroChicoActual()-1;
@@ -142,10 +143,12 @@ public class Mano {
 				break;
 			}
 		}
-		
+		//GUARDO EL PUNTAJE PARA SABER SI ALGUIEN SUMA
+		puntajeP1 = bazaActual.getPuntajePareja1();
+		puntajeP2 = bazaActual.getPuntajePareja1();
 		bazaActual.analizarEnviteTantos(partidoNegocio,turnoEnvite);
 		
-		manoActual.cargarMovimientoBaza(bazaActual,partidoNegocio);
+		manoActual.cargarMovimientoBaza(bazaActual,partidoNegocio,puntajeP1,puntajeP2);
 		chicoActual.cargarMovimientoMano(manoActual,partidoNegocio);
 		partidoNegocio.cargarMovimientoChico(chicoActual);
 		
@@ -154,18 +157,17 @@ public class Mano {
 		return true;
 	}
 	
-	private void cargarMovimientoBaza(Baza bazaActual, Partido p) {
+	private void cargarMovimientoBaza(Baza bazaActual, Partido p,int puntajeAnteriorP1,int puntajeAnteriorP2) {
 		if (bazaActual.getGanadores() != null) {
 			if(bazaActual.getGanadores().getIdPareja() != null){
-				this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
-				this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());	
-				
 				boolean finalizaMano = isFinalizaMano(p.getParejas().get(0),p.getParejas().get(1),this.getBazas(),bazaActual);
 				if(finalizaMano){
 					this.setParejaGanadora(bazaActual.getGanadores());
+					this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
+					this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());
 				}
 			}
-			else{
+			else if(bazaActual.getPuntajePareja1() != puntajeAnteriorP1 || bazaActual.getPuntajePareja2() != puntajeAnteriorP2){
 				this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
 				this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());
 			}
@@ -195,6 +197,7 @@ public class Mano {
 		int indiceMano = 0;
 		int indiceBaza = 0;
 		int indiceTurno = 0;
+		int puntajeP1 = 0,puntajeP2 = 0;
 		Partido partidoNegocio = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
 		if(partidoNegocio.getNumeroChicoActual() > 0){
 			indiceChico = partidoNegocio.getNumeroChicoActual()-1;
@@ -223,9 +226,12 @@ public class Mano {
 				break;
 			}
 		}
-		bazaActual.analizarEnviteJuego(partidoNegocio,turnoEnvite);
+		//GUARDO EL PUNTAJE PARA SABER SI ALGUIEN SUMA
+		puntajeP1 = bazaActual.getPuntajePareja1();
+		puntajeP2 = bazaActual.getPuntajePareja2();
+		bazaActual.analizarEnviteJuego(partidoNegocio,turnoEnvite,indiceChico,indiceMano);
 		
-		manoActual.cargarMovimientoBaza(bazaActual,partidoNegocio);
+		manoActual.cargarMovimientoBaza(bazaActual,partidoNegocio,puntajeP1,puntajeP2);
 		chicoActual.cargarMovimientoMano(manoActual,partidoNegocio);
 		partidoNegocio.cargarMovimientoChico(chicoActual);
 		
