@@ -156,6 +156,11 @@ public class Baza {
 					pareja1.getJugador1().setNumeroTurnoPartido(3);
 					pareja2.getJugador1().setNumeroTurnoPartido(4);
 				}
+				else if(cartaJug1.getValorJuego() == cartaJug3.getValorJuego()){
+					/*ESTE CASO ES CUANDO GANA LA PAREJA, PERO ADEMAS HAY PARDA ENTRE ELLOS, EN ESTE CASO
+					 * EL QUE VA A TENER EL PRIMER TURNO, ES EL DE LA DERECHA DE LA MANO
+					 * */
+				}
 				this.setGanadores(pareja1);
 			}
 			else if((cartaJug2.getValorJuego() > cartaJug1.getValorJuego() && cartaJug2.getValorJuego() > cartaJug3.getValorJuego()) || (cartaJug4.getValorJuego() > cartaJug1.getValorJuego() && cartaJug4.getValorJuego() > cartaJug3.getValorJuego())){
@@ -174,6 +179,14 @@ public class Baza {
 				this.setGanadores(pareja2);
 			}
 			else{
+				/*ACA FALTARIA AGREGAR, SI EL PARTIDO ESTA EN PARDA.
+				 * BAZA 1 EN PARDA = EL QUE GANA LA BAZA 2 GANA LA MANO 
+				 * BAZA 2 EN PARDA Y BAZA 1 CON GANADOR = GANA LA MANO LA PAREJA QUE HAYA GANADO LA BAZA 1
+				 * BAZA 3 EN PARDA Y BAZA 1 Y 2 CON DIFERENTES GANADORES = GANA LA MANO EL QUE HAYA GANADO LA BAZA 1
+				 * BAZA 1 Y BAZA 2 EN PARDA AMBAS SIN GANADORES = GANA LA MANO EL QUE GANE LA BAZA 3
+				 * BAZA 1 Y BAZA 2 Y BAZA 3 EN PARDA = GANA LA MANO LA PAREJA QUE ES MANO, ES DECIR LA PAREJA DONDE
+				 * EL JUG QUE EN LA PRIMER BAZA TENIA ASIGNADO UN 1
+				 * */
 				this.setGanadores(null);
 			}
 		}

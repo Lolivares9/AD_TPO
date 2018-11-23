@@ -33,9 +33,15 @@ public class TestHibernate {
 	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException, ParseException, GrupoException {
 		PartidoDTO pdto = null;
 		pdto = Controlador.getInstancia().iniciarPartidaLibreIndividual(Categoria.Novato.toString(),"Chulo");
+		//MANO 1
 		baza1(pdto);
 		baza2(pdto);
 		baza3(pdto);
+		
+		
+		/*
+		 * PENDIENTE DE PROBAR: QUE PASA CUANDO JUGAMOS UNA MISMA CARTA EN OTRA BAZA DE OTRA MANO?? 
+		 * */
 		
 	}
 
@@ -54,8 +60,8 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = mano.getBazas().get(0);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Envido, Envite.Nada,pareja1.getCartasJugador1().get(0));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Envido_Querido,Envite.Nada,pareja2.getCartasJugador1().get(0));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0));
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0));
 		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0));
 		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0));
 		
@@ -77,6 +83,10 @@ public class TestHibernate {
 		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
 		p.getChico().get(0).getManos().get(0).getBazas().get(0).getTurnos().add(turno4);
 		p.actualizar();
+		System.out.println(turno1.getJugador().getApodo() + " Jugo la carta: " + turno1.getCarta().getNumero() + " " + turno1.getCarta().getPalo());
+		System.out.println(turno2.getJugador().getApodo() + " Jugo la carta: " + turno2.getCarta().getNumero() + " " + turno2.getCarta().getPalo());
+		System.out.println(turno3.getJugador().getApodo() + " Jugo la carta: " + turno3.getCarta().getNumero() + " " + turno3.getCarta().getPalo());
+		System.out.println(turno4.getJugador().getApodo() + " Jugo la carta: " + turno4.getCarta().getNumero() + " " + turno4.getCarta().getPalo());
 		p.nuevaJugadaJuego(turno4);
 		
 	}
@@ -98,8 +108,8 @@ public class TestHibernate {
 		
 		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(1));
 		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(1));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Truco,pareja1.getCartasJugador2().get(1));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Truco_Querido,pareja2.getCartasJugador2().get(1));
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(1));
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(1));
 		
 		turnos.add(turno1);
 		baza.setTurnos(turnos);
@@ -119,6 +129,10 @@ public class TestHibernate {
 		turnos.get(2).setIdTurno(7);
 		baza.getTurnos().add(turno4);
 		p.actualizar();
+		System.out.println(turno1.getJugador().getApodo() + " Jugo la carta: " + turno1.getCarta().getNumero() + " " + turno1.getCarta().getPalo());
+		System.out.println(turno2.getJugador().getApodo() + " Jugo la carta: " + turno2.getCarta().getNumero() + " " + turno2.getCarta().getPalo());
+		System.out.println(turno3.getJugador().getApodo() + " Jugo la carta: " + turno3.getCarta().getNumero() + " " + turno3.getCarta().getPalo());
+		System.out.println(turno4.getJugador().getApodo() + " Jugo la carta: " + turno4.getCarta().getNumero() + " " + turno4.getCarta().getPalo());
 		p.nuevaJugadaJuego(turno4);
 		
 		
@@ -163,6 +177,10 @@ public class TestHibernate {
 		turnos.get(2).setIdTurno(11);
 		baza.getTurnos().add(turno4);
 		p.actualizar();
+		System.out.println(turno1.getJugador().getApodo() + " Jugo la carta: " + turno1.getCarta().getNumero() + " " + turno1.getCarta().getPalo());
+		System.out.println(turno2.getJugador().getApodo() + " Jugo la carta: " + turno2.getCarta().getNumero() + " " + turno2.getCarta().getPalo());
+		System.out.println(turno3.getJugador().getApodo() + " Jugo la carta: " + turno3.getCarta().getNumero() + " " + turno3.getCarta().getPalo());
+		System.out.println(turno4.getJugador().getApodo() + " Jugo la carta: " + turno4.getCarta().getNumero() + " " + turno4.getCarta().getPalo());
 		p.nuevaJugadaJuego(turno4);
 	}
 
