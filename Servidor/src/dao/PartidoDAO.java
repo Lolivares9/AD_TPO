@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import entities.ChicoEntity;
+import entities.JugadorEntity;
 import entities.ParejaEntity;
 import entities.PartidoEntity;
 import enums.TipoModalidad;
@@ -226,5 +227,71 @@ public class PartidoDAO {
 				s.close();
 			}
 		return p;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> rakingPorPartidosJugados() {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		List<String> ranking = new ArrayList<String>();
+		int posicion = 1;
+		try {
+			List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("from JugadorEntity je order by je.partidosJugados desc").list();
+			for(JugadorEntity jug : jugadoresRecup){
+				String jugador = "POSICION: " + String.valueOf(posicion) + "\t APODO: " + jug.getApodo() + "\t PARTIDOS JUGADOS: " + jug.getPartidosJugados();
+				ranking.add(jugador);
+				posicion++;
+			}
+			s.getTransaction().commit();
+			s.close();
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return ranking;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> rankingPorPuntaje() {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		List<String> ranking = new ArrayList<String>();
+		int posicion = 1;
+		try {
+			List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("from JugadorEntity je order by je.puntaje desc").list();
+			for(JugadorEntity jug : jugadoresRecup){
+				String jugador = "POSICION: " + String.valueOf(posicion) + "\t APODO: " + jug.getApodo() + "\t PUNTAJE: " + jug.getPuntaje() + "\t CATEGORIA: " + jug.getCategoria().toString();
+				ranking.add(jugador);
+				posicion++;
+			}
+			s.getTransaction().commit();
+			s.close();
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return ranking;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> rakingPorPartidosGanados() {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		List<String> ranking = new ArrayList<String>();
+		int posicion = 1;
+		try {
+			List<JugadorEntity> jugadoresRecup = (List<JugadorEntity>) s.createQuery("from JugadorEntity je order by je.partidosGanados desc").list();
+			for(JugadorEntity jug : jugadoresRecup){
+				String jugador = "POSICION: " + String.valueOf(posicion) + "\t APODO: " + jug.getApodo() + "\t PARTIDOS GANADOS: " + jug.getPartidosGanados();
+				ranking.add(jugador);
+				posicion++;
+			}
+			s.getTransaction().commit();
+			s.close();
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return ranking;
 	}
 }

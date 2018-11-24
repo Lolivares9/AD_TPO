@@ -384,4 +384,19 @@ public class Controlador {
 		}
 		return null;
 	}
+	
+	public List<String> obtenerRakingPorPuntaje(){
+		List <String> ranking = PartidoDAO.getInstancia().rankingPorPuntaje();
+		return ranking;
+	}
+	
+	public List<String> obtenerRakingPorPartidosJugados(){
+		List <String> ranking = PartidoDAO.getInstancia().rakingPorPartidosJugados();
+		return ranking;
+	}
+	
+	public List<String> obtenerRakingPorPartidosGanados(){
+		List <String> ranking = PartidoDAO.getInstancia().rakingPorPartidosGanados();
+		return ranking;
+	}
 }
