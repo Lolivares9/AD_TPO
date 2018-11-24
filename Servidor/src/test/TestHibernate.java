@@ -64,8 +64,6 @@ public class TestHibernate {
 		Jugador pareja1Jug2 = p.getParejas().get(0).getJugador2();
 		Jugador pareja2Jug2 = p.getParejas().get(1).getJugador2();
 		List <Turno> turnos = new ArrayList<Turno>();
-		List <Baza> bazas = null;
-		List <Mano> manos = null;
 		Mano mano = p.getChico().get(0).getManos().get(1);
 		Baza baza = mano.getBazas().get(0);
 		
@@ -108,8 +106,6 @@ public class TestHibernate {
 		Jugador pareja1Jug2 = p.getParejas().get(0).getJugador2();
 		Jugador pareja2Jug2 = p.getParejas().get(1).getJugador2();
 		List <Turno> turnos = new ArrayList<Turno>();
-		List <Baza> bazas = null;
-		List <Mano> manos = null;
 		Mano mano = p.getChico().get(0).getManos().get(1);
 		Baza baza = mano.getBazas().get(1);
 		
@@ -123,18 +119,18 @@ public class TestHibernate {
 		p.actualizar();
 		p.nuevaJugadaJuego(turno1);
 		
-		turnos.get(0).setIdTurno(13);
-		baza.getTurnos().add(turno2);
+		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
+		p.getChico().get(0).getManos().get(1).getBazas().get(1).getTurnos().add(turno2);
 		p.actualizar();
 		p.nuevaJugadaJuego(turno2);
 		
-		turnos.get(1).setIdTurno(15);
-		baza.getTurnos().add(turno3);
+		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
+		p.getChico().get(0).getManos().get(1).getBazas().get(1).getTurnos().add(turno3);
 		p.actualizar();
 		p.nuevaJugadaJuego(turno3);
 		
-		turnos.get(2).setIdTurno(16);
-		baza.getTurnos().add(turno4);
+		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
+		p.getChico().get(0).getManos().get(1).getBazas().get(1).getTurnos().add(turno4);
 		p.actualizar();
 		System.out.println(turno1.getJugador().getApodo() + " Jugo la carta: " + turno1.getCarta().getNumero() + " " + turno1.getCarta().getPalo());
 		System.out.println(turno2.getJugador().getApodo() + " Jugo la carta: " + turno2.getCarta().getNumero() + " " + turno2.getCarta().getPalo());
@@ -154,8 +150,6 @@ public class TestHibernate {
 		Jugador pareja1Jug2 = p.getParejas().get(0).getJugador2();
 		Jugador pareja2Jug2 = p.getParejas().get(1).getJugador2();
 		List <Turno> turnos = new ArrayList<Turno>();
-		List <Baza> bazas = null;
-		List <Mano> manos = null;
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = mano.getBazas().get(0);
 		
@@ -198,8 +192,6 @@ public class TestHibernate {
 		Jugador pareja1Jug2 = p.getParejas().get(0).getJugador2();
 		Jugador pareja2Jug2 = p.getParejas().get(1).getJugador2();
 		List <Turno> turnos = new ArrayList<Turno>();
-		List <Baza> bazas = null;
-		List <Mano> manos = null;
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = mano.getBazas().get(1);
 		
@@ -244,8 +236,6 @@ public class TestHibernate {
 		Jugador pareja1Jug2 = p.getParejas().get(0).getJugador2();
 		Jugador pareja2Jug2 = p.getParejas().get(1).getJugador2();
 		List <Turno> turnos = new ArrayList<Turno>();
-		List <Baza> bazas = null;
-		List <Mano> manos = null;
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = mano.getBazas().get(2);
 		
