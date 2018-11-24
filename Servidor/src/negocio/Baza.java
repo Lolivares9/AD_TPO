@@ -133,7 +133,8 @@ public class Baza {
 	}
 	
 	/**Aca vamos a evaluar la carta mas alta de la Baza, se seteará la pareja ganadora de la baza*/
-	public void calcularGanadorBaza(Pareja pareja1, Pareja pareja2){
+	public void calcularGanadorBaza(Pareja pareja1, Pareja pareja2,Mano manoActual){
+			List<Baza> bazas = manoActual.getBazas();
 			Turno turno1 = this.getTurnos().get(0);
 			Turno turno2 = this.getTurnos().get(1);
 			Turno turno3 = this.getTurnos().get(2);
@@ -144,6 +145,14 @@ public class Baza {
 			Carta cartaJug4 = turno4.getCarta();
 			
 			if((cartaJug1.getValorJuego() > cartaJug2.getValorJuego() && cartaJug1.getValorJuego() > cartaJug4.getValorJuego()) || (cartaJug3.getValorJuego() > cartaJug2.getValorJuego() && cartaJug3.getValorJuego() > cartaJug4.getValorJuego())){
+				if(bazas.size() == 2){
+					//ESTO QUIERE DECIR QUE SI HICIERON PARDA EN LA ANTERIOR Y EN ESTA GANA LA PAREJA 1, GANA LA MANO
+					if(bazas.get(0).getGanadores().getIdPareja() == null){
+						this.setGanadores(pareja1);
+						this.setBazaTerminada(true);
+						return;
+					}
+				}
 				if(cartaJug1.getValorJuego() > cartaJug3.getValorJuego()){
 					pareja1.getJugador1().setNumeroTurnoPartido(1);
 					pareja2.getJugador1().setNumeroTurnoPartido(2);
@@ -156,14 +165,53 @@ public class Baza {
 					pareja1.getJugador1().setNumeroTurnoPartido(3);
 					pareja2.getJugador1().setNumeroTurnoPartido(4);
 				}
+				/*ESTE CASO ES CUANDO GANA LA PAREJA, PERO ADEMAS HAY PARDA ENTRE ELLOS, EN ESTE CASO
+				  EL QUE VA A TENER EL PRIMER TURNO, ES EL DE LA DERECHA DE LA MANO
+				*/
 				else if(cartaJug1.getValorJuego() == cartaJug3.getValorJuego()){
-					/*ESTE CASO ES CUANDO GANA LA PAREJA, PERO ADEMAS HAY PARDA ENTRE ELLOS, EN ESTE CASO
-					 * EL QUE VA A TENER EL PRIMER TURNO, ES EL DE LA DERECHA DE LA MANO
-					 * */
+				//SI NINGUNO ERA MANO
+					if(pareja1.getJugador1().getNumeroTurnoPartido() != 1 && pareja1.getJugador2().getNumeroTurnoPartido() != 1){
+						//SI NINGUNO ES MANO,SIGNIFICA QUE LA MANO ESTA EN LA PAREJA 2, TENGO QUE AGARRAR EL QUE ESTA A LA DERECHA DE LA MANO
+						if(pareja2.getJugador1().getNumJugador() == 1){
+							pareja1.getJugador2().setNumeroTurnoPartido(1);
+							pareja2.getJugador2().setNumeroTurnoPartido(2);
+							pareja1.getJugador1().setNumeroTurnoPartido(3);
+							pareja2.getJugador1().setNumeroTurnoPartido(4);
+						}
+						else{
+							pareja1.getJugador1().setNumeroTurnoPartido(1);
+							pareja2.getJugador1().setNumeroTurnoPartido(2);
+							pareja1.getJugador2().setNumeroTurnoPartido(3);
+							pareja2.getJugador2().setNumeroTurnoPartido(4);
+						}
+					}
+					//SI ALGUNO DE LOS 2 ES MANO
+					else if(pareja1.getJugador1().getNumeroTurnoPartido() == 1 || pareja1.getJugador2().getNumeroTurnoPartido() == 1){
+						if(pareja1.getJugador1().getNumeroTurnoPartido() == 1){
+							pareja1.getJugador1().setNumeroTurnoPartido(1);
+							pareja2.getJugador1().setNumeroTurnoPartido(2);
+							pareja1.getJugador2().setNumeroTurnoPartido(3);
+							pareja2.getJugador2().setNumeroTurnoPartido(4);
+						}
+						else{
+							pareja1.getJugador2().setNumeroTurnoPartido(1);
+							pareja2.getJugador2().setNumeroTurnoPartido(2);
+							pareja1.getJugador1().setNumeroTurnoPartido(3);
+							pareja1.getJugador2().setNumeroTurnoPartido(4);
+						}
+					}
 				}
 				this.setGanadores(pareja1);
 			}
 			else if((cartaJug2.getValorJuego() > cartaJug1.getValorJuego() && cartaJug2.getValorJuego() > cartaJug3.getValorJuego()) || (cartaJug4.getValorJuego() > cartaJug1.getValorJuego() && cartaJug4.getValorJuego() > cartaJug3.getValorJuego())){
+				if(bazas.size() == 2){
+					//ESTO QUIERE DECIR QUE SI HICIERON PARDA EN LA ANTERIOR Y EN ESTA GANA LA PAREJA 1, GANA LA MANO
+					if(bazas.get(0).getGanadores().getIdPareja() == null){
+						this.setGanadores(pareja2);
+						this.setBazaTerminada(true);
+						return;
+					}
+				}
 				if(cartaJug2.getValorJuego() > cartaJug4.getValorJuego()){
 					pareja2.getJugador1().setNumeroTurnoPartido(1);
 					pareja1.getJugador2().setNumeroTurnoPartido(2);
@@ -176,17 +224,145 @@ public class Baza {
 					pareja2.getJugador1().setNumeroTurnoPartido(3);
 					pareja1.getJugador2().setNumeroTurnoPartido(4);
 				}
+				/*ESTE CASO ES CUANDO GANA LA PAREJA, PERO ADEMAS HAY PARDA ENTRE ELLOS, EN ESTE CASO
+				  EL QUE VA A TENER EL PRIMER TURNO, ES EL DE LA DERECHA DE LA MANO
+				*/
+				else if(cartaJug2.getValorJuego() == cartaJug4.getValorJuego()){
+					//SI NINGUNO ES MANO,SIGNIFICA QUE LA MANO ESTA EN LA PAREJA 1, TENGO QUE AGARRAR EL QUE ESTA A LA DERECHA DE LA MANO
+					if(pareja2.getJugador1().getNumeroTurnoPartido() != 1 && pareja2.getJugador2().getNumeroTurnoPartido() != 1){
+						if(pareja1.getJugador1().getNumJugador() == 1){
+							pareja2.getJugador1().setNumeroTurnoPartido(1);
+							pareja1.getJugador2().setNumeroTurnoPartido(2);
+							pareja2.getJugador2().setNumeroTurnoPartido(3);
+							pareja1.getJugador1().setNumeroTurnoPartido(4);
+						}
+						else{
+							pareja2.getJugador2().setNumeroTurnoPartido(1);
+							pareja1.getJugador1().setNumeroTurnoPartido(2);
+							pareja2.getJugador1().setNumeroTurnoPartido(3);
+							pareja1.getJugador2().setNumeroTurnoPartido(4);
+						}
+					}
+					//SI ALGUNO DE LOS 2 ES MANO
+					else if(pareja2.getJugador1().getNumeroTurnoPartido() == 1 || pareja2.getJugador2().getNumeroTurnoPartido() == 1){
+						if(pareja2.getJugador1().getNumeroTurnoPartido() == 1){
+							pareja2.getJugador1().setNumeroTurnoPartido(1);
+							pareja1.getJugador2().setNumeroTurnoPartido(2);
+							pareja2.getJugador2().setNumeroTurnoPartido(3);
+							pareja1.getJugador1().setNumeroTurnoPartido(4);
+						}
+						else{
+							pareja2.getJugador2().setNumeroTurnoPartido(1);
+							pareja1.getJugador1().setNumeroTurnoPartido(2);
+							pareja2.getJugador1().setNumeroTurnoPartido(3);
+							pareja1.getJugador2().setNumeroTurnoPartido(4);
+						}
+					}
+				}
 				this.setGanadores(pareja2);
 			}
+			/*
+			 * CASOS DE EMPATES/PARDA:
+			 * 1) BAZA 1 EN PARDA = EL QUE GANA LA BAZA 2 GANA LA MANO
+			 * 2) BAZA 2 EN PARDA Y BAZA 1 CON GANADOR = GANA LA MANO LA PAREJA QUE HAYA GANADO LA BAZA 1
+			 * 3) BAZA 3 EN PARDA Y BAZA 1 Y 2 CON DIFERENTES GANADORES = GANA LA MANO EL QUE HAYA GANADO LA BAZA 1
+			 * 4) BAZA 1 Y BAZA 2 EN PARDA AMBAS SIN GANADORES = GANA LA MANO EL QUE GANE LA BAZA 3
+			 * 5) BAZA 1 Y BAZA 2 Y BAZA 3 EN PARDA = GANA LA MANO LA PAREJA QUE ES MANO, ES DECIR LA PAREJA DONDE
+				  EL JUG TIENE NUMERO DE TURNO = 1
+			 * */
 			else{
-				/*ACA FALTARIA AGREGAR, SI EL PARTIDO ESTA EN PARDA.
-				 * BAZA 1 EN PARDA = EL QUE GANA LA BAZA 2 GANA LA MANO 
-				 * BAZA 2 EN PARDA Y BAZA 1 CON GANADOR = GANA LA MANO LA PAREJA QUE HAYA GANADO LA BAZA 1
-				 * BAZA 3 EN PARDA Y BAZA 1 Y 2 CON DIFERENTES GANADORES = GANA LA MANO EL QUE HAYA GANADO LA BAZA 1
-				 * BAZA 1 Y BAZA 2 EN PARDA AMBAS SIN GANADORES = GANA LA MANO EL QUE GANE LA BAZA 3
-				 * BAZA 1 Y BAZA 2 Y BAZA 3 EN PARDA = GANA LA MANO LA PAREJA QUE ES MANO, ES DECIR LA PAREJA DONDE
-				 * EL JUG QUE EN LA PRIMER BAZA TENIA ASIGNADO UN 1
-				 * */
+				if((cartaJug1.getValorJuego() <= cartaJug2.getValorJuego() || cartaJug1.getValorJuego() <= cartaJug4.getValorJuego()) && (cartaJug3.getValorJuego() <= cartaJug2.getValorJuego() || cartaJug3.getValorJuego() <= cartaJug4.getValorJuego())){
+					if(this.numeroBaza == 1){
+						//ACA NO HAY GANADOR, Y LOS TURNOS SIGUEN IGUALES COMO AL PRINCIPIO
+						this.setBazaTerminada(true);
+						this.setGanadores(null);
+						return;
+					}
+					else if(this.numeroBaza == 2){
+						//PARDA CASO 1
+						if(bazas.get(0).getGanadores() != null){
+							if((cartaJug1.getValorJuego() >= cartaJug2.getValorJuego() && cartaJug1.getValorJuego() >= cartaJug4.getValorJuego()) || (cartaJug3.getValorJuego() >= cartaJug2.getValorJuego() && cartaJug3.getValorJuego() >= cartaJug4.getValorJuego())){
+								if(bazas.get(0).getGanadores().getIdPareja().equals(pareja1.getIdPareja())){
+									this.setGanadores(pareja1);
+									manoActual.setParejaGanadora(pareja1);
+									return;
+								}
+								else if(bazas.get(0).getGanadores().getIdPareja().equals(pareja2.getIdPareja())){
+									this.setGanadores(pareja2);
+									manoActual.setParejaGanadora(pareja2);
+									return;
+								}
+							}
+							else if((cartaJug2.getValorJuego() >= cartaJug1.getValorJuego() && cartaJug2.getValorJuego() >= cartaJug3.getValorJuego()) || (cartaJug4.getValorJuego() >= cartaJug1.getValorJuego() && cartaJug4.getValorJuego() >= cartaJug3.getValorJuego())){
+								if(bazas.get(0).getGanadores().getIdPareja().equals(pareja2.getIdPareja())){
+									this.setGanadores(pareja2);
+									manoActual.setParejaGanadora(pareja2);
+									return;
+								}
+								else if(bazas.get(0).getGanadores().getIdPareja().equals(pareja1.getIdPareja())){
+									this.setGanadores(pareja1);
+									manoActual.setParejaGanadora(pareja1);
+									return;
+								}
+							}
+						}
+						//PARDA CASO 2
+						else if(bazas.get(0).getGanadores() == null){
+							if((cartaJug1.getValorJuego() > cartaJug2.getValorJuego() && cartaJug1.getValorJuego() > cartaJug4.getValorJuego()) || (cartaJug3.getValorJuego() > cartaJug2.getValorJuego() && cartaJug3.getValorJuego() > cartaJug4.getValorJuego())){
+								this.setGanadores(pareja1);
+								manoActual.setParejaGanadora(pareja1);
+								return;
+							}
+							else if((cartaJug2.getValorJuego() > cartaJug1.getValorJuego() && cartaJug2.getValorJuego() > cartaJug3.getValorJuego()) || (cartaJug4.getValorJuego() > cartaJug1.getValorJuego() && cartaJug4.getValorJuego() > cartaJug3.getValorJuego())){
+								this.setGanadores(pareja2);
+								manoActual.setParejaGanadora(pareja2);
+								return;
+							}
+						}
+						if(this.numeroBaza == 3){
+							//PARDA CASO 3
+							if(bazas.get(0).getGanadores().getIdPareja() != bazas.get(1).getGanadores().getIdPareja()){
+								if(bazas.get(0).getGanadores().getIdPareja() == pareja1.getIdPareja()){
+									this.setGanadores(pareja1);
+									manoActual.setParejaGanadora(pareja1);
+									return;
+								}
+								else{
+									this.setGanadores(pareja2);
+									manoActual.setParejaGanadora(pareja2);
+									return;
+								}
+							}
+							//PARDA CASO 4
+							else if(bazas.get(0).getGanadores().getIdPareja() == null && bazas.get(1).getGanadores().getIdPareja() == null){
+								if((cartaJug1.getValorJuego() > cartaJug2.getValorJuego() && cartaJug1.getValorJuego() > cartaJug4.getValorJuego()) || (cartaJug3.getValorJuego() > cartaJug2.getValorJuego() && cartaJug3.getValorJuego() > cartaJug4.getValorJuego())){
+									this.setGanadores(pareja1);
+									manoActual.setParejaGanadora(pareja1);
+									return;
+								}
+								else if((cartaJug2.getValorJuego() > cartaJug1.getValorJuego() && cartaJug2.getValorJuego() > cartaJug3.getValorJuego()) || (cartaJug4.getValorJuego() > cartaJug1.getValorJuego() && cartaJug4.getValorJuego() > cartaJug3.getValorJuego())){
+									this.setGanadores(pareja2);
+									manoActual.setParejaGanadora(pareja2);
+									return;
+								}
+							}
+							//PARDA CASO 5
+							else if(bazas.get(0).getGanadores().getIdPareja() == null && bazas.get(1).getGanadores().getIdPareja() == null && this.ganadores == null){
+								if(pareja1.getJugador1().getNumeroTurnoPartido() == 1 || pareja1.getJugador2().getNumeroTurnoPartido() == 1){
+									this.setGanadores(pareja1);
+									manoActual.setParejaGanadora(pareja1);
+									return;
+								}
+								else{
+									this.setGanadores(pareja2);
+									manoActual.setParejaGanadora(pareja2);
+									return;
+								}
+							}
+						}
+					}
+				}
+				this.setBazaTerminada(true);
 				this.setGanadores(null);
 			}
 		}
@@ -374,7 +550,7 @@ public class Baza {
 		}
 	}
 
-	public boolean analizarEnviteJuego(Partido partidoNegocio, Turno turnoEnvite,int numeroChicoActual,int numeroManoActual) {
+	public boolean analizarEnviteJuego(Partido partidoNegocio, Turno turnoEnvite,Chico chicoActual, Mano manoActual) {
 		Pareja pareja1 = partidoNegocio.getParejas().get(0);
 		Pareja pareja2 = partidoNegocio.getParejas().get(1);
 		//*******COMENZAMOS CON EL TRUCO**********
@@ -383,7 +559,7 @@ public class Baza {
 					return true;
 				}
 				else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_Querido)){
-					if(setearPuntajeTruco(partidoNegocio,2,numeroChicoActual,numeroManoActual)){
+					if(setearPuntajeTruco(partidoNegocio,2,chicoActual,manoActual)){
 						return true;
 					}
 					return false;
@@ -391,7 +567,7 @@ public class Baza {
 					//PAREJA GANADORA +2 PUNTOS
 				}
 				else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_QuieroRetruco_Querido)){
-					if(setearPuntajeTruco(partidoNegocio,3,numeroChicoActual,numeroManoActual)){
+					if(setearPuntajeTruco(partidoNegocio,3,chicoActual,manoActual)){
 						return true;
 					}
 					return false;
@@ -399,7 +575,7 @@ public class Baza {
 					//PAREJA GANADORA +3 PUNTOS
 				}
 				else if(turnoEnvite.getEnviteJuego().equals(Envite.Truco_QuieroRetruco_QuieroValeCuatro_Querido)){
-					if(setearPuntajeTruco(partidoNegocio,4,numeroChicoActual,numeroManoActual)){
+					if(setearPuntajeTruco(partidoNegocio,4,chicoActual,manoActual)){
 						return true;
 					}
 					return false;
@@ -471,7 +647,7 @@ public class Baza {
 						Carta cartaJug3 = turno3.getCarta();
 						Carta cartaJug4 = turno4.getCarta();
 						if (cartaJug1 != null && cartaJug2 != null && cartaJug3 != null && cartaJug4 != null ) {
-							calcularGanadorBaza(partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1));
+							calcularGanadorBaza(partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1),manoActual);
 						}
 					}
 					
@@ -487,8 +663,10 @@ public class Baza {
 	}
 	
 	/**Si este metodo devuelve false, es porque a alguno de los jugadores le falta jugar una carta, para que se pueda evaluar los ganadores*/
-	private boolean setearPuntajeTruco(Partido p, int puntaje,int chicoActual,int manoActual){
+	private boolean setearPuntajeTruco(Partido p, int puntaje,Chico chicoA,Mano manoA){
 		boolean faltaJugarCarta = false;
+		int chicoActual = chicoA.getNumero()-1;
+		int manoActual = manoA.getNumeroMano()-1;
 		
 		for(int i = 0;i<this.getTurnos().size();i++){
 			if(this.getTurnos().get(i).getCarta() == null){
@@ -497,7 +675,7 @@ public class Baza {
 			}
 		}
 		if(faltaJugarCarta == false){
-			this.calcularGanadorBaza(p.getParejas().get(0), p.getParejas().get(1));
+			this.calcularGanadorBaza(p.getParejas().get(0), p.getParejas().get(1),manoA);
 			//GANO BAZA 1 Y BAZA 2 PAREJA 1
 			if(this.getGanadores() != null && this.numeroBaza == 2 &&(p.getChico().get(chicoActual).getManos().get(manoActual).getBazas().get(0).getGanadores().getIdPareja().equals(p.getParejas().get(0).getIdPareja()))){
 				this.setBazaTerminada(true);

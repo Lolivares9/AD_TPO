@@ -120,7 +120,7 @@ public class Chico {
 		Pareja pareja2 = p.getParejas().get(1);
 		
 		if (manoActual.getParejaGanadora() != null) {
-			
+			setearNuevoOrdenMano(manoActual,p);
 			this.setPuntajePareja1(puntajePareja1 + manoActual.getPuntajePareja1());
 			this.setPuntajePareja2(puntajePareja2 +manoActual.getPuntajePareja2());
 			
@@ -132,6 +132,39 @@ public class Chico {
 				this.setParejaGanadora(pareja2);
 				this.setFinalizado(true);
 			}
+		}
+	}
+	
+	/*COMO EMPIEZA UNA NUEVA MANO, TENGO QUE REORDENAR A LOS JUGADORES. ES DECIR, EL QUE VA A EMPEZAR AHORA, VA A SER EL JUGADOR
+	 * QUE HABIA TIRADO LA SEGUNDA CARTA EN LA BAZA 1*/
+	private void setearNuevoOrdenMano(Mano manoActual,Partido p) {
+		Baza primeraBaza = manoActual.getBazas().get(0);
+		int idJug = primeraBaza.getTurnos().get(0).getJugador().getId();
+		Pareja pareja1 = p.getParejas().get(0);
+		Pareja pareja2 = p.getParejas().get(1);
+		if(pareja1.getJugador1().getId() == idJug){
+			pareja2.getJugador1().setNumeroTurnoPartido(1);
+			pareja1.getJugador2().setNumeroTurnoPartido(2);
+			pareja2.getJugador2().setNumeroTurnoPartido(3);
+			pareja1.getJugador1().setNumeroTurnoPartido(4);
+		}
+		else if(pareja2.getJugador1().getId() == idJug){
+			pareja1.getJugador2().setNumeroTurnoPartido(1);
+			pareja2.getJugador2().setNumeroTurnoPartido(2);
+			pareja1.getJugador1().setNumeroTurnoPartido(3);
+			pareja1.getJugador2().setNumeroTurnoPartido(4);
+		}
+		else if(pareja1.getJugador2().getId() == idJug){
+			pareja2.getJugador2().setNumeroTurnoPartido(1);
+			pareja1.getJugador1().setNumeroTurnoPartido(2);
+			pareja2.getJugador1().setNumeroTurnoPartido(3);
+			pareja1.getJugador2().setNumeroTurnoPartido(4);
+		}
+		else if(pareja2.getJugador2().getId() == idJug){
+			pareja1.getJugador1().setNumeroTurnoPartido(1);
+			pareja2.getJugador1().setNumeroTurnoPartido(2);
+			pareja1.getJugador2().setNumeroTurnoPartido(3);
+			pareja2.getJugador2().setNumeroTurnoPartido(4);
 		}
 	}
 }

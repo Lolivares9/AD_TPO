@@ -229,7 +229,7 @@ public class Mano {
 		//GUARDO EL PUNTAJE PARA SABER SI ALGUIEN SUMA
 		puntajeP1 = bazaActual.getPuntajePareja1();
 		puntajeP2 = bazaActual.getPuntajePareja2();
-		bazaActual.analizarEnviteJuego(partidoNegocio,turnoEnvite,indiceChico,indiceMano);
+		bazaActual.analizarEnviteJuego(partidoNegocio,turnoEnvite,chicoActual,manoActual);
 		
 		manoActual.cargarMovimientoBaza(bazaActual,partidoNegocio,puntajeP1,puntajeP2);
 		chicoActual.cargarMovimientoMano(manoActual,partidoNegocio);
@@ -250,20 +250,27 @@ public class Mano {
 			finaliza_mano = false;
 		}
 		else if(bazaActual.getNumero() == 2){
-			if((bazas.get(0).getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()))){
-				if(verificarPuntajeSinEnvites(this,bazaActual)){
-					this.setPuntajePareja1(puntajePareja1 + 1);
+			if(bazas.get(0).getGanadores().getIdPareja() != null && bazaActual.getGanadores().getIdPareja() != null){
+				if((bazas.get(0).getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()))){
+					if(verificarPuntajeSinEnvites(this,bazaActual)){
+						this.setPuntajePareja1(puntajePareja1 + 1);
+					}
+					finaliza_mano = true;
 				}
-				finaliza_mano = true;
+				else if(bazas.get(0).getGanadores().getIdPareja().equals(p2.getIdPareja()) && bazaActual.getGanadores().getIdPareja().equals(p2.getIdPareja())){
+					if(verificarPuntajeSinEnvites(this,bazaActual)){
+						this.setPuntajePareja2(puntajePareja2 + 1);
+					}
+					finaliza_mano = true;
+				}	
 			}
-			else if(bazas.get(0).getGanadores().getIdPareja().equals(p2.getIdPareja()) && bazaActual.getGanadores().getIdPareja().equals(p2.getIdPareja())){
-				if(verificarPuntajeSinEnvites(this,bazaActual)){
-					this.setPuntajePareja2(puntajePareja2 + 1);
-				}
-				finaliza_mano = true;
+			finaliza_mano = true;
+			if(verificarPuntajeSinEnvites(this,bazaActual)){
+				this.setPuntajePareja1(puntajePareja1 + 1);
 			}
 		}
 		else if(bazaActual.getNumero() == 3){
+			if(bazaActual.getGanadores().getIdPareja() != null && bazas.get(1).getGanadores().getIdPareja() != null &&  bazas.get(0).getGanadores().getIdPareja() != null)
 			if((bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazas.get(1).getGanadores().getIdPareja().equals(p1.getIdPareja()))){
 				if(verificarPuntajeSinEnvites(this,bazaActual)){
 					this.setPuntajePareja1(puntajePareja1 + 1);
@@ -287,6 +294,10 @@ public class Mano {
 					this.setPuntajePareja2(puntajePareja2 + 1);
 				}
 				finaliza_mano = true;
+			}
+			finaliza_mano = true;
+			if(verificarPuntajeSinEnvites(this,bazaActual)){
+				this.setPuntajePareja1(puntajePareja1 + 1);
 			}
 		}
 		return finaliza_mano;
