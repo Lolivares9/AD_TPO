@@ -10,6 +10,7 @@ import dto.ChicoDTO;
 import dto.ModalidadDTO;
 import dto.ParejaDTO;
 import dto.PartidoDTO;
+import enums.Categoria;
 import enums.EstadoPartido;
 import enums.TipoModalidad;
 import excepciones.GrupoException;
@@ -209,11 +210,74 @@ public class Partido {
 		if (chicoActual.isFinalizado()) {
 			if (isFinalizaPartido(chicoActual)) {
 				parejaGanadora = chicoActual.getParejaGanadora();
+				sumarPartidosGanados();
+				sumarPartidosJugados();
+				setearPuntajesPorPartido();
 			}else {
 				crearNuevoChico();
 			}
 		}
 	}
+	
+	private void sumarPartidosGanados() {
+		if(parejaGanadora.getIdPareja().equals(parejas.get(0).getIdPareja())){
+			parejas.get(0).getJugador1().setPartidosGanados(parejas.get(0).getJugador1().getPartidosGanados() + 1);
+			parejas.get(0).getJugador2().setPartidosGanados(parejas.get(0).getJugador2().getPartidosGanados() + 1);
+		}
+		else{
+			parejas.get(1).getJugador1().setPartidosGanados(parejas.get(1).getJugador1().getPartidosGanados() + 1);
+			parejas.get(1).getJugador2().setPartidosGanados(parejas.get(1).getJugador2().getPartidosGanados() + 1);
+		}
+	}
+
+	private void sumarPartidosJugados() {
+		parejas.get(0).getJugador1().setPartidosJugados(parejas.get(0).getJugador1().getPartidosJugados() + 1);
+		parejas.get(0).getJugador2().setPartidosJugados(parejas.get(0).getJugador2().getPartidosJugados() + 1);
+		parejas.get(1).getJugador1().setPartidosJugados(parejas.get(1).getJugador1().getPartidosJugados() + 1);
+		parejas.get(1).getJugador2().setPartidosJugados(parejas.get(1).getJugador2().getPartidosJugados() + 1);
+	}
+
+	private void setearPuntajesPorPartido() {
+		int puntaje = 0;
+		Jugador jug1Pareja1 = parejas.get(0).getJugador1();
+		Jugador jug1Pareja2 = parejas.get(1).getJugador1();
+		Jugador jug2Pareja1 = parejas.get(0).getJugador2();
+		Jugador jug2Pareja2 = parejas.get(1).getJugador2();
+		float promedioJug1Pareja1 = jug1Pareja1.getPuntaje()/jug1Pareja1.getPartidosJugados();
+		float promedioJug2Pareja1 = jug1Pareja2.getPuntaje()/jug1Pareja2.getPartidosJugados();;
+		float promedioJug1Pareja2 = jug2Pareja1.getPuntaje()/jug2Pareja1.getPartidosJugados();;
+		float promedioJug2Pareja2 = jug2Pareja2.getPuntaje()/jug2Pareja2.getPartidosJugados();;
+		if(this.modalidad.equals(TipoModalidad.Libre) || this.modalidad.equals(TipoModalidad.Libre_individual)){
+			puntaje = 10;
+			setearPuntajePorParametros(jug1Pareja1,promedioJug1Pareja1,puntaje);
+			setearPuntajePorParametros(jug1Pareja2,promedioJug2Pareja1,puntaje);
+			setearPuntajePorParametros(jug2Pareja1,promedioJug1Pareja2,puntaje);
+			setearPuntajePorParametros(jug2Pareja2,promedioJug2Pareja2,puntaje);
+		}
+		else{
+			puntaje = 5;
+			setearPuntajePorParametros(jug1Pareja1,promedioJug1Pareja1,puntaje);
+			setearPuntajePorParametros(jug1Pareja2,promedioJug2Pareja1,puntaje);
+			setearPuntajePorParametros(jug2Pareja1,promedioJug1Pareja2,puntaje);
+			setearPuntajePorParametros(jug2Pareja2,promedioJug2Pareja2,puntaje);
+		}
+	}
+
+	private void setearPuntajePorParametros(Jugador jugador,float promedio,int puntaje) {
+		if(jugador.getPartidosJugados() > 100  && jugador.getPartidosJugados() < 500 && jugador.getPuntaje() > 500 && jugador.getPuntaje() < 3000 && promedio >= 5 && promedio < 6){
+			jugador.setCategoria(Categoria.Calificado);
+			jugador.setPuntaje(jugador.getPuntaje() + puntaje);
+		}
+		else if(jugador.getPartidosJugados() > 500  && jugador.getPartidosJugados() < 1000 && jugador.getPuntaje() > 3000 && jugador.getPuntaje() < 8000 && promedio >= 6 && promedio < 8){
+			jugador.setCategoria(Categoria.Experto);
+			jugador.setPuntaje(jugador.getPuntaje() + puntaje);
+		}
+		else if(jugador.getPartidosJugados() > 1000 && jugador.getPuntaje() > 8000 && promedio >= 8){
+			jugador.setCategoria(Categoria.Master);
+			jugador.setPuntaje(jugador.getPuntaje() + puntaje);
+		}
+	}
+
 	private boolean isFinalizaPartido(Chico chicoActual) {
 		Pareja p1 = this.getParejas().get(0);
 		Pareja p2 = this.getParejas().get(1);
