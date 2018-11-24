@@ -23,12 +23,14 @@ import negocio.Partido;
 
 public class PartidoDAO {
 	private static PartidoDAO instancia;
-	private Session s;
+	private static Session ses;
 	
 	public static PartidoDAO getInstancia() {
 		if(instancia == null){
 			instancia = new PartidoDAO();
 		}
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		ses = sf.openSession();
 		return instancia;
 	}
 	
@@ -37,10 +39,7 @@ public class PartidoDAO {
 	}
 	
 	public List<Partido> buscarPartidosPorJugador(Integer idJugador, TipoModalidad mod, Date fechaInicial, Date fechaFin, String estado) throws ParejaException, PartidoException{
-		SessionFactory sf = HibernateUtil.getSessionFactory();
-		s = sf.openSession();
-		s.beginTransaction();
-		List<ParejaEntity> parejas = ParejaDAO.getInstancia().buscarParejasPorJugador(idJugador, s);
+		List<ParejaEntity> parejas = ParejaDAO.getInstancia().buscarParejasPorJugador1(idJugador);
 		List<Partido> partidos = new ArrayList<Partido>();
 		try {
 			for (ParejaEntity parejaEntity : parejas) {
@@ -50,7 +49,7 @@ public class PartidoDAO {
 			e.printStackTrace();
 			throw new PartidoException("Error al buscar los partidos del jugador");
 		}finally {
-			s.close();
+			ses.close();
 		}
 		return partidos;
 	}
@@ -87,10 +86,10 @@ public class PartidoDAO {
 	private List<PartidoEntity> getPartidosPorModalidad(ParejaEntity pe,TipoModalidad tipo, String estado) throws PartidoException {
 		List<PartidoEntity> partidoe = new ArrayList<PartidoEntity>();
 		List<Integer> idPartidos = new ArrayList<Integer>();
-		s.beginTransaction();
+		ses.beginTransaction();
 		try {	
 				if(estado != null){
-					idPartidos = (List<Integer>) s.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS "
+					idPartidos = (List<Integer>) ses.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS "
 							+ "WHERE ID_PARTIDO IN "
 							+ "(SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS "
 							+ "WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ? AND ESTADO = ?")
@@ -99,12 +98,12 @@ public class PartidoDAO {
 							.setString(2, estado)
 							.list();
 				}else{
-					idPartidos = (List<Integer>) s.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS WHERE ID_PARTIDO IN (SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ?").setInteger(0, pe.getIdPareja()).setString(1, tipo.toString()).list();
+					idPartidos = (List<Integer>) ses.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS WHERE ID_PARTIDO IN (SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ?").setInteger(0, pe.getIdPareja()).setString(1, tipo.toString()).list();
 				}
 				for(int i = 0;i<idPartidos.size();i++){
-					partidoe.add((PartidoEntity) s.createQuery("FROM PartidoEntity WHERE idPartido = ?").setInteger(0, idPartidos.get(i)).uniqueResult());
+					partidoe.add((PartidoEntity) ses.createQuery("FROM PartidoEntity WHERE idPartido = ?").setInteger(0, idPartidos.get(i)).uniqueResult());
 				}
-				s.getTransaction().commit();
+				ses.getTransaction().commit();
 				//s.close();
 			} catch (HibernateException e) {
 				e.printStackTrace();

@@ -66,10 +66,45 @@ public class ActionsServlet extends HttpServlet{
         	resultadoBaza(request,response);
         }else if ("BuscarActualizacion".equals(action)){
         	buscarActualizacion(request,response);
+        }else if ("GetRespuestaEnvite".equals(action)){
+        	getRespuestaEnvite(request,response);
         }       
     }
 	
-    private void buscarActualizacion(HttpServletRequest request, HttpServletResponse response) {
+    private void getRespuestaEnvite(HttpServletRequest request, HttpServletResponse response) {
+    	try {
+        	String idBaza = request.getParameter("baza");
+        	String enviteActual = request.getParameter("enviteActual");
+        	Envite e = Envite.valueOf(enviteActual);
+			TurnoDTO turno = BusinessDelegate.getInstancia().getRespuestaEnvite(Integer.valueOf(idBaza), e);
+			if(turno != null){
+				Gson g = new Gson();
+				Map<String,Object> turnoMapa = new HashMap<String, Object>();
+				turnoMapa.put("apodo", turno.getJugadorDTO().getApodo());
+				int index = turno.getEnviteActual().name().lastIndexOf("_");
+				String envite = turno.getEnviteActual().name().substring(index+1);
+				turnoMapa.put("envite", envite);
+				String j = g.toJson(turnoMapa);
+
+			    response.setContentType("application/json");
+			    response.setCharacterEncoding("UTF-8");
+			    try {
+					response.getWriter().write(j);
+				} catch (IOException exc) {
+					// TODO Auto-generated catch block
+					exc.printStackTrace();
+				}
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	private void buscarActualizacion(HttpServletRequest request, HttpServletResponse response) {
     	try {
     		Gson g = new Gson();
     		Map<String,String> datosActualizados = new HashMap<String, String>();
@@ -112,9 +147,12 @@ public class ActionsServlet extends HttpServlet{
 			if(turno != null){
 				Gson g = new Gson();
 				Map<String,Object> turnoMapa = new HashMap<String, Object>();
-				turnoMapa.put("carta", turno.getCartaDTO().getNumero()+""+turno.getCartaDTO().getPalo());
-				turnoMapa.put("apodo", turno.getJugadorDTO().getApodo());
-				turnoMapa.put("esMiTurno", true); 
+				if(turno.getCartaDTO() != null) {
+					turnoMapa.put("carta", turno.getCartaDTO().getNumero()+""+turno.getCartaDTO().getPalo());
+				}
+				turnoMapa.put("apodo", turno.getJugadorDTO().getApodo()); 
+				turnoMapa.put("enviteTruco", turno.getEnviteJuego());
+				turnoMapa.put("enviteTantos", turno.getEnviteTantos());
 				String j = g.toJson(turnoMapa);
 
 			    response.setContentType("application/json");
@@ -133,26 +171,27 @@ public class ActionsServlet extends HttpServlet{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
 	}
 
 	private void guardarJugada(HttpServletRequest request, HttpServletResponse response) {
 		String idPartido = request.getParameter("partido");
     	String apodo = request.getParameter("apodo");
     	String carta = request.getParameter("idCarta");
+    	String envite = request.getParameter("envite");
     	JugadorDTO j = new JugadorDTO();
     	j.setApodo(apodo);
     	CartaDTO c = new CartaDTO();
-    	c.setIdCarta(Integer.valueOf(carta));
+    	c.setIdCarta(carta.equals("") ? null : Integer.valueOf(carta));
     	Integer idBaza = 1;
     	Integer numTurno = 1;
-    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno,  j, Envite.Nada, Envite.Nada, c); //aca va el id de baza
+    	Envite e = envite.equals("") ?  Envite.Nada : Envite.valueOf(envite);
+    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno,  j, e, c); //aca va el id de baza
     	try {
 			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), turno);
 			response.setStatus(HttpServletResponse.SC_OK);
-		} catch (ComunicationException e) {
+		} catch (ComunicationException exc) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			exc.printStackTrace();
 		}
 	}
 

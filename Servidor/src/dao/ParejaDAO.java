@@ -19,11 +19,15 @@ import negocio.Partido;
 
 public class ParejaDAO {
 	private static ParejaDAO instancia;
+	private static Session ses;
 	
 	public static ParejaDAO getInstancia() {
 		if(instancia == null){
 			instancia = new ParejaDAO();
 		}
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		//sf.getCurrentSession();
+		ses = sf.openSession();
 		return instancia;
 	}
 
@@ -131,6 +135,32 @@ public class ParejaDAO {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			throw new ParejaException("Error al buscar las parejas del jugador");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ParejaEntity> buscarParejasPorJugador1(Integer idJugador) throws ParejaException{
+		ses.beginTransaction();
+		List<ParejaEntity> p;
+		try {
+			p = (List<ParejaEntity>) ses
+					.createQuery("from ParejaEntity pe where pe.jugador1 = ? OR pe.jugador2 = ?")
+					.setInteger(0, idJugador).setInteger(1, idJugador).list();
+			
+			ses.getTransaction().commit();
+			
+			
+			if (p == null) {
+				return Collections.<ParejaEntity>emptyList();
+			}else {
+				return p;		
+			}
+			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			throw new ParejaException("Error al buscar las parejas del jugador");
+		}finally {
+			ses.close();
 		}
 	}
 	

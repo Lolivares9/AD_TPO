@@ -16,6 +16,7 @@ import dto.ManoDTO;
 import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
+import enums.Envite;
 import enums.TipoModalidad;
 import excepciones.BazaException;
 import excepciones.CartaException;
@@ -242,9 +243,9 @@ public class BusinessDelegate {
 		return null;
 	}
 	
-	public TurnoDTO buscarSiguienteTurno(Integer idPartido, Integer numTurnos) throws ComunicationException{
+	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws ComunicationException{
 		try {
-			return ir.buscarSiguienteTurno(idPartido, numTurnos);
+			return ir.buscarSiguienteTurno(idBaza, numTurnos);
 		} catch (RemoteException | TurnoException | GrupoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -252,10 +253,20 @@ public class BusinessDelegate {
 	return null;
 	}
 	
-	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos){
+	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws ComunicationException{
 		try {
 			return ir.buscarActualizacion(idPartido, numBazas, numManos);
 		} catch (RemoteException | PartidoException | GrupoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	return null;
+	}
+	
+	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws ComunicationException{
+		try {
+			return ir.getRespuestaEnvite(idBaza, enviteActual);
+		} catch (RemoteException | TurnoException | GrupoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -58,7 +58,7 @@ public class DTOMapper {
 	
 	public Carta cartaDTOtoNegocio(CartaDTO cartaDTO) {
 		Carta c = null;
-		if(cartaDTO != null){
+		if(cartaDTO != null && cartaDTO.getIdCarta() != null){
 			c = CartaDAO.getInstancia().obtenerCartaPorID(cartaDTO.getIdCarta()); 
 		}
 		return c;

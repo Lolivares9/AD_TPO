@@ -11,7 +11,7 @@ public class CartaDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -4114646579760712497L;
 	
-	private int IdCarta;
+	private Integer IdCarta;
 	private int numero;
 	private PaloCarta palo;
 	private int valorJuego;
@@ -54,11 +54,11 @@ public class CartaDTO implements Serializable {
 		this.valorJuego = valorJuego;
 	}
 
-	public int getIdCarta() {
+	public Integer getIdCarta() {
 		return IdCarta;
 	}
 
-	public void setIdCarta(int idCarta) {
+	public void setIdCarta(Integer idCarta) {
 		IdCarta = idCarta;
 	}
 

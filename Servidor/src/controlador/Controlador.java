@@ -376,9 +376,31 @@ public class Controlador {
 		//si el numBazas y numManos es igual, significa que el partido termino?
 		return null;
 	}
+	
+	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException, GrupoException {
+		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);// que busque los que no tengan carta en null
+		if(enviteActual.name().contains("Envido")) {
+			for (Turno turno : turnos) {
+				if(turno.getEnviteTantos().name().length() > enviteActual.name().length()) {
+					TurnoDTO res = turno.toDTO();
+					res.setEnviteActual(turno.getEnviteTantos());
+					return res;
+				}
+			}
+		}else {
+			for (Turno turno : turnos) {
+				if(turno.getEnviteJuego().name().length() > enviteActual.name().length()) {
+					TurnoDTO res = turno.toDTO();
+					res.setEnviteActual(turno.getEnviteJuego());
+					return res;
+				}
+			}
+		}
+		return null;
+	}
 
 	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws TurnoException, GrupoException {
-		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);
+		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);// que busque los que no tengan carta en null
 		if(turnos != null && turnos.size()>numTurnos) {
 			return turnos.get(numTurnos).toDTO();
 		}
