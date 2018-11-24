@@ -26,6 +26,11 @@ $(document).ready(function(){
 	var numMano = 1; //jugada de 2 o 3 bazas
 	var zindex= 1;
 	//
+	var trucoCantado = false;
+	var envidoCantado = false;
+	var enRondaEnvite = false;
+	var enviteActual;
+	
 	var pos = parseInt(detalleMap.get('posJugador1'));
 	
 	var c1ID = detalleMap.get('IdCarta1');
@@ -88,9 +93,20 @@ $(document).ready(function(){
 	$("#"+apodoJug4+"c3").data('pos', 'I');
 	
 	/* Habilito el handler para el click*/
-	$("#"+c1ID).on("click", clicked);
-	$("#"+c2ID).on("click", clicked);
-	$("#"+c3ID).on("click", clicked);
+	$("#"+c1ID).on("click", clickCarta);
+	$("#"+c2ID).on("click", clickCarta);
+	$("#"+c3ID).on("click", clickCarta);
+	
+	$('#Quiero').on("click", clickCanto);
+	$('#NoQuiero').on("click", clickCanto);
+	$('#Envido').on("click", clickCanto);
+	$('#RealEnvido').on("click", clickCanto);
+	$('#FaltaEnvido').on("click", clickCanto);
+	$('#Truco').on("click", clickCanto);
+	$('#ReTruco').on("click", clickCanto);
+	$('#Vale4').on("click", clickCanto);
+	$('#IrAlMazo').on("click", clickCanto);
+	
 	
 	/* Nombres de los jugadores */
 	var numPareja = detalleMap.get('parejaJugador1');
@@ -109,15 +125,27 @@ $(document).ready(function(){
 
 	
 	var user = detalleMap.get('apodoJugador1');
-
+	$('#Quiero').hide();
+	$('#NoQuiero').hide();
+	$('#Envido').hide();
+	$('#RealEnvido').hide();
+	$('#FaltaEnvido').hide();
+	$('#Truco').hide();
+	$('#ReTruco').hide();
+	$('#Vale4').hide();
+	
 	function verificarTurno(){
 		/*if(turnosBaza === 4){
 			finalizoBaza();
 		}*/
 		if(cantTurnosJugados === (pos-1)){
-			//Habilitar botones de envite
+			if(numBaza == 1 && envidoCantado == false){
+				validacionBotonesEnvido("Envido");
+			}
+			if(trucoCantado == false){
+				validacionBotonesTruco("Inicio");
+			}
 			habilitarCartas();
-			pos += 4;
 			_log.innerHTML =  _log.innerHTML  + "<b>" +  "Es mi Turno" + "</b> " + '<br /> ';
 			console.log("Es mi Turno");
 		}else{
@@ -159,7 +187,7 @@ $(document).ready(function(){
 	//Lo llamo al incio para ver si soy el primero en jugar
 	verificarTurno();	
 	
-	function clicked() {
+	function clickCarta() {
 		var index = $.inArray($(this).attr("id"), idArray);
 		if(index === -1){
 			return;
@@ -169,20 +197,73 @@ $(document).ready(function(){
 		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
 		cantTurnosJugados++;
 		turnosBaza++;
-		guardarJugada($(this).attr("id"));		
+		guardarJugada($(this).attr("id"), "");		
+	}
+	
+	function clickCanto() {
+		deshabilitarCartas();
+		enviteActual = $(this).attr("data");
+		if(enviteActual == "Quiero"){
+			enviteActual = "Envido_Querido";//Test
+			guardarJugada("", enviteActual);
+			enviteActual = "Quiero"
+		}else{
+			guardarJugada("", enviteActual);	
+		}
+		
+		if(enviteActual == "Quiero" && enviteActual == "NoQuiero"){
+			verificarTurno();
+		}else{
+			enRondaEnvite = true;
+			getRespuestaEnvite();
+		}
 	}
 	
 	function deshabilitarCartas(){
 		jQuery.each(idArray, function(index, value){
-			$("#"+value).off("click", clicked);
+			$("#"+value).off("click", clickCarta);
 		});
 	}
 	
 	function habilitarCartas(){
 		jQuery.each(idArray, function(index, value){
-			$("#"+value).on("click", clicked);
+			$("#"+value).on("click", clickCarta);
 		});
 	}
+	
+	function habilitarBotonesEnvite(envite){
+		if(numBaza == 1){//Solo en la primer baza se puede cantar envido
+			validacionBotonesEnvido(envite);
+		}
+		validacionBotonesTruco(envite);
+		$('#Quiero').show();
+		$('#NoQuiero').show();
+	}
+	
+	function validacionBotonesEnvido(envite){
+		if(envite === "Envido"){//Envido,Envido_Envido,Real_Envido,Falta_Envido
+			$('#Envido').show();
+			$('#RealEnvido').show();
+			$('#FaltaEnvido').show();
+		}else if(envite === "Envido_Envido"){
+			$('#RealEnvido').show();
+			$('#FaltaEnvido').show();
+		}else if(envite === "Real_Envido"){
+			$('#FaltaEnvido').show();
+		}
+	}
+	
+	function validacionBotonesTruco(envite){
+		if(envite === "Inicio"){
+			$('#Truco').show();
+		}else if(envite === "Truco"){//Truco,Re_Truco,Vale_Cuatro
+			$('#ReTruco').show();
+		}else if(envite === "Re_Truco"){
+			$('#Vale4').show();
+		}/*else if(envite === "Vale_Cuatro"){
+			$('#FaltaEnvido').show();
+		}*/
+	}			
 
 	function moverCarta(carta){
 		var index = $.inArray($(carta).attr("id"), cartasPos);
@@ -197,16 +278,15 @@ $(document).ready(function(){
 	}
 	
 	function mostrarCartaJugador(jugador, cartaJugada){
-		
 		 $("#"+jugador+"c"+numBaza).css('zIndex', zindex++);
 		var pos = $("#"+jugador+"c"+numBaza).data('pos');
 		if(pos === "D"){
 			 if(numBaza === 1){
 	    	 	$("#"+jugador+"c"+numBaza).css("transform", "translate(-130px, 70px) rotate(90deg) rotateY(180deg) rotateX(180deg)");
 			 }else if(numBaza === 2){
-				 $("#"+jugador+"c"+numBaza).css("transform", "translate(-140px, -10px) rotate(90deg)");
+				 $("#"+jugador+"c"+numBaza).css("transform", "translate(-140px, -10px) rotate(90deg) rotateY(180deg) rotateX(180deg)");
 			 }else{
-				 $("#"+jugador+"c"+numBaza).css("transform", "translate(-150px, -90px) rotate(90deg)");
+				 $("#"+jugador+"c"+numBaza).css("transform", "translate(-150px, -90px) rotate(90deg) rotateY(180deg) rotateX(180deg)");
 			 }
 			 $("#"+jugador+"c"+numBaza).css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+cartaJugada+"H.jpg')");
 		}else if(pos === "I"){
@@ -262,12 +342,13 @@ $(document).ready(function(){
 		});
 	}
 	
-	function guardarJugada(idC){
+	function guardarJugada(idC, envite){
 		//Verificar que no sea el ultimo turno
 		var infoJugada = {
 			partido : idPartido,
 			apodo : user,
-			idCarta : idC
+			idCarta : idC,
+			envite : envite
 		}
 		$.ajax({
 			type: "POST",
@@ -277,11 +358,14 @@ $(document).ready(function(){
 		}).always(function(){
 			//if(turno es el ultimo)
 			//hacer metodo para cambiar de baza, mostrar puntajes, etc
-			console.log("busco siguiente turno");
-			if(turnosBaza === 4){
-				finalizoBaza();
-			}else{
-				getSiguienteTurno();
+			if(idC !== ""){
+				pos += 4;
+				console.log("busco siguiente turno");
+				if(turnosBaza === 4){
+					finalizoBaza();
+				}else{
+					getSiguienteTurno();
+				}
 			}
 		});
 	}
@@ -307,20 +391,75 @@ $(document).ready(function(){
 				    	}
 				    	 console.log(detalleMap);
 				    	 var jugador = detalleMap.get('apodo');
-				    	 var cartaJugada = detalleMap.get('carta');
-				    	 cantTurnosJugados++;
-				    	 turnosBaza++;
-				    	 mostrarCartaJugador(jugador, cartaJugada);
-				 		if(turnosBaza === 4){
-							finalizoBaza();
-						}else{
-				    	 	verificarTurno();
-						}
+				    	 var enviteTr = detalleMap.get('enviteTruco')
+				    	 var enviteTa = detalleMap.get('enviteTantos')
+				    	 if(enviteTr !== '' && trucoCantado == false){
+			    			 enRondaEnvite == true;
+			    			 habilitarBotonesEnvite(enviteTr);
+				    	 }else if(enviteTa !== '' && envidoCantado == false){
+				    		 enRondaEnvite == true;
+			    			 habilitarBotonesEnvite(enviteTa);
+				    	 }else{
+					    	 var cartaJugada = detalleMap.get('carta');
+					    	 cantTurnosJugados++;
+					    	 turnosBaza++;
+					    	 mostrarCartaJugador(jugador, cartaJugada);
+					 		if(turnosBaza === 4){
+								finalizoBaza();
+							}else{
+					    	 	verificarTurno();
+							}
+				    	 }
 				},    
 				error: function() { 
 					//if(turno es el ultimo)
 					//hacer metodo para cambiar de baza, mostrar puntajes, etc
 					verificarTurno();
+			    } 
+			})
+		}, 3000);
+	}
+	
+	function getRespuestaEnvite(){
+		setTimeout(function () {
+			var infoJugada = {
+					baza : idBaza,
+					enviteActual : enviteActual
+				}
+			$.ajax({
+				type: "POST",
+				url: "ActionsServlet?action=GetRespuestaEnvite",
+				dataType: "json",
+				data : infoJugada,
+				success: function(data){
+						//Validar que la mano no haya terminado (una de las parejas ya gano dos bazas)
+				    	var detalleMap = new Map();
+				    	for (let key of Object.keys(data)) {
+				    	    var value = data[key];
+				    	    detalleMap.set(key, value);
+				    	}
+				    	 console.log(detalleMap);
+				    	 var jugador = detalleMap.get('apodo');
+				    	 var envite = detalleMap.get('envite')
+				    	 if(envite !== ''){
+				    		 if(envite == "Querido"|| envite == "NoQuerido"){
+				    			 enRondaEnvite = false;
+				    		 }else{
+				    			 enRondaEnvite == true;
+				    			 enviteActual = envite;
+				    			 habilitarBotonesEnvite(envite);
+				    		 }
+				    	 }else{
+				    		 //Todavia no hay respuesta, vuelvo a buscar
+				    		 getRespuestaEnvite();
+				    	 }
+				    	 
+				    	 if(enRondaEnvite == false){
+					    	 	verificarTurno();
+				    	 }
+				},    
+				error: function() { 
+					getRespuestaEnvite();
 			    } 
 			})
 		}, 3000);
@@ -356,15 +495,15 @@ $(document).ready(function(){
 				<div class="game-action">
 					<fieldset id="cantos" class="cantos-panel">
 						<legend  style="color:white;">Cantos</legend>
-						<input type="button" value="Envido" id="Envido" class="canto btn btn-primary" data-envido="E" style="display: inline-block;">
-						<input type="button" value="Real Envido" id="RealEnvido" class="canto btn btn-success" data-envido="R" style="display: inline-block;">
-						<input type="button" value="Falta Envido" id="FaltaEnvido" class="canto btn btn-inverse" data-envido="F" style="display: inline-block;">
-						<input type="button" value="Me voy al mazo" id="IrAlMazo" class="btn">
-						<input type="button" value="Truco" id="Truco" class="cantot btn btn-primary" data-truco="T" style="display: inline-block;">
-						<input type="button" value="Quiero re Truco" id="reTruco" class="cantot btn btn-success" data-truco="RT" style="display: none;">
-						<input type="button" value="Quiero vale 4" id="vale4" class="cantot btn btn-inverse" data-truco="V" style="display: none;">
-						<input type="button" value="Quiero" id="Quiero" class="boton btn" style="display: none;">
-						<input type="button" value="No Quiero" id="NoQuiero" class="boton btn" style="display: none;">
+							<input type="button" value="Envido" id="Envido" class="canto btn btn-primary" data="Envido" style="display: inline-block;">
+							<input type="button" value="Real Envido" id="RealEnvido" class="canto btn btn-success" data="Real_Envido" style="display: inline-block;">
+							<input type="button" value="Falta Envido" id="FaltaEnvido" class="canto btn btn-inverse" data="Falta_Envido" style="display: inline-block;">
+							<input type="button" value="Me voy al mazo" id="IrAlMazo" data="Mazo" class="btn">
+							<input type="button" value="Truco" id="Truco" class="cantot btn btn-primary" data="Truco" style="display: inline-block;">
+							<input type="button" value="Quiero re Truco" id="ReTruco" class="cantot btn btn-success" data="Re_Truco" style="display: inline-block;">
+							<input type="button" value="Quiero vale 4" id="Vale4" class="cantot btn btn-inverse" data="Vale_Cuatro" style="display: inline-block;">
+							<input type="button" value="Quiero" id="Quiero" class="boton btn" data="Quiero" style="display: inline-block;">
+							<input type="button" value="No Quiero" id="NoQuiero" class="boton btn" data="NoQuiero" style="display: inline-block;">
 					</fieldset>
 				</div>
 				<h2 class="log-titulo">Jugadas</h2>

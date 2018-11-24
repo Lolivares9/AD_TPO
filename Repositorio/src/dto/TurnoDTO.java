@@ -25,6 +25,14 @@ public class TurnoDTO implements Serializable {
 		this.jugador = jugador;
 		this.enviteActual = enviteActual;
 		this.carta = carta;
+	}
+	public TurnoDTO(Integer idBaza, Integer numTurno, JugadorDTO jugador, Envite enviteActual,  CartaDTO carta) {
+		super();
+		this.setIdBaza(idBaza);
+		this.setNumTurno(numTurno);
+		this.jugador = jugador;
+		this.enviteActual = enviteActual;
+		this.carta = carta;
 	} 
 	public TurnoDTO(Integer idTurno, JugadorDTO jugador, Envite enviteTantos, Envite enviteJuego, CartaDTO carta) {
 		super();

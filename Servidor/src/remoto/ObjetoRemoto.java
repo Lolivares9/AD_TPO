@@ -18,6 +18,7 @@ import dto.ManoDTO;
 import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
+import enums.Envite;
 import enums.TipoModalidad;
 import excepciones.BazaException;
 import excepciones.CartaException;
@@ -175,13 +176,17 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return jugDTO;
 	}
 
-	@Override
-	public TurnoDTO buscarSiguienteTurno(Integer idPartido, Integer numTurnos) throws TurnoException, GrupoException {
-		return Controlador.getInstancia().buscarSiguienteTurno(idPartido, numTurnos);
+	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws TurnoException, GrupoException {
+		return Controlador.getInstancia().buscarSiguienteTurno(idBaza, numTurnos);
 	}	
 	
 	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws PartidoException, GrupoException{
 		return Controlador.getInstancia().buscarActualizacion(idPartido, numBazas, numManos);
 	}	
+	
+	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException, GrupoException {
+		return Controlador.getInstancia().getRespuestaEnvite(idBaza, enviteActual);
+	}	
+	
 	
 }

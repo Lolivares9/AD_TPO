@@ -134,6 +134,33 @@ public class ParejaDAO {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ParejaEntity> buscarParejasPorJugador1(Integer idJugador) throws ParejaException{
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s;
+		s = sf.openSession();
+		s.beginTransaction();
+		List<ParejaEntity> p;
+		try {
+			p = (List<ParejaEntity>) s
+					.createQuery("from ParejaEntity pe where pe.jugador1 = ? OR pe.jugador2 = ?")
+					.setInteger(0, idJugador).setInteger(1, idJugador).list();
+			
+			s.getTransaction().commit();
+			
+			
+			if (p == null) {
+				return Collections.<ParejaEntity>emptyList();
+			}else {
+				return p;		
+			}
+			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			throw new ParejaException("Error al buscar las parejas del jugador");
+		}
+	}
+	
 	public List<Pareja> buscarParejasLibres(Pareja parej) throws ParejaException, CartaException{
 		List<Integer> idParejasDisponibles = getIdParejas(parej.getIdPareja());
 		List<ParejaEntity> parejas = new ArrayList<ParejaEntity>();

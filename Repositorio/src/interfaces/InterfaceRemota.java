@@ -13,6 +13,7 @@ import dto.ManoDTO;
 import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
+import enums.Envite;
 import enums.TipoModalidad;
 import excepciones.BazaException;
 import excepciones.CartaException;
@@ -66,8 +67,10 @@ public interface InterfaceRemota extends Remote {
 
 	public JugadorDTO buscarJugadorDTO(String nombre) throws RemoteException,JugadorException, GrupoException;
 
-	public TurnoDTO buscarSiguienteTurno(Integer idPartido, Integer numTurnos)throws RemoteException, TurnoException, GrupoException;
+	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos)throws RemoteException, TurnoException, GrupoException;
 
 	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws RemoteException, PartidoException, GrupoException;
+	
+	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws RemoteException, TurnoException, GrupoException;	
 
 }

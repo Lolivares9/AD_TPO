@@ -8,7 +8,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import entities.BazaEntity;
 import entities.CartaEntity;
 import entities.JugadorEntity;
 import entities.TurnoEntity;
@@ -95,5 +94,30 @@ public class TurnoDAO {
 			}
 		}
 		return turnosNegocio;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Turno> buscarTurnosPorBazaConCarta(Integer idBaza) throws TurnoException{
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		List<TurnoEntity> manosET = null;
+		try {
+			manosET = (List<TurnoEntity>) s
+					.createQuery("from TurnoEntity te where te.idBaza = ? and te.carta IS NOT NULL")
+					.setInteger(0, idBaza).list();
+			s.getTransaction().commit();
+			
+			
+			if (manosET == null) {
+				throw new TurnoException("No se encontraron turnos para la baza indicada");
+			}else {
+				return manosET.stream().map(this::toNegocio).collect(Collectors.toList());		
+			}
+			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			throw new TurnoException("Error al buscar los turnos para la baza "+idBaza);
+		}
 	}
 }

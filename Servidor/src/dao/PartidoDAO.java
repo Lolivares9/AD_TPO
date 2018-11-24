@@ -38,8 +38,7 @@ public class PartidoDAO {
 	public List<Partido> buscarPartidosPorJugador(Integer idJugador, TipoModalidad mod, Date fechaInicial, Date fechaFin, String estado) throws ParejaException, PartidoException{
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		s = sf.openSession();
-		s.beginTransaction();
-		List<ParejaEntity> parejas = ParejaDAO.getInstancia().buscarParejasPorJugador(idJugador, s);
+		List<ParejaEntity> parejas = ParejaDAO.getInstancia().buscarParejasPorJugador1(idJugador);
 		List<Partido> partidos = new ArrayList<Partido>();
 		try {
 			for (ParejaEntity parejaEntity : parejas) {
