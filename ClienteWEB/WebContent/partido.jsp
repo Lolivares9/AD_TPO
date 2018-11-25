@@ -31,12 +31,6 @@ $(document).ready(function(){
 	var enRondaEnvite = false;
 	var enviteActual = "";
 	
-	var pos = parseInt(detalleMap.get('posJugador1'));
-	
-	var c1ID = detalleMap.get('IdCarta1');
-	var c2ID = detalleMap.get('IdCarta2');
-	var c3ID = detalleMap.get('IdCarta3');
-	
 	var usuario = detalleMap.get('apodoJugador1'); //El usuario siempre va a tener asignado el Jugador1
 	
 	var apodoJug1 = detalleMap.get('apodoJugador1');
@@ -44,57 +38,87 @@ $(document).ready(function(){
 	var apodoJug3 = detalleMap.get('apodoJugador3');
 	var apodoJug4 = detalleMap.get('apodoJugador4');
 	
-	var idArray = []; //Array para saber que cartas no se jugaron
-	idArray.push(c1ID);
-	idArray.push(c2ID);
-	idArray.push(c3ID);
+	var pos = parseInt(detalleMap.get('posJugador1'));
 	
-	var cartasPos = [];
-	cartasPos.push(c1ID);
-	cartasPos.push(c2ID);
-	cartasPos.push(c3ID);
+	//Variables
+	var c1ID;
+ 	var c2ID;
+	var c3ID;
+	var idArray;
+	var cartasPos
+	var c1;
+	var c2;
+	var c3;
 	
-	var c1 = detalleMap.get('carta1');
-	var c2 = detalleMap.get('carta2');
-	var c3 = detalleMap.get('carta3');
+	function inicio(){
+		pos = parseInt(detalleMap.get('posJugador1'))
+		
+		cantTurnosJugados = 0;
+		turnosBaza = 0;
+		
+		trucoCantado = false;
+		envidoCantado = false;
+		enRondaEnvite = false;
+		enviteActual = "";
+		
+		c1ID = detalleMap.get('IdCarta1');
+		c2ID = detalleMap.get('IdCarta2');
+		c3ID = detalleMap.get('IdCarta3');
+		
+		idArray = []; //Array para saber que cartas no se jugaron
+		idArray.push(c1ID);
+		idArray.push(c2ID);
+		idArray.push(c3ID);
+		
+		cartasPos = [];
+		cartasPos.push(c1ID);
+		cartasPos.push(c2ID);
+		cartasPos.push(c3ID);
+		
+		c1 = detalleMap.get('carta1');
+		c2 = detalleMap.get('carta2');
+		c3 = detalleMap.get('carta3');
+		
+		/* Pongo las imagenes de las cartas del jugador */
+		$("#carta1").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c1+".jpg')");
+		$("#carta2").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c2+".jpg')");
+		$("#carta3").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c3+".jpg')");
+		$("#carta1").attr("id",c1ID);
+		$("#carta2").attr("id",c2ID);
+		$("#carta3").attr("id",c3ID);
+		
+		/* Seteo los id de las cartas de cada jugador */
+		$("#carta21").attr("id",apodoJug2+"c1");
+		$("#carta22").attr("id",apodoJug2+"c2");
+		$("#carta23").attr("id",apodoJug2+"c3");
+		
+		$("#"+apodoJug2+"c1").data('pos', 'D');
+		$("#"+apodoJug2+"c2").data('pos', 'D');
+		$("#"+apodoJug2+"c3").data('pos', 'D');
+		
+		$("#carta31").attr("id",apodoJug3+"c1");
+		$("#carta32").attr("id",apodoJug3+"c2");
+		$("#carta33").attr("id",apodoJug3+"c3");
+		
+		$("#"+apodoJug3+"c1").data('pos', 'A');
+		$("#"+apodoJug3+"c2").data('pos', 'A');
+		$("#"+apodoJug3+"c3").data('pos', 'A');
+		
+		$("#carta41").attr("id",apodoJug4+"c1");
+		$("#carta42").attr("id",apodoJug4+"c2");
+		$("#carta43").attr("id",apodoJug4+"c3");
+		
+		$("#"+apodoJug4+"c1").data('pos', 'I');
+		$("#"+apodoJug4+"c2").data('pos', 'I');
+		$("#"+apodoJug4+"c3").data('pos', 'I');
+		
+		/* Habilito el handler para el click*/
+		$("#"+c1ID).on("click", clickCarta);
+		$("#"+c2ID).on("click", clickCarta);
+		$("#"+c3ID).on("click", clickCarta);
+	}
 	
-	/* Pongo las imagenes de las cartas del jugador */
-	$("#carta1").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c1+".jpg')");
-	$("#carta2").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c2+".jpg')");
-	$("#carta3").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c3+".jpg')");
-	$("#carta1").attr("id",c1ID);
-	$("#carta2").attr("id",c2ID);
-	$("#carta3").attr("id",c3ID);
-	
-	/* Seteo los id de las cartas de cada jugador */
-	$("#carta21").attr("id",apodoJug2+"c1");
-	$("#carta22").attr("id",apodoJug2+"c2");
-	$("#carta23").attr("id",apodoJug2+"c3");
-	
-	$("#"+apodoJug2+"c1").data('pos', 'D');
-	$("#"+apodoJug2+"c2").data('pos', 'D');
-	$("#"+apodoJug2+"c3").data('pos', 'D');
-	
-	$("#carta31").attr("id",apodoJug3+"c1");
-	$("#carta32").attr("id",apodoJug3+"c2");
-	$("#carta33").attr("id",apodoJug3+"c3");
-	
-	$("#"+apodoJug3+"c1").data('pos', 'A');
-	$("#"+apodoJug3+"c2").data('pos', 'A');
-	$("#"+apodoJug3+"c3").data('pos', 'A');
-	
-	$("#carta41").attr("id",apodoJug4+"c1");
-	$("#carta42").attr("id",apodoJug4+"c2");
-	$("#carta43").attr("id",apodoJug4+"c3");
-	
-	$("#"+apodoJug4+"c1").data('pos', 'I');
-	$("#"+apodoJug4+"c2").data('pos', 'I');
-	$("#"+apodoJug4+"c3").data('pos', 'I');
-	
-	/* Habilito el handler para el click*/
-	$("#"+c1ID).on("click", clickCarta);
-	$("#"+c2ID).on("click", clickCarta);
-	$("#"+c3ID).on("click", clickCarta);
+	inicio();
 	
 	$('#Quiero').on("click", clickCanto);
 	$('#NoQuiero').on("click", clickCanto);
@@ -163,18 +187,20 @@ $(document).ready(function(){
 			pos = parseInt(data.get('posJugador1')); //Actualizo mi numero de turno
 			//Tengo que actualizar id de baza
 			cantTurnosJugados = 0;
+			turnosBaza = 0;
+			/**************************************/
+			idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
+			/**************************************/
+			console.log("sumo 1 a la baza");
 		}else if (flag === "Mano"){
+			detalleMap = data;
+			inicio();
 			//Buscar datos de Mano nueva
 		}else if (flag === "Partida"){
 			//Buscar datos de partida nueva
 			//Decir quien gano antes
 		}//Otro else para ver si termino partido???
 		//Traer la siguiente baza con el orden actualizado segun el que tiro la carta más alta
-		turnosBaza = 0;
-		/**************************************/
-		idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
-		/**************************************/
-		console.log("sumo 1 a la baza");
 		verificarTurno();
 	}
 	
@@ -330,12 +356,12 @@ $(document).ready(function(){
 	    } 
 		}).always(function(data){
 			console.log(data);
-	    	var detalleMap = new Map();
+	    	var detallePartidoMap = new Map();
 	    	for (let key of Object.keys(data)) {
 	    	    var value = data[key];
-	    	    detalleMap.set(key, value);
+	    	    detallePartidoMap.set(key, value);
 	    	}
-			actualizarDatos(detalleMap);
+			actualizarDatos(detallePartidoMap);
 		});
 	}
 	
@@ -384,15 +410,15 @@ $(document).ready(function(){
 				data : infoJugada,
 				success: function(data){
 						//Validar que la mano no haya terminado (una de las parejas ya gano dos bazas)
-				    	var detalleMap = new Map();
+				    	var detalleTurnoMap = new Map();
 				    	for (let key of Object.keys(data)) {
 				    	    var value = data[key];
-				    	    detalleMap.set(key, value);
+				    	    detalleTurnoMap.set(key, value);
 				    	}
-				    	 console.log(detalleMap);
-				    	 var jugador = detalleMap.get('apodo');
-				    	 var enviteTr = detalleMap.get('enviteTruco')
-				    	 var enviteTa = detalleMap.get('enviteTantos')
+				    	 console.log(detalleTurnoMap);
+				    	 var jugador = detalleTurnoMap.get('apodo');
+				    	 var enviteTr = detalleTurnoMap.get('enviteTruco')
+				    	 var enviteTa = detalleTurnoMap.get('enviteTantos')
 				    	 if(enviteTr !== ''){
 				    		 trucoCantado = true;
 				    		 if(jugador === apodoJug3){
@@ -414,7 +440,7 @@ $(document).ready(function(){
 				    			 habilitarBotonesEnvite(enviteTa);
 				    		 }
 				    	 }else{
-					    	 var cartaJugada = detalleMap.get('carta');
+					    	 var cartaJugada = detalleTurnoMap.get('carta');
 					    	 cantTurnosJugados++;
 					    	 turnosBaza++;
 					    	 mostrarCartaJugador(jugador, cartaJugada);
