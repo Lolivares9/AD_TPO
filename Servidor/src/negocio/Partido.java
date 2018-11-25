@@ -301,21 +301,22 @@ public class Partido {
 	private boolean isFinalizaPartido(Chico chicoActual) {
 		Pareja p1 = this.getParejas().get(0);
 		Pareja p2 = this.getParejas().get(1);
-		
+		int idp1 = p1.getIdPareja() ;
+		int idp2 = p2.getIdPareja() ;;
 		boolean finalizaPartido = false;
 		if(numeroChicoActual== 1){
 			finalizaPartido = false;
 		}
 		else if(numeroChicoActual== 2){
-			if((this.getChico().get(0).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1)) || this.getChico().get(0).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2)){
+			if((this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp1) && chicoActual.getParejaGanadora().getIdPareja().equals(idp1)) || this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp2) && chicoActual.getParejaGanadora().equals(idp2)){
 				finalizaPartido = true;
 			}
 		}
 		else if(numeroChicoActual== 3){
-			if( (this.getChico().get(0).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1))|| (this.getChico().get(1).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1)) ){
+			if( (this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp1) && chicoActual.getParejaGanadora().getIdPareja().equals(idp1))|| (this.getChico().get(1).getParejaGanadora().getIdPareja().equals(idp1) && chicoActual.getParejaGanadora().getIdPareja().equals(idp1)) ){
 				finalizaPartido = true;
 			}
-			else if((this.getChico().get(0).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2))|| (this.getChico().get(1).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2)) ){
+			else if((this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp2) && chicoActual.getParejaGanadora().getIdPareja().equals(idp2))|| (this.getChico().get(1).getParejaGanadora().getIdPareja().equals(idp2) && chicoActual.getParejaGanadora().getIdPareja().equals(idp2)) ){
 				finalizaPartido = true;
 			}
 		}
