@@ -39,11 +39,11 @@ public class PartidoDAO {
 	}
 	
 	public List<Partido> buscarPartidosPorJugador(Integer idJugador, TipoModalidad mod, Date fechaInicial, Date fechaFin, String estado) throws ParejaException, PartidoException{
-		List<Integer> parejas = ParejaDAO.getInstancia().buscarIdParejasPorJugador(idJugador, ses);
+		List<Integer> parejas = ParejaDAO.getInstancia().buscarParejasPorJugador1(idJugador);
 		List<Partido> partidos = new ArrayList<Partido>();
 		try {
-			for (Integer parejaEntity : parejas) {
-				partidos.addAll(procesarDatos(parejaEntity, mod, fechaInicial, fechaFin, estado));
+			for (int i = 0;i<parejas.size();i++) {
+				partidos.addAll(procesarDatos(parejas.get(i), mod, fechaInicial, fechaFin, estado));
 			}			
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -54,17 +54,17 @@ public class PartidoDAO {
 		return partidos;
 	}
 	
-	private List<Partido> procesarDatos(Integer pe, TipoModalidad mod, Date fechaInicial, Date fechaFin, String estado) throws PartidoException {
+	private List<Partido> procesarDatos(int idPareja, TipoModalidad mod, Date fechaInicial, Date fechaFin, String estado) throws PartidoException {
 		List<Partido> partidos = new ArrayList<Partido>();
 		Partido p;
 		List<PartidoEntity> partidosE = new ArrayList<PartidoEntity>();
 		if(mod != null) {
 			if(mod.equals(TipoModalidad.Cerrado)) {
-				partidosE = getPartidosPorModalidad(pe,TipoModalidad.Cerrado, estado);
+				partidosE = getPartidosPorModalidad(idPareja,TipoModalidad.Cerrado, estado);
 			}else if(mod.equals(TipoModalidad.Libre)){
-				partidosE = getPartidosPorModalidad(pe,TipoModalidad.Libre, estado);
+				partidosE = getPartidosPorModalidad(idPareja,TipoModalidad.Libre, estado);
 			}else {
-				partidosE = getPartidosPorModalidad(pe,TipoModalidad.Libre_individual, estado);
+				partidosE = getPartidosPorModalidad(idPareja,TipoModalidad.Libre_individual, estado);
 			}
 		}else {
 			partidosE = null;//pe.getPartidos(); FALTA CORREGIR ESTO
@@ -83,28 +83,30 @@ public class PartidoDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	private List<PartidoEntity> getPartidosPorModalidad(Integer pe,TipoModalidad tipo, String estado) throws PartidoException {
+	private List<PartidoEntity> getPartidosPorModalidad(int idPareja,TipoModalidad tipo, String estado) throws PartidoException {
 		List<PartidoEntity> partidoe = new ArrayList<PartidoEntity>();
 		List<Integer> idPartidos = new ArrayList<Integer>();
-		ses.beginTransaction();
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
 		try {	
 				if(estado != null){
-					idPartidos = (List<Integer>) ses.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS "
+					idPartidos = (List<Integer>) s.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS "
 							+ "WHERE ID_PARTIDO IN "
 							+ "(SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS "
 							+ "WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ? AND ESTADO = ?")
-							.setInteger(0, pe)
+							.setInteger(0, idPareja)
 							.setString(1, tipo.toString())
 							.setString(2, estado)
 							.list();
 				}else{
-					idPartidos = (List<Integer>) ses.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS WHERE ID_PARTIDO IN (SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ?").setInteger(0, pe).setString(1, tipo.toString()).list();
+					idPartidos = (List<Integer>) ses.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS WHERE ID_PARTIDO IN (SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ?").setInteger(0, idPareja).setString(1, tipo.toString()).list();
 				}
 				for(int i = 0;i<idPartidos.size();i++){
 					partidoe.add((PartidoEntity) ses.createQuery("FROM PartidoEntity WHERE idPartido = ?").setInteger(0, idPartidos.get(i)).uniqueResult());
 				}
-				ses.getTransaction().commit();
-				//s.close();
+				s.getTransaction().commit();
+				s.close();
 			} catch (HibernateException e) {
 				e.printStackTrace();
 				throw new PartidoException("Error al buscar los partidos del jugador");

@@ -140,50 +140,24 @@ public class ParejaDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Integer> buscarIdParejasPorJugador(Integer idJugador, Session s) throws ParejaException{
+	public List<Integer> buscarParejasPorJugador1(Integer idJugador) throws ParejaException{
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
 		s.beginTransaction();
-		List<Integer> p;
+		List <Integer> idParejas = new ArrayList<Integer>();
 		try {
-			p = (List<Integer>) s.createSQLQuery("SELECT ID_PAREJA FROM PAREJAS WHERE ID_JUGADOR1 = ? OR ID_JUGADOR2 = ?").setInteger(0, idJugador).setInteger(1, idJugador).list();
+			idParejas = (List<Integer>) s.createSQLQuery("SELECT ID_PAREJA FROM PAREJAS WHERE ID_JUGADOR1 = ? OR ID_JUGADOR2 = ?")
+					.setInteger(0, idJugador)
+					.setInteger(1, idJugador).list();
+			
 			s.getTransaction().commit();
-			
-			
-			if (p == null) {
-				return Collections.<Integer>emptyList();
-			}else {
-				return p;		
-			}
-			
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			throw new ParejaException("Error al buscar las parejas del jugador");
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<ParejaEntity> buscarParejasPorJugador1(Integer idJugador) throws ParejaException{
-		ses.beginTransaction();
-		List<ParejaEntity> p;
-		try {
-			p = (List<ParejaEntity>) ses
-					.createQuery("from ParejaEntity pe where pe.jugador1 = ? OR pe.jugador2 = ?")
-					.setInteger(0, idJugador).setInteger(1, idJugador).list();
-			
-			ses.getTransaction().commit();
-			
-			
-			if (p == null) {
-				return Collections.<ParejaEntity>emptyList();
-			}else {
-				return p;		
-			}
-			
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			throw new ParejaException("Error al buscar las parejas del jugador");
 		}finally {
-			ses.close();
+			s.close();
 		}
+		return idParejas;
 	}
 	
 	public List<Pareja> buscarParejasLibres(Pareja parej) throws ParejaException, CartaException{
