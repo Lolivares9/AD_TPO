@@ -72,16 +72,16 @@ public class TestHibernate {
 			int nroTurno= manoActual.getBazas().size()-1;
 			
 			while (chicoActual.getParejaGanadora() == null){
-				TurnoDTO tj1 = new TurnoDTO(null,pareja1Jug1.toDTO(), Envite.Nada, Envite.Nada, cartasP1J1.get(nroTurno).toDTO(),0);
+				TurnoDTO tj1 = new TurnoDTO(null, pareja1Jug1.toDTO(), Envite.Nada, cartasP1J1.get(nroTurno).toDTO());
 				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj1);
 				
-				TurnoDTO tj2 = new TurnoDTO(null,pareja2Jug1.toDTO(), Envite.Nada, Envite.Nada,cartasP1J2.get(nroTurno).toDTO(),0);
+				TurnoDTO tj2 = new TurnoDTO(null, pareja2Jug1.toDTO(), Envite.Nada, cartasP1J2.get(nroTurno).toDTO());
 				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj2);
 				
-				TurnoDTO tj3 = new TurnoDTO(null,pareja1Jug2.toDTO(), Envite.Nada, Envite.Nada,cartasP2J1.get(nroTurno).toDTO(),0);
+				TurnoDTO tj3 = new TurnoDTO(null, pareja1Jug2.toDTO(), Envite.Nada, cartasP2J1.get(nroTurno).toDTO());
 				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj3);
 				
-				TurnoDTO tj4 = new TurnoDTO(null,pareja2Jug2.toDTO(), Envite.Nada,Envite.Nada, cartasP2J2.get(nroTurno).toDTO(),0);
+				TurnoDTO tj4 = new TurnoDTO(null, pareja2Jug2.toDTO(), Envite.Nada, cartasP2J2.get(nroTurno).toDTO());
 				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj4);
 				
 				p = PartidoDAO.getInstancia().buscarPartidoPorID(pdto.getIdPartido());

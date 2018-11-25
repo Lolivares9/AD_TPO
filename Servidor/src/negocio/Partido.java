@@ -233,8 +233,6 @@ public class Partido {
 				sumarPartidosGanados();
 				sumarPartidosJugados();
 				setearPuntajesPorPartido();
-			}else {
-				crearNuevoChico();
 			}
 		}
 	}
