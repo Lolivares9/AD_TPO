@@ -116,9 +116,13 @@ public class ActionsServlet extends HttpServlet{
 			Map<String,Object> datos = BusinessDelegate.getInstancia().buscarActualizacion(Integer.parseInt(idPartido), Integer.parseInt(numBazas), Integer.parseInt(numManos));
 			if(datos != null){
 				if(datos.get("flag").equals("Baza")) {
-					datosActualizados.put("flag", "Baza");//TEST
+					datosActualizados.put("flag", "Baza");
 					datosActualizados.putAll(armarDatosJugadores((List<ParejaDTO>) datos.get("parejas"),usuario));
+				}else if(datos.get("flag").equals("Mano")) {
+					datosActualizados.put("flag", "Mano");
+					datosActualizados.putAll(armarDatosPartido((List<ParejaDTO>) datos.get("parejas"),usuario));
 				}
+				
 				//Si el partido tiene un distinto id al que esta en la web, es porque se termino el partido (ver si termino partida)
 				//Capaz no hay que armar el mapa entero cuando se cambia de baza porque toda la logica de cartas no es necesario
 				/*datosActualizados = armarDatosPartido(partido, usuario);
@@ -198,12 +202,12 @@ public class ActionsServlet extends HttpServlet{
     	String apodo = request.getParameter("apodo");
     	String carta = request.getParameter("idCarta");
     	String envite = request.getParameter("envite");
+    	Integer numTurno = Integer.parseInt(request.getParameter("numTurno"));
     	JugadorDTO j = new JugadorDTO();
     	j.setApodo(apodo);
     	CartaDTO c = new CartaDTO();
     	c.setIdCarta(carta.equals("") ? null : Integer.valueOf(carta));
     	Integer idBaza = 1;
-    	Integer numTurno = 1;
     	Envite e = envite.equals("") ?  Envite.Nada : Envite.valueOf(envite);
     	TurnoDTO turno = new TurnoDTO(idBaza, numTurno,  j, e, c); //aca va el id de baza
     	try {
@@ -290,13 +294,12 @@ public class ActionsServlet extends HttpServlet{
     	Gson g = new Gson();
 		request.setAttribute("idPartido", partido.getIdPartido());
 		//partido.getChicoDTO().get(0).getManos().get(0).getBazas().get(0).getNumero();//MANDAR ID de baza a la pagina
-		Map<String,String> datos = armarDatosPartido(partido, usuario);
+		Map<String,String> datos = armarDatosPartido(partido.getParejaDTOs(), usuario);
 		String  detallePartido = g.toJson(datos);
 		request.setAttribute("detalle", detallePartido);
     }
     
-    private Map<String,String> armarDatosPartido(PartidoDTO partido, String usuario) {
-		List<ParejaDTO> parejas = partido.getParejaDTOs();
+    private Map<String,String> armarDatosPartido(List<ParejaDTO> parejas, String usuario) {
 		Map<String,String> datos = new HashMap<String,String>();
 		
 		ParejaDTO par1 = parejas.get(0);

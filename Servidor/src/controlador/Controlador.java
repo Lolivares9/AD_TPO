@@ -374,7 +374,15 @@ public class Controlador {
 			indiceMano = p.getChico().get(p.getNumeroChicoActual()-1).getManos().size();
 		}
 		if(indiceMano > 0 && (indiceMano > numManos)) {
-			//devuelvo nueva mano
+			numBazas = 0;
+			response.put("flag", "Mano");
+			List<ParejaDTO> par = new ArrayList<ParejaDTO>();
+			for (Pareja parN : p.getParejas()) {
+				par.add(parN.toDTO());
+			}
+			response.put("parejas", par);
+			response.put("idBaza", p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(numManos).getBazas().get(numBazas).getIdBaza());
+			return response;
 		}
 		//si el numBazas y numManos es igual, significa que el partido termino?
 		return null;
