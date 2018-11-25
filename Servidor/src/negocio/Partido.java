@@ -232,29 +232,35 @@ public class Partido {
 			if (isFinalizaPartido(chicoActual)) {
 				parejaGanadora = chicoActual.getParejaGanadora();
 				estado = EstadoPartido.Finalizado;
-				sumarPartidosGanados();
-				sumarPartidosJugados();
+				actualizarDatosJugadores();
 				setearPuntajesPorPartido();
 			}
 		}
 	}
 	
-	private void sumarPartidosGanados() {
-		if(parejaGanadora.getIdPareja().equals(parejas.get(0).getIdPareja())){
-			parejas.get(0).getJugador1().setPartidosGanados(parejas.get(0).getJugador1().getPartidosGanados() + 1);
-			parejas.get(0).getJugador2().setPartidosGanados(parejas.get(0).getJugador2().getPartidosGanados() + 1);
+	private void actualizarDatosJugadores() {
+		//Sumamos partidos jugados a los jugadores
+		Jugador j= null;
+		for (Pareja p: parejas) {
+			//jugador1
+			j = p.getJugador1();
+			j.sumarPartidoJugado(1);
+			
+			if(this.getParejaGanadora().getIdPareja().equals( p.getIdPareja())) {
+				j.sumarPartidoGanado(1);
+			}
+			j.actualizarEstadoJugador(false, false);
+			
+			//jugador2
+			j = p.getJugador2();
+			j.sumarPartidoJugado(1);
+			
+			if(this.getParejaGanadora().getIdPareja().equals( p.getIdPareja())) {
+				j.sumarPartidoGanado(1);
+			}
+			j.actualizarEstadoJugador(false, false);
 		}
-		else{
-			parejas.get(1).getJugador1().setPartidosGanados(parejas.get(1).getJugador1().getPartidosGanados() + 1);
-			parejas.get(1).getJugador2().setPartidosGanados(parejas.get(1).getJugador2().getPartidosGanados() + 1);
-		}
-	}
-
-	private void sumarPartidosJugados() {
-		parejas.get(0).getJugador1().setPartidosJugados(parejas.get(0).getJugador1().getPartidosJugados() + 1);
-		parejas.get(0).getJugador2().setPartidosJugados(parejas.get(0).getJugador2().getPartidosJugados() + 1);
-		parejas.get(1).getJugador1().setPartidosJugados(parejas.get(1).getJugador1().getPartidosJugados() + 1);
-		parejas.get(1).getJugador2().setPartidosJugados(parejas.get(1).getJugador2().getPartidosJugados() + 1);
+		
 	}
 
 	private void setearPuntajesPorPartido() {

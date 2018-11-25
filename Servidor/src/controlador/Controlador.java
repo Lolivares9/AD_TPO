@@ -130,7 +130,7 @@ public class Controlador {
 
 			p.guardar();
 			p.repartirCartas();
-			Pareja.actualizarEstadoParejas(parejas);
+			Pareja.actualizarEstadoParejas(parejas, true, false);
 			
 			PartidoDTO pd = p.toDTO();
 			return pd;
