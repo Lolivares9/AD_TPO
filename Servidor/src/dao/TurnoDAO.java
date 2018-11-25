@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,7 +68,7 @@ public class TurnoDAO {
 			
 			
 			if (manosET == null) {
-				throw new TurnoException("No se encontraron turnos para la baza indicada");
+				return Collections.<Turno>emptyList();
 			}else {
 				return manosET.stream().map(this::toNegocio).collect(Collectors.toList());		
 			}

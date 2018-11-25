@@ -88,11 +88,15 @@ public class Turno {
 	}
 
 	public void setearEnviteActual(Envite enviteActual) {
-		if (enviteActual.toString().contains("Envido")) {
-			this.setEnviteTantos(enviteActual);
-		}
-		else {
-			this.setEnviteJuego(enviteActual);
+		if(enviteActual == Envite.EnvidoNada) {
+			this.setEnviteTantos(Envite.Nada);
+		}else{
+			if (enviteActual.toString().contains("Envido")) {
+				this.setEnviteTantos(enviteActual);
+			}
+			else {
+				this.setEnviteJuego(enviteActual);
+			}
 		}
 	}
 

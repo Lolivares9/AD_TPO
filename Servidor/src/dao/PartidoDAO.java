@@ -49,7 +49,7 @@ public class PartidoDAO {
 			e.printStackTrace();
 			throw new PartidoException("Error al buscar los partidos del jugador");
 		}finally {
-			ses.close();
+			//ses.close();
 		}
 		return partidos;
 	}
@@ -66,6 +66,8 @@ public class PartidoDAO {
 			}else {
 				partidosE = getPartidosPorModalidad(idPareja,TipoModalidad.Libre_individual, estado);
 			}
+		}else {
+			partidosE = null;//pe.getPartidos(); FALTA CORREGIR ESTO
 		}
 		if(fechaInicial != null) {
 			partidosE.removeIf(partido -> (!partido.getFecha().after(fechaInicial) || !partido.getFecha().before(fechaFin))

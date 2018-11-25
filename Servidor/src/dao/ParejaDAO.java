@@ -117,6 +117,7 @@ public class ParejaDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<ParejaEntity> buscarParejasPorJugador(Integer idJugador, Session s) throws ParejaException{
+		s.beginTransaction();
 		List<ParejaEntity> p;
 		try {
 			p = (List<ParejaEntity>) s
