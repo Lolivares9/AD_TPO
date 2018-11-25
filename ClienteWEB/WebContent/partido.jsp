@@ -29,7 +29,7 @@ $(document).ready(function(){
 	var trucoCantado = false;
 	var envidoCantado = false;
 	var enRondaEnvite = false;
-	var enviteActual;
+	var enviteActual = "";
 	
 	var pos = parseInt(detalleMap.get('posJugador1'));
 	
@@ -62,7 +62,6 @@ $(document).ready(function(){
 	$("#carta1").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c1+".jpg')");
 	$("#carta2").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c2+".jpg')");
 	$("#carta3").css("background", "url('${pageContext.request.contextPath}/resources/cartas/"+c3+".jpg')");
-
 	$("#carta1").attr("id",c1ID);
 	$("#carta2").attr("id",c2ID);
 	$("#carta3").attr("id",c3ID);
@@ -117,12 +116,10 @@ $(document).ready(function(){
 		$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
 		$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
 	}
-
 	$("#jug1").text(apodoJug1);
 	$("#jug2").text(apodoJug2);
 	$("#jug3").text(apodoJug3);
 	$("#jug4").text(apodoJug4);
-
 	
 	var user = detalleMap.get('apodoJugador1');
 	$('#Quiero').hide();
@@ -161,6 +158,7 @@ $(document).ready(function(){
 		var flag = data.get("flag");
 		if(flag === "Baza"){
 			numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
+			envidoCantado = true; //Ya paso la chance de cantar envido
 			console.log("actualizo datos pos: "+data.get('posJugador1'))
 			pos = parseInt(data.get('posJugador1')); //Actualizo mi numero de turno
 			//Tengo que actualizar id de baza
@@ -202,16 +200,17 @@ $(document).ready(function(){
 	
 	function clickCanto() {
 		deshabilitarCartas();
-		enviteActual = $(this).attr("data");
-		if(enviteActual == "Quiero"){
-			enviteActual = "Envido_Querido";//Test
-			guardarJugada("", enviteActual);
-			enviteActual = "Quiero"
+		var canto = $(this).attr("data");
+		if(enviteActual == ""){
+			enviteActual = canto;
 		}else{
-			guardarJugada("", enviteActual);	
+			enviteActual = enviteActual + "_" + canto;
 		}
-		
-		if(enviteActual == "Quiero" && enviteActual == "NoQuiero"){
+		guardarJugada("", enviteActual);	
+		if(canto == "Querido" || canto == "NoQuerido"){
+			if(enviteActual.indexOf("Envido") >= 0){
+				envidoCantado = true;
+			}
 			verificarTurno();
 		}else{
 			enRondaEnvite = true;
@@ -264,7 +263,6 @@ $(document).ready(function(){
 			$('#FaltaEnvido').show();
 		}*/
 	}			
-
 	function moverCarta(carta){
 		var index = $.inArray($(carta).attr("id"), cartasPos);
 		if(index === 0){
@@ -308,7 +306,6 @@ $(document).ready(function(){
 					 $("#"+jugador+"c"+numBaza).css("transform", "translate(-65px, 150px)");
 				 }
 		}
-
 	}
 	
 	function buscarPartidoActualizado(){
@@ -348,7 +345,8 @@ $(document).ready(function(){
 			partido : idPartido,
 			apodo : user,
 			idCarta : idC,
-			envite : envite
+			envite : envite,
+			numTurno : pos
 		}
 		$.ajax({
 			type: "POST",
@@ -375,7 +373,9 @@ $(document).ready(function(){
 		setTimeout(function () {
 			var infoJugada = {
 					baza : idBaza,
-					numTurnos : turnosBaza
+					numTurno : turnosBaza,
+					trucoCantado : trucoCantado,
+					envidoCantado : envidoCantado
 				}
 			$.ajax({
 				type: "POST",
@@ -393,12 +393,26 @@ $(document).ready(function(){
 				    	 var jugador = detalleMap.get('apodo');
 				    	 var enviteTr = detalleMap.get('enviteTruco')
 				    	 var enviteTa = detalleMap.get('enviteTantos')
-				    	 if(enviteTr !== '' && trucoCantado == false){
-			    			 enRondaEnvite == true;
-			    			 habilitarBotonesEnvite(enviteTr);
-				    	 }else if(enviteTa !== '' && envidoCantado == false){
-				    		 enRondaEnvite == true;
-			    			 habilitarBotonesEnvite(enviteTa);
+				    	 if(enviteTr !== ''){
+				    		 trucoCantado = true;
+				    		 if(jugador === apodoJug3){
+				    			 guardarJugada("", "Nada"); //El que canto es mi compañero, no canto nada
+				    			 verificarTurno();
+				    		 }else{
+					    		 enRondaEnvite = true;
+					    		 enviteActual = enviteTr;
+				    			 habilitarBotonesEnvite(enviteTr);
+				    		 }
+				    	 }else if(enviteTa !== ''){
+				    		 envidoCantado = true;
+				    		 if(jugador === apodoJug3){
+				    			 guardarJugada("", "EnvidoNada"); //El que canto es mi compañero, no canto nada
+				    			 verificarTurno();
+				    		 }else{
+								 enRondaEnvite = true;
+								 enviteActual = enviteTa;
+				    			 habilitarBotonesEnvite(enviteTa);
+				    		 }
 				    	 }else{
 					    	 var cartaJugada = detalleMap.get('carta');
 					    	 cantTurnosJugados++;
@@ -412,8 +426,6 @@ $(document).ready(function(){
 				    	 }
 				},    
 				error: function() { 
-					//if(turno es el ultimo)
-					//hacer metodo para cambiar de baza, mostrar puntajes, etc
 					verificarTurno();
 			    } 
 			})
@@ -443,10 +455,13 @@ $(document).ready(function(){
 				    	 var envite = detalleMap.get('envite')
 				    	 if(envite !== ''){
 				    		 if(envite == "Querido"|| envite == "NoQuerido"){
+			    				 if(enviteActual.indexOf("Envido") >= 0){
+			    					 envidoCantado = true;
+			    				 }
 				    			 enRondaEnvite = false;
 				    		 }else{
 				    			 enRondaEnvite == true;
-				    			 enviteActual = envite;
+				    			 enviteActual = enviteActual+"_"+envite;
 				    			 habilitarBotonesEnvite(envite);
 				    		 }
 				    	 }else{
@@ -502,8 +517,8 @@ $(document).ready(function(){
 							<input type="button" value="Truco" id="Truco" class="cantot btn btn-primary" data="Truco" style="display: inline-block;">
 							<input type="button" value="Quiero re Truco" id="ReTruco" class="cantot btn btn-success" data="Re_Truco" style="display: inline-block;">
 							<input type="button" value="Quiero vale 4" id="Vale4" class="cantot btn btn-inverse" data="Vale_Cuatro" style="display: inline-block;">
-							<input type="button" value="Quiero" id="Quiero" class="boton btn" data="Quiero" style="display: inline-block;">
-							<input type="button" value="No Quiero" id="NoQuiero" class="boton btn" data="NoQuiero" style="display: inline-block;">
+							<input type="button" value="Quiero" id="Quiero" class="boton btn" data="Querido" style="display: inline-block;">
+							<input type="button" value="No Quiero" id="NoQuiero" class="boton btn" data="NoQuerido" style="display: inline-block;">
 					</fieldset>
 				</div>
 				<h2 class="log-titulo">Jugadas</h2>
