@@ -99,17 +99,11 @@ public class Controlador {
 	}
 	
 	public boolean ingresarNuevosMiembros(String nombreGrupo, List<JugadorDTO> jugadores) throws GrupoException, JugadorException{
-		List<Jugador> jugadoresNegocio = new ArrayList<Jugador>();
-		Grupo g = GrupoDAO.getInstancia().buscarGrupo(nombreGrupo);
-		if(g != null){
-			for(int i = 0;i<jugadores.size();i++){
-				jugadoresNegocio.add(JugadorDAO.getInstancia().buscarPorApodo(jugadores.get(i).getApodo()));
-				g.añadirJugador(jugadoresNegocio.get(i));
-			}
-			return g.guardar();
+		List<String> nuevosIntegrantes = new ArrayList<String>();
+		for(int i = 0;i<jugadores.size();i++){
+			nuevosIntegrantes.add(jugadores.get(i).getApodo());
 		}
-		
-		return false;
+		return GrupoDAO.getInstancia().ingresarNuevosMiembros(nombreGrupo,nuevosIntegrantes);
 	}
 
 	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws PartidoException, CartaException, JugadorException, GrupoException {

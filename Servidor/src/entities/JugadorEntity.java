@@ -61,9 +61,6 @@ public class JugadorEntity {
 	
 	@Column(name = "NUM_TURNO_PARTIDO")
 	private int numeroTurnoPartido;
-
-	@ManyToMany(cascade = {CascadeType.ALL},mappedBy="jugadores")
-	private List<GrupoEntity> grupos = new ArrayList<GrupoEntity>();
 	
 	public JugadorEntity() {
 		super();
@@ -218,14 +215,6 @@ public class JugadorEntity {
 		if (idJugador != other.idJugador)
 			return false;
 		return true;
-	}
-	
-	public List<GrupoEntity> getGrupos() {
-		return grupos;
-	}
-
-	public void setGrupos(List<GrupoEntity> grupos) {
-		this.grupos = grupos;
 	}
 	
 	public int getNumeroJugadorPartido() {

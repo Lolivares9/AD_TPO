@@ -33,7 +33,7 @@ public class GrupoEntity {
 	private JugadorEntity jugadorAdmin;
 	
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@JoinTable(name = "GRUPOS_JUGADORES", joinColumns = @JoinColumn(name="jugadores_ID_JUGADOR"),inverseJoinColumns=@JoinColumn(name="grupos_ID_GRUPO"))
+	@JoinTable(name = "GRUPOS_JUGADORES", joinColumns = @JoinColumn(name="grupos_ID_GRUPO"),inverseJoinColumns=@JoinColumn(name="jugadores_ID_JUGADOR"))
 	
 	private List<JugadorEntity> jugadores = new ArrayList<JugadorEntity>();
 	

@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import entities.GrupoEntity;
 import entities.JugadorEntity;
 import excepciones.GrupoException;
+import excepciones.JugadorException;
 import excepciones.PartidoException;
 import hbt.HibernateUtil;
 import negocio.Grupo;
@@ -97,9 +98,6 @@ public class GrupoDAO {
 		
 		JugadorEntity admin = JugadorDAO.getInstancia().toEntity(grupo.getJugadorAdmin());
 		ge.setJugadorAdmin(admin);
-		if(admin.getGrupos() != null){
-			admin.getGrupos().add(ge);
-		}
 		
 		List<JugadorEntity> jugNeg = null;
 		JugadorEntity j = null;
@@ -107,18 +105,12 @@ public class GrupoDAO {
 			jugNeg = new ArrayList<JugadorEntity>();
 			for(int i = 0;i<grupo.getJugadores().size();i++){
 				j = JugadorDAO.getInstancia().toEntity(grupo.getJugadores().get(i));
-				j.getGrupos().add(ge);
 				jugNeg.add(j);
 			}
-			//jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
 		}
 		
 		List<GrupoEntity> jeGrupos = new ArrayList<GrupoEntity> ();
 		jeGrupos.add(ge);
-		if(jugNeg != null && jugNeg.size() >= 1){
-			jugNeg.get(0).setGrupos(jeGrupos);
-		}
-		
 		ge.setJugadores(jugNeg);
 		
 		return ge;
@@ -158,5 +150,31 @@ public class GrupoDAO {
 			s.close();
 		}
 		return gruposNegocio;
+	}
+
+	public boolean ingresarNuevosMiembros(String nombreGrupo, List<String> apodoNuevosMiembros) throws JugadorException {
+		GrupoEntity g;
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		List<Jugador> miembrosNuevos = new ArrayList<Jugador>();
+		JugadorEntity jugadorNuevo;
+		s.beginTransaction();
+		try{
+			g = (GrupoEntity) s.createQuery("from GrupoEntity ge where ge.nombre = ?").setString(0, nombreGrupo).uniqueResult();
+			if(g != null){
+				for(int i = 0;i<apodoNuevosMiembros.size();i++){
+					miembrosNuevos.add(JugadorDAO.getInstancia().buscarPorApodo(apodoNuevosMiembros.get(i)));
+					jugadorNuevo = JugadorDAO.getInstancia().toEntity(miembrosNuevos.get(i));
+					g.getJugadores().add(jugadorNuevo);
+				}
+			}
+			s.saveOrUpdate(g);
+			s.getTransaction().commit();
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}finally{
+			s.close();
+		}
+		return false;
 	}
 }
