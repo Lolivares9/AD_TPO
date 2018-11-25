@@ -124,7 +124,7 @@ public class Controlador {
 			parejas = Pareja.distribuirParejas(jugDisp);
 			
 			Partido p =  new Partido(TipoModalidad.Libre_individual, parejas, null, new Date(), EstadoPartido.En_Proceso);
-
+			p.crearNuevoChico();
 //			mazo = new Mazo();
 //			mazo.repartiCartas(p);
 

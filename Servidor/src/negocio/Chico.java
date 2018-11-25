@@ -124,13 +124,13 @@ public class Chico {
 			this.setPuntajePareja1(puntajePareja1 + manoActual.getPuntajePareja1());
 			this.setPuntajePareja2(puntajePareja2 + manoActual.getPuntajePareja2());
 			
-			if (puntajePareja1 >= 30) {
-				this.setPuntajePareja1(30);
+			if (puntajePareja1 >= 10) {
+				this.setPuntajePareja1(10);
 				this.setParejaGanadora(pareja1);
 				this.setFinalizado(true);
 			}
-			else if (puntajePareja2 >= 30) {
-				this.setPuntajePareja2(30);
+			else if (puntajePareja2 >= 10) {
+				this.setPuntajePareja2(10);
 				this.setParejaGanadora(pareja2);
 				this.setFinalizado(true);
 			}

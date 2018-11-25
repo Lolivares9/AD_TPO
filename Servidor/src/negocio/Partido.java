@@ -35,8 +35,8 @@ public class Partido {
 	
 	public Partido(TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha,EstadoPartido estado) {
 		super();
-		this.chicos = crearChicos();
-		this.numeroChicoActual = 1;
+		this.chicos = new ArrayList<Chico>();
+		this.numeroChicoActual = 0;
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
@@ -182,25 +182,25 @@ public class Partido {
 		PartidoDAO.getInstancia().guardar(this);
 	}
 	
-	private List<Chico> crearChicos() {
-		List <Chico> chicos = new ArrayList<Chico>();
-		List <Mano> manos = new ArrayList<Mano>();
-		List <Baza> bazas = new ArrayList<Baza>();
-		Baza b = new Baza(1,null,0,0,null);
-		bazas.add(b);
-		Mano m = new Mano(1,null,0,0,bazas);
-		manos.add(m);
-		Chico chico1 = new Chico(1, false, null, 0, 0);
-		chico1.setManos(manos);
-		Chico chico2 = new Chico(2, false, null, 0, 0);
-		Chico chico3 = new Chico(3, false, null, 0, 0);
-		
-		chicos.add(chico1);
-		chicos.add(chico2);
-		chicos.add(chico3);
-		
-		return chicos;
-	}
+//	private List<Chico> crearChicos() {
+//		List <Chico> chicos = new ArrayList<Chico>();
+//		List <Mano> manos = new ArrayList<Mano>();
+//		List <Baza> bazas = new ArrayList<Baza>();
+//		Baza b = new Baza(1,null,0,0,null);
+//		bazas.add(b);
+//		Mano m = new Mano(1,null,0,0,bazas);
+//		manos.add(m);
+//		Chico chico1 = new Chico(1, false, null, 0, 0);
+//		chico1.setManos(manos);
+//		Chico chico2 = new Chico(2, false, null, 0, 0);
+//		Chico chico3 = new Chico(3, false, null, 0, 0);
+//		
+//		chicos.add(chico1);
+//		chicos.add(chico2);
+//		chicos.add(chico3);
+//		
+//		return chicos;
+//	}
 	
 	public int getNumeroChicoActual() {
 		return numeroChicoActual;
@@ -211,9 +211,10 @@ public class Partido {
 	}
 
 	public void crearNuevoChico() {
-		Chico c = chicos.get(numeroChicoActual);
 		numeroChicoActual = numeroChicoActual + 1;
+		Chico c = new Chico(numeroChicoActual, false, null, 0, 0);
 		c.crearNuevaMano();
+		chicos.add(c);
 	}
 
 	public boolean nuevaJugadaTantos(Turno turno) throws PartidoException {
