@@ -211,7 +211,7 @@ public class Partido {
 	}
 
 	public void crearNuevoChico() {
-		Chico c = chicos.get(this.numeroChicoActual);
+		Chico c = chicos.get(numeroChicoActual);
 		numeroChicoActual = numeroChicoActual + 1;
 		c.crearNuevaMano();
 	}
@@ -230,6 +230,7 @@ public class Partido {
 		if (chicoActual.isFinalizado()) {
 			if (isFinalizaPartido(chicoActual)) {
 				parejaGanadora = chicoActual.getParejaGanadora();
+				estado = EstadoPartido.Finalizado;
 				sumarPartidosGanados();
 				sumarPartidosJugados();
 				setearPuntajesPorPartido();
@@ -301,15 +302,15 @@ public class Partido {
 		Pareja p2 = this.getParejas().get(1);
 		
 		boolean finalizaPartido = false;
-		if(getNumeroChicoActual()== 1){
+		if(numeroChicoActual== 1){
 			finalizaPartido = false;
 		}
-		else if(getNumeroChicoActual()== 2){
+		else if(numeroChicoActual== 2){
 			if((this.getChico().get(0).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1)) || this.getChico().get(0).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2)){
 				finalizaPartido = true;
 			}
 		}
-		else if(getNumeroChicoActual()== 3){
+		else if(numeroChicoActual== 3){
 			if( (this.getChico().get(0).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1))|| (this.getChico().get(1).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1)) ){
 				finalizaPartido = true;
 			}
