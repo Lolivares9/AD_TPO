@@ -77,9 +77,9 @@ public class Turno {
 	
 	public TurnoDTO toDTO() throws GrupoException {
 		if(carta != null) {
-			return new TurnoDTO(idTurno, jugador.toDTO(), enviteTantos, enviteJuego, carta.toDTO());
+			return new TurnoDTO(idTurno, jugador.toDTO(), enviteTantos, enviteJuego, carta.toDTO(), numeroTurno);
 		}else {
-			return new TurnoDTO(idTurno, jugador.toDTO(), enviteTantos, enviteJuego, null);
+			return new TurnoDTO(idTurno, jugador.toDTO(), enviteTantos, enviteJuego, null, numeroTurno);
 		}
 	}
 	
