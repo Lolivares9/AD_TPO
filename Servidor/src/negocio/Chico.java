@@ -115,7 +115,7 @@ public class Chico {
 	}
 
 	public void cargarMovimientoMano(Mano manoActual, Partido p) {
-		
+		int puntajeFinalChico = 30;
 		Pareja pareja1 = p.getParejas().get(0);
 		Pareja pareja2 = p.getParejas().get(1);
 		
@@ -124,13 +124,13 @@ public class Chico {
 			this.setPuntajePareja1(puntajePareja1 + manoActual.getPuntajePareja1());
 			this.setPuntajePareja2(puntajePareja2 + manoActual.getPuntajePareja2());
 			
-			if (puntajePareja1 >= 10) {
-				this.setPuntajePareja1(10);
+			if (puntajePareja1 >= puntajeFinalChico) {
+				this.setPuntajePareja1(puntajeFinalChico);
 				this.setParejaGanadora(pareja1);
 				this.setFinalizado(true);
 			}
-			else if (puntajePareja2 >= 10) {
-				this.setPuntajePareja2(10);
+			else if (puntajePareja2 >= puntajeFinalChico) {
+				this.setPuntajePareja2(puntajeFinalChico);
 				this.setParejaGanadora(pareja2);
 				this.setFinalizado(true);
 			}
