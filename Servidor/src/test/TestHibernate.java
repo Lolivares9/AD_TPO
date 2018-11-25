@@ -63,38 +63,49 @@ public class TestHibernate {
 								
 		
 		while (p.getParejaGanadora() == null) {
-			for (int i=0; i <3; i++) {
-				Chico chicoActual = p.getChico().get(i);
-				while (chicoActual.getParejaGanadora() == null){
-					int indiceBazaActual = chicoActual.getManos().size()-1;
-					Mano manoActual = chicoActual.getManos().get(indiceBazaActual);
-					int nroTurno = 0 ;
-					
-					while(manoActual.getParejaGanadora() == null && nroTurno < 3) {
-						TurnoDTO tj1 = new TurnoDTO(null, pareja1Jug1.toDTO(), Envite.Nada, Envite.Nada, cartasP1J1.get(nroTurno).toDTO());
-						Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj1);
-						
-						TurnoDTO tj2 = new TurnoDTO(null, pareja2Jug1.toDTO(), Envite.Nada, Envite.Nada, cartasP1J2.get(nroTurno).toDTO());
-						Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj2);
-						
-						TurnoDTO tj3 = new TurnoDTO(null, pareja1Jug2.toDTO(), Envite.Nada, Envite.Nada, cartasP2J1.get(nroTurno).toDTO());
-						Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj3);
-						
-						TurnoDTO tj4 = new TurnoDTO(null, pareja2Jug2.toDTO(), Envite.Nada, Envite.Nada, cartasP2J2.get(nroTurno).toDTO());
-						Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj4);
-						
-						p = PartidoDAO.getInstancia().buscarPartidoPorID(pdto.getIdPartido());
-						chicoActual = p.getChico().get(i);
-						manoActual = chicoActual.getManos().get(indiceBazaActual);
-						
-						cartasP1J1 = p.getParejas().get(0).getCartasJugador1();
-						cartasP1J2 = p.getParejas().get(0).getCartasJugador2();
-						cartasP2J1 = p.getParejas().get(1).getCartasJugador1();
-						cartasP2J2 = p.getParejas().get(1).getCartasJugador2();
-						
-						nroTurno++;
-					}
+			Chico chicoActual = p.getChico().get(p.getNumeroChicoActual()-1);
+			
+			int indiceManoActual = chicoActual.getManos().size()-1;
+			Mano manoActual = chicoActual.getManos().get(indiceManoActual);
+			int indiceBazaActual = manoActual.getBazas().size()-1;
+			Baza bazaActual = manoActual.getBazas().get(indiceBazaActual);
+			int nroTurno= manoActual.getBazas().size()-1;
+			
+			while (chicoActual.getParejaGanadora() == null){
+				TurnoDTO tj1 = new TurnoDTO(null, pareja1Jug1.toDTO(), Envite.Nada, cartasP1J1.get(nroTurno).toDTO(),1);
+				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj1);
+				
+				TurnoDTO tj2 = new TurnoDTO(null, pareja2Jug1.toDTO(), Envite.Nada, cartasP1J2.get(nroTurno).toDTO(),2);
+				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj2);
+				
+				TurnoDTO tj3 = new TurnoDTO(null, pareja1Jug2.toDTO(), Envite.Nada, cartasP2J1.get(nroTurno).toDTO(),3);
+				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj3);
+				
+				TurnoDTO tj4 = new TurnoDTO(null, pareja2Jug2.toDTO(), Envite.Nada, cartasP2J2.get(nroTurno).toDTO(),4);
+				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj4);
+				
+				p = PartidoDAO.getInstancia().buscarPartidoPorID(pdto.getIdPartido());
+				
+				chicoActual = p.getChico().get(p.getNumeroChicoActual()-1);
+				
+				if (p.getChico().get(0).isFinalizado()) {
+					chicoActual = p.getChico().get(p.getNumeroChicoActual()-1);
 				}
+				
+				indiceManoActual = chicoActual.getManos().size()-1;
+				manoActual = chicoActual.getManos().get(indiceManoActual);
+				
+				indiceBazaActual = manoActual.getBazas().size()-1;
+				bazaActual = manoActual.getBazas().get(indiceBazaActual);
+				
+				cartasP1J1 = p.getParejas().get(0).getCartasJugador1();
+				cartasP1J2 = p.getParejas().get(0).getCartasJugador2();
+				cartasP2J1 = p.getParejas().get(1).getCartasJugador1();
+				cartasP2J2 = p.getParejas().get(1).getCartasJugador2();
+				
+				nroTurno= manoActual.getBazas().size()-1;
+				if (nroTurno == -1)
+					nroTurno = 0;
 			}
 		}
 	}
