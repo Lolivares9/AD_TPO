@@ -537,10 +537,9 @@ public class Jugador {
 	}
 
 
-	public void actualizarEstadoJugador() {
-		this.jugando = true;
-		this.buscandoLibreIndividual = false;
-		this.partidosJugados = this.partidosJugados + 1;
+	public void actualizarEstadoJugador(boolean jugando, boolean buscandoLibreIndividual ) {
+		this.jugando = jugando;
+		this.buscandoLibreIndividual = buscandoLibreIndividual;
 		this.guardar();
 	}
 	
@@ -612,5 +611,14 @@ public class Jugador {
 			tantos = tantos + 20;
 		}
 		return tantos;
+	}
+
+	public void sumarPartidoGanado(int i) {
+		partidosGanados = partidosGanados + i;
+		
+	}
+
+	public void sumarPartidoJugado(int i) {
+		partidosJugados = partidosJugados + i;
 	}
 }

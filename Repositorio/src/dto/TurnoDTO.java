@@ -25,6 +25,7 @@ public class TurnoDTO implements Serializable , Comparable<TurnoDTO>{
 		this.jugador = jugador;
 		this.enviteActual = enviteActual;
 		this.carta = carta;
+		this.numTurno = 0 ;
 	}
 	public TurnoDTO(Integer idBaza, Integer numTurno, JugadorDTO jugador, Envite enviteActual,  CartaDTO carta) {
 		super();

@@ -91,7 +91,12 @@ public class ChicoDAO {
 	
 	public Chico toNegocio(ChicoEntity ce) {
 		if(ce.getParejaGanadora() != null){
-			return new Chico(ce.getNumeroChico(), ce.isFinalizado(), ParejaDAO.getInstancia().toNegocio(ce.getParejaGanadora()), ce.getPuntajePareja1(), ce.getPuntajePareja2());
+			List <Mano> manos = new ArrayList<Mano> ();
+			for (ManoEntity me: ce.getManos()) {
+				Mano m = ManoDAO.getInstancia().toNegocio(me);
+				manos.add(m);
+			}
+			return new Chico(ce.getIdChico(),ce.getNumeroChico(), manos , ce.isFinalizado(), ParejaDAO.getInstancia().toNegocio(ce.getParejaGanadora()), ce.getPuntajePareja1(), ce.getPuntajePareja2());
 		}
 		else{
 			return new Chico(ce.getIdChico(),ce.getNumeroChico(),ManoDAO.getInstancia().manosToNegocio(ce.getManos()),ce.isFinalizado(),null,ce.getPuntajePareja1(),ce.getPuntajePareja2());

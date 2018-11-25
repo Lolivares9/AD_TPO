@@ -107,14 +107,14 @@ public class Pareja {
 		return parejasArmadas;
 	}
 
-	public static void actualizarEstadoParejas(List<Pareja> parejas) {
+	public static void actualizarEstadoParejas(List<Pareja> parejas, boolean jugando, boolean buscandoLibreIndividual) {
 		for (Pareja pj : parejas) {
 			//actualizo el jugador1
 			Jugador j = pj.getJugador1();
-			j.actualizarEstadoJugador();
+			j.actualizarEstadoJugador(jugando, buscandoLibreIndividual);
 			//actualizo el jugador 2
 			j = pj.getJugador2();
-			j.actualizarEstadoJugador();
+			j.actualizarEstadoJugador(jugando, buscandoLibreIndividual);
 		}
 	}
 

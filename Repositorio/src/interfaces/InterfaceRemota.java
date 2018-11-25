@@ -8,6 +8,7 @@ import java.util.Map;
 
 import dto.BazaDTO;
 import dto.ChicoDTO;
+import dto.GrupoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
 import dto.ParejaDTO;
@@ -43,9 +44,9 @@ public interface InterfaceRemota extends Remote {
 	
 	public void buscarPartidaLibreIndividual(JugadorDTO jugador)throws RemoteException, JugadorException;
 	
-	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws RemoteException, PartidoException, ParejaException, JugadorException, GrupoException;
+	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws RemoteException, PartidoException, ParejaException, JugadorException;
 	
-	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException, GrupoException;
+	public PartidoDTO iniciarPartidaLibreIndividual(String categoria, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException;
 	
 	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException, GrupoException;
 	
@@ -63,16 +64,22 @@ public interface InterfaceRemota extends Remote {
 	
 	public boolean modificarJugador() throws RemoteException;
 
-	public void nuevaJugada(Integer idPartido, TurnoDTO turno) throws PartidoException,RemoteException, GrupoException, JugadorException;
+	public void nuevaJugada(Integer idPartido, TurnoDTO turno) throws PartidoException,RemoteException, JugadorException;
 
-	public JugadorDTO buscarJugadorDTO(String nombre) throws RemoteException,JugadorException, GrupoException;
+	public JugadorDTO buscarJugadorDTO(String nombre) throws RemoteException,JugadorException;
 
-	public List<TurnoDTO> buscarTurnos(Integer idBaza)throws RemoteException, TurnoException, GrupoException;
+	public List<TurnoDTO> buscarTurnos(Integer idBaza)throws RemoteException, TurnoException;
 
-	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos, int numChico) throws RemoteException, PartidoException, GrupoException;
+	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos, int numChico) throws RemoteException, PartidoException;
 	
-	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws RemoteException, TurnoException, GrupoException;	
+	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws RemoteException, TurnoException;	
 	
 	public BazaDTO buscarBaza(Integer idBaza) throws RemoteException, BazaException;
+
+	public GrupoDTO buscarGrupo(String nombre) throws RemoteException, GrupoException;
+
+	public PartidoDTO iniciarPartidaCerrada(List<ParejaDTO> parejas) throws RemoteException, PartidoException, CartaException, JugadorException;
+
+	public List<GrupoDTO> traerGruposJugador(int idJugador) throws RemoteException;
 
 }

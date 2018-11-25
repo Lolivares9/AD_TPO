@@ -8,6 +8,7 @@ import dao.PartidoDAO;
 import dto.BazaDTO;
 import dto.ManoDTO;
 import enums.Envite;
+import enums.EstadoPartido;
 import excepciones.CartaException;
 import excepciones.GrupoException;
 import excepciones.PartidoException;
@@ -78,7 +79,7 @@ public class Mano {
 	 * @return
 	 * @throws GrupoException 
 	 */
-	public ManoDTO toDTO() throws GrupoException {
+	public ManoDTO toDTO(){
 		List <BazaDTO> bazasDTO = new ArrayList <BazaDTO> ();
 		for (Baza b: bazas) {
 			bazasDTO.add(b.toDTO());
@@ -102,7 +103,9 @@ public class Mano {
 		if (bazaActual.isBazaTerminada()) {
 			if (manoActual.getParejaGanadora() != null) {
 				if (chicoActual.isFinalizado()) {
-					partidoNegocio.crearNuevoChico();
+					if (partidoNegocio.getEstado().equals(EstadoPartido.En_Proceso)) {
+						partidoNegocio.crearNuevoChico();
+					}
 				}
 				else {
 					chicoActual.crearNuevaMano();

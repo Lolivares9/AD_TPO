@@ -5,7 +5,6 @@ import java.util.List;
 
 import dao.ChicoDAO;
 import dto.ChicoDTO;
-import excepciones.GrupoException;
 /**
  * Formo parte de un Partido y contengo una coleccion de 3 manos como maximo
  * Un chico es finalizado cuando se llegan a los 30 tantos
@@ -96,7 +95,7 @@ public class Chico {
 		this.finalizado = finalizado;
 	}
 
-	public ChicoDTO toDTO() throws GrupoException {
+	public ChicoDTO toDTO(){
 		if(parejaGanadora != null) {
 			return new ChicoDTO(numero, finalizado, parejaGanadora.toDTO(), puntajePareja1, puntajePareja2);
 		}else {
@@ -115,7 +114,7 @@ public class Chico {
 	}
 
 	public void cargarMovimientoMano(Mano manoActual, Partido p) {
-		
+		int puntajeFinalChico = 30;
 		Pareja pareja1 = p.getParejas().get(0);
 		Pareja pareja2 = p.getParejas().get(1);
 		
@@ -124,13 +123,13 @@ public class Chico {
 			this.setPuntajePareja1(puntajePareja1 + manoActual.getPuntajePareja1());
 			this.setPuntajePareja2(puntajePareja2 + manoActual.getPuntajePareja2());
 			
-			if (puntajePareja1 >= 30) {
-				this.setPuntajePareja1(30);
+			if (puntajePareja1 >= puntajeFinalChico) {
+				this.setPuntajePareja1(puntajeFinalChico);
 				this.setParejaGanadora(pareja1);
 				this.setFinalizado(true);
 			}
-			else if (puntajePareja2 >= 30) {
-				this.setPuntajePareja2(30);
+			else if (puntajePareja2 >= puntajeFinalChico) {
+				this.setPuntajePareja2(puntajeFinalChico);
 				this.setParejaGanadora(pareja2);
 				this.setFinalizado(true);
 			}

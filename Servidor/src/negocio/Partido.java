@@ -35,8 +35,8 @@ public class Partido {
 	
 	public Partido(TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha,EstadoPartido estado) {
 		super();
-		this.chicos = crearChicos();
-		this.numeroChicoActual = 1;
+		this.chicos = new ArrayList<Chico>();
+		this.numeroChicoActual = 0;
 		this.modalidad = modalidad;
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
@@ -143,7 +143,7 @@ public class Partido {
 		
 	}
 	
-	public PartidoDTO toDTO() throws GrupoException{
+	public PartidoDTO toDTO(){
 		ModalidadDTO mod = null;
 		List<ParejaDTO> parejasDTO = new ArrayList<ParejaDTO>();
 		List<ChicoDTO> chicosDTO = new ArrayList<ChicoDTO>();
@@ -174,25 +174,25 @@ public class Partido {
 		PartidoDAO.getInstancia().guardar(this);
 	}
 	
-	private List<Chico> crearChicos() {
-		List <Chico> chicos = new ArrayList<Chico>();
-		List <Mano> manos = new ArrayList<Mano>();
-		List <Baza> bazas = new ArrayList<Baza>();
-		Baza b = new Baza(1,null,0,0,null);
-		bazas.add(b);
-		Mano m = new Mano(1,null,0,0,bazas);
-		manos.add(m);
-		Chico chico1 = new Chico(1, false, null, 0, 0);
-		chico1.setManos(manos);
-		Chico chico2 = new Chico(2, false, null, 0, 0);
-		Chico chico3 = new Chico(3, false, null, 0, 0);
-		
-		chicos.add(chico1);
-		chicos.add(chico2);
-		chicos.add(chico3);
-		
-		return chicos;
-	}
+//	private List<Chico> crearChicos() {
+//		List <Chico> chicos = new ArrayList<Chico>();
+//		List <Mano> manos = new ArrayList<Mano>();
+//		List <Baza> bazas = new ArrayList<Baza>();
+//		Baza b = new Baza(1,null,0,0,null);
+//		bazas.add(b);
+//		Mano m = new Mano(1,null,0,0,bazas);
+//		manos.add(m);
+//		Chico chico1 = new Chico(1, false, null, 0, 0);
+//		chico1.setManos(manos);
+//		Chico chico2 = new Chico(2, false, null, 0, 0);
+//		Chico chico3 = new Chico(3, false, null, 0, 0);
+//		
+//		chicos.add(chico1);
+//		chicos.add(chico2);
+//		chicos.add(chico3);
+//		
+//		return chicos;
+//	}
 	
 	public int getNumeroChicoActual() {
 		return numeroChicoActual;
@@ -203,9 +203,10 @@ public class Partido {
 	}
 
 	public void crearNuevoChico() {
-		Chico c = chicos.get(this.numeroChicoActual);
 		numeroChicoActual = numeroChicoActual + 1;
+		Chico c = new Chico(numeroChicoActual, false, null, 0, 0);
 		c.crearNuevaMano();
+		chicos.add(c);
 	}
 
 	public boolean nuevaJugadaTantos(Turno turno) throws PartidoException {
@@ -222,31 +223,36 @@ public class Partido {
 		if (chicoActual.isFinalizado()) {
 			if (isFinalizaPartido(chicoActual)) {
 				parejaGanadora = chicoActual.getParejaGanadora();
-				sumarPartidosGanados();
-				sumarPartidosJugados();
+				estado = EstadoPartido.Finalizado;
+				actualizarDatosJugadores();
 				setearPuntajesPorPartido();
-			}else {
-				crearNuevoChico();
 			}
 		}
 	}
 	
-	private void sumarPartidosGanados() {
-		if(parejaGanadora.getIdPareja().equals(parejas.get(0).getIdPareja())){
-			parejas.get(0).getJugador1().setPartidosGanados(parejas.get(0).getJugador1().getPartidosGanados() + 1);
-			parejas.get(0).getJugador2().setPartidosGanados(parejas.get(0).getJugador2().getPartidosGanados() + 1);
+	private void actualizarDatosJugadores() {
+		//Sumamos partidos jugados a los jugadores
+		Jugador j= null;
+		for (Pareja p: parejas) {
+			//jugador1
+			j = p.getJugador1();
+			j.sumarPartidoJugado(1);
+			
+			if(this.getParejaGanadora().getIdPareja().equals( p.getIdPareja())) {
+				j.sumarPartidoGanado(1);
+			}
+			j.actualizarEstadoJugador(false, false);
+			
+			//jugador2
+			j = p.getJugador2();
+			j.sumarPartidoJugado(1);
+			
+			if(this.getParejaGanadora().getIdPareja().equals( p.getIdPareja())) {
+				j.sumarPartidoGanado(1);
+			}
+			j.actualizarEstadoJugador(false, false);
 		}
-		else{
-			parejas.get(1).getJugador1().setPartidosGanados(parejas.get(1).getJugador1().getPartidosGanados() + 1);
-			parejas.get(1).getJugador2().setPartidosGanados(parejas.get(1).getJugador2().getPartidosGanados() + 1);
-		}
-	}
-
-	private void sumarPartidosJugados() {
-		parejas.get(0).getJugador1().setPartidosJugados(parejas.get(0).getJugador1().getPartidosJugados() + 1);
-		parejas.get(0).getJugador2().setPartidosJugados(parejas.get(0).getJugador2().getPartidosJugados() + 1);
-		parejas.get(1).getJugador1().setPartidosJugados(parejas.get(1).getJugador1().getPartidosJugados() + 1);
-		parejas.get(1).getJugador2().setPartidosJugados(parejas.get(1).getJugador2().getPartidosJugados() + 1);
+		
 	}
 
 	private void setearPuntajesPorPartido() {
@@ -293,21 +299,22 @@ public class Partido {
 	private boolean isFinalizaPartido(Chico chicoActual) {
 		Pareja p1 = this.getParejas().get(0);
 		Pareja p2 = this.getParejas().get(1);
-		
+		int idp1 = p1.getIdPareja() ;
+		int idp2 = p2.getIdPareja() ;;
 		boolean finalizaPartido = false;
-		if(getNumeroChicoActual()== 1){
+		if(numeroChicoActual== 1){
 			finalizaPartido = false;
 		}
-		else if(getNumeroChicoActual()== 2){
-			if((this.getChico().get(0).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1)) || this.getChico().get(0).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2)){
+		else if(numeroChicoActual== 2){
+			if((this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp1) && chicoActual.getParejaGanadora().getIdPareja().equals(idp1)) || this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp2) && chicoActual.getParejaGanadora().equals(idp2)){
 				finalizaPartido = true;
 			}
 		}
-		else if(getNumeroChicoActual()== 3){
-			if( (this.getChico().get(0).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1))|| (this.getChico().get(1).getParejaGanadora().equals(p1) && chicoActual.getParejaGanadora().equals(p1)) ){
+		else if(numeroChicoActual== 3){
+			if( (this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp1) && chicoActual.getParejaGanadora().getIdPareja().equals(idp1))|| (this.getChico().get(1).getParejaGanadora().getIdPareja().equals(idp1) && chicoActual.getParejaGanadora().getIdPareja().equals(idp1)) ){
 				finalizaPartido = true;
 			}
-			else if((this.getChico().get(0).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2))|| (this.getChico().get(1).getParejaGanadora().equals(p2) && chicoActual.getParejaGanadora().equals(p2)) ){
+			else if((this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp2) && chicoActual.getParejaGanadora().getIdPareja().equals(idp2))|| (this.getChico().get(1).getParejaGanadora().getIdPareja().equals(idp2) && chicoActual.getParejaGanadora().getIdPareja().equals(idp2)) ){
 				finalizaPartido = true;
 			}
 		}
