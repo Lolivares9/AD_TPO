@@ -67,7 +67,7 @@ public interface InterfaceRemota extends Remote {
 
 	public JugadorDTO buscarJugadorDTO(String nombre) throws RemoteException,JugadorException, GrupoException;
 
-	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos)throws RemoteException, TurnoException, GrupoException;
+	public List<TurnoDTO> buscarTurnos(Integer idBaza)throws RemoteException, TurnoException, GrupoException;
 
 	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws RemoteException, PartidoException, GrupoException;
 	

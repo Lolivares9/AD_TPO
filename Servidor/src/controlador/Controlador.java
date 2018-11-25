@@ -337,9 +337,12 @@ public class Controlador {
 			turnoDTO.setEnviteActual(Envite.Nada);
 		}
 		turno.setearEnviteActual(turnoDTO.getEnviteActual());
-		
+
 		p.actualizar();
 		if (turnoDTO.getEnviteActual().toString().contains("Envido")) {
+			if(turnoDTO.getEnviteActual().toString().contains("Nada")) {
+				turno.setearEnviteActual(Envite.Nada);
+			}
 			p.nuevaJugadaTantos(turno);
 		}
 		else {
@@ -380,10 +383,24 @@ public class Controlador {
 	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException, GrupoException {
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);// que busque los que no tengan carta en null
 		if(enviteActual.name().contains("Envido")) {
+			List<TurnoDTO> respuestas = new ArrayList<TurnoDTO>();
 			for (Turno turno : turnos) {
-				if(turno.getEnviteTantos().name().length() > enviteActual.name().length()) {
-					TurnoDTO res = turno.toDTO();
-					res.setEnviteActual(turno.getEnviteTantos());
+				if(turno.getEnviteTantos().name().length() > enviteActual.name().length()){
+					respuestas.add(turno.toDTO());
+				}
+				if(respuestas.size() == 2) {
+					TurnoDTO res;
+					String envite1 = respuestas.get(0).getEnviteTantos().name();
+					String envite2 = respuestas.get(1).getEnviteTantos().name();
+					Envite canto1 = Envite.valueOf(envite1.substring(envite1.lastIndexOf("_")+1));
+					Envite canto2 = Envite.valueOf(envite1.substring(envite2.lastIndexOf("_")+1));
+					if(canto1.getNumVal() > canto2.getNumVal()) {
+						res = respuestas.get(0);
+						res.setEnviteActual(res.getEnviteTantos());
+					}else{
+						res = respuestas.get(1);
+						res.setEnviteActual(res.getEnviteTantos());
+					}
 					return res;
 				}
 			}
@@ -399,12 +416,13 @@ public class Controlador {
 		return null;
 	}
 
-	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws TurnoException, GrupoException {
+	public List<TurnoDTO> buscarTurnos(Integer idBaza) throws TurnoException, GrupoException {
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);// que busque los que no tengan carta en null
-		if(turnos != null && turnos.size()>numTurnos) {
-			return turnos.get(numTurnos).toDTO();
+		List<TurnoDTO> res = new ArrayList<TurnoDTO>();
+		for (Turno turno : turnos) {
+			res.add(turno.toDTO());
 		}
-		return null;
+		return res;
 	}
 	
 	public List<String> obtenerRakingPorPuntaje(){
