@@ -7,11 +7,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import entities.GrupoEntity;
 import entities.JugadorEntity;
 import excepciones.JugadorException;
 import hbt.HibernateUtil;
-import negocio.Grupo;
 import negocio.Jugador;
 
 public class JugadorDAO {

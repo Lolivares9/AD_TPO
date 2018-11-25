@@ -11,7 +11,6 @@ import org.hibernate.SessionFactory;
 import entities.GrupoEntity;
 import entities.JugadorEntity;
 import excepciones.GrupoException;
-import excepciones.PartidoException;
 import hbt.HibernateUtil;
 import negocio.Grupo;
 import negocio.Jugador;

@@ -51,6 +51,7 @@ $(document).ready(function(){
 	var c3;
 	
 	function inicio(){
+		_log.innerHTML = "";
 		pos = parseInt(detalleMap.get('posJugador1'))
 		
 		cantTurnosJugados = 0;
@@ -155,61 +156,9 @@ $(document).ready(function(){
 	$('#ReTruco').hide();
 	$('#Vale4').hide();
 	
-	function verificarTurno(){
-		/*if(turnosBaza === 4){
-			finalizoBaza();
-		}*/
-		if(cantTurnosJugados === (pos-1)){
-			if(numBaza == 1 && envidoCantado == false){
-				validacionBotonesEnvido("Envido");
-			}
-			if(trucoCantado == false){
-				validacionBotonesTruco("Inicio");
-			}
-			habilitarCartas();
-			_log.innerHTML =  _log.innerHTML  + "<b>" +  "Es mi Turno" + "</b> " + '<br /> ';
-			console.log("Es mi Turno");
-		}else{
-			deshabilitarCartas();
-			console.log("NO es mi Turno");
-			_log.innerHTML =  _log.innerHTML  + "<b>" +  "NO es mi Turno" + "</b> "+ '<br /> ' ;
-			getSiguienteTurno();
-		}
-	}
-	
-	function actualizarDatos(data){
-		console.log("actualizo datos"+data.get("flag"))
-		var flag = data.get("flag");
-		if(flag === "Baza"){
-			numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
-			envidoCantado = true; //Ya paso la chance de cantar envido
-			console.log("actualizo datos pos: "+data.get('posJugador1'))
-			pos = parseInt(data.get('posJugador1')); //Actualizo mi numero de turno
-			//Tengo que actualizar id de baza
-			cantTurnosJugados = 0;
-			turnosBaza = 0;
-			/**************************************/
-			idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
-			/**************************************/
-			console.log("sumo 1 a la baza");
-		}else if (flag === "Mano"){
-			detalleMap = data;
-			inicio();
-			//Buscar datos de Mano nueva
-		}else if (flag === "Partida"){
-			//Buscar datos de partida nueva
-			//Decir quien gano antes
-		}//Otro else para ver si termino partido???
-		//Traer la siguiente baza con el orden actualizado segun el que tiro la carta más alta
-		verificarTurno();
-	}
-	
 	function finalizoBaza(){
 		buscarPartidoActualizado();
 	}
-	
-	//Lo llamo al incio para ver si soy el primero en jugar
-	verificarTurno();	
 	
 	function clickCarta() {
 		var index = $.inArray($(this).attr("id"), idArray);
@@ -236,6 +185,8 @@ $(document).ready(function(){
 		if(canto == "Querido" || canto == "NoQuerido"){
 			if(enviteActual.indexOf("Envido") >= 0){
 				envidoCantado = true;
+			}else if(enviteActual.indexOf("Truco") >= 0){
+				trucoCantado = true;
 			}
 			verificarTurno();
 		}else{
@@ -265,6 +216,10 @@ $(document).ready(function(){
 		$('#NoQuiero').show();
 	}
 	
+	function deshabilitarBotonesEnvite(envite){
+		//Cuando hacen click a un canto
+	}
+	
 	function validacionBotonesEnvido(envite){
 		if(envite === "Envido"){//Envido,Envido_Envido,Real_Envido,Falta_Envido
 			$('#Envido').show();
@@ -288,7 +243,8 @@ $(document).ready(function(){
 		}/*else if(envite === "Vale_Cuatro"){
 			$('#FaltaEnvido').show();
 		}*/
-	}			
+	}		
+	
 	function moverCarta(carta){
 		var index = $.inArray($(carta).attr("id"), cartasPos);
 		if(index === 0){
@@ -332,6 +288,55 @@ $(document).ready(function(){
 					 $("#"+jugador+"c"+numBaza).css("transform", "translate(-65px, 150px)");
 				 }
 		}
+	}
+	
+	function verificarTurno(){
+		/*if(turnosBaza === 4){
+			finalizoBaza();
+		}*/
+		if(cantTurnosJugados === (pos-1)){
+			if(numBaza == 1 && envidoCantado == false){
+				validacionBotonesEnvido("Envido");
+			}
+			if(trucoCantado == false){
+				validacionBotonesTruco("Inicio");
+			}
+			habilitarCartas();
+			_log.innerHTML =  _log.innerHTML  + "<b>" +  "Es tu Turno" + "</b> " + '<br /> ';
+		}else{
+			deshabilitarCartas();
+			console.log("NO es mi Turno");
+			getSiguienteTurno();
+		}
+	}
+	//Lo llamo al inicio para ver si soy el primero en jugar
+	verificarTurno();
+	
+	function actualizarDatos(data){
+		console.log("actualizo datos"+data.get("flag"))
+		var flag = data.get("flag");
+		if(flag === "Baza"){
+			numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
+			envidoCantado = true; //Ya paso la chance de cantar envido
+			console.log("actualizo datos pos: "+data.get('posJugador1'))
+			pos = parseInt(data.get('posJugador1')); //Actualizo mi numero de turno
+			//Tengo que actualizar id de baza
+			cantTurnosJugados = 0;
+			turnosBaza = 0;
+			/**************************************/
+			idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
+			/**************************************/
+			console.log("sumo 1 a la baza");
+		}else if (flag === "Mano"){
+			detalleMap = data;
+			inicio();
+			//Buscar datos de Mano nueva
+		}else if (flag === "Partida"){
+			//Buscar datos de partida nueva
+			//Decir quien gano antes
+		}//Otro else para ver si termino partido???
+		//Traer la siguiente baza con el orden actualizado segun el que tiro la carta más alta
+		verificarTurno();
 	}
 	
 	function buscarPartidoActualizado(){
@@ -421,6 +426,7 @@ $(document).ready(function(){
 				    	 var enviteTa = detalleTurnoMap.get('enviteTantos')
 				    	 if(enviteTr !== ''){
 				    		 trucoCantado = true;
+				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + "canto" + enviteTr + "</b> " + '<br /> ';
 				    		 if(jugador === apodoJug3){
 				    			 guardarJugada("", "Nada"); //El que canto es mi compañero, no canto nada
 				    			 verificarTurno();
@@ -431,6 +437,7 @@ $(document).ready(function(){
 				    		 }
 				    	 }else if(enviteTa !== ''){
 				    		 envidoCantado = true;
+				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + "canto" + enviteTr + "</b> " + '<br /> ';
 				    		 if(jugador === apodoJug3){
 				    			 guardarJugada("", "EnvidoNada"); //El que canto es mi compañero, no canto nada
 				    			 verificarTurno();
@@ -480,6 +487,7 @@ $(document).ready(function(){
 				    	 var jugador = detalleMap.get('apodo');
 				    	 var envite = detalleMap.get('envite')
 				    	 if(envite !== ''){
+				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + "La pareja contraria cantó" + envite + "</b> " + '<br /> ';
 				    		 if(envite == "Querido"|| envite == "NoQuerido"){
 			    				 if(enviteActual.indexOf("Envido") >= 0){
 			    					 envidoCantado = true;
