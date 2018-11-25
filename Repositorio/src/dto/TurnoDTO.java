@@ -18,21 +18,23 @@ public class TurnoDTO implements Serializable , Comparable<TurnoDTO>{
 	private Envite enviteJuego;
 	private Envite enviteActual;
 	private CartaDTO carta;
-
-	public TurnoDTO(Integer idTurno, JugadorDTO jugador, Envite enviteActual,  CartaDTO carta) {
+	
+	public TurnoDTO(Integer idTurno, JugadorDTO jugador, Envite enviteActual,  CartaDTO carta,int numeroTurno) {
 		super();
 		this.idTurno = idTurno;
 		this.jugador = jugador;
 		this.enviteActual = enviteActual;
 		this.carta = carta;
+		this.numTurno = numeroTurno;
 	}
-	public TurnoDTO(Integer idBaza, Integer numTurno, JugadorDTO jugador, Envite enviteActual,  CartaDTO carta) {
+	public TurnoDTO(Integer idBaza, Integer numTurno, JugadorDTO jugador, Envite enviteActual,  CartaDTO carta,int numeroTurno) {
 		super();
 		this.setIdBaza(idBaza);
 		this.setNumTurno(numTurno);
 		this.jugador = jugador;
 		this.enviteActual = enviteActual;
 		this.carta = carta;
+		this.numTurno = numeroTurno;
 	} 
 	public TurnoDTO(Integer idTurno, JugadorDTO jugador, Envite enviteTantos, Envite enviteJuego, CartaDTO carta) {
 		super();
@@ -130,6 +132,7 @@ public class TurnoDTO implements Serializable , Comparable<TurnoDTO>{
 	public void setIdBaza(Integer idBaza) {
 		this.idBaza = idBaza;
 	}
+
 	@Override
 	public int compareTo(TurnoDTO tt) {
 		if(this.numTurno > tt.getNumTurno()) {

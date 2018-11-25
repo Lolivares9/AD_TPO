@@ -67,10 +67,10 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(1);
 		Baza baza = mano.getBazas().get(0);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0),1);
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0),2);
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0),3);
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0),4);
 		
 		turnos.add(turno1);
 		baza.setTurnos(turnos);
@@ -109,10 +109,10 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(1);
 		Baza baza = mano.getBazas().get(1);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(1));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(1));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(1));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(1));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0),1);
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0),2);
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0),3);
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0),4);
 		
 		turnos.add(turno1);
 		baza.setTurnos(turnos);
@@ -153,10 +153,10 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = mano.getBazas().get(0);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0),1);
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0),2);
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0),3);
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0),4);
 		
 		turnos.add(turno1);
 		baza.setTurnos(turnos);
@@ -195,10 +195,10 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = mano.getBazas().get(1);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(1));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(1));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(1));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(1));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0),1);
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0),2);
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0),3);
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0),4);
 		
 		turnos.add(turno1);
 		baza.setTurnos(turnos);
@@ -239,10 +239,10 @@ public class TestHibernate {
 		Mano mano = p.getChico().get(0).getManos().get(0);
 		Baza baza = mano.getBazas().get(2);
 		
-		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(2));
-		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(2));
-		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(2));
-		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(2));
+		Turno turno1 = new Turno(pareja1Jug1,Envite.Nada, Envite.Nada,pareja1.getCartasJugador1().get(0),1);
+		Turno turno2 = new Turno(pareja2Jug1,Envite.Nada,Envite.Nada,pareja2.getCartasJugador1().get(0),2);
+		Turno turno3 = new Turno(pareja1Jug2,Envite.Nada,Envite.Nada,pareja1.getCartasJugador2().get(0),3);
+		Turno turno4 = new Turno(pareja2Jug2,Envite.Nada,Envite.Nada,pareja2.getCartasJugador2().get(0),4);
 		
 		turnos.add(turno1);
 		baza.setTurnos(turnos);

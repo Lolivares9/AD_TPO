@@ -12,22 +12,25 @@ public class Turno {
 	private Envite enviteTantos;
 	private Envite enviteJuego;
 	private Carta carta;
+	private int numeroTurno;
 	
-	public Turno(Jugador jugador, Envite enviteTantos,Envite enviteJuego, Carta carta) {
+	public Turno(Jugador jugador, Envite enviteTantos,Envite enviteJuego, Carta carta,int numeroTurno) {
 		super();
 		this.jugador = jugador;
 		this.enviteTantos = enviteTantos;
 		this.enviteJuego = enviteJuego;
 		this.carta = carta;
+		this.setNumeroTurno(numeroTurno);
 	}
 	
-	public Turno(Integer idTurno,Jugador jugador, Envite enviteTantos,Envite enviteJuego, Carta carta) {
+	public Turno(Integer idTurno,Jugador jugador, Envite enviteTantos,Envite enviteJuego, Carta carta,int numeroTurno) {
 		super();
 		this.idTurno = idTurno;
 		this.jugador = jugador;
 		this.enviteTantos = enviteTantos;
 		this.enviteJuego = enviteJuego;
 		this.carta = carta;
+		this.setNumeroTurno(numeroTurno);
 	}
 
 	public Jugador getJugador() {
@@ -81,15 +84,27 @@ public class Turno {
 	}
 	
 	public Turno toNegocio(TurnoDTO turno) throws GrupoException{
-		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnviteTantos(), turno.getEnviteJuego(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()));
+		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnviteTantos(), turno.getEnviteJuego(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()),turno.getNumTurno());
 	}
 
 	public void setearEnviteActual(Envite enviteActual) {
-		if (enviteActual.toString().contains("Envido")) {
-			this.setEnviteTantos(enviteActual);
+		if(enviteActual == Envite.EnvidoNada) {
+			this.setEnviteTantos(Envite.Nada);
+		}else{
+			if (enviteActual.toString().contains("Envido")) {
+				this.setEnviteTantos(enviteActual);
+			}
+			else {
+				this.setEnviteJuego(enviteActual);
+			}
 		}
-		else {
-			this.setEnviteJuego(enviteActual);
-		}
+	}
+
+	public int getNumeroTurno() {
+		return numeroTurno;
+	}
+
+	public void setNumeroTurno(int numeroTurno) {
+		this.numeroTurno = numeroTurno;
 	}
 }

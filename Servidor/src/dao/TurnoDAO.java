@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,7 @@ public class TurnoDAO {
 		te.setEnviteTantos(turno.getEnviteTantos());
 		te.setEnviteJuego(turno.getEnviteJuego());
 		te.setIdTurno(turno.getIdTurno());
+		te.setNumeroTurno(turno.getNumeroTurno());
 		JugadorEntity jugador = JugadorDAO.getInstancia().toEntity(turno.getJugador());
 		te.setJugador(jugador);
 		return te;
@@ -66,7 +68,7 @@ public class TurnoDAO {
 			
 			
 			if (manosET == null) {
-				throw new TurnoException("No se encontraron turnos para la baza indicada");
+				return Collections.<Turno>emptyList();
 			}else {
 				return manosET.stream().map(this::toNegocio).collect(Collectors.toList());		
 			}
@@ -81,7 +83,7 @@ public class TurnoDAO {
 		Turno t = null;
 		if(te != null){
 			t = new Turno(te.getIdTurno(),JugadorDAO.getInstancia().toNegocio(te.getJugador()),
-					te.getEnviteTantos(),te.getEnviteJuego(), CartaDAO.getInstancia().toNegocio(te.getCarta()));
+					te.getEnviteTantos(),te.getEnviteJuego(), CartaDAO.getInstancia().toNegocio(te.getCarta()),te.getNumeroTurno());
 		}
 		return t;
 	}

@@ -176,8 +176,8 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return jugDTO;
 	}
 
-	public TurnoDTO buscarSiguienteTurno(Integer idBaza, Integer numTurnos) throws TurnoException, GrupoException {
-		return Controlador.getInstancia().buscarSiguienteTurno(idBaza, numTurnos);
+	public List<TurnoDTO> buscarTurnos(Integer idBaza) throws TurnoException, GrupoException {
+		return Controlador.getInstancia().buscarTurnos(idBaza);
 	}	
 	
 	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws PartidoException, GrupoException{
