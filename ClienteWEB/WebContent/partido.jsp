@@ -19,12 +19,21 @@ $(document).ready(function(){
 	}
 	var _log = document.getElementById('log');
 	
+	var divClone1 = $("#CartasJ1").clone();
+	var divClone2 = $("#CartasJ2").clone();
+	var divClone3 = $("#CartasJ3").clone();
+	var divClone4 = $("#CartasJ4").clone();
+	
+	
 	//Contadores
 	var cantTurnosJugados = 0;
 	var turnosBaza = 0;
 	var numBaza= 1; //4 jugadores tiran 1 carta
 	var numMano = 1; //jugada de 2 o 3 bazas
+	var numChico = 1;
 	var zindex= 1;
+	var ptsP1 = 0;
+	var ptsP2 = 0;
 	//
 	var trucoCantado = false;
 	var envidoCantado = false;
@@ -51,6 +60,10 @@ $(document).ready(function(){
 	var c3;
 	
 	function inicio(){
+		$("#CartasJ1").replaceWith(divClone1.clone());
+		$("#CartasJ2").replaceWith(divClone2.clone());
+		$("#CartasJ3").replaceWith(divClone3.clone());
+		$("#CartasJ4").replaceWith(divClone4.clone());
 		_log.innerHTML = "";
 		pos = parseInt(detalleMap.get('posJugador1'))
 		
@@ -61,6 +74,8 @@ $(document).ready(function(){
 		envidoCantado = false;
 		enRondaEnvite = false;
 		enviteActual = "";
+		
+		idBaza = detalleMap.get('idBaza');
 		
 		c1ID = detalleMap.get('IdCarta1');
 		c2ID = detalleMap.get('IdCarta2');
@@ -117,6 +132,11 @@ $(document).ready(function(){
 		$("#"+c1ID).on("click", clickCarta);
 		$("#"+c2ID).on("click", clickCarta);
 		$("#"+c3ID).on("click", clickCarta);
+		
+		$("#jug1").text(apodoJug1);
+		$("#jug2").text(apodoJug2);
+		$("#jug3").text(apodoJug3);
+		$("#jug4").text(apodoJug4);
 	}
 	
 	inicio();
@@ -141,24 +161,8 @@ $(document).ready(function(){
 		$("#par1").text("Pareja1: "+ detalleMap.get('apodoJugador2') + " (" + detalleMap.get('catJugador2') + ") y " + detalleMap.get('apodoJugador4') + " (" + detalleMap.get('catJugador4') + ")");
 		$("#par2").text("Pareja2: "+ detalleMap.get('apodoJugador1') + " (" + detalleMap.get('catJugador1') + ") y " + detalleMap.get('apodoJugador3') + " (" + detalleMap.get('catJugador3') + ")");
 	}
-	$("#jug1").text(apodoJug1);
-	$("#jug2").text(apodoJug2);
-	$("#jug3").text(apodoJug3);
-	$("#jug4").text(apodoJug4);
-	
+
 	var user = detalleMap.get('apodoJugador1');
-	$('#Quiero').hide();
-	$('#NoQuiero').hide();
-	$('#Envido').hide();
-	$('#RealEnvido').hide();
-	$('#FaltaEnvido').hide();
-	$('#Truco').hide();
-	$('#ReTruco').hide();
-	$('#Vale4').hide();
-	
-	function finalizoBaza(){
-		buscarPartidoActualizado();
-	}
 	
 	function clickCarta() {
 		var index = $.inArray($(this).attr("id"), idArray);
@@ -167,6 +171,7 @@ $(document).ready(function(){
 		}
 		moverCarta(this);
 		deshabilitarCartas();
+		deshabilitarBotonesEnvite();
 		idArray.splice($.inArray($(this).attr("id"), idArray), 1);
 		cantTurnosJugados++;
 		turnosBaza++;
@@ -174,6 +179,7 @@ $(document).ready(function(){
 	}
 	
 	function clickCanto() {
+		deshabilitarBotonesEnvite();
 		deshabilitarCartas();
 		var canto = $(this).attr("data");
 		if(enviteActual == ""){
@@ -185,6 +191,7 @@ $(document).ready(function(){
 		if(canto == "Querido" || canto == "NoQuerido"){
 			if(enviteActual.indexOf("Envido") >= 0){
 				envidoCantado = true;
+				enviteActual = "";
 			}else if(enviteActual.indexOf("Truco") >= 0){
 				trucoCantado = true;
 			}
@@ -216,9 +223,18 @@ $(document).ready(function(){
 		$('#NoQuiero').show();
 	}
 	
-	function deshabilitarBotonesEnvite(envite){
-		//Cuando hacen click a un canto
+	function deshabilitarBotonesEnvite(){
+		$('#Quiero').hide();
+		$('#NoQuiero').hide();
+		$('#Envido').hide();
+		$('#RealEnvido').hide();
+		$('#FaltaEnvido').hide();
+		$('#Truco').hide();
+		$('#ReTruco').hide();
+		$('#Vale4').hide();
 	}
+	
+	deshabilitarBotonesEnvite();
 	
 	function validacionBotonesEnvido(envite){
 		if(envite === "Envido"){//Envido,Envido_Envido,Real_Envido,Falta_Envido
@@ -290,10 +306,16 @@ $(document).ready(function(){
 		}
 	}
 	
+	function loguearPuntajes(datos){
+		ptsP1 = ptsP1 + datos.get("puntajeP1");
+		ptsP2 = ptsP2 + datos.get("puntajeP2");
+		$("#ptsPareja1").text(ptsP1);
+		$("#ptsPareja2").text(ptsP2); 
+		_log.innerHTML =  _log.innerHTML  + "<b>" +  "Pareja "+ datos.get("parejaGanadora") + " ganó la baza." + "</b> " + '<br /> ';
+		
+	}
+	
 	function verificarTurno(){
-		/*if(turnosBaza === 4){
-			finalizoBaza();
-		}*/
 		if(cantTurnosJugados === (pos-1)){
 			if(numBaza == 1 && envidoCantado == false){
 				validacionBotonesEnvido("Envido");
@@ -315,34 +337,43 @@ $(document).ready(function(){
 	function actualizarDatos(data){
 		console.log("actualizo datos"+data.get("flag"))
 		var flag = data.get("flag");
+		getResultadosBaza();
 		if(flag === "Baza"){
+			console.log("NuevaBaza")
 			numBaza++;//Paso a otra baza, puedo traer la baza que termino y mostrar resultados
 			envidoCantado = true; //Ya paso la chance de cantar envido
+			enviteActual = "";
 			console.log("actualizo datos pos: "+data.get('posJugador1'))
 			pos = parseInt(data.get('posJugador1')); //Actualizo mi numero de turno
-			//Tengo que actualizar id de baza
 			cantTurnosJugados = 0;
 			turnosBaza = 0;
-			/**************************************/
-			idBaza++; // SOLO PARA PROBAR, BORRAR DESPUES DE QUE LLEGUE EL ID AL CREAR PARTIDO
-			/**************************************/
-			console.log("sumo 1 a la baza");
+			idBaza = data.get('idBaza');
 		}else if (flag === "Mano"){
+			console.log("NuevaMano")
+			numMano++;
+			numBaza=1;
 			detalleMap = data;
-			inicio();
-			//Buscar datos de Mano nueva
-		}else if (flag === "Partida"){
-			//Buscar datos de partida nueva
-			//Decir quien gano antes
-		}//Otro else para ver si termino partido???
-		//Traer la siguiente baza con el orden actualizado segun el que tiro la carta más alta
-		verificarTurno();
+			inicio(); //Reinicio cartas
+		}else if (flag === "Chico"){
+			console.log("NuevoChico")
+			numChico++;
+			numMano = 1;
+			numbaza = 1;
+			detalleMap = data;
+			inicio(); //Reinicio cartas
+		}
+		if (flag === "Partido"){
+			//Mostrar cartel de que termino partido, ganador y boton para volver al menu
+		}else{
+			verificarTurno();	
+		}
 	}
 	
 	function buscarPartidoActualizado(){
 		var infoJugada = {
 			numBazas : numBaza,
 			numManos : numMano,
+			numChico : numChico,
 			idPartido : idPartido,
 			usuario : usuario
 		}
@@ -385,13 +416,11 @@ $(document).ready(function(){
 			dataType: "json",
 			data : infoJugada
 		}).always(function(){
-			//if(turno es el ultimo)
-			//hacer metodo para cambiar de baza, mostrar puntajes, etc
 			if(idC !== ""){
 				pos += 4;
 				console.log("busco siguiente turno");
 				if(turnosBaza === 4){
-					finalizoBaza();
+					buscarPartidoActualizado();
 				}else{
 					getSiguienteTurno();
 				}
@@ -403,7 +432,7 @@ $(document).ready(function(){
 	function getSiguienteTurno(){
 		setTimeout(function () {
 			var infoJugada = {
-					baza : idBaza,
+					idBaza : idBaza,
 					numTurno : turnosBaza,
 					trucoCantado : trucoCantado,
 					envidoCantado : envidoCantado
@@ -426,7 +455,7 @@ $(document).ready(function(){
 				    	 var enviteTa = detalleTurnoMap.get('enviteTantos')
 				    	 if(enviteTr !== ''){
 				    		 trucoCantado = true;
-				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + "canto" + enviteTr + "</b> " + '<br /> ';
+				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + " cantó " + enviteTr + "</b> " + '<br /> ';
 				    		 if(jugador === apodoJug3){
 				    			 guardarJugada("", "Nada"); //El que canto es mi compañero, no canto nada
 				    			 verificarTurno();
@@ -437,7 +466,7 @@ $(document).ready(function(){
 				    		 }
 				    	 }else if(enviteTa !== ''){
 				    		 envidoCantado = true;
-				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + "canto" + enviteTr + "</b> " + '<br /> ';
+				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + " cantó " + enviteTa + "</b> " + '<br /> ';
 				    		 if(jugador === apodoJug3){
 				    			 guardarJugada("", "EnvidoNada"); //El que canto es mi compañero, no canto nada
 				    			 verificarTurno();
@@ -452,7 +481,7 @@ $(document).ready(function(){
 					    	 turnosBaza++;
 					    	 mostrarCartaJugador(jugador, cartaJugada);
 					 		if(turnosBaza === 4){
-								finalizoBaza();
+					 			buscarPartidoActualizado();
 							}else{
 					    	 	verificarTurno();
 							}
@@ -477,7 +506,6 @@ $(document).ready(function(){
 				dataType: "json",
 				data : infoJugada,
 				success: function(data){
-						//Validar que la mano no haya terminado (una de las parejas ya gano dos bazas)
 				    	var detalleMap = new Map();
 				    	for (let key of Object.keys(data)) {
 				    	    var value = data[key];
@@ -487,10 +515,11 @@ $(document).ready(function(){
 				    	 var jugador = detalleMap.get('apodo');
 				    	 var envite = detalleMap.get('envite')
 				    	 if(envite !== ''){
-				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + "La pareja contraria cantó" + envite + "</b> " + '<br /> ';
+				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + "La pareja contraria cantó " + envite + "</b> " + '<br /> ';
 				    		 if(envite == "Querido"|| envite == "NoQuerido"){
 			    				 if(enviteActual.indexOf("Envido") >= 0){
 			    					 envidoCantado = true;
+			    					 enviteActual = "";
 			    				 }
 				    			 enRondaEnvite = false;
 				    		 }else{
@@ -514,6 +543,26 @@ $(document).ready(function(){
 		}, 3000);
 	}
 	
+	function getResultadosBaza(){
+			var infoJugada = {
+					idBaza : idBaza
+				}
+			$.ajax({
+				type: "POST",
+				url: "ActionsServlet?action=ResultadoBaza",
+				dataType: "json",
+				data : infoJugada,
+				success: function(data){
+				    	var resultadosMap = new Map();
+				    	for (let key of Object.keys(data)) {
+				    	    var value = data[key];
+				    	    resultadosMap.set(key, value);
+				    	}
+				    	loguearPuntajes(resultadosMap);				    	
+				}
+			})
+	}
+	
 })
 </script>
 <title>Partido</title>
@@ -521,12 +570,11 @@ $(document).ready(function(){
 <body style="background-color: rgb(21,72,0);">
 
 <div class="game-wrapper">
-			<div class="game-panel">
+			<div class="panel-Juego">
 				<div class="game-header">
 					<h1>Truco</h1>
 					<p id="par1">Pareja 1:</p>
 					<p id="par2">Pareja 2:</p>
-				</div>
 				<table id="puntajes">
 					<thead>
 						<tr>
@@ -541,13 +589,17 @@ $(document).ready(function(){
 						</tr>
 					</tbody>
 				</table>
+				<h2 class="log-titulo">Jugadas</h2>
+					<div id="log"></div>
+				</div>
+				</div>
 				<div class="game-action">
 					<fieldset id="cantos" class="cantos-panel">
 						<legend  style="color:white;">Cantos</legend>
 							<input type="button" value="Envido" id="Envido" class="canto btn btn-primary" data="Envido" style="display: inline-block;">
 							<input type="button" value="Real Envido" id="RealEnvido" class="canto btn btn-success" data="Real_Envido" style="display: inline-block;">
 							<input type="button" value="Falta Envido" id="FaltaEnvido" class="canto btn btn-inverse" data="Falta_Envido" style="display: inline-block;">
-							<input type="button" value="Me voy al mazo" id="IrAlMazo" data="Mazo" class="btn">
+							<!-- input type="button" value="Me voy al mazo" id="IrAlMazo" data="Mazo" class="btn"-->
 							<input type="button" value="Truco" id="Truco" class="cantot btn btn-primary" data="Truco" style="display: inline-block;">
 							<input type="button" value="Quiero re Truco" id="ReTruco" class="cantot btn btn-success" data="Re_Truco" style="display: inline-block;">
 							<input type="button" value="Quiero vale 4" id="Vale4" class="cantot btn btn-inverse" data="Vale_Cuatro" style="display: inline-block;">
@@ -555,12 +607,9 @@ $(document).ready(function(){
 							<input type="button" value="No Quiero" id="NoQuiero" class="boton btn" data="NoQuerido" style="display: inline-block;">
 					</fieldset>
 				</div>
-				<h2 class="log-titulo">Jugadas</h2>
-				<div id="log"></div>
-			</div>
 			<div class="game-main" style="position: relative;">
 				<div>		
-					<div class="flex-containerIni">
+					<div class="flex-containerIni" id="CartasJ3">
 						<p id="jug3">Jugador3</p>
 					  <a href="#" id= "carta31" class="carta-V"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.jpg');"
@@ -573,12 +622,12 @@ $(document).ready(function(){
 								></a>  
 								<div class="div1"></div>
 					</div>
-					 <div class="flex-containerSepara"><div></div></div>
+					 <!-- div class="flex-containerSepara"><div></div></div-->
 
 					<div>
 					<div class="flex-containerIni">
 
-						  <div class="flex-containerIni">
+						  <div class="flex-containerIni" id="CartasJ4">
 						   <p id="jug4">Jugador4</p>
 							  <a href="#" id= "carta41" class="carta-H"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.jpg');"
@@ -595,7 +644,7 @@ $(document).ready(function(){
 					  <div></div>
 					  <div></div>
 					  <div>
-						<div class="flex-containerIni">
+						<div class="flex-containerIni" id="CartasJ2">
 							<p id="jug2">Jugador2</p>
 							  <a href="#" id= "carta21" class="carta-H"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta-H.jpg');"
@@ -613,8 +662,8 @@ $(document).ready(function(){
 					</div>
 
 					 <div class="flex-containerSepara"><div></div><div></div></div>
-					 <div class="flex-containerSepara"><div></div><div></div></div>
-					<div class="flex-containerIni">
+					 <!-- div class="flex-containerSepara"><div></div><div></div></div-->
+					<div class="flex-containerIni" id="CartasJ1">
 					<p id="jug1">Jugador1</p>
 					 <a href="#" id= "carta1" class="carta"
 								style= "background: url('${pageContext.request.contextPath}/resources/cartas/Carta.jpg');"
@@ -628,24 +677,6 @@ $(document).ready(function(){
 								<div class="div1"></div>
 					</div>
 					<div class="flex-containerSepara">
-						<!-- 
-						<div>
-							<input type="button" id="LibreIndiv" value="Quiero">
-							<input type="button" id="LibreIndiv" value="No Quiero">
-						</div>
-						
-						<div>
-							<input type="button" id="LibreIndiv" value="Envido">
-							<input type="button" id="LibreIndiv" value="Falta Envido">
-							<input type="button" id="LibreIndiv" value="Real Envido">
-						</div>
-						
-						<div>
-							<input type="button" id="LibreIndiv" value=" Truco ">
-							<input type="button" id="LibreIndiv" value="Re Truco">
-							<input type="button" id="LibreIndiv" value="Vale Cuatro">
-						</div>
-						-->
 					</div>
 				</div>
 			</div>

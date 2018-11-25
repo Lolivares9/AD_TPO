@@ -6,7 +6,6 @@ import java.util.List;
 import dao.BazaDAO;
 import dto.BazaDTO;
 import enums.Envite;
-import excepciones.GrupoException;
 
 /**
  * Soy la jugada de 1 carta de los 4 jugadores
@@ -83,8 +82,12 @@ public class Baza {
 		return BazaDAO.getInstancia().guardar(this);
 	}
 	
-	public BazaDTO toDTO() throws GrupoException {
-		return new BazaDTO(numeroBaza, ganadores.toDTO(), puntajePareja1, puntajePareja2);
+	public BazaDTO toDTO(){
+		if(idBaza == null) {
+			return new BazaDTO(numeroBaza, ganadores.toDTO(), puntajePareja1, puntajePareja2);
+		}else {
+			return new BazaDTO(idBaza, numeroBaza, ganadores.toDTO(), puntajePareja1, puntajePareja2); 
+		}
 	}
 	public Integer getIdBaza() {
 		return idBaza;

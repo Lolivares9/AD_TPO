@@ -122,13 +122,10 @@ public class BusinessDelegate {
 		catch (PartidoException e) {
 			e.printStackTrace();
 		} catch (CartaException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JugadorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (GrupoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return partido;
@@ -171,7 +168,6 @@ public class BusinessDelegate {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (CartaException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -247,17 +243,15 @@ public class BusinessDelegate {
 		try {
 			return ir.buscarTurnos(idBaza);
 		} catch (RemoteException | TurnoException | GrupoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	return null;
 	}
 	
-	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws ComunicationException{
+	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos, int numChico) throws ComunicationException{
 		try {
-			return ir.buscarActualizacion(idPartido, numBazas, numManos);
+			return ir.buscarActualizacion(idPartido, numBazas, numManos, numChico);
 		} catch (RemoteException | PartidoException | GrupoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	return null;
@@ -267,10 +261,17 @@ public class BusinessDelegate {
 		try {
 			return ir.getRespuestaEnvite(idBaza, enviteActual);
 		} catch (RemoteException | TurnoException | GrupoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	return null;
+		return null;
 	}
 
+	public BazaDTO buscarBaza(Integer idBaza) throws ComunicationException{
+			try {
+				return ir.buscarBaza(idBaza);
+			} catch (RemoteException | BazaException e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
 }

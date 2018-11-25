@@ -10,6 +10,7 @@ public class BazaDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -6002073309038469873L;
 	
+	private Integer idBaza;
 	private int numeroBaza;
 	private ParejaDTO ganadores;
 	private int puntajePareja1;
@@ -18,6 +19,15 @@ public class BazaDTO implements Serializable {
 
 	public BazaDTO(int numeroBaza, ParejaDTO ganadores, int puntajePareja1, int puntajePareja2) {
 		super();
+		this.numeroBaza = numeroBaza;
+		this.ganadores = ganadores;
+		this.puntajePareja1 = puntajePareja1;
+		this.puntajePareja2 = puntajePareja2;
+	}
+	
+	public BazaDTO(Integer idBaza, int numeroBaza, ParejaDTO ganadores, int puntajePareja1, int puntajePareja2) {
+		super();
+		this.idBaza = idBaza;
 		this.numeroBaza = numeroBaza;
 		this.ganadores = ganadores;
 		this.puntajePareja1 = puntajePareja1;
@@ -55,5 +65,13 @@ public class BazaDTO implements Serializable {
 
 	public void setTurnos(List<TurnoDTO> turnos) {
 		this.turnos = turnos;
+	}
+
+	public Integer getIdBaza() {
+		return idBaza;
+	}
+
+	public void setIdBaza(Integer idBaza) {
+		this.idBaza = idBaza;
 	}
 }

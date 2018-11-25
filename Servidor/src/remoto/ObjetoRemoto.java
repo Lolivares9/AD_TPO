@@ -178,10 +178,15 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 
 	public List<TurnoDTO> buscarTurnos(Integer idBaza) throws TurnoException, GrupoException {
 		return Controlador.getInstancia().buscarTurnos(idBaza);
-	}	
+	}
 	
-	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws PartidoException, GrupoException{
-		return Controlador.getInstancia().buscarActualizacion(idPartido, numBazas, numManos);
+	public BazaDTO buscarBaza(Integer idBaza) throws BazaException {
+		return Controlador.getInstancia().buscarBaza(idBaza);
+	}
+	
+	
+	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos, int numChico) throws PartidoException, GrupoException{
+		return Controlador.getInstancia().buscarActualizacion(idPartido, numBazas, numManos, numChico);
 	}	
 	
 	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException, GrupoException {

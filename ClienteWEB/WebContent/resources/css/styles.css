@@ -112,8 +112,9 @@ ul {
 }
 
 .flex-containerSepara {
+	transform:scale(0.8);
     display: flex;
-    height: 70px;
+    height: 40px;
     align-items: center;
     align-content: center;
     place-content: center;
@@ -176,7 +177,12 @@ ul {
 }
 
 html, body, .game-wrapper{
-	height:100%;
+  position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    height:100%;
 	overflow: hidden;
 	margin : auto;
 }
@@ -190,9 +196,9 @@ h1 {
 	color:white;
 	font-family:Helvetica;
 }
-.game-panel {
+.panel-Juego {
 	display:inline-block;
-	width:35%;
+	width:30%;
 	vertical-align:top;
 	height: 100%;
 	background: none repeat scroll 0 0 #111111;
@@ -204,7 +210,7 @@ h1 {
 	background: -ms-linear-gradient(bottom, #111, #222);
 	background: linear-gradient(bottom, #111, #222);
 }
-.game-panel .box {
+.panel-Juego .box {
 	width:80%;
 	margin:.5em auto 0;
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -215,7 +221,7 @@ h1 {
 .game-action {
     position: absolute;
     bottom: 0;
-    width: 35%;
+    width: 30%;
     left:0;
 }
 .game-action .cantos-panel {
@@ -247,15 +253,16 @@ h1 {
     padding: 0 3%;
     overflow: hidden;
 }
+
 .game-main {
 	height:100%;
 	overflow: hidden;
 	margin : auto;
 	display: inline-block;
 	width:62%;
-    min-width:450px;
 	vertical-align:top;
 }
+
 ul li {
     display:inline-block!important;
     margin-right:2em;
