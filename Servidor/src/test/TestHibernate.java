@@ -9,6 +9,7 @@ import dao.JugadorDAO;
 import dao.ParejaDAO;
 import dao.PartidoDAO;
 import dto.PartidoDTO;
+import dto.TurnoDTO;
 import enums.Categoria;
 import enums.Envite;
 import excepciones.CartaException;
@@ -17,6 +18,8 @@ import excepciones.JugadorException;
 import excepciones.ParejaException;
 import excepciones.PartidoException;
 import negocio.Baza;
+import negocio.Carta;
+import negocio.Chico;
 import negocio.Jugador;
 import negocio.Mano;
 import negocio.Pareja;
@@ -31,30 +34,71 @@ public class TestHibernate {
 	*/
 	
 	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException, ParseException, GrupoException {
-		PartidoDTO pdto = null;
-		pdto = Controlador.getInstancia().iniciarPartidaLibreIndividual(Categoria.Novato.toString(),"Chulo");
-		Partido p = null;
-		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
-		//MANO 1
-		baza1(p);
-		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
-		baza2(p);
-		p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
-		if(p.getChico().get(0).getManos().size() < 1){
-			baza3(p);
-		}
-		//MANO 2
-		else{
-			pdto.setIdPartido(1);
-			Controlador.getInstancia().repartiCartas(pdto);
-			p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
-			baza11(p);
-			p = PartidoDAO.getInstancia().buscarPartidoPorID(1);
-			baza22(p);
-		}
-		
+		iniciarPartido();
 	}		
 	
+
+	private static void iniciarPartido() throws PartidoException, CartaException, JugadorException, GrupoException {
+		PartidoDTO pdto = null;
+		pdto = Controlador.getInstancia().iniciarPartidaLibreIndividual(Categoria.Novato.toString(),"Chulo");
+		//jugar Partido
+		//pdto = new PartidoDTO (1,null,null,null,null);
+		jugarPartido(pdto);
+	}
+
+
+	private static void jugarPartido(PartidoDTO pdto) throws PartidoException, GrupoException, JugadorException {
+		Partido p = null;
+		p = PartidoDAO.getInstancia().buscarPartidoPorID(pdto.getIdPartido());
+		
+		Jugador pareja1Jug1 = p.getParejas().get(0).getJugador1();
+		Jugador pareja2Jug1 = p.getParejas().get(1).getJugador1();
+		Jugador pareja1Jug2 = p.getParejas().get(0).getJugador2();
+		Jugador pareja2Jug2 = p.getParejas().get(1).getJugador2();
+		
+		List <Carta> cartasP1J1 = p.getParejas().get(0).getCartasJugador1();
+		List <Carta> cartasP1J2 = p.getParejas().get(0).getCartasJugador2();
+		List <Carta> cartasP2J1 = p.getParejas().get(1).getCartasJugador1();
+		List <Carta> cartasP2J2 = p.getParejas().get(1).getCartasJugador2();
+								
+		
+		while (p.getParejaGanadora() == null) {
+			for (int i=0; i <3; i++) {
+				Chico chicoActual = p.getChico().get(i);
+				while (chicoActual.getParejaGanadora() == null){
+					int indiceBazaActual = chicoActual.getManos().size()-1;
+					Mano manoActual = chicoActual.getManos().get(indiceBazaActual);
+					int nroTurno = 0 ;
+					
+					while(manoActual.getParejaGanadora() == null && nroTurno < 3) {
+						TurnoDTO tj1 = new TurnoDTO(null, pareja1Jug1.toDTO(), Envite.Nada, Envite.Nada, cartasP1J1.get(nroTurno).toDTO());
+						Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj1);
+						
+						TurnoDTO tj2 = new TurnoDTO(null, pareja2Jug1.toDTO(), Envite.Nada, Envite.Nada, cartasP1J2.get(nroTurno).toDTO());
+						Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj2);
+						
+						TurnoDTO tj3 = new TurnoDTO(null, pareja1Jug2.toDTO(), Envite.Nada, Envite.Nada, cartasP2J1.get(nroTurno).toDTO());
+						Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj3);
+						
+						TurnoDTO tj4 = new TurnoDTO(null, pareja2Jug2.toDTO(), Envite.Nada, Envite.Nada, cartasP2J2.get(nroTurno).toDTO());
+						Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj4);
+						
+						p = PartidoDAO.getInstancia().buscarPartidoPorID(pdto.getIdPartido());
+						chicoActual = p.getChico().get(i);
+						manoActual = chicoActual.getManos().get(indiceBazaActual);
+						
+						cartasP1J1 = p.getParejas().get(0).getCartasJugador1();
+						cartasP1J2 = p.getParejas().get(0).getCartasJugador2();
+						cartasP2J1 = p.getParejas().get(1).getCartasJugador1();
+						cartasP2J2 = p.getParejas().get(1).getCartasJugador2();
+						
+						nroTurno++;
+					}
+				}
+			}
+		}
+	}
+
 
 	private static void baza11(Partido p) throws PartidoException {
 		Pareja pareja1 = p.getParejas().get(0);

@@ -209,7 +209,7 @@ public class ActionsServlet extends HttpServlet{
     	c.setIdCarta(carta.equals("") ? null : Integer.valueOf(carta));
     	Integer idBaza = 1;
     	Envite e = envite.equals("") ?  Envite.Nada : Envite.valueOf(envite);
-    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno,  j, e, c); //aca va el id de baza
+    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno,  j, e, c,0); //aca va el id de baza
     	try {
 			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), turno);
 			response.setStatus(HttpServletResponse.SC_OK);

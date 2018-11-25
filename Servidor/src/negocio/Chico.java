@@ -122,13 +122,15 @@ public class Chico {
 		if (manoActual.getParejaGanadora() != null) {
 			setearNuevoOrdenMano(manoActual,p);
 			this.setPuntajePareja1(puntajePareja1 + manoActual.getPuntajePareja1());
-			this.setPuntajePareja2(puntajePareja2 +manoActual.getPuntajePareja2());
+			this.setPuntajePareja2(puntajePareja2 + manoActual.getPuntajePareja2());
 			
-			if (manoActual.getPuntajePareja1() == 30) {
+			if (puntajePareja1 >= 30) {
+				this.setPuntajePareja1(30);
 				this.setParejaGanadora(pareja1);
 				this.setFinalizado(true);
 			}
-			else if (manoActual.getPuntajePareja2() == 30) {
+			else if (puntajePareja2 >= 30) {
+				this.setPuntajePareja2(30);
 				this.setParejaGanadora(pareja2);
 				this.setFinalizado(true);
 			}
