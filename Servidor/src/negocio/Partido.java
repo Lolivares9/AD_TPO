@@ -13,6 +13,7 @@ import dto.PartidoDTO;
 import enums.Categoria;
 import enums.EstadoPartido;
 import enums.TipoModalidad;
+import excepciones.CartaException;
 import excepciones.GrupoException;
 import excepciones.PartidoException;
 
@@ -30,6 +31,7 @@ public class Partido {
 	private Pareja parejaGanadora;
 	private Date fecha;
 	private EstadoPartido estado;
+	private Mazo mazo;
 	
 	public Partido(TipoModalidad modalidad, List<Pareja> parejas, Pareja parejaGanadora, Date fecha,EstadoPartido estado) {
 		super();
@@ -104,6 +106,24 @@ public class Partido {
 		this.idPartido = idPartido;
 	}
 	
+	
+	
+	public List<Chico> getChicos() {
+		return chicos;
+	}
+
+	public void setChicos(List<Chico> chicos) {
+		this.chicos = chicos;
+	}
+
+	public Mazo getMazo() {
+		return mazo;
+	}
+
+	public void setMazo(Mazo mazo) {
+		this.mazo = mazo;
+	}
+
 	public Integer guardar(){
 		idPartido = PartidoDAO.getInstancia().guardar(this);
 		return idPartido;
@@ -300,6 +320,11 @@ public class Partido {
 			}
 		}
 		return finalizaPartido;
+	}
+
+	public void repartirCartas() throws CartaException {
+		this.mazo = new Mazo();
+		this.mazo.repartiCartas(this);
 	}
 
 }

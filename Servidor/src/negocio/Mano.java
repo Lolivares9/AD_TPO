@@ -3,11 +3,13 @@ package negocio;
 import java.util.ArrayList;
 import java.util.List;
 
+import controlador.Controlador;
 import dao.ManoDAO;
 import dao.PartidoDAO;
 import dto.BazaDTO;
 import dto.ManoDTO;
 import enums.Envite;
+import excepciones.CartaException;
 import excepciones.GrupoException;
 import excepciones.PartidoException;
 
@@ -105,6 +107,11 @@ public class Mano {
 				}
 				else {
 					chicoActual.crearNuevaMano();
+					try {
+						partidoNegocio.repartirCartas();
+					} catch (CartaException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			else {
