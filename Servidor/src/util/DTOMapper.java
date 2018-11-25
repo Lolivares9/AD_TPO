@@ -33,13 +33,6 @@ public class DTOMapper {
 	}
 	
 	public Jugador jugadorDTOtoNegocio(JugadorDTO jugDTO) throws GrupoException {
-		/*
-		List<Grupo> gruposNegocio = new ArrayList<Grupo>();
-		Grupo g = null;
-		for(int i = 0;i<jugDTO.getGrupos().size();i++){
-			g = GrupoDAO.getInstancia().buscarGrupo(jugDTO.getGrupos().get(i).getNombre());
-			gruposNegocio.add(g);
-		}*/
 			Jugador jugador = new Jugador(jugDTO.getNombre(),jugDTO.getApodo(),jugDTO.getMail(),jugDTO.getCategoria(),jugDTO.getPuntaje(),
 					jugDTO.getPartidosJugados(),jugDTO.getPartidosGanados(),jugDTO.isConectado(),jugDTO.isJugando(),jugDTO.isBuscandoLibreIndividual(),jugDTO.getPassword());
 			jugador.setId(jugDTO.getId());
@@ -65,11 +58,11 @@ public class DTOMapper {
 	}
 
 	public Turno turnoDTOtoNegocio(TurnoDTO turno) throws GrupoException {
-		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnviteTantos(), turno.getEnviteJuego(),cartaDTOtoNegocio(turno.getCartaDTO()));
+		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnviteTantos(), turno.getEnviteJuego(),cartaDTOtoNegocio(turno.getCartaDTO()),turno.getNumTurno());
 	}
 	
 	public Turno FrontEndToNegocio(TurnoDTO turno) throws GrupoException {
-		return new Turno(turno.getIdTurno(),null,turno.getEnviteTantos(), turno.getEnviteJuego(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()));
+		return new Turno(turno.getIdTurno(),null,turno.getEnviteTantos(), turno.getEnviteJuego(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()),turno.getNumTurno());
 	}
 
 	public List<GrupoDTO> gruposToDTO(List<Grupo> grupos) throws GrupoException {

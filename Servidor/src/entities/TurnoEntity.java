@@ -44,9 +44,11 @@ public class TurnoEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="ID_CARTA")
-  
 	private CartaEntity carta;
 	
+	@Column(name = "NUMERO_TURNO")
+	private int numeroTurno;
+
 	public TurnoEntity() {
 		super();
 	}
@@ -106,4 +108,13 @@ public class TurnoEntity {
 	public void setCarta(CartaEntity carta) {
 		this.carta = carta;
 	}
+	
+	public int getNumeroTurno() {
+		return numeroTurno;
+	}
+
+	public void setNumeroTurno(int numeroTurno) {
+		this.numeroTurno = numeroTurno;
+	}
+
 }
