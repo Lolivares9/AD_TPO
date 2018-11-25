@@ -61,7 +61,7 @@ public class DTOMapper {
 		return new Turno(turno.getIdTurno(),DTOMapper.getInstancia().jugadorDTOtoNegocio(turno.getJugadorDTO()),turno.getEnviteTantos(), turno.getEnviteJuego(),cartaDTOtoNegocio(turno.getCartaDTO()),turno.getNumTurno());
 	}
 	
-	public Turno FrontEndToNegocio(TurnoDTO turno) throws GrupoException {
+	public Turno FrontEndToNegocio(TurnoDTO turno){
 		return new Turno(turno.getIdTurno(),null,turno.getEnviteTantos(), turno.getEnviteJuego(),DTOMapper.getInstancia().cartaDTOtoNegocio(turno.getCartaDTO()),turno.getNumTurno());
 	}
 

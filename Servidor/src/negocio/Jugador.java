@@ -6,7 +6,6 @@ import java.util.List;
 import dao.JugadorDAO;
 import dto.JugadorDTO;
 import enums.Categoria;
-import excepciones.GrupoException;
 import excepciones.JugadorException;
 
 public class Jugador {
@@ -202,7 +201,7 @@ public class Jugador {
 		this.numeroTurnoPartido = numeroTurnoPartido;
 	}
 	
-	public JugadorDTO toDTO() throws GrupoException {
+	public JugadorDTO toDTO(){
 		return new JugadorDTO(id, nombre, apodo, mail, categoria, puntaje, partidosJugados, partidosGanados, conectado, jugando, password, null, numeroTurnoPartido);
 	}
 

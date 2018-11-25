@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import dao.CartaDAO;
-import dto.CartaDTO;
-import dto.ParejaDTO;
-import dto.PartidoDTO;
 import excepciones.CartaException;
 
 public class Mazo {

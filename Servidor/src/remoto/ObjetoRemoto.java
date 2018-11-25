@@ -79,17 +79,17 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	
-	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws RemoteException, PartidoException, ParejaException, JugadorException, GrupoException {
+	public PartidoDTO buscarPartidaLobby(String apodoJugador, String modalidad) throws RemoteException, PartidoException, ParejaException, JugadorException{
 		return Controlador.getInstancia().buscarPartidaLobby(apodoJugador, modalidad);
 	}
 	//OK
-	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException, GrupoException {
+	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws RemoteException, PartidoException, CartaException, JugadorException {
 		
 		return Controlador.getInstancia().iniciarPartidaLibreIndividual(categ,apodo);
 	}
 	
 	//FALTARIA TESTEAR
-	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException, GrupoException {
+	public PartidoDTO iniciarPartidaLibre(ParejaDTO pareja) throws RemoteException, ParejaException, CartaException{
 		Pareja parej = null;
 		Partido partidoNuevo = Controlador.getInstancia().iniciarPartidaLibre(parej);
 		PartidoDTO part = partidoNuevo.toDTO();
@@ -153,16 +153,15 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	}
 	
 	@Override
-	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws ManoException, BazaException, TurnoException, GrupoException{
+	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chico) throws ManoException, BazaException, TurnoException{
 		return Controlador.getInstancia().obtenerDetalleDeChico(chico);
 	}
 
-	public void nuevaJugada(Integer idPartido, TurnoDTO turnos) throws PartidoException, GrupoException, JugadorException {
+	public void nuevaJugada(Integer idPartido, TurnoDTO turnos) throws PartidoException, JugadorException {
 		Controlador.getInstancia().actualizarPartido(idPartido,turnos);
 	}
 
-	public JugadorDTO buscarJugadorDTO(String apodo)
-			throws JugadorException, GrupoException {
+	public JugadorDTO buscarJugadorDTO(String apodo) throws JugadorException{
 		Jugador jugNegocio = JugadorDAO.getInstancia().buscarPorApodo(apodo);
 		List<Grupo> gruposJugador = GrupoDAO.getInstancia().buscarGruposPorJugador(jugNegocio.getId());
 		List<GrupoDTO> gruposDTO = new ArrayList<GrupoDTO>();
@@ -176,29 +175,34 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 		return jugDTO;
 	}
 
-	public List<TurnoDTO> buscarTurnos(Integer idBaza) throws TurnoException, GrupoException {
+	public List<TurnoDTO> buscarTurnos(Integer idBaza) throws TurnoException{
 		return Controlador.getInstancia().buscarTurnos(idBaza);
+	}
+	
+	public BazaDTO buscarBaza(Integer idBaza) throws BazaException {
+		return Controlador.getInstancia().buscarBaza(idBaza);
+	}
+	
+	
+	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos, int numChico) throws PartidoException{
+		return Controlador.getInstancia().buscarActualizacion(idPartido, numBazas, numManos, numChico);
 	}	
 	
-	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws PartidoException, GrupoException{
-		return Controlador.getInstancia().buscarActualizacion(idPartido, numBazas, numManos);
-	}	
-	
-	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException, GrupoException {
+	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException{
 		return Controlador.getInstancia().getRespuestaEnvite(idBaza, enviteActual);
 	}
 	
-	public GrupoDTO buscarGrupo(String nombre) throws GrupoException {
+	public GrupoDTO buscarGrupo(String nombre) throws GrupoException{
 		Grupo g = GrupoDAO.getInstancia().buscarGrupo(nombre);
 		return g.toDTO();
 	}
 
-	public PartidoDTO iniciarPartidaCerrada(List<ParejaDTO> parejas) throws PartidoException, CartaException, JugadorException, GrupoException {
+	public PartidoDTO iniciarPartidaCerrada(List<ParejaDTO> parejas) throws PartidoException, CartaException, JugadorException{
 		PartidoDTO partido = Controlador.getInstancia().iniciarPartidaCerrada(parejas);
 		return partido;
 	}
 
-	public List<GrupoDTO> traerGruposJugador(int idJugador) throws GrupoException {
+	public List<GrupoDTO> traerGruposJugador(int idJugador){
 		List<Grupo> gruposNegocio = GrupoDAO.getInstancia().buscarGruposPorJugador(idJugador);
 		List<GrupoDTO> grupos = new ArrayList<GrupoDTO>();
 		for(Grupo g : gruposNegocio){
