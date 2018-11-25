@@ -138,7 +138,7 @@ public class ActionsServlet extends HttpServlet{
 
 	}
 
-	private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
+	/*private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
     	String idBaza = request.getParameter("baza");
     	String numTurnos = request.getParameter("numTurnos");
     	try {
@@ -162,6 +162,59 @@ public class ActionsServlet extends HttpServlet{
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ComunicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}*/
+	
+	private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
+    	String idBaza = request.getParameter("baza");
+    	int numTurno = Integer.parseInt(request.getParameter("numTurno"));
+    	boolean trucoCantado = Boolean.parseBoolean(request.getParameter("trucoCantado"));
+    	boolean envidoCantado = Boolean.parseBoolean(request.getParameter("envidoCantado"));
+    	//String trucoActual = "Truco_Querido";
+    	try {
+    		TurnoDTO turno = null;
+    		//En el servidor ver si no termino la mano ya, y mandar un flag en el turno para que en la web se cargue otra mano
+			List<TurnoDTO> turnos = BusinessDelegate.getInstancia().buscarTurnos(Integer.valueOf(idBaza));
+			if(turnos.size() > numTurno) {
+				turno = turnos.get(numTurno);
+			}
+			if(turno != null){
+				Gson g = new Gson();
+				Map<String,Object> turnoMapa = new HashMap<String, Object>();
+				if(turno.getCartaDTO() != null) {// && !trucoCantado && !envidoCantado) { //Si la carta no esta null puede ser un envite de truco o tantos
+					turnoMapa.put("carta", turno.getCartaDTO().getNumero()+""+turno.getCartaDTO().getPalo());
+					turnoMapa.put("enviteTruco", "");
+					turnoMapa.put("enviteTantos", "");
+				}
+				if(!envidoCantado && turno.getEnviteTantos() != null){
+					turnoMapa.put("enviteTantos", turno.getEnviteTantos());
+					turnoMapa.put("enviteTruco", "");
+				}else if(turno.getEnviteJuego() != null && !trucoCantado && turno.getEnviteJuego() != Envite.Nada){
+					//}else if(turno.getEnviteJuego() != null && (!trucoCantado || (turno.getEnviteJuego().name().length() > trucoActual))){
+					turnoMapa.put("enviteTruco", turno.getEnviteJuego());
+					turnoMapa.put("enviteTantos", "");
+				}
+				
+				if(!turnoMapa.isEmpty()) {
+					turnoMapa.put("apodo", turno.getJugadorDTO().getApodo()); 
+					String j = g.toJson(turnoMapa);
+					
+				    response.setContentType("application/json");
+				    response.setCharacterEncoding("UTF-8");
+				    try {
+						response.getWriter().write(j);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		} catch (NumberFormatException e) {

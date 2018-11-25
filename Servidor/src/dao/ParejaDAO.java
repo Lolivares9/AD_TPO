@@ -117,6 +117,7 @@ public class ParejaDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<ParejaEntity> buscarParejasPorJugador(Integer idJugador, Session s) throws ParejaException{
+		s.beginTransaction();
 		List<ParejaEntity> p;
 		try {
 			p = (List<ParejaEntity>) s
@@ -128,6 +129,27 @@ public class ParejaDAO {
 			
 			if (p == null) {
 				return Collections.<ParejaEntity>emptyList();
+			}else {
+				return p;		
+			}
+			
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			throw new ParejaException("Error al buscar las parejas del jugador");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Integer> buscarIdParejasPorJugador(Integer idJugador, Session s) throws ParejaException{
+		s.beginTransaction();
+		List<Integer> p;
+		try {
+			p = (List<Integer>) s.createSQLQuery("SELECT ID_PAREJA FROM PAREJAS WHERE ID_JUGADOR1 = ? OR ID_JUGADOR2 = ?").setInteger(0, idJugador).setInteger(1, idJugador).list();
+			s.getTransaction().commit();
+			
+			
+			if (p == null) {
+				return Collections.<Integer>emptyList();
 			}else {
 				return p;		
 			}

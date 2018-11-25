@@ -39,22 +39,22 @@ public class PartidoDAO {
 	}
 	
 	public List<Partido> buscarPartidosPorJugador(Integer idJugador, TipoModalidad mod, Date fechaInicial, Date fechaFin, String estado) throws ParejaException, PartidoException{
-		List<ParejaEntity> parejas = ParejaDAO.getInstancia().buscarParejasPorJugador1(idJugador);
+		List<Integer> parejas = ParejaDAO.getInstancia().buscarIdParejasPorJugador(idJugador, ses);
 		List<Partido> partidos = new ArrayList<Partido>();
 		try {
-			for (ParejaEntity parejaEntity : parejas) {
+			for (Integer parejaEntity : parejas) {
 				partidos.addAll(procesarDatos(parejaEntity, mod, fechaInicial, fechaFin, estado));
 			}			
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			throw new PartidoException("Error al buscar los partidos del jugador");
 		}finally {
-			ses.close();
+			//ses.close();
 		}
 		return partidos;
 	}
 	
-	private List<Partido> procesarDatos(ParejaEntity pe, TipoModalidad mod, Date fechaInicial, Date fechaFin, String estado) throws PartidoException {
+	private List<Partido> procesarDatos(Integer pe, TipoModalidad mod, Date fechaInicial, Date fechaFin, String estado) throws PartidoException {
 		List<Partido> partidos = new ArrayList<Partido>();
 		Partido p;
 		List<PartidoEntity> partidosE = new ArrayList<PartidoEntity>();
@@ -67,7 +67,7 @@ public class PartidoDAO {
 				partidosE = getPartidosPorModalidad(pe,TipoModalidad.Libre_individual, estado);
 			}
 		}else {
-			partidosE = pe.getPartidos();
+			partidosE = null;//pe.getPartidos(); FALTA CORREGIR ESTO
 		}
 		if(fechaInicial != null) {
 			partidosE.removeIf(partido -> (!partido.getFecha().after(fechaInicial) || !partido.getFecha().before(fechaFin))
@@ -83,7 +83,7 @@ public class PartidoDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	private List<PartidoEntity> getPartidosPorModalidad(ParejaEntity pe,TipoModalidad tipo, String estado) throws PartidoException {
+	private List<PartidoEntity> getPartidosPorModalidad(Integer pe,TipoModalidad tipo, String estado) throws PartidoException {
 		List<PartidoEntity> partidoe = new ArrayList<PartidoEntity>();
 		List<Integer> idPartidos = new ArrayList<Integer>();
 		ses.beginTransaction();
@@ -93,12 +93,12 @@ public class PartidoDAO {
 							+ "WHERE ID_PARTIDO IN "
 							+ "(SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS "
 							+ "WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ? AND ESTADO = ?")
-							.setInteger(0, pe.getIdPareja())
+							.setInteger(0, pe)
 							.setString(1, tipo.toString())
 							.setString(2, estado)
 							.list();
 				}else{
-					idPartidos = (List<Integer>) ses.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS WHERE ID_PARTIDO IN (SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ?").setInteger(0, pe.getIdPareja()).setString(1, tipo.toString()).list();
+					idPartidos = (List<Integer>) ses.createSQLQuery("SELECT ID_PARTIDO FROM PARTIDOS WHERE ID_PARTIDO IN (SELECT partidos_ID_PARTIDO FROM PARTIDOS_PAREJAS WHERE parejas_ID_PAREJA = ?) AND MODALIDAD = ?").setInteger(0, pe).setString(1, tipo.toString()).list();
 				}
 				for(int i = 0;i<idPartidos.size();i++){
 					partidoe.add((PartidoEntity) ses.createQuery("FROM PartidoEntity WHERE idPartido = ?").setInteger(0, idPartidos.get(i)).uniqueResult());
