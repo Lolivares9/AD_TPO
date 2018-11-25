@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import enums.Envite;
 
-public class TurnoDTO implements Serializable {
+public class TurnoDTO implements Serializable , Comparable<TurnoDTO>{
 
 	/**
 	 * 
@@ -129,5 +129,15 @@ public class TurnoDTO implements Serializable {
 
 	public void setIdBaza(Integer idBaza) {
 		this.idBaza = idBaza;
+	}
+	
+	@Override
+	public int compareTo(TurnoDTO tt) {
+		if(this.numTurno > tt.numTurno){
+			return -1;
+		}else if(this.numTurno < tt.numTurno){
+			return 1;
+		}
+		return 0;
 	}
 }

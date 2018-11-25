@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,41 +139,6 @@ public class ActionsServlet extends HttpServlet{
 		}
 
 	}
-
-	/*private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
-    	String idBaza = request.getParameter("baza");
-    	String numTurnos = request.getParameter("numTurnos");
-    	try {
-    		//En el servidor ver si no termino la mano ya, y mandar un flag en el turno para que en la web se cargue otra mano
-			TurnoDTO turno = BusinessDelegate.getInstancia().buscarSiguienteTurno(Integer.valueOf(idBaza), Integer.valueOf(numTurnos));
-			if(turno != null){
-				Gson g = new Gson();
-				Map<String,Object> turnoMapa = new HashMap<String, Object>();
-				if(turno.getCartaDTO() != null) {
-					turnoMapa.put("carta", turno.getCartaDTO().getNumero()+""+turno.getCartaDTO().getPalo());
-				}
-				turnoMapa.put("apodo", turno.getJugadorDTO().getApodo()); 
-				turnoMapa.put("enviteTruco", turno.getEnviteJuego());
-				turnoMapa.put("enviteTantos", turno.getEnviteTantos());
-				String j = g.toJson(turnoMapa);
-
-			    response.setContentType("application/json");
-			    response.setCharacterEncoding("UTF-8");
-			    try {
-					response.getWriter().write(j);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ComunicationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
 	
 	private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
     	String idBaza = request.getParameter("baza");
@@ -184,7 +151,12 @@ public class ActionsServlet extends HttpServlet{
     		//En el servidor ver si no termino la mano ya, y mandar un flag en el turno para que en la web se cargue otra mano
 			List<TurnoDTO> turnos = BusinessDelegate.getInstancia().buscarTurnos(Integer.valueOf(idBaza));
 			if(turnos.size() > numTurno) {
-				turno = turnos.get(numTurno);
+				Collections.sort(turnos);
+				for (TurnoDTO turnoDTO : turnos) {
+					if(turnoDTO.getJugador().getNumJugador() == numTurno+1) {
+						turno = turnoDTO;
+					}
+				}
 			}
 			if(turno != null){
 				Gson g = new Gson();
