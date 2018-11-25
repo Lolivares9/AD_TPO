@@ -3,7 +3,6 @@ package servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,11 +151,7 @@ public class ActionsServlet extends HttpServlet{
 			List<TurnoDTO> turnos = BusinessDelegate.getInstancia().buscarTurnos(Integer.valueOf(idBaza));
 			if(turnos.size() > numTurno) {
 				Collections.sort(turnos);
-				for (TurnoDTO turnoDTO : turnos) {
-					if(turnoDTO.getJugador().getNumJugador() == numTurno+1) {
-						turno = turnoDTO;
-					}
-				}
+				turno = turnos.get(numTurno);
 			}
 			if(turno != null){
 				Gson g = new Gson();
