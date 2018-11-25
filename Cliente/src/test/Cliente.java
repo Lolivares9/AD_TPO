@@ -38,11 +38,11 @@ public class Cliente {
 		buscarPartidaLibreIndividual(); // OK
 	
 		/*Crear partido libre individual*/
-		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
-		jugador.setCategoria(Categoria.Novato);
-		PartidoDTO part;
-		part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
-		iniciarPartidaLibreIndividual(part);
+//		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
+//		jugador.setCategoria(Categoria.Novato);
+//		PartidoDTO part;
+//		part = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(jugador.getCategoria().name(),jugador.getApodo());
+//		iniciarPartidaLibreIndividual(part);
 	
 		//repartirCartas();
 		//buscarTodosPartidosJugadosConFiltro();
