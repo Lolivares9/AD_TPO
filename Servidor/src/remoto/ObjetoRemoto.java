@@ -186,6 +186,25 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 	
 	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException, GrupoException {
 		return Controlador.getInstancia().getRespuestaEnvite(idBaza, enviteActual);
+	}
+	
+	public GrupoDTO buscarGrupo(String nombre) throws GrupoException {
+		Grupo g = GrupoDAO.getInstancia().buscarGrupo(nombre);
+		return g.toDTO();
+	}
+
+	public PartidoDTO iniciarPartidaCerrada(List<ParejaDTO> parejas) throws PartidoException, CartaException, JugadorException, GrupoException {
+		PartidoDTO partido = Controlador.getInstancia().iniciarPartidaCerrada(parejas);
+		return partido;
+	}
+
+	public List<GrupoDTO> traerGruposJugador(int idJugador) throws GrupoException {
+		List<Grupo> gruposNegocio = GrupoDAO.getInstancia().buscarGruposPorJugador(idJugador);
+		List<GrupoDTO> grupos = new ArrayList<GrupoDTO>();
+		for(Grupo g : gruposNegocio){
+			grupos.add(g.toDTO());
+		}
+		return grupos;
 	}	
 	
 	

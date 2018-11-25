@@ -170,7 +170,29 @@ public class Controlador {
 		
 		return part;
 	}
-
+	
+	public PartidoDTO iniciarPartidaCerrada(List<ParejaDTO> parejasGrupo) throws PartidoException, CartaException, JugadorException, GrupoException {
+		
+		List <Pareja> parejasNegocio = new ArrayList<Pareja>();
+		Jugador jugador1 = JugadorDAO.getInstancia().buscarPorApodo(parejasGrupo.get(0).getJugadorDTO1().getApodo());
+		Jugador jugador12 = JugadorDAO.getInstancia().buscarPorApodo(parejasGrupo.get(0).getJugadorDTO2().getApodo());
+		Jugador jugador2 = JugadorDAO.getInstancia().buscarPorApodo(parejasGrupo.get(1).getJugadorDTO1().getApodo());
+		Jugador jugador22 = JugadorDAO.getInstancia().buscarPorApodo(parejasGrupo.get(1).getJugadorDTO2().getApodo());
+		Pareja pareja1 = new Pareja(jugador1,jugador12);
+		Pareja pareja2 = new Pareja(jugador2,jugador22);
+		parejasNegocio.add(pareja1);
+		parejasNegocio.add(pareja2);
+		Partido p =  new Partido(TipoModalidad.Cerrado, parejasNegocio, null, new Date(), EstadoPartido.En_Proceso);
+		p.guardar();
+		
+		p.repartirCartas();
+		Pareja.actualizarEstadoParejas(parejasNegocio, true, false);
+		
+		PartidoDTO pd = p.toDTO();
+		return pd;
+	}
+	
+	
 	/**
 	 * Traer lista de partidos jugados, se puede filtar por modalidad y/o fecha
 	 * En el DTO no van a estar cargados todas las variables, porque luego puede

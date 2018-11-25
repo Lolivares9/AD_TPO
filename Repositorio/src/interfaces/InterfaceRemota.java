@@ -8,6 +8,7 @@ import java.util.Map;
 
 import dto.BazaDTO;
 import dto.ChicoDTO;
+import dto.GrupoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
 import dto.ParejaDTO;
@@ -71,6 +72,12 @@ public interface InterfaceRemota extends Remote {
 
 	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws RemoteException, PartidoException, GrupoException;
 	
-	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws RemoteException, TurnoException, GrupoException;	
+	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws RemoteException, TurnoException, GrupoException;
+
+	public GrupoDTO buscarGrupo(String nombre) throws RemoteException, GrupoException;
+
+	public PartidoDTO iniciarPartidaCerrada(List<ParejaDTO> parejas) throws RemoteException, PartidoException, CartaException, JugadorException, GrupoException;
+
+	public List<GrupoDTO> traerGruposJugador(int idJugador) throws RemoteException, GrupoException;	
 
 }

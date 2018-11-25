@@ -13,8 +13,10 @@ import delegado.BusinessDelegate;
 import dto.BazaDTO;
 import dto.CartaDTO;
 import dto.ChicoDTO;
+import dto.GrupoDTO;
 import dto.JugadorDTO;
 import dto.ManoDTO;
+import dto.ParejaDTO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
 import enums.Categoria;
@@ -30,12 +32,14 @@ public class Cliente {
 	public static void main(String[] args) throws ComunicationException, RemoteException, JugadorException, GrupoException {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		altaJugador();  // OK 
+		//altaJugador();  // OK 
 		iniciarSesion(); // OK 
-		//crearGrupo();
-		//ingresarNuevosMiembros(); // OK
+		crearGrupo();
+		ingresarNuevosMiembros(); // OK
+		List<GrupoDTO> grupos = traerGruposJugador();//•	Se identificara al jugador y se le indicara la lista de grupos que administra. (TP)
+		armarPartidaCerrada(grupos);
 		//buscarTodosPartidosJugados();  //OK
-		buscarPartidaLibreIndividual(); // OK
+		//buscarPartidaLibreIndividual(); // OK
 	
 		/*Crear partido libre individual*/
 //		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
@@ -50,6 +54,30 @@ public class Cliente {
 		//buscarDetalleChico();
 		
 	}
+
+	
+	private static void armarPartidaCerrada(List<GrupoDTO> grupos) throws ComunicationException {
+		GrupoDTO g = BusinessDelegate.getInstancia().buscarGrupo(grupos.get(0).getNombre());
+		JugadorDTO jug11 = g.getJugadores().get(0);
+		JugadorDTO jug21 = g.getJugadores().get(1);
+		JugadorDTO jug12 = g.getJugadores().get(2);
+		JugadorDTO jug22 = g.getJugadores().get(3);
+		ParejaDTO pareja1 = new ParejaDTO(jug11,jug12);
+		ParejaDTO pareja2 = new ParejaDTO(jug21,jug22);
+		List<ParejaDTO> parejas = new ArrayList<ParejaDTO>();
+		parejas.add(pareja1);
+		parejas.add(pareja2);
+		BusinessDelegate.getInstancia().iniciarPartidaCerrada(parejas);
+	}
+
+
+	private static List<GrupoDTO> traerGruposJugador() throws ComunicationException {
+		int idJugador = 1;
+		List<GrupoDTO> grupos = BusinessDelegate.getInstancia().traerGruposJugador(idJugador);
+		return grupos;
+	}
+
+
 	private static void iniciarPartidaLibreIndividual(PartidoDTO part) throws GrupoException {
 		if (part != null) {
 			System.out.println("Se inicia partido Id: "+part.getIdPartido()+ " Modalidad: "+part.getModalidadDTO().getDescripcion());	
@@ -254,7 +282,7 @@ public class Cliente {
 		JugadorDTO jug = new JugadorDTO();
 		//INICIA SESION MATI
 		jug.setApodo("chulo");
-		jug.setPassword("123");
+		jug.setPassword("123456");
 		try {
 			jugLog = BusinessDelegate.getInstancia().iniciarSesion(jug);
 		} catch (ComunicationException e) {
@@ -262,7 +290,7 @@ public class Cliente {
 			e.printStackTrace();
 		}
 		System.out.println(jug.getApodo() + " Inició sesión.\n");
-		
+		/*
 		//INICIA SESION FACU
 		jug.setApodo("faculth");
 		jug.setPassword("123");
@@ -294,7 +322,7 @@ public class Cliente {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(jug.getApodo() + " Inició sesión.\n");
+		System.out.println(jug.getApodo() + " Inició sesión.\n");*/
 	}
 
 	private static void altaJugador() throws GrupoException {
@@ -335,16 +363,18 @@ public class Cliente {
 
 	private static void ingresarNuevosMiembros() throws RemoteException, JugadorException, GrupoException, ComunicationException{
 		List<JugadorDTO> jugadores = new ArrayList<JugadorDTO>();
-		JugadorDTO jugador = BusinessDelegate.getInstancia().buscarJugadorDTO("Lautaro","Feto","a@a.a","123456");
+		JugadorDTO jugador = BusinessDelegate.getInstancia().buscarJugadorDTO("Jose","Kent","a@a.a","123456");
+		JugadorDTO jugador1 = BusinessDelegate.getInstancia().buscarJugadorDTO("Lautaro","Feto","a@a.a","123456");
+		JugadorDTO jugador2 = BusinessDelegate.getInstancia().buscarJugadorDTO("Daniel","ATR","a@a.a","123456");
 		jugadores.add(jugador);
-		//JugadorDTO jugador2 = 
-		
-		//jugadores.add(jugador);
-		//jugadores.add(jugador2);
+		jugadores.add(jugador1);
+		jugadores.add(jugador2);
 		try {
 			BusinessDelegate.getInstancia().ingresarNuevosMiembros("Distribuidas", jugadores);
 		} catch (ComunicationException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
 }
