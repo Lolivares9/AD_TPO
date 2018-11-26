@@ -82,4 +82,6 @@ public interface InterfaceRemota extends Remote {
 
 	public List<GrupoDTO> traerGruposJugador(int idJugador) throws RemoteException;
 
+	public List<String> traerJugadoresGrupo(String nombreGrupo) throws RemoteException;
+
 }

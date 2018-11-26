@@ -209,6 +209,13 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfaceRemota
 			grupos.add(g.toDTO());
 		}
 		return grupos;
+	}
+
+
+	@Override
+	public List<String> traerJugadoresGrupo(String nombreGrupo) throws RemoteException {
+		List<String> apodos = Controlador.getInstancia().obtenerJugadoresPorGrupo(nombreGrupo);
+		return apodos;
 	}	
 	
 	

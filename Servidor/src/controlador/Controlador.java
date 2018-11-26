@@ -529,4 +529,8 @@ public class Controlador {
 		List <String> ranking = PartidoDAO.getInstancia().rakingPorPartidosGanados();
 		return ranking;
 	}
+	
+	public List<String> obtenerJugadoresPorGrupo(String nombreGrupo){
+		return GrupoDAO.getInstancia().buscarJugadoresGrupo(nombreGrupo);
+	}
 }
