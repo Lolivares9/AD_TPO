@@ -136,6 +136,17 @@ public class PartidoDAO {
 		p.setNumeroChicoActual(pe.getNumeroChicoActual());
 		return p;
 	}
+	
+	public Partido toNegocioConIdBazaInicial(PartidoEntity pe) {
+		Partido p = null;
+		List<Chico> chicos = new ArrayList<Chico>();
+		p = new Partido(pe.getModalidad(), null, pe.getFecha());
+		for(int i = 0;i<pe.getChicos().size();i++){
+			chicos.add(ChicoDAO.getInstancia().toNegocio(pe.getChicos().get(i)));
+		}
+		p.setChico(chicos);
+		return p;
+	}
 
 	public Integer guardar(Partido partido) {
 		PartidoEntity pEntity = toEntity(partido);
@@ -229,6 +240,31 @@ public class PartidoDAO {
 			}
 		return p;
 	}
+	
+	public Partido buscarBazaInicialPartidoPorID(int id) throws PartidoException {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		Partido p = null;
+		PartidoEntity partidoe;
+		try {
+				partidoe = (PartidoEntity) s.createQuery("from PartidoEntity pe where pe.idPartido = ?").setInteger(0, id).uniqueResult();
+				if(partidoe != null){
+					p = toNegocioConIdBazaInicial(partidoe);
+				}
+				else{
+					return p;
+				}
+				s.getTransaction().commit();
+			} catch (HibernateException e) {
+				e.printStackTrace();
+				throw new PartidoException("Error al buscar los partidos del jugador");
+			}finally {
+				s.close();
+			}
+		return p;
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public List<String> rakingPorPartidosJugados() {

@@ -71,13 +71,11 @@ public class ActionsServlet extends HttpServlet{
         	resultadoBaza(request,response);
 	    }
     }
-	
+
 	protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         if (jsp != null)
         {
-        	/*Envía el control al JSP que pasamos como parámetro, y con los 
-        	 * request / response cargados con los parámetros */
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
             rd.forward(request, response);
         }
@@ -100,7 +98,6 @@ public class ActionsServlet extends HttpServlet{
 					dispatch(jspPage, request, response);
 				}
 			} catch (ComunicationException |ServletException |IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}  
 	    }
@@ -123,7 +120,6 @@ public class ActionsServlet extends HttpServlet{
 					dispatch(jspPage, request, response);
 				}
 	        } catch (ComunicationException |ServletException |IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}     
 	    }
@@ -148,15 +144,12 @@ public class ActionsServlet extends HttpServlet{
 			    try {
 					response.getWriter().write(j);
 				} catch (IOException exc) {
-					// TODO Auto-generated catch block
 					exc.printStackTrace();
 				}
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ComunicationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}
@@ -178,7 +171,6 @@ public class ActionsServlet extends HttpServlet{
 			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), turno);
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ComunicationException exc) {
-			// TODO Auto-generated catch block
 			exc.printStackTrace();
 		}
 	}
@@ -223,16 +215,13 @@ public class ActionsServlet extends HttpServlet{
 				    try {
 						response.getWriter().write(j);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ComunicationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -273,7 +262,6 @@ public class ActionsServlet extends HttpServlet{
 		    try {
 				response.getWriter().write(j);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (ComunicationException e) {
@@ -304,7 +292,7 @@ public class ActionsServlet extends HttpServlet{
     	Gson g = new Gson();
 		request.setAttribute("idPartido", partido.getIdPartido());
 		Map<String,String> datos = armarDatosPartido(partido.getParejaDTOs(), usuario);
-		datos.put("idBaza", "1");
+		datos.put("idBaza", Integer.toString(partido.getIdBazaInicial()));
 		String  detallePartido = g.toJson(datos);
 		request.setAttribute("detalle", detallePartido);
     }

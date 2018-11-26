@@ -14,6 +14,7 @@ public class PartidoDTO implements Serializable {
 	private ModalidadDTO modalidad;
 	private List<ParejaDTO> parejas;
 	private ParejaDTO parejaGanadora;
+	private Integer idBazaInicial;
 	
 	public PartidoDTO() {
 		super();
@@ -73,5 +74,13 @@ public class PartidoDTO implements Serializable {
 
 	public void setIdPartido(Integer idPartido) {
 		this.idPartido = idPartido;
+	}
+
+	public Integer getIdBazaInicial() {
+		return idBazaInicial;
+	}
+
+	public void setIdBazaInicial(Integer idBazaInicial) {
+		this.idBazaInicial = idBazaInicial;
 	}
 }

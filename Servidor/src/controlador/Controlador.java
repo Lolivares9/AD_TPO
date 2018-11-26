@@ -126,7 +126,9 @@ public class Controlador {
 			p.repartirCartas();
 			Pareja.actualizarEstadoParejas(parejas, true, false);
 			
+			Partido partidoConBaza = PartidoDAO.getInstancia().buscarBazaInicialPartidoPorID(p.getIdPartido());
 			PartidoDTO pd = p.toDTO();
+			pd.setIdBazaInicial(partidoConBaza.getChico().get(0).getManos().get(0).getBazas().get(0).getIdBaza());
 			return pd;
 		}
 		return null;
@@ -361,7 +363,7 @@ public class Controlador {
 		//Verifico si termino el partido
 		if(p.getEstado() == EstadoPartido.Finalizado){
 			response.put("flag", "Partido");
-			response.put("parejaGanadora", p.getParejaGanadora());
+			response.put("parejaGanadora", p.getParejaGanadora().getIdPareja());
 			return response;
 		}
 		//Verifico si empezó un nuevo chico
