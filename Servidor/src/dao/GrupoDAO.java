@@ -296,4 +296,22 @@ public class GrupoDAO {
 		}
 		return false;
 	}
+	
+	public List<String> buscarJugadoresGrupo(String nombreGrupo){
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		List<String> apodos = new ArrayList<String>();
+		s.beginTransaction();
+		try{
+			apodos = (List<String>) s.createSQLQuery("SELECT APODO FROM JUGADORES WHERE ID_JUGADOR IN (SELECT jugadores_ID_JUGADOR FROM GRUPOS_JUGADORES WHERE grupos_ID_GRUPO = (SELECT ID_GRUPO FROM GRUPOS WHERE NOMBRE = ?))").setString(0, nombreGrupo).list();
+			if(apodos != null){
+				s.getTransaction().commit();
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}finally{
+			s.close();
+		}
+		return apodos;
+	}
 }
