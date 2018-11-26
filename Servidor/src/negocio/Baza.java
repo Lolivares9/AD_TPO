@@ -549,6 +549,8 @@ public class Baza {
 
 
 	public boolean analizarEnviteJuego(Partido partidoNegocio, Turno turnoEnvite,Chico chicoActual, Mano manoActual) {
+		ponerEnviteJuegoMayor(turnoEnvite, manoActual);
+
 		Pareja pareja1 = partidoNegocio.getParejas().get(0);
 		Pareja pareja2 = partidoNegocio.getParejas().get(1);
 		//*******COMENZAMOS CON EL TRUCO**********
@@ -661,6 +663,31 @@ public class Baza {
 				return true;
 	}
 	
+	private void ponerEnviteJuegoMayor(Turno turnoEnvite, Mano manoActual) {
+		if (turnoEnvite.getEnviteJuego().equals(Envite.Nada)){
+			for (int i = manoActual.getBazas().size()-1 ; i>= 0 ; i--) {
+				Baza b = manoActual.getBazas().get(i);
+				for (int j = b.getTurnos().size() -1 ; j >= 0 ; j--) {
+					Turno t = b.getTurnos().get(j);
+					Envite enviteAnterior = t.getEnviteJuego();
+					
+					if (enviteAnterior.equals(Envite.Truco_QuieroRetruco_QuieroValeCuatro_Querido)) {
+						turnoEnvite.setEnviteJuego(enviteAnterior);
+						break;
+					}
+					else if (enviteAnterior.equals(Envite.Truco_QuieroRetruco_Querido)) {
+						turnoEnvite.setEnviteJuego(enviteAnterior);
+						break;
+					}
+					else if (enviteAnterior.equals(Envite.Truco_Querido)) {
+						turnoEnvite.setEnviteJuego(enviteAnterior);
+						break;
+					}
+				}
+			}
+		}
+	}
+
 	/**Si este metodo devuelve false, es porque a alguno de los jugadores le falta jugar una carta, para que se pueda evaluar los ganadores*/
 	private boolean setearPuntajeTruco(Partido p, int puntaje,Chico chicoA,Mano manoA){
 		boolean faltaJugarCarta = false;
