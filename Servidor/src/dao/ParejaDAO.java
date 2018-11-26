@@ -1,7 +1,6 @@
 package dao;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -109,30 +108,6 @@ public class ParejaDAO {
 			s.close();
 		}
 		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<ParejaEntity> buscarParejasPorJugador(Integer idJugador, Session s) throws ParejaException{
-		s.beginTransaction();
-		List<ParejaEntity> p;
-		try {
-			p = (List<ParejaEntity>) s
-					.createQuery("from ParejaEntity pe where pe.jugador1 = ? OR pe.jugador2 = ?")
-					.setInteger(0, idJugador).setInteger(1, idJugador).list();
-			
-			s.getTransaction().commit();
-			
-			
-			if (p == null) {
-				return Collections.<ParejaEntity>emptyList();
-			}else {
-				return p;		
-			}
-			
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			throw new ParejaException("Error al buscar las parejas del jugador");
-		}
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -9,6 +9,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
+	
+	//Buscar actualizacion de partido despues de los envites por si termino la baza (truco no querido), tener en cuenta el compañero que canta de una
+	//Cambiar EnvidoEnvido por Envido_Envido
 	var idPartido = "${idPartido}";
 	var detalle = JSON.parse('${detalle}');
 	var idBaza = 1;// = JSON.parse('${idBaza}'); Tiene que venir al crear partido
@@ -183,6 +186,7 @@ $(document).ready(function(){
 		deshabilitarBotonesEnvite();
 		deshabilitarCartas();
 		var canto = $(this).attr("data");
+		_log.innerHTML =  _log.innerHTML  + "<b>" +"Cantaste " + canto + "</b> " + '<br /> ';
 		if(enviteActual == ""){
 			enviteActual = canto;
 		}else{
@@ -470,7 +474,7 @@ $(document).ready(function(){
 				    		 trucoCantado = true;
 				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + " cantó " + enviteTr + "</b> " + '<br /> ';
 				    		 if(jugador === apodoJug3){
-				    			 guardarJugada("", "Nada"); //El que canto es mi compañero, no canto nada
+				    			 guardarJugada("", enviteTr); //El que canto es mi compañero, no canto nada
 				    			 verificarTurno();
 				    		 }else{
 					    		 enRondaEnvite = true;
@@ -481,7 +485,7 @@ $(document).ready(function(){
 				    		 envidoCantado = true;
 				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + " cantó " + enviteTa + "</b> " + '<br /> ';
 				    		 if(jugador === apodoJug3){
-				    			 guardarJugada("", "EnvidoNada"); //El que canto es mi compañero, no canto nada
+				    			 guardarJugada("", enviteTa); //El que canto es mi compañero, no canto nada
 				    			 verificarTurno();
 				    		 }else{
 								 enRondaEnvite = true;

@@ -354,14 +354,14 @@ public class Controlador {
 			//Verifico que no haya ningun null y de paso voy buscando el envite más grande
 			for (Turno t : baza.getTurnos()){
 				if (cantoTruco) {
-					if(t.getEnviteJuego() == null) {
+					if(t.getEnviteJuego() == null || t.getEnviteJuego() == Envite.Nada) {
 						completo = false;
 						break;
 					}else {
-						mayor = t.getEnviteJuego().getNumVal() > mayor.getNumVal() ? t.getEnviteTantos() : mayor;
+						mayor = t.getEnviteJuego().getNumVal() > mayor.getNumVal() ? t.getEnviteJuego() : mayor;
 					}
 				}else {
-					if(t.getEnviteTantos() == null) {
+					if(t.getEnviteTantos() == null || t.getEnviteTantos() == Envite.Nada) {
 						completo = false;
 						break;
 					}else{
@@ -373,7 +373,15 @@ public class Controlador {
 			completo = false;
 		}
 		
-		if(completo){
+		int cartasJugadas = 0;
+		//Veo si se jugaron todas las cartas
+		for (Turno t : baza.getTurnos()){
+			if(t.getCarta() != null){
+				cartasJugadas ++;
+			}
+		}
+		
+		if(completo || (cartasJugadas == 4)){
 			turno.setearEnviteActual(mayor);
 			if (turnoDTO.getEnviteActual().toString().contains("Envido")) {
 				//Valido que si desde la web se canto "Nada" para el Envido
