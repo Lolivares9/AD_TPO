@@ -165,6 +165,7 @@ public class Controlador {
 				if(parejasDisponibles.get(i).getJugador1().getCategoria().equals(categoriaBuscada) || parejasDisponibles.get(i).getJugador2().getCategoria().equals(categoriaBuscada)){
 					parejasFinales.add(parejasDisponibles.get(i));
 					part =  new Partido(TipoModalidad.Libre, parejasFinales, null, null, EstadoPartido.En_Proceso);
+					//Traer Baza inicial
 					return part;
 				}
 			}
@@ -189,7 +190,7 @@ public class Controlador {
 		
 		p.repartirCartas();
 		Pareja.actualizarEstadoParejas(parejasNegocio, true, false);
-		
+		//Traer Baza inicial
 		PartidoDTO pd = p.toDTO();
 		return pd;
 	}
@@ -277,7 +278,9 @@ public class Controlador {
 		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(apodo);
 		List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jug.getId(), TipoModalidad.valueOf(modalidad), EstadoPartido.En_Proceso.name());
 		if(partidos!= null && !partidos.isEmpty()) {
-			return partidos.get(0).toDTO();
+			PartidoDTO pd = partidos.get(0).toDTO();
+			pd.setIdBazaInicial(partidos.get(0).getChico().get(0).getManos().get(0).getBazas().get(0).getIdBaza());
+			return pd;
 		}
 		return null;
 	}
@@ -342,15 +345,46 @@ public class Controlador {
 		turno.setearEnviteActual(turnoDTO.getEnviteActual());
 
 		p.actualizar();
-		if (turnoDTO.getEnviteActual().toString().contains("Envido")) {
-			//Valido que si desde la web se canto "Nada" para el Envido
-			if(turnoDTO.getEnviteActual() == Envite.EnvidoNada) {
-				turno.setearEnviteActual(Envite.Nada);
+		
+		//Verifico que los 4 jugadores hayan cantado
+		boolean cantoTruco = turnoDTO.getEnviteActual().name().contains("Truco");
+		boolean completo = true;
+		Envite mayor = Envite.Nada;
+		if(baza.getTurnos().size() == 4) {
+			//Verifico que no haya ningun null y de paso voy buscando el envite más grande
+			for (Turno t : baza.getTurnos()){
+				if (cantoTruco) {
+					if(t.getEnviteJuego() == null) {
+						completo = false;
+						break;
+					}else {
+						mayor = t.getEnviteJuego().getNumVal() > mayor.getNumVal() ? t.getEnviteTantos() : mayor;
+					}
+				}else {
+					if(t.getEnviteTantos() == null) {
+						completo = false;
+						break;
+					}else{
+						mayor = t.getEnviteTantos().getNumVal() > mayor.getNumVal() ? t.getEnviteTantos() : mayor;
+					}
+				}
 			}
-			p.nuevaJugadaTantos(turno);
+		}else {
+			completo = false;
 		}
-		else {
-			p.nuevaJugadaJuego(turno);
+		
+		if(completo){
+			turno.setearEnviteActual(mayor);
+			if (turnoDTO.getEnviteActual().toString().contains("Envido")) {
+				//Valido que si desde la web se canto "Nada" para el Envido
+				if(turnoDTO.getEnviteActual() == Envite.EnvidoNada) {
+					turno.setearEnviteActual(Envite.Nada);
+				}
+				p.nuevaJugadaTantos(turno);
+			}
+			else {
+				p.nuevaJugadaJuego(turno);
+			}
 		}
 	}
 	
@@ -410,10 +444,11 @@ public class Controlador {
 	
 	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException{
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);// que busque los que no tengan carta en null
+		List<TurnoDTO> respuestas = new ArrayList<TurnoDTO>();
 		if(enviteActual.name().contains("Envido")) {
-			List<TurnoDTO> respuestas = new ArrayList<TurnoDTO>();
 			for (Turno turno : turnos) {
-				if(turno.getEnviteTantos().name().length() > enviteActual.name().length()){
+				//Busco que el tanto sea más largo porque se le concatena lo que los 2 jugadores contrarios cantan
+				if(turno.getEnviteTantos() != null && (turno.getEnviteTantos().name().length() > enviteActual.name().length())){
 					respuestas.add(turno.toDTO());
 				}
 				if(respuestas.size() == 2) {
@@ -434,9 +469,23 @@ public class Controlador {
 			}
 		}else {
 			for (Turno turno : turnos) {
-				if(turno.getEnviteJuego().name().length() > enviteActual.name().length()) {
-					TurnoDTO res = turno.toDTO();
-					res.setEnviteActual(turno.getEnviteJuego());
+				//Busco que el tanto sea más largo porque se le concatena lo que los 2 jugadores contrarios cantan
+				if(turno.getEnviteJuego() != null && (turno.getEnviteJuego().name().length() > enviteActual.name().length())) {
+					respuestas.add(turno.toDTO());
+				}
+				if(respuestas.size() == 2) {
+					TurnoDTO res;
+					String envite1 = respuestas.get(0).getEnviteJuego().name();
+					String envite2 = respuestas.get(1).getEnviteJuego().name();
+					Envite canto1 = Envite.valueOf(envite1.substring(envite1.lastIndexOf("_")+1));
+					Envite canto2 = Envite.valueOf(envite1.substring(envite2.lastIndexOf("_")+1));
+					if(canto1.getNumVal() > canto2.getNumVal()) {
+						res = respuestas.get(0);
+						res.setEnviteActual(res.getEnviteJuego());
+					}else{
+						res = respuestas.get(1);
+						res.setEnviteActual(res.getEnviteJuego());
+					}
 					return res;
 				}
 			}

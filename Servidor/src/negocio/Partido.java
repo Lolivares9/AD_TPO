@@ -312,7 +312,7 @@ public class Partido {
 			finalizaPartido = false;
 		}
 		else if(numeroChicoActual== 2){
-			if((this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp1) && chicoActual.getParejaGanadora().getIdPareja().equals(idp1)) || this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp2) && chicoActual.getParejaGanadora().equals(idp2)){
+			if((this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp1) && chicoActual.getParejaGanadora().getIdPareja().equals(idp1)) || this.getChico().get(0).getParejaGanadora().getIdPareja().equals(idp2) && chicoActual.getParejaGanadora().getIdPareja().equals(idp2)){
 				finalizaPartido = true;
 			}
 		}

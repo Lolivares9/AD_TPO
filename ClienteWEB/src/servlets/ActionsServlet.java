@@ -256,13 +256,15 @@ public class ActionsServlet extends HttpServlet{
 					datosActualizados.put("parejaGanadora", datos.get("parejaGanadora"));
 				}
 			}
-			String j = g.toJson(datosActualizados);
-		    response.setContentType("application/json");
-		    response.setCharacterEncoding("UTF-8");
-		    try {
-				response.getWriter().write(j);
-			} catch (IOException e) {
-				e.printStackTrace();
+			if(!datosActualizados.isEmpty()) {
+				String j = g.toJson(datosActualizados);
+			    response.setContentType("application/json");
+			    response.setCharacterEncoding("UTF-8");
+			    try {
+					response.getWriter().write(j);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	
 			}
 		} catch (ComunicationException e) {
 			e.printStackTrace();

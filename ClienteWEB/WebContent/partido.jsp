@@ -401,21 +401,16 @@ $(document).ready(function(){
 			dataType: "json",
 			data : infoJugada,
 			success: function(data){
-				console.log(data);
-				return data;    	
-		},    
-		error: function() { 
-			console.log(data);
-			return data;
-	    } 
-		}).always(function(data){
-			console.log(data);
-	    	var detallePartidoMap = new Map();
-	    	for (let key of Object.keys(data)) {
-	    	    var value = data[key];
-	    	    detallePartidoMap.set(key, value);
-	    	}
-			actualizarDatos(detallePartidoMap);
+		    	var detallePartidoMap = new Map();
+		    	for (let key of Object.keys(data)) {
+		    	    var value = data[key];
+		    	    detallePartidoMap.set(key, value);
+		    	}
+				actualizarDatos(detallePartidoMap); 	
+			},    
+			error: function() { 
+				buscarPartidoActualizado(data);
+		    } 
 		});
 	}
 	
