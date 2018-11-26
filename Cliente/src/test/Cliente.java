@@ -283,7 +283,7 @@ public class Cliente {
 		JugadorDTO jug = new JugadorDTO();
 		//INICIA SESION MATI
 		jug.setApodo("chulo");
-		jug.setPassword("123456");
+		jug.setPassword("123");
 		try {
 			jugLog = BusinessDelegate.getInstancia().iniciarSesion(jug);
 		} catch (ComunicationException e) {

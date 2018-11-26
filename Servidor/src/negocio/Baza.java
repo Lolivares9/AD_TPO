@@ -290,24 +290,20 @@ public class Baza {
 								if(bazas.get(0).getGanadores().getIdPareja().equals(pareja1.getIdPareja())){
 									this.setGanadores(pareja1);
 									manoActual.setParejaGanadora(pareja1);
-									return;
 								}
 								else if(bazas.get(0).getGanadores().getIdPareja().equals(pareja2.getIdPareja())){
 									this.setGanadores(pareja2);
 									manoActual.setParejaGanadora(pareja2);
-									return;
 								}
 							}
 							else if((cartaJug1Pareja2.getValorJuego() >= cartaJug1Pareja1.getValorJuego() && cartaJug1Pareja2.getValorJuego() >= cartaJug2Pareja1.getValorJuego()) || (cartaJug2Pareja2.getValorJuego() >= cartaJug1Pareja1.getValorJuego() && cartaJug2Pareja2.getValorJuego() >= cartaJug2Pareja1.getValorJuego())){
 								if(bazas.get(0).getGanadores().getIdPareja().equals(pareja2.getIdPareja())){
 									this.setGanadores(pareja2);
 									manoActual.setParejaGanadora(pareja2);
-									return;
 								}
 								else if(bazas.get(0).getGanadores().getIdPareja().equals(pareja1.getIdPareja())){
 									this.setGanadores(pareja1);
 									manoActual.setParejaGanadora(pareja1);
-									return;
 								}
 							}
 						}
@@ -316,12 +312,10 @@ public class Baza {
 							if((cartaJug1Pareja1.getValorJuego() > cartaJug1Pareja2.getValorJuego() && cartaJug1Pareja1.getValorJuego() > cartaJug2Pareja2.getValorJuego()) || (cartaJug2Pareja1.getValorJuego() > cartaJug1Pareja2.getValorJuego() && cartaJug2Pareja1.getValorJuego() > cartaJug2Pareja2.getValorJuego())){
 								this.setGanadores(pareja1);
 								manoActual.setParejaGanadora(pareja1);
-								return;
 							}
 							else if((cartaJug1Pareja2.getValorJuego() > cartaJug1Pareja1.getValorJuego() && cartaJug1Pareja2.getValorJuego() > cartaJug2Pareja1.getValorJuego()) || (cartaJug2Pareja2.getValorJuego() > cartaJug1Pareja1.getValorJuego() && cartaJug2Pareja2.getValorJuego() > cartaJug2Pareja1.getValorJuego())){
 								this.setGanadores(pareja2);
 								manoActual.setParejaGanadora(pareja2);
-								return;
 							}
 						}
 						if(this.numeroBaza == 3){
@@ -330,12 +324,10 @@ public class Baza {
 								if(bazas.get(0).getGanadores().getIdPareja() == pareja1.getIdPareja()){
 									this.setGanadores(pareja1);
 									manoActual.setParejaGanadora(pareja1);
-									return;
 								}
 								else{
 									this.setGanadores(pareja2);
 									manoActual.setParejaGanadora(pareja2);
-									return;
 								}
 							}
 							//PARDA CASO 4
@@ -343,12 +335,10 @@ public class Baza {
 								if((cartaJug1Pareja1.getValorJuego() > cartaJug1Pareja2.getValorJuego() && cartaJug1Pareja1.getValorJuego() > cartaJug2Pareja2.getValorJuego()) || (cartaJug2Pareja1.getValorJuego() > cartaJug1Pareja2.getValorJuego() && cartaJug2Pareja1.getValorJuego() > cartaJug2Pareja2.getValorJuego())){
 									this.setGanadores(pareja1);
 									manoActual.setParejaGanadora(pareja1);
-									return;
 								}
 								else if((cartaJug1Pareja2.getValorJuego() > cartaJug1Pareja1.getValorJuego() && cartaJug1Pareja2.getValorJuego() > cartaJug2Pareja1.getValorJuego()) || (cartaJug2Pareja2.getValorJuego() > cartaJug1Pareja1.getValorJuego() && cartaJug2Pareja2.getValorJuego() > cartaJug2Pareja1.getValorJuego())){
 									this.setGanadores(pareja2);
 									manoActual.setParejaGanadora(pareja2);
-									return;
 								}
 							}
 							//PARDA CASO 5
@@ -356,12 +346,10 @@ public class Baza {
 								if(pareja1.getJugador1().getNumeroTurnoPartido() == 1 || pareja1.getJugador2().getNumeroTurnoPartido() == 1){
 									this.setGanadores(pareja1);
 									manoActual.setParejaGanadora(pareja1);
-									return;
 								}
 								else{
 									this.setGanadores(pareja2);
 									manoActual.setParejaGanadora(pareja2);
-									return;
 								}
 							}
 						}
@@ -688,9 +676,9 @@ public class Baza {
 					puntajePareja2 = puntajePareja2 + puntaje;
 				}
 				//SI CORRESPONDE A LA BAZA PARDA, VERIFICA SI YA SE JUGO OTRA BAZA Y ESTA SOLO ESTA DESEMPATANDO
-				else if (this.getGanadores() != null && this.getGanadores().getIdPareja() == null) {
+				else if (ganadores == null) {
 					for (Baza b: manoActual.getBazas()) {
-						if (b.getGanadores().getIdPareja() != null) {
+						if (b.getGanadores() != null && b.getGanadores().getIdPareja() != null) {
 							if (b.getGanadores().getIdPareja().equals(pareja1.getIdPareja())) {
 								puntajePareja1 = puntajePareja1 + puntaje;
 							}
@@ -722,9 +710,9 @@ public class Baza {
 					puntajePareja2 = puntajePareja2 + puntaje;
 				}
 				//SI CORRESPONDE A LA BAZA PARDA, VERIFICA SI YA SE JUGO OTRA BAZA Y ESTA SOLO ESTA DESEMPATANDO
-				else if (this.getGanadores() != null && this.getGanadores().getIdPareja() == null) {
+				else if (ganadores == null) {
 					for (Baza b: manoActual.getBazas()) {
-						if (b.getGanadores().getIdPareja() != null) {
+						if (b.getGanadores() != null && b.getGanadores().getIdPareja() != null) {
 							if (b.getGanadores().getIdPareja().equals(pareja1.getIdPareja())) {
 								puntajePareja1 = puntajePareja1 + puntaje;
 							}
