@@ -143,29 +143,34 @@ public class Chico {
 		int idJug = primeraBaza.getTurnos().get(0).getJugador().getId();
 		Pareja pareja1 = p.getParejas().get(0);
 		Pareja pareja2 = p.getParejas().get(1);
-		if(pareja1.getJugador1().getId() == idJug){
-			pareja2.getJugador1().setNumeroTurnoPartido(1);
-			pareja1.getJugador2().setNumeroTurnoPartido(2);
-			pareja2.getJugador2().setNumeroTurnoPartido(3);
-			pareja1.getJugador1().setNumeroTurnoPartido(4);
+		Jugador jug1Pareja1 = pareja1.getJugador1();//JUGADOR 1 PAREJA 1
+		Jugador jug1Pareja2 = pareja2.getJugador1();//JUGADOR 1 PAREJA 2
+		Jugador jug2Pareja1 = pareja1.getJugador2();//JUGADOR 2 PAREJA 1
+		Jugador jug2Pareja2 = pareja2.getJugador2();//JUGADOR 2 PAREJA 2
+		
+		if(jug1Pareja1.getId() == idJug){
+			jug1Pareja2.setNumeroTurnoPartido(1);
+			jug2Pareja1.setNumeroTurnoPartido(2);
+			jug2Pareja2.setNumeroTurnoPartido(3);
+			jug1Pareja1.setNumeroTurnoPartido(4);
 		}
-		else if(pareja2.getJugador1().getId() == idJug){
-			pareja1.getJugador2().setNumeroTurnoPartido(1);
-			pareja2.getJugador2().setNumeroTurnoPartido(2);
-			pareja1.getJugador1().setNumeroTurnoPartido(3);
-			pareja1.getJugador2().setNumeroTurnoPartido(4);
+		else if(jug2Pareja1.getId() == idJug){
+			jug2Pareja2.setNumeroTurnoPartido(1);
+			jug1Pareja1.setNumeroTurnoPartido(2);
+			jug1Pareja2.setNumeroTurnoPartido(3);
+			jug2Pareja1.setNumeroTurnoPartido(4);
 		}
-		else if(pareja1.getJugador2().getId() == idJug){
-			pareja2.getJugador2().setNumeroTurnoPartido(1);
-			pareja1.getJugador1().setNumeroTurnoPartido(2);
-			pareja2.getJugador1().setNumeroTurnoPartido(3);
-			pareja1.getJugador2().setNumeroTurnoPartido(4);
+		else if(jug1Pareja2.getId() == idJug){
+			jug2Pareja1.setNumeroTurnoPartido(1);
+			jug2Pareja2.setNumeroTurnoPartido(2);
+			jug1Pareja1.setNumeroTurnoPartido(3);
+			jug1Pareja2.setNumeroTurnoPartido(4);
 		}
-		else if(pareja2.getJugador2().getId() == idJug){
-			pareja1.getJugador1().setNumeroTurnoPartido(1);
-			pareja2.getJugador1().setNumeroTurnoPartido(2);
-			pareja1.getJugador2().setNumeroTurnoPartido(3);
-			pareja2.getJugador2().setNumeroTurnoPartido(4);
+		else if(jug2Pareja2.getId() == idJug){
+			jug1Pareja1.setNumeroTurnoPartido(1);
+			jug1Pareja2.setNumeroTurnoPartido(2);
+			jug2Pareja1.setNumeroTurnoPartido(3);
+			jug2Pareja2.setNumeroTurnoPartido(4);
 		}
 	}
 }
