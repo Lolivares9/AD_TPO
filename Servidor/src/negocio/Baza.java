@@ -142,10 +142,18 @@ public class Baza {
 			Turno turno2 = this.getTurnos().get(1);
 			Turno turno3 = this.getTurnos().get(2);
 			Turno turno4 = this.getTurnos().get(3);
-			Carta cartaJug1Pareja1 = turno1.getCarta();
-			Carta cartaJug1Pareja2 = turno2.getCarta();
-			Carta cartaJug2Pareja1 = turno3.getCarta();
-			Carta cartaJug2Pareja2 = turno4.getCarta();
+			
+			Carta cartaJug1Pareja1 = null;
+			Carta cartaJug1Pareja2 = null;
+			Carta cartaJug2Pareja1 = null;
+			Carta cartaJug2Pareja2 = null;
+			
+			cartaJug1Pareja1 = asignarCarta (pareja1.getJugador1());
+			cartaJug1Pareja2 = asignarCarta (pareja2.getJugador1());
+			cartaJug2Pareja1 = asignarCarta (pareja1.getJugador2());
+			cartaJug2Pareja2 = asignarCarta (pareja2.getJugador2());
+			
+
 			
 			if((cartaJug1Pareja1.getValorJuego() > cartaJug1Pareja2.getValorJuego() && cartaJug1Pareja1.getValorJuego() > cartaJug2Pareja2.getValorJuego()) || (cartaJug2Pareja1.getValorJuego() > cartaJug1Pareja2.getValorJuego() && cartaJug2Pareja1.getValorJuego() > cartaJug2Pareja2.getValorJuego())){
 				if(bazas.size() == 2){
@@ -359,6 +367,15 @@ public class Baza {
 				this.setGanadores(null);
 			}
 		}
+
+	private Carta asignarCarta(Jugador j) {
+		for (Turno t: this.getTurnos()) {
+			if (t.getJugador().getId().equals(j.getId()) ) {
+				return t.getCarta();
+			}
+		}
+		return null;
+	}
 
 	public boolean analizarEnviteTantos(Partido partidoNegocio, Turno turnoEnvite) {
 		//*******COMENZAMOS CON EL ENVIDO**********
