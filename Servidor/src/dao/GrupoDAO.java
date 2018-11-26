@@ -14,7 +14,6 @@ import entities.RankingGrupalEntity;
 import entities.RankingGrupalPK;
 import excepciones.GrupoException;
 import excepciones.JugadorException;
-import excepciones.PartidoException;
 import hbt.HibernateUtil;
 import negocio.Grupo;
 import negocio.Jugador;

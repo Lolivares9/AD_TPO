@@ -123,13 +123,8 @@ public class BusinessDelegate {
 		catch (PartidoException e) {
 			e.printStackTrace();
 		} catch (CartaException e) {
-			
 			e.printStackTrace();
 		} catch (JugadorException e) {
-			
-			e.printStackTrace();
-		} catch (GrupoException e) {
-			
 			e.printStackTrace();
 		}
 		return partido;
@@ -139,7 +134,7 @@ public class BusinessDelegate {
 		PartidoDTO partido = null;
 		try {
 			partido = ir.buscarPartidaLobby(apodoJugador, modalidad);
-		} catch (RemoteException | PartidoException | ParejaException | JugadorException | GrupoException e) {
+		} catch (RemoteException | PartidoException | ParejaException | JugadorException e) {
 			e.printStackTrace();
 		}
 		return partido;
@@ -172,7 +167,6 @@ public class BusinessDelegate {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (CartaException e) {
-			
 			e.printStackTrace();
 		}
 	}
@@ -229,7 +223,7 @@ public class BusinessDelegate {
 	public void nuevaJugada(Integer idPartido, TurnoDTO turno) throws ComunicationException {
 		try {
 			ir.nuevaJugada(idPartido,turno);
-		} catch (PartidoException | RemoteException | GrupoException | JugadorException e) {
+		} catch (PartidoException | RemoteException | JugadorException e) {
 			e.printStackTrace();
 		}
 		
@@ -238,7 +232,7 @@ public class BusinessDelegate {
 	public JugadorDTO buscarJugadorDTO(String nombre, String apodo, String mail, String contraseña) throws ComunicationException {
 		try {
 			return ir.buscarJugadorDTO(apodo);
-		}catch (JugadorException | GrupoException | RemoteException e) {
+		}catch (JugadorException | RemoteException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -247,18 +241,16 @@ public class BusinessDelegate {
 	public List<TurnoDTO> buscarTurnos(Integer idBaza) throws ComunicationException{
 		try {
 			return ir.buscarTurnos(idBaza);
-		} catch (RemoteException | TurnoException | GrupoException e) {
-			
+		} catch (RemoteException | TurnoException e) {
 			e.printStackTrace();
 		}
 	return null;
 	}
 	
-	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws ComunicationException{
+	public Map<String, Object> buscarActualizacion(int idPartido, int numBazas, int numManos, int numChico) throws ComunicationException{
 		try {
-			return ir.buscarActualizacion(idPartido, numBazas, numManos);
-		} catch (RemoteException | PartidoException | GrupoException e) {
-			
+			return ir.buscarActualizacion(idPartido, numBazas, numManos, numChico);
+		} catch (RemoteException | PartidoException e) {
 			e.printStackTrace();
 		}
 	return null;
@@ -267,11 +259,19 @@ public class BusinessDelegate {
 	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws ComunicationException{
 		try {
 			return ir.getRespuestaEnvite(idBaza, enviteActual);
-		} catch (RemoteException | TurnoException | GrupoException e) {
-			
+		} catch (RemoteException | TurnoException e) {
 			e.printStackTrace();
 		}
-	return null;
+		return null;
+	}
+
+	public BazaDTO buscarBaza(Integer idBaza) throws ComunicationException{
+			try {
+				return ir.buscarBaza(idBaza);
+			} catch (RemoteException | BazaException e) {
+				e.printStackTrace();
+			}
+			return null;
 	}
 
 	public GrupoDTO buscarGrupo(String nombre) {
@@ -287,39 +287,25 @@ public class BusinessDelegate {
 		PartidoDTO partido = null;
 		try {
 			partido = ir.iniciarPartidaCerrada(parejas);
-		}catch (PartidoException e) {
-			
+		}catch (PartidoException e) {	
 			e.printStackTrace();
 		} catch (CartaException e) {
-			
 			e.printStackTrace();
 		} catch (JugadorException e) {
-			
 			e.printStackTrace();
-		} catch (GrupoException e) {
-			
-			e.printStackTrace();
-		} catch (RemoteException e) {
+		}  catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		return partido;
-	}
-
-	public List<GrupoDTO> traerGruposJugador() {
-		
-		return null;
 	}
 
 	public List<GrupoDTO> traerGruposJugador(int idJugador) {
 		try {
 			List <GrupoDTO> grupos = ir.traerGruposJugador(idJugador);
 			return grupos;
-		} catch (GrupoException e) {
-			e.printStackTrace();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-
 }

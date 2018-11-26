@@ -106,7 +106,7 @@ public class Controlador {
 		return GrupoDAO.getInstancia().ingresarNuevosMiembros(nombreGrupo,nuevosIntegrantes);
 	}
 
-	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws PartidoException, CartaException, JugadorException, GrupoException {
+	public PartidoDTO iniciarPartidaLibreIndividual(String categ, String apodo) throws PartidoException, CartaException, JugadorException{
 		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(apodo);
 		List <Jugador> jugDisp = new ArrayList<Jugador>();
 		List <Pareja> parejas = new ArrayList<Pareja>();
@@ -171,7 +171,7 @@ public class Controlador {
 		return part;
 	}
 	
-	public PartidoDTO iniciarPartidaCerrada(List<ParejaDTO> parejasGrupo) throws PartidoException, CartaException, JugadorException, GrupoException {
+	public PartidoDTO iniciarPartidaCerrada(List<ParejaDTO> parejasGrupo) throws PartidoException, CartaException, JugadorException{
 		
 		List <Pareja> parejasNegocio = new ArrayList<Pareja>();
 		Jugador jugador1 = JugadorDAO.getInstancia().buscarPorApodo(parejasGrupo.get(0).getJugadorDTO1().getApodo());
@@ -229,15 +229,7 @@ public class Controlador {
 	 */
 	public List<ChicoDTO> buscarChicosPorPartido(PartidoDTO partidoDTO) throws ChicoException {
 		List<Chico> c = ChicoDAO.getInstancia().buscarChicosPorPartido(partidoDTO.getIdPartido());
-		return c.stream().map(t -> {
-			try {
-				return t.toDTO();
-			} catch (GrupoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}).collect(Collectors.toList());
+		return c.stream().map(t -> t.toDTO()).collect(Collectors.toList());
 	}
 	
 	/**
@@ -251,7 +243,7 @@ public class Controlador {
 	 * @throws TurnoException 
 	 * @throws GrupoException 
 	 */
-	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chicoDTO) throws ManoException, BazaException, TurnoException, GrupoException {
+	public Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> obtenerDetalleDeChico(ChicoDTO chicoDTO) throws ManoException, BazaException, TurnoException {
 		//TODO buscar las manos -> las bazas  -> los turnos  
 		Map<ManoDTO,Map<BazaDTO,List<TurnoDTO>>> detallePartida = new HashMap<ManoDTO, Map<BazaDTO, List<TurnoDTO>>>();
 		List<Mano> manos = ManoDAO.getInstancia().buscarManosPorChico(chicoDTO.getIdChico());
@@ -270,15 +262,7 @@ public class Controlador {
 				for(Turno t : turnos) {
 					System.out.println(t.getJugador().getApodo()+  (!t.getEnviteTantos().equals(Envite.Nada) ? " cantó " + t.getEnviteTantos() + " y " : " ") + (!t.getEnviteJuego().equals(Envite.Nada) ? " cantó "  + t.getEnviteJuego() + " y ": " ") + " jugó un "+ t.getCarta().toString());
 				}
-				detalleMano.put(b.toDTO(), turnos.stream().map(t -> {
-					try {
-						return t.toDTO();
-					} catch (GrupoException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					return null;
-				}).collect(Collectors.toList()));
+				detalleMano.put(b.toDTO(), turnos.stream().map(t -> t.toDTO()).collect(Collectors.toList()));
 			}
 			
 			detallePartida.put(m.toDTO(), detalleMano);
@@ -287,7 +271,7 @@ public class Controlador {
 		return detallePartida;
 	}
 
-	public PartidoDTO buscarPartidaLobby(String apodo, String modalidad) throws PartidoException, ParejaException, JugadorException, GrupoException{
+	public PartidoDTO buscarPartidaLobby(String apodo, String modalidad) throws PartidoException, ParejaException, JugadorException{
 		Jugador jug = JugadorDAO.getInstancia().buscarPorApodo(apodo);
 		List<Partido> partidos = PartidoDAO.getInstancia().buscarPartidosPorJugador(jug.getId(), TipoModalidad.valueOf(modalidad), EstadoPartido.En_Proceso.name());
 		if(partidos!= null && !partidos.isEmpty()) {
@@ -318,7 +302,7 @@ public class Controlador {
 	}
 
 	//En la web tengo solo el apodo del jugador, asi que mando el TurnoDTO con el apodo seteado y hay que buscarlo primero
-	public void actualizarPartido(int idPartido,TurnoDTO turnoDTO) throws PartidoException, GrupoException, JugadorException {
+	public void actualizarPartido(int idPartido,TurnoDTO turnoDTO) throws PartidoException, JugadorException {
 		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
 		Jugador jugadorTurno = JugadorDAO.getInstancia().buscarPorApodo(turnoDTO.getJugadorDTO().getApodo());
 		int indiceMano = 0;
@@ -357,7 +341,8 @@ public class Controlador {
 
 		p.actualizar();
 		if (turnoDTO.getEnviteActual().toString().contains("Envido")) {
-			if(turnoDTO.getEnviteActual().toString().contains("Nada")) {
+			//Valido que si desde la web se canto "Nada" para el Envido
+			if(turnoDTO.getEnviteActual() == Envite.EnvidoNada) {
 				turno.setearEnviteActual(Envite.Nada);
 			}
 			p.nuevaJugadaTantos(turno);
@@ -367,11 +352,27 @@ public class Controlador {
 		}
 	}
 	
-	public Map<String,Object> buscarActualizacion(int idPartido, int numBazas, int numManos) throws PartidoException, GrupoException{
+	public Map<String,Object> buscarActualizacion(int idPartido, int numBazas, int numManos, int numChico) throws PartidoException{
 		Partido p = PartidoDAO.getInstancia().buscarPartidoPorID(idPartido);
 		int indiceMano = numManos-1;
 		int indiceBaza = 0;
 		Map<String,Object> response = new HashMap<String, Object>();
+		
+		//Verifico si termino el partido
+		if(p.getEstado() == EstadoPartido.Finalizado){
+			response.put("flag", "Partido");
+			response.put("parejaGanadora", p.getParejaGanadora());
+			return response;
+		}
+		//Verifico si empezó un nuevo chico
+		if(p.getNumeroChicoActual() > numChico){
+			response.put("flag", "Chico");
+			response.put("parejaGanadora", p.getParejaGanadora().getIdPareja());
+			numBazas = 1;
+			numManos = 1;
+		}
+		
+		//Verifico si empezó una nueva baza
 		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size() > 0){
 			indiceBaza = p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().size(); 
 		}
@@ -387,6 +388,7 @@ public class Controlador {
 			return response;
 		}
 		
+		//Verifico si empezó una nueva mano
 		if(p.getChico().get(p.getNumeroChicoActual()-1).getManos().size() > 0){
 			indiceMano = p.getChico().get(p.getNumeroChicoActual()-1).getManos().size();
 		}
@@ -401,11 +403,10 @@ public class Controlador {
 			response.put("idBaza", p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(numManos).getBazas().get(numBazas).getIdBaza());
 			return response;
 		}
-		//si el numBazas y numManos es igual, significa que el partido termino?
 		return null;
 	}
 	
-	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException, GrupoException {
+	public TurnoDTO getRespuestaEnvite(Integer idBaza, Envite enviteActual) throws TurnoException{
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);// que busque los que no tengan carta en null
 		if(enviteActual.name().contains("Envido")) {
 			List<TurnoDTO> respuestas = new ArrayList<TurnoDTO>();
@@ -441,13 +442,18 @@ public class Controlador {
 		return null;
 	}
 
-	public List<TurnoDTO> buscarTurnos(Integer idBaza) throws TurnoException, GrupoException {
+	public List<TurnoDTO> buscarTurnos(Integer idBaza) throws TurnoException{
 		List<Turno> turnos = TurnoDAO.getInstancia().buscarTurnosPorBaza(idBaza);// que busque los que no tengan carta en null
 		List<TurnoDTO> res = new ArrayList<TurnoDTO>();
 		for (Turno turno : turnos) {
 			res.add(turno.toDTO());
 		}
 		return res;
+	}
+	
+	public BazaDTO buscarBaza(Integer idBaza) throws BazaException{
+		Baza b = BazaDAO.getInstancia().buscarBazaPorID(idBaza);
+		return b.toDTO();
 	}
 	
 	public List<String> obtenerRakingPorPuntaje(){

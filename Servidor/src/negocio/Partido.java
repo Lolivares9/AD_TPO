@@ -135,15 +135,7 @@ public class Partido {
 	}
 	
 	public PartidoDTO toDTOListar() throws GrupoException {
-		List<ParejaDTO> parejasDTO = parejas.stream().map(t -> {
-			try {
-				return t.toDTO();
-			} catch (GrupoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}).collect(Collectors.toList());
+		List<ParejaDTO> parejasDTO = parejas.stream().map(t -> t.toDTO()).collect(Collectors.toList());
 		if(parejaGanadora != null) {
 			return new PartidoDTO(new ModalidadDTO(modalidad, true), parejasDTO, parejaGanadora.toDTO());
 		}else {
@@ -152,7 +144,7 @@ public class Partido {
 		
 	}
 	
-	public PartidoDTO toDTO() throws GrupoException{
+	public PartidoDTO toDTO(){
 		ModalidadDTO mod = null;
 		List<ParejaDTO> parejasDTO = new ArrayList<ParejaDTO>();
 		List<ChicoDTO> chicosDTO = new ArrayList<ChicoDTO>();

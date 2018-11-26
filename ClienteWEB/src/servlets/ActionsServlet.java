@@ -63,14 +63,70 @@ public class ActionsServlet extends HttpServlet{
         	guardarJugada(request,response);
         }else if ("GetNovedad".equals(action)){
         	getSiguienteTurno(request,response);
-        }else if ("ResultadoBaza".equals(action)){
-        	resultadoBaza(request,response);
         }else if ("BuscarActualizacion".equals(action)){
         	buscarActualizacion(request,response);
         }else if ("GetRespuestaEnvite".equals(action)){
-        	getRespuestaEnvite(request,response);
-        }       
+        	getRespuestaEnvite(request,response);  
+	    }else if ("ResultadoBaza".equals(action)){
+        	resultadoBaza(request,response);
+	    }
     }
+	
+	protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        if (jsp != null)
+        {
+        	/*Envía el control al JSP que pasamos como parámetro, y con los 
+        	 * request / response cargados con los parámetros */
+            RequestDispatcher rd = request.getRequestDispatcher(jsp);
+            rd.forward(request, response);
+        }
+    }
+	
+	   private void buscarPartidaLibreIndividual(HttpServletRequest request, HttpServletResponse response) {
+	        try {
+	        	String usuario = request.getParameter("usuario");
+	        	String categoria = request.getParameter("categoria");
+				PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(categoria, usuario);
+				String jspPage = "/partido.jsp";
+				if(partido != null){
+					armarResponsePartido(request, partido, usuario);
+					dispatch(jspPage, request, response);
+				}else {
+					request.setAttribute("usuario", usuario);
+					request.setAttribute("categoria", categoria);
+					request.setAttribute("modalidad", TipoModalidad.Libre_individual.name());
+					jspPage = "/lobby.jsp";
+					dispatch(jspPage, request, response);
+				}
+			} catch (ComunicationException |ServletException |IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+	    }
+	    
+	    private void buscarPartidaLibreIndividualLobby(HttpServletRequest request, HttpServletResponse response) {
+	        try {
+	        	String usuario = request.getParameter("usuario");
+	        	String categoria = request.getParameter("categoria");
+	        	String modalidad = request.getParameter("modalidad");
+				PartidoDTO partido = BusinessDelegate.getInstancia().buscarPartidaLobby(usuario, modalidad);
+				String jspPage = "/partido.jsp";
+				if(partido != null){
+					armarResponsePartido(request, partido, usuario);
+					dispatch(jspPage, request, response);
+				}else {
+					request.setAttribute("usuario", usuario);
+					request.setAttribute("categoria", categoria);
+					request.setAttribute("modalidad", modalidad);
+					jspPage = "/lobby.jsp";
+					dispatch(jspPage, request, response);
+				}
+	        } catch (ComunicationException |ServletException |IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}     
+	    }
 	
     private void getRespuestaEnvite(HttpServletRequest request, HttpServletResponse response) {
     	try {
@@ -104,47 +160,31 @@ public class ActionsServlet extends HttpServlet{
 			e.printStackTrace();
 		}		
 	}
-
-	private void buscarActualizacion(HttpServletRequest request, HttpServletResponse response) {
+	
+	private void guardarJugada(HttpServletRequest request, HttpServletResponse response) {
+		String idPartido = request.getParameter("partido");
+    	String apodo = request.getParameter("apodo");
+    	String carta = request.getParameter("idCarta");
+    	String envite = request.getParameter("envite");
+    	Integer numTurno = Integer.parseInt(request.getParameter("numTurno"));
+    	JugadorDTO j = new JugadorDTO();
+    	j.setApodo(apodo);
+    	CartaDTO c = new CartaDTO();
+    	c.setIdCarta(carta.equals("") ? null : Integer.valueOf(carta));
+    	Integer idBaza = 1;
+    	Envite e = envite.equals("") ?  Envite.Nada : Envite.valueOf(envite);
+    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno,  j, e, c); //aca va el id de baza
     	try {
-    		Gson g = new Gson();
-    		Map<String,String> datosActualizados = new HashMap<String, String>();
-        	String numBazas = request.getParameter("numBazas");
-        	String numManos = request.getParameter("numManos");
-        	String idPartido = request.getParameter("idPartido");
-        	String usuario = request.getParameter("usuario");
-			Map<String,Object> datos = BusinessDelegate.getInstancia().buscarActualizacion(Integer.parseInt(idPartido), Integer.parseInt(numBazas), Integer.parseInt(numManos));
-			if(datos != null){
-				if(datos.get("flag").equals("Baza")) {
-					datosActualizados.put("flag", "Baza");
-					datosActualizados.putAll(armarDatosJugadores((List<ParejaDTO>) datos.get("parejas"),usuario));
-				}else if(datos.get("flag").equals("Mano")) {
-					datosActualizados.put("flag", "Mano");
-					datosActualizados.putAll(armarDatosPartido((List<ParejaDTO>) datos.get("parejas"),usuario));
-				}
-				
-				//Si el partido tiene un distinto id al que esta en la web, es porque se termino el partido (ver si termino partida)
-				//Capaz no hay que armar el mapa entero cuando se cambia de baza porque toda la logica de cartas no es necesario
-				/*datosActualizados = armarDatosPartido(partido, usuario);
-				datosActualizados.put("flag", "Baza");*/
-			}
-			String j = g.toJson(datosActualizados);
-		    response.setContentType("application/json");
-		    response.setCharacterEncoding("UTF-8");
-		    try {
-				response.getWriter().write(j);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (ComunicationException e) {
-			e.printStackTrace();
+			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), turno);
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (ComunicationException exc) {
+			// TODO Auto-generated catch block
+			exc.printStackTrace();
 		}
-
 	}
 	
 	private void getSiguienteTurno(HttpServletRequest request, HttpServletResponse response) {
-    	String idBaza = request.getParameter("baza");
+    	String idBaza = request.getParameter("idBaza");
     	int numTurno = Integer.parseInt(request.getParameter("numTurno"));
     	boolean trucoCantado = Boolean.parseBoolean(request.getParameter("trucoCantado"));
     	boolean envidoCantado = Boolean.parseBoolean(request.getParameter("envidoCantado"));
@@ -197,104 +237,74 @@ public class ActionsServlet extends HttpServlet{
 		}
 	}
 
-	private void guardarJugada(HttpServletRequest request, HttpServletResponse response) {
-		String idPartido = request.getParameter("partido");
-    	String apodo = request.getParameter("apodo");
-    	String carta = request.getParameter("idCarta");
-    	String envite = request.getParameter("envite");
-    	Integer numTurno = Integer.parseInt(request.getParameter("numTurno"));
-    	JugadorDTO j = new JugadorDTO();
-    	j.setApodo(apodo);
-    	CartaDTO c = new CartaDTO();
-    	c.setIdCarta(carta.equals("") ? null : Integer.valueOf(carta));
-    	Integer idBaza = 1;
-    	Envite e = envite.equals("") ?  Envite.Nada : Envite.valueOf(envite);
-    	TurnoDTO turno = new TurnoDTO(idBaza, numTurno,  j, e, c); //aca va el id de baza
+	@SuppressWarnings("unchecked")
+	private void buscarActualizacion(HttpServletRequest request, HttpServletResponse response) {
     	try {
-			BusinessDelegate.getInstancia().nuevaJugada(Integer.valueOf(idPartido), turno);
-			response.setStatus(HttpServletResponse.SC_OK);
-		} catch (ComunicationException exc) {
-			// TODO Auto-generated catch block
-			exc.printStackTrace();
+    		Gson g = new Gson();
+    		Map<String,Object> datosActualizados = new HashMap<String, Object>();
+        	String numBazas = request.getParameter("numBazas");
+        	String numManos = request.getParameter("numManos");
+        	String numChico = request.getParameter("numChico");
+        	String idPartido = request.getParameter("idPartido");
+        	String usuario = request.getParameter("usuario");
+			Map<String,Object> datos = BusinessDelegate.getInstancia().buscarActualizacion(Integer.parseInt(idPartido), Integer.parseInt(numBazas), Integer.parseInt(numManos), Integer.parseInt(numChico));
+			if(datos != null){
+				Integer idBaza = (Integer) datos.get("idBaza");
+				if(datos.get("flag").equals("Baza")) {
+					datosActualizados.put("flag", "Baza");
+					datosActualizados.put("idBaza", idBaza);
+					datosActualizados.putAll(armarDatosJugadores((List<ParejaDTO>) datos.get("parejas"),usuario));
+				}else if(datos.get("flag").equals("Mano")) {
+					datosActualizados.put("flag", "Mano");
+					datosActualizados.put("idBaza", idBaza);
+					datosActualizados.putAll(armarDatosPartido((List<ParejaDTO>) datos.get("parejas"),usuario));
+				}else if(datos.get("flag").equals("Chico")) {
+					datosActualizados.put("flag", "Chico");
+					datosActualizados.put("idBaza", idBaza);
+					datosActualizados.putAll(armarDatosPartido((List<ParejaDTO>) datos.get("parejas"),usuario));
+				}else if(datos.get("flag").equals("Partido")) {
+					datosActualizados.put("flag", "Partido");
+					datosActualizados.put("parejaGanadora", datos.get("parejaGanadora"));
+				}
+			}
+			String j = g.toJson(datosActualizados);
+		    response.setContentType("application/json");
+		    response.setCharacterEncoding("UTF-8");
+		    try {
+				response.getWriter().write(j);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ComunicationException e) {
+			e.printStackTrace();
 		}
-	}
 
-	protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
-        if (jsp != null)
-        {
-        	/*Envía el control al JSP que pasamos como parámetro, y con los 
-        	 * request / response cargados con los parámetros */
-            RequestDispatcher rd = request.getRequestDispatcher(jsp);
-            rd.forward(request, response);
-        }
-    }
-    
-    private void buscarPartidaLibreIndividual(HttpServletRequest request, HttpServletResponse response) {
-        try {
-        	String usuario = request.getParameter("usuario");
-        	String categoria = request.getParameter("categoria");
-			PartidoDTO partido = BusinessDelegate.getInstancia().iniciarPartidaLibreIndividual(categoria, usuario);
-			String jspPage = "/partido.jsp";
-			if(partido != null){
-				armarResponsePartido(request, partido, usuario);
-				dispatch(jspPage, request, response);
-			}else {
-				request.setAttribute("usuario", usuario);
-				request.setAttribute("categoria", categoria);
-				request.setAttribute("modalidad", TipoModalidad.Libre_individual.name());
-				jspPage = "/lobby.jsp";
-				dispatch(jspPage, request, response);
-			}
-		} catch (ComunicationException |ServletException |IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-    }
-    
-    private void buscarPartidaLibreIndividualLobby(HttpServletRequest request, HttpServletResponse response) {
-        try {
-        	String usuario = request.getParameter("usuario");
-        	String categoria = request.getParameter("categoria");
-        	String modalidad = request.getParameter("modalidad");
-			PartidoDTO partido = BusinessDelegate.getInstancia().buscarPartidaLobby(usuario, modalidad);
-			String jspPage = "/partido.jsp";
-			if(partido != null){
-				armarResponsePartido(request, partido, usuario);
-				dispatch(jspPage, request, response);
-			}else {
-				request.setAttribute("usuario", usuario);
-				request.setAttribute("categoria", categoria);
-				request.setAttribute("modalidad", modalidad);
-				jspPage = "/lobby.jsp";
-				dispatch(jspPage, request, response);
-			}
-        } catch (ComunicationException |ServletException |IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}     
-    }
+	}
     
     private void resultadoBaza(HttpServletRequest request, HttpServletResponse response) {
-    	//TODO
-    	Gson g = new Gson();
-    	Map<String,Object> datos = new HashMap<String,Object>();
-    	String idBaza = request.getParameter("idBaza");
-    	
-    	BazaDTO baza = new BazaDTO(0, null, 0, 0);//Traer baza de server con idBaza
-    	datos.put("puntajeP1", baza.getPuntajePareja1());
-    	datos.put("puntajeP2", baza.getPuntajePareja2());
-    	datos.put("parejaGanadora", baza.getGanadores());
-    	
-		String  result = g.toJson(datos);
-		request.setAttribute("resultados", result);
+    	try {
+	    	Gson g = new Gson();
+	    	Map<String,Object> datos = new HashMap<String,Object>();
+	    	Integer idBaza = Integer.valueOf(request.getParameter("idBaza"));
+	    	BazaDTO baza = BusinessDelegate.getInstancia().buscarBaza(idBaza);
+	    	datos.put("puntajeP1", baza.getPuntajePareja1());
+	    	datos.put("puntajeP2", baza.getPuntajePareja2());
+	    	datos.put("parejaGanadora", baza.getGanadores().getIdPareja());
+			String  result = g.toJson(datos);
+		    response.setContentType("application/json");
+		    response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(result);
+    	} catch (ComunicationException | IOException e) {
+			e.printStackTrace();
+		}
     }
     
     private void armarResponsePartido(HttpServletRequest request, PartidoDTO partido, String usuario){
     	Gson g = new Gson();
 		request.setAttribute("idPartido", partido.getIdPartido());
-		//partido.getChicoDTO().get(0).getManos().get(0).getBazas().get(0).getNumero();//MANDAR ID de baza a la pagina
 		Map<String,String> datos = armarDatosPartido(partido.getParejaDTOs(), usuario);
+		datos.put("idBaza", "1");
 		String  detallePartido = g.toJson(datos);
 		request.setAttribute("detalle", detallePartido);
     }

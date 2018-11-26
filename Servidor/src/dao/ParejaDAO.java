@@ -19,15 +19,11 @@ import negocio.Partido;
 
 public class ParejaDAO {
 	private static ParejaDAO instancia;
-	private static Session ses;
 	
 	public static ParejaDAO getInstancia() {
 		if(instancia == null){
 			instancia = new ParejaDAO();
 		}
-		SessionFactory sf = HibernateUtil.getSessionFactory();
-		//sf.getCurrentSession();
-		ses = sf.openSession();
 		return instancia;
 	}
 

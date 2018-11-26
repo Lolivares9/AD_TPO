@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class RankingGrupalDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3831500833031974504L;
 	private GrupoDTO grupo;
 	private JugadorDTO jugador;
 	private int partidosJugadorDTO;

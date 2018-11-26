@@ -3,7 +3,6 @@ package negocio;
 import java.util.ArrayList;
 import java.util.List;
 
-import controlador.Controlador;
 import dao.ManoDAO;
 import dao.PartidoDAO;
 import dto.BazaDTO;
@@ -80,7 +79,7 @@ public class Mano {
 	 * @return
 	 * @throws GrupoException 
 	 */
-	public ManoDTO toDTO() throws GrupoException {
+	public ManoDTO toDTO(){
 		List <BazaDTO> bazasDTO = new ArrayList <BazaDTO> ();
 		for (Baza b: bazas) {
 			bazasDTO.add(b.toDTO());
