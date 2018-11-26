@@ -32,14 +32,15 @@ public class Cliente {
 	public static void main(String[] args) throws ComunicationException, RemoteException, JugadorException, GrupoException {
 		
 		//COMENZAMOS CON LOS TEST DE RMI Y HIBERNATE
-		//altaJugador();  // OK 
+		altaJugador();  // OK 
 		iniciarSesion(); // OK 
-		crearGrupo();
-		ingresarNuevosMiembros(); // OK
-		List<GrupoDTO> grupos = traerGruposJugador();//•	Se identificara al jugador y se le indicara la lista de grupos que administra. (TP)
-		armarPartidaCerrada(grupos);
+		
+		//crearGrupo();
+		//ingresarNuevosMiembros(); // OK
+		//List<GrupoDTO> grupos = traerGruposJugador();//•	Se identificara al jugador y se le indicara la lista de grupos que administra. (TP)
+		//armarPartidaCerrada(grupos);
 		//buscarTodosPartidosJugados();  //OK
-		//buscarPartidaLibreIndividual(); // OK
+		buscarPartidaLibreIndividual(); // OK
 	
 		/*Crear partido libre individual*/
 //		JugadorDTO jugador = new JugadorDTO("Matias","chulo","boccardo2013@gmail.com","123456",null);
@@ -290,7 +291,7 @@ public class Cliente {
 			e.printStackTrace();
 		}
 		System.out.println(jug.getApodo() + " Inició sesión.\n");
-		/*
+		
 		//INICIA SESION FACU
 		jug.setApodo("faculth");
 		jug.setPassword("123");
@@ -322,7 +323,7 @@ public class Cliente {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(jug.getApodo() + " Inició sesión.\n");*/
+		System.out.println(jug.getApodo() + " Inició sesión.\n");
 	}
 
 	private static void altaJugador() throws GrupoException {
