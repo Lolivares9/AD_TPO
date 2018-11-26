@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dao.GrupoDAO;
 import dao.PartidoDAO;
 import dto.ChicoDTO;
 import dto.ModalidadDTO;
@@ -286,7 +287,12 @@ public class Partido {
 			setearPuntajePorParametros(jug1Pareja2,promedioJug2Pareja1,puntaje);
 			setearPuntajePorParametros(jug2Pareja1,promedioJug1Pareja2,puntaje);
 			setearPuntajePorParametros(jug2Pareja2,promedioJug2Pareja2,puntaje);
+			setearPuntajeGrupal();
 		}
+	}
+
+	private void setearPuntajeGrupal() {
+		GrupoDAO.getInstancia().setarPuntajeGrupal(this);
 	}
 
 	private void setearPuntajePorParametros(Jugador jugador,float promedio,int puntaje) {
