@@ -152,6 +152,7 @@ public class Mano {
 				break;
 			}
 		}
+		
 		//GUARDO EL PUNTAJE PARA SABER SI ALGUIEN SUMA
 		puntajeP1 = bazaActual.getPuntajePareja1();
 		puntajeP2 = bazaActual.getPuntajePareja1();
@@ -167,21 +168,27 @@ public class Mano {
 	}
 	
 	private void cargarMovimientoBaza(Baza bazaActual, Partido p,int puntajeAnteriorP1,int puntajeAnteriorP2) {
-		if (bazaActual.getGanadores() != null) {
-			if(bazaActual.getGanadores().getIdPareja() != null){
-				boolean finalizaMano = isFinalizaMano(p.getParejas().get(0),p.getParejas().get(1),this.getBazas(),bazaActual);
-				if(finalizaMano){
-					this.setParejaGanadora(bazaActual.getGanadores());
-					this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
-					this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());
-				}
-			}
-			else if(bazaActual.getPuntajePareja1() != puntajeAnteriorP1 || bazaActual.getPuntajePareja2() != puntajeAnteriorP2){
-				this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
-				this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());
+		if (bazaActual.getGanadores() != null && bazaActual.getGanadores().getIdPareja() != null) {
+			boolean finalizaMano = isFinalizaMano(p.getParejas().get(0),p.getParejas().get(1),this.getBazas(),bazaActual);
+			if(finalizaMano){
+				this.setParejaGanadora(bazaActual.getGanadores());
 			}
 		}
-		
+		//PUEDE DARSE EN EL CASO DE QUE UNA 2 O 3RA BAZA SEA PARDA, TENGO QUE BUSCAR LA BAZA QUE TUVO GANADOR
+		else if (bazaActual.getTurnos().size() == 4){
+			for (Baza b: bazas) {
+				if (b.getGanadores().getIdPareja() != null) {
+					this.setParejaGanadora(b.getGanadores());
+					break;
+				}
+			}
+		}
+		this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
+		this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());
+		//		else if(bazaActual.getPuntajePareja1() != puntajeAnteriorP1 || bazaActual.getPuntajePareja2() != puntajeAnteriorP2){
+		//				this.setPuntajePareja1(puntajePareja1 + bazaActual.getPuntajePareja1());
+		//				this.setPuntajePareja2(puntajePareja2 + bazaActual.getPuntajePareja2());
+		//			}
 	}
 
 	private boolean verificarPuntajeSinEnvites(Mano manoActual,Baza bazaActual) {
@@ -258,63 +265,46 @@ public class Mano {
 		if(bazaActual.getNumero() == 1){
 			finaliza_mano = false;
 		}
-		else if(bazaActual.getNumero() == 2){
-			if(bazas.get(0).getGanadores().getIdPareja() != null && bazaActual.getGanadores().getIdPareja() != null){
-				if((bazas.get(0).getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()))){
-					if(verificarPuntajeSinEnvites(this,bazaActual)){
-						this.setPuntajePareja1(puntajePareja1 + 1);
-					}
+		else if(bazaActual.getNumero() == 2){		
+			if (bazas.get(0).getGanadores().getIdPareja() == null) {
+				if (bazaActual.getGanadores().getIdPareja() != null) {
 					finaliza_mano = true;
 				}
-				else if(bazas.get(0).getGanadores().getIdPareja().equals(p2.getIdPareja()) && bazaActual.getGanadores().getIdPareja().equals(p2.getIdPareja())){
-					if(verificarPuntajeSinEnvites(this,bazaActual)){
-						this.setPuntajePareja2(puntajePareja2 + 1);
-					}
-					finaliza_mano = true;
-				}	
 			}
-			finaliza_mano = true;
-			if(verificarPuntajeSinEnvites(this,bazaActual)){
-				this.setPuntajePareja1(puntajePareja1 + 1);
+			else if (bazaActual.getGanadores().getIdPareja() == null) {
+				finaliza_mano = true;
+			}
+			else if((bazas.get(0).getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()))){
+				finaliza_mano = true;
+			}
+			else if(bazas.get(0).getGanadores().getIdPareja().equals(p2.getIdPareja()) && bazaActual.getGanadores().getIdPareja().equals(p2.getIdPareja())){
+				finaliza_mano = true;
 			}
 		}
 		else if(bazaActual.getNumero() == 3){
-			if(bazaActual.getGanadores().getIdPareja() != null && bazas.get(1).getGanadores().getIdPareja() != null &&  bazas.get(0).getGanadores().getIdPareja() != null)
-			if((bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazas.get(1).getGanadores().getIdPareja().equals(p1.getIdPareja()))){
-				if(verificarPuntajeSinEnvites(this,bazaActual)){
-					this.setPuntajePareja1(puntajePareja1 + 1);
-				}
-				finaliza_mano = true;
-			}
-			else if((bazaActual.getGanadores().getIdPareja().equals(p2.getIdPareja()) && bazas.get(1).getGanadores().getIdPareja().equals(p2.getIdPareja()))){
-				if(verificarPuntajeSinEnvites(this,bazaActual)){
-					this.setPuntajePareja2(puntajePareja2 + 1);
-				}
-				finaliza_mano = true;
-			}
-			else if((bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazas.get(0).getGanadores().getIdPareja().equals(p1.getIdPareja()))){
-				if(verificarPuntajeSinEnvites(this,bazaActual)){
-					this.setPuntajePareja1(puntajePareja1 + 1);
-				}
-				finaliza_mano = true;
-			}
-			else if((bazaActual.getGanadores().getIdPareja().equals(p2.getIdPareja()) && bazas.get(0).getGanadores().getIdPareja().equals(p2.getIdPareja()))){
-				if(verificarPuntajeSinEnvites(this,bazaActual)){
-					this.setPuntajePareja2(puntajePareja2 + 1);
-				}
-				finaliza_mano = true;
-			}
+//			if(bazaActual.getGanadores().getIdPareja() != null && bazas.get(1).getGanadores().getIdPareja() != null &&  bazas.get(0).getGanadores().getIdPareja() != null)
+//			if((bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazas.get(1).getGanadores().getIdPareja().equals(p1.getIdPareja()))){
+//				if(verificarPuntajeSinEnvites(this,bazaActual)){
+//					//puntajePareja1 = puntajePareja1 + 1;
+//				}
+//			}
+//			else if((bazaActual.getGanadores().getIdPareja().equals(p2.getIdPareja()) && bazas.get(1).getGanadores().getIdPareja().equals(p2.getIdPareja()))){
+//				if(verificarPuntajeSinEnvites(this,bazaActual)){
+//					//puntajePareja2 = puntajePareja2 + 1;
+//				}
+//			}
+//			else if((bazaActual.getGanadores().getIdPareja().equals(p1.getIdPareja()) && bazas.get(0).getGanadores().getIdPareja().equals(p1.getIdPareja()))){
+//				if(verificarPuntajeSinEnvites(this,bazaActual)){
+//					//puntajePareja1 = puntajePareja1 + 1;
+//				}
+//			}
+//			else if((bazaActual.getGanadores().getIdPareja().equals(p2.getIdPareja()) && bazas.get(0).getGanadores().getIdPareja().equals(p2.getIdPareja()))){
+//				if(verificarPuntajeSinEnvites(this,bazaActual)){
+//					//puntajePareja2 = puntajePareja2 + 1;
+//				}
+//			}
 			finaliza_mano = true;
-			if(verificarPuntajeSinEnvites(this,bazaActual)){
-				this.setPuntajePareja1(puntajePareja1 + 1);
-			}
 		}
 		return finaliza_mano;
 	}
-
-	
-
-
-
-
 }

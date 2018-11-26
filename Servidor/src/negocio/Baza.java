@@ -200,10 +200,11 @@ public class Baza {
 							pareja1.getJugador2().setNumeroTurnoPartido(1);
 							pareja2.getJugador2().setNumeroTurnoPartido(2);
 							pareja1.getJugador1().setNumeroTurnoPartido(3);
-							pareja1.getJugador2().setNumeroTurnoPartido(4);
+							pareja2.getJugador2().setNumeroTurnoPartido(4);
 						}
 					}
 				}
+				bazaTerminada = true;
 				this.setGanadores(pareja1);
 			}
 			else if((cartaJug2.getValorJuego() > cartaJug1.getValorJuego() && cartaJug2.getValorJuego() > cartaJug3.getValorJuego()) || (cartaJug4.getValorJuego() > cartaJug1.getValorJuego() && cartaJug4.getValorJuego() > cartaJug3.getValorJuego())){
@@ -262,6 +263,7 @@ public class Baza {
 						}
 					}
 				}
+				bazaTerminada = true;
 				this.setGanadores(pareja2);
 			}
 			/*
@@ -527,7 +529,6 @@ public class Baza {
 			}else {
 				this.setPuntajePareja2(puntajePareja2 + puntaje);
 			}
-			verificarSiFinalizaBaza(p);
 		}
 	}
 	
@@ -537,21 +538,10 @@ public class Baza {
 		}
 		else{
 			this.setPuntajePareja2(puntajePareja1  + puntaje);
-			
 		}
-		verificarSiFinalizaBaza(p);
 	}
 
-	private void verificarSiFinalizaBaza(Partido p) {
-		if (this.getPuntajePareja1() == 30) {
-			this.setGanadores(p.getParejas().get(0));
-			this.setBazaTerminada(true);
-		}
-		else if (this.getPuntajePareja2() == 30) {
-			this.setGanadores(p.getParejas().get(1));
-			this.setBazaTerminada(true);
-		}
-	}
+
 
 	public boolean analizarEnviteJuego(Partido partidoNegocio, Turno turnoEnvite,Chico chicoActual, Mano manoActual) {
 		Pareja pareja1 = partidoNegocio.getParejas().get(0);
@@ -640,25 +630,26 @@ public class Baza {
 				//*******NADA**********
 
 				else if(turnoEnvite.getEnviteJuego().equals(Envite.Nada)){
-					if(this.getTurnos().size() == 4){
-						Turno turno1 = this.getTurnos().get(0);
-						Turno turno2 = this.getTurnos().get(1);
-						Turno turno3 = this.getTurnos().get(2);
-						Turno turno4 = this.getTurnos().get(3);
-						Carta cartaJug1 = turno1.getCarta();
-						Carta cartaJug2 = turno2.getCarta();
-						Carta cartaJug3 = turno3.getCarta();
-						Carta cartaJug4 = turno4.getCarta();
-						if (cartaJug1 != null && cartaJug2 != null && cartaJug3 != null && cartaJug4 != null ) {
-							calcularGanadorBaza(partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1),manoActual);
-						}
-					}
-					
-					if(this.getGanadores() != null){
-						if(this.getGanadores().getIdPareja() != null){
-							this.setBazaTerminada(true);
-						}
-					}
+//					if(this.getTurnos().size() == 4){
+//						Turno turno1 = this.getTurnos().get(0);
+//						Turno turno2 = this.getTurnos().get(1);
+//						Turno turno3 = this.getTurnos().get(2);
+//						Turno turno4 = this.getTurnos().get(3);
+//						Carta cartaJug1 = turno1.getCarta();
+//						Carta cartaJug2 = turno2.getCarta();
+//						Carta cartaJug3 = turno3.getCarta();
+//						Carta cartaJug4 = turno4.getCarta();
+//						if (cartaJug1 != null && cartaJug2 != null && cartaJug3 != null && cartaJug4 != null ) {
+//							calcularGanadorBaza(partidoNegocio.getParejas().get(0), partidoNegocio.getParejas().get(1),manoActual);
+//						}
+//					}
+//					
+//					if(this.getGanadores() != null){
+//						if(this.getGanadores().getIdPareja() != null){
+//							this.setBazaTerminada(true);
+//						}
+//					}
+					setearPuntajeTruco(partidoNegocio,1,chicoActual,manoActual);
 				}
 				//SI ES EL ULTIMO TURNO, ES DECIR EL JUGADOR NUMERO 4, ME FIJO A VER QUE PAREJA GANA ESA BAZA, BUSCANDO LA CARTA MAS ALTA
 				//LA PAREJA QUE GANE MAS DE 1 BAZA, GANA LA MANO
@@ -668,36 +659,82 @@ public class Baza {
 	/**Si este metodo devuelve false, es porque a alguno de los jugadores le falta jugar una carta, para que se pueda evaluar los ganadores*/
 	private boolean setearPuntajeTruco(Partido p, int puntaje,Chico chicoA,Mano manoA){
 		boolean faltaJugarCarta = false;
-		int chicoActual = chicoA.getNumero()-1;
-		int manoActual = manoA.getNumeroMano()-1;
-		
-		for(int i = 0;i<this.getTurnos().size();i++){
-			if(this.getTurnos().get(i).getCarta() == null){
-				faltaJugarCarta = true;
-				break;
+		int indiceChicoActual = chicoA.getNumero()-1;
+		int indiceManoActual = manoA.getNumeroMano()-1;
+		if (this.getTurnos().size() < 4) {
+			faltaJugarCarta = true;
+		}
+		else {
+			for(int i = 0;i<this.getTurnos().size();i++){
+				if(this.getTurnos().get(i).getCarta() == null){
+					faltaJugarCarta = true;
+					break;
+				}
 			}
 		}
 		if(faltaJugarCarta == false){
 			this.calcularGanadorBaza(p.getParejas().get(0), p.getParejas().get(1),manoA);
-			//GANO BAZA 1 Y BAZA 2 PAREJA 1
-			if(this.getGanadores() != null && this.numeroBaza == 2 &&(p.getChico().get(chicoActual).getManos().get(manoActual).getBazas().get(0).getGanadores().getIdPareja().equals(p.getParejas().get(0).getIdPareja()))){
-				this.setBazaTerminada(true);
-				this.setPuntajePareja1(puntajePareja1 + puntaje);
+			Pareja pareja1 = p.getParejas().get(0);
+			Pareja pareja2 = p.getParejas().get(1);
+			Mano manoActual = p.getChico().get(indiceChicoActual).getManos().get(indiceManoActual);
+			
+			if (manoActual.getBazas().size() == 2) {
+				//GANO BAZA 1 Y BAZA 2 PAREJA 1
+				if(this.getGanadores() != null  && this.getGanadores().getIdPareja().equals(pareja1.getIdPareja())  && this.numeroBaza == 2 && (manoActual.getBazas().get(0).getGanadores() != null && manoActual.getBazas().get(0).getGanadores().getIdPareja().equals(pareja1.getIdPareja()))){
+					puntajePareja1 = puntajePareja1 + puntaje;
+				}
+				//GANO BAZA 1 Y BAZA 2 PAREJA 2
+				else if(this.getGanadores() != null  && this.getGanadores().getIdPareja().equals(pareja2.getIdPareja())  && this.numeroBaza == 2 && (manoActual.getBazas().get(0).getGanadores() != null && manoActual.getBazas().get(0).getGanadores().getIdPareja().equals(pareja2.getIdPareja()))){
+					puntajePareja2 = puntajePareja2 + puntaje;
+				}
+				//SI CORRESPONDE A LA BAZA PARDA, VERIFICA SI YA SE JUGO OTRA BAZA Y ESTA SOLO ESTA DESEMPATANDO
+				else if (this.getGanadores() != null && this.getGanadores().getIdPareja() == null) {
+					for (Baza b: manoActual.getBazas()) {
+						if (b.getGanadores().getIdPareja() != null) {
+							if (b.getGanadores().getIdPareja().equals(pareja1.getIdPareja())) {
+								puntajePareja1 = puntajePareja1 + puntaje;
+							}
+							else if (b.getGanadores().getIdPareja().equals(pareja2.getIdPareja())) {
+								puntajePareja2 = puntajePareja2 + puntaje;
+							}
+							break;
+						}
+					}
+				}
 			}
-			//GANO BAZA 1 Y BAZA 2 PAREJA 2
-			else if(this.getGanadores() != null && this.numeroBaza == 2 &&(p.getChico().get(chicoActual).getManos().get(manoActual).getBazas().get(0).getGanadores().getIdPareja().equals(p.getParejas().get(1).getIdPareja()))){
-				this.setBazaTerminada(true);
-				this.setPuntajePareja2(puntajePareja2 + puntaje);
-			}
-			//GANO BAZA 2 Y BAZA 3 PAREJA 1
-			else if(this.getGanadores() != null && this.numeroBaza == 3 &&(p.getChico().get(chicoActual).getManos().get(manoActual).getBazas().get(1).getGanadores().getIdPareja().equals(p.getParejas().get(0).getIdPareja()))){
-				this.setBazaTerminada(true);
-				this.setPuntajePareja1(puntajePareja1 + puntaje);
-			}
-			//GANO BAZA 2 Y BAZA 3 PAREJA 2
-			else if(this.getGanadores() != null && this.numeroBaza == 3 &&(p.getChico().get(chicoActual).getManos().get(manoActual).getBazas().get(1).getGanadores().getIdPareja().equals(p.getParejas().get(1).getIdPareja()))){
-				this.setBazaTerminada(true);
-				this.setPuntajePareja2(puntajePareja2 + puntaje);
+			else if (manoActual.getBazas().size() == 3) {
+				//GANO BAZA 2 Y BAZA 3 PAREJA 1
+				if(this.getGanadores() != null  && this.getGanadores().getIdPareja().equals(pareja1.getIdPareja()) && this.numeroBaza == 3 && (manoActual.getBazas().get(1).getGanadores() != null && manoActual.getBazas().get(1).getGanadores().getIdPareja().equals(pareja1.getIdPareja()))){
+					puntajePareja1 = puntajePareja1 + puntaje;
+				}
+				//GANO BAZA 2 Y BAZA 3 PAREJA 2
+				else if(this.getGanadores() != null && this.getGanadores().getIdPareja().equals(pareja2.getIdPareja())  &&  this.numeroBaza == 3 && (manoActual.getBazas().get(1).getGanadores() != null && manoActual.getBazas().get(1).getGanadores().getIdPareja().equals(pareja2.getIdPareja()))){
+					puntajePareja2 = puntajePareja2 + puntaje;
+				}
+				
+				
+				//GANO BAZA 1 Y BAZA 3 PAREJA 1
+				else if(this.getGanadores() != null &&  this.getGanadores().getIdPareja().equals(pareja1.getIdPareja()) && this.numeroBaza == 3 && (manoActual.getBazas().get(0).getGanadores() != null && manoActual.getBazas().get(0).getGanadores().getIdPareja().equals(pareja1.getIdPareja()))){
+					puntajePareja1 = puntajePareja1 + puntaje;
+				}
+				//GANO BAZA 1 Y BAZA 3 PAREJA 2
+				else if(this.getGanadores() != null && this.getGanadores().getIdPareja().equals(pareja2.getIdPareja())  &&  this.numeroBaza == 3 && (manoActual.getBazas().get(0).getGanadores() != null && manoActual.getBazas().get(0).getGanadores().getIdPareja().equals(pareja2.getIdPareja()))){
+					puntajePareja2 = puntajePareja2 + puntaje;
+				}
+				//SI CORRESPONDE A LA BAZA PARDA, VERIFICA SI YA SE JUGO OTRA BAZA Y ESTA SOLO ESTA DESEMPATANDO
+				else if (this.getGanadores() != null && this.getGanadores().getIdPareja() == null) {
+					for (Baza b: manoActual.getBazas()) {
+						if (b.getGanadores().getIdPareja() != null) {
+							if (b.getGanadores().getIdPareja().equals(pareja1.getIdPareja())) {
+								puntajePareja1 = puntajePareja1 + puntaje;
+							}
+							else if (b.getGanadores().getIdPareja().equals(pareja2.getIdPareja())) {
+								puntajePareja2 = puntajePareja2 + puntaje;
+							}
+							break;
+						}
+					}
+				}
 			}
 		}
 		return faltaJugarCarta;
