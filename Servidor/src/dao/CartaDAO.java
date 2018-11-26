@@ -102,6 +102,7 @@ public class CartaDAO {
 		return c;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void saveCartasParejas(Pareja p) throws CartaException {
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		Session s = sf.openSession();

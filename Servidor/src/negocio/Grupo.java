@@ -6,7 +6,6 @@ import java.util.List;
 import dao.GrupoDAO;
 import dto.GrupoDTO;
 import dto.JugadorDTO;
-import excepciones.GrupoException;
 
 public class Grupo {
 	private Integer idGrupo;
@@ -67,7 +66,7 @@ public class Grupo {
 		this.jugadores.remove(jugador);
 	}
 	
-	public GrupoDTO toDTO() throws GrupoException{
+	public GrupoDTO toDTO(){
 		List<JugadorDTO> jugadoresDTO = new ArrayList<JugadorDTO>();
 		GrupoDTO grupoDTO = null;
 		JugadorDTO adminDTO = jugadorAdmin.toDTO();

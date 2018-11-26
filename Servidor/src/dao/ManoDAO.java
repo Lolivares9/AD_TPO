@@ -9,13 +9,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import entities.BazaEntity;
-import entities.ChicoEntity;
 import entities.ManoEntity;
-import entities.ParejaEntity;
 import excepciones.ManoException;
 import hbt.HibernateUtil;
 import negocio.Baza;
-import negocio.Chico;
 import negocio.Mano;
 
 public class ManoDAO {

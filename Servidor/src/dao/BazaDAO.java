@@ -10,10 +10,13 @@ import org.hibernate.SessionFactory;
 
 import entities.BazaEntity;
 import entities.ParejaEntity;
+import entities.PartidoEntity;
 import entities.TurnoEntity;
 import excepciones.BazaException;
+import excepciones.PartidoException;
 import hbt.HibernateUtil;
 import negocio.Baza;
+import negocio.Partido;
 import negocio.Turno;
 
 public class BazaDAO {
@@ -105,5 +108,29 @@ public class BazaDAO {
 			}
 		}
 		return bazasNegocio;
+	}
+
+	public Baza buscarBazaPorID(Integer idBaza) throws BazaException {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		s.beginTransaction();
+		Baza b = null;
+		BazaEntity be;
+		try {
+			be = (BazaEntity) s.createQuery("from BazaEntity be where be.idBaza = ?").setInteger(0, idBaza).uniqueResult();
+				if(be != null){
+					b = toNegocio(be);
+				}
+				else{
+					return b;
+				}
+				s.getTransaction().commit();
+			} catch (HibernateException e) {
+				e.printStackTrace();
+				throw new BazaException("Error al buscar la baza por id");
+			}finally {
+				s.close();
+			}
+		return b;
 	}
 }

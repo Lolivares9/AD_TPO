@@ -10,11 +10,14 @@ import org.hibernate.SessionFactory;
 
 import entities.GrupoEntity;
 import entities.JugadorEntity;
+import entities.RankingGrupalEntity;
+import entities.RankingGrupalPK;
 import excepciones.GrupoException;
-import excepciones.PartidoException;
+import excepciones.JugadorException;
 import hbt.HibernateUtil;
 import negocio.Grupo;
 import negocio.Jugador;
+import negocio.Partido;
 
 public class GrupoDAO {
 	private static GrupoDAO instancia;
@@ -97,9 +100,6 @@ public class GrupoDAO {
 		
 		JugadorEntity admin = JugadorDAO.getInstancia().toEntity(grupo.getJugadorAdmin());
 		ge.setJugadorAdmin(admin);
-		if(admin.getGrupos() != null){
-			admin.getGrupos().add(ge);
-		}
 		
 		List<JugadorEntity> jugNeg = null;
 		JugadorEntity j = null;
@@ -107,18 +107,12 @@ public class GrupoDAO {
 			jugNeg = new ArrayList<JugadorEntity>();
 			for(int i = 0;i<grupo.getJugadores().size();i++){
 				j = JugadorDAO.getInstancia().toEntity(grupo.getJugadores().get(i));
-				j.getGrupos().add(ge);
 				jugNeg.add(j);
 			}
-			//jugNeg = grupo.getJugadores().stream().map(j -> JugadorDAO.getInstancia().toEntity(j)).collect(Collectors.toList());
 		}
 		
 		List<GrupoEntity> jeGrupos = new ArrayList<GrupoEntity> ();
 		jeGrupos.add(ge);
-		if(jugNeg != null && jugNeg.size() >= 1){
-			jugNeg.get(0).setGrupos(jeGrupos);
-		}
-		
 		ge.setJugadores(jugNeg);
 		
 		return ge;
@@ -158,5 +152,148 @@ public class GrupoDAO {
 			s.close();
 		}
 		return gruposNegocio;
+	}
+
+	public boolean ingresarNuevosMiembros(String nombreGrupo, List<String> apodoNuevosMiembros) throws JugadorException {
+		GrupoEntity g;
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		List<Jugador> miembrosNuevos = new ArrayList<Jugador>();
+		JugadorEntity jugadorNuevo;
+		s.beginTransaction();
+		try{
+			g = (GrupoEntity) s.createQuery("from GrupoEntity ge where ge.nombre = ?").setString(0, nombreGrupo).uniqueResult();
+			if(g != null){
+				for(int i = 0;i<apodoNuevosMiembros.size();i++){
+					miembrosNuevos.add(JugadorDAO.getInstancia().buscarPorApodo(apodoNuevosMiembros.get(i)));
+					jugadorNuevo = JugadorDAO.getInstancia().toEntity(miembrosNuevos.get(i));
+					g.getJugadores().add(jugadorNuevo);
+				}
+			}
+			s.saveOrUpdate(g);
+			s.getTransaction().commit();
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}finally{
+			s.close();
+		}
+		return false;
+	}
+
+	public void setarPuntajeGrupal(Partido partido) {
+		int idGrupo = 0;
+		RankingGrupalPK id = new RankingGrupalPK();
+		RankingGrupalPK id2 = new RankingGrupalPK();
+		RankingGrupalPK id3 = new RankingGrupalPK();
+		RankingGrupalPK id4 = new RankingGrupalPK();
+		RankingGrupalEntity rkEntity1 = new RankingGrupalEntity();
+		RankingGrupalEntity rkEntity2 = new RankingGrupalEntity();
+		RankingGrupalEntity rkEntity3 = new RankingGrupalEntity();
+		RankingGrupalEntity rkEntity4 = new RankingGrupalEntity();
+		GrupoEntity g;
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		JugadorEntity jugador11;
+		JugadorEntity jugador21;
+		JugadorEntity jugador12;
+		JugadorEntity jugador22;
+		s.beginTransaction();
+		try{
+			idGrupo = (Integer) s.createSQLQuery("SELECT ID_GRUPO FROM GRUPOS WHERE ID_GRUPO IN (SELECT ID_PARTIDO FROM PARTIDOS WHERE ID_PARTIDO = ?)").setInteger(0, partido.getIdPartido()).uniqueResult();
+			//BUSCO EL GRUPO
+			g = (GrupoEntity) s.createQuery("from GrupoEntity ge where ge.idGrupo = ?").setInteger(0, idGrupo).uniqueResult();
+			jugador11 = (JugadorEntity) s.createQuery("from JugadorEntity je where je.idJugador = ?").setInteger(0, partido.getParejas().get(0).getJugador1().getId()).uniqueResult();
+			id.setGrupo(g);
+			id.setJugador(jugador11);
+			jugador21 = (JugadorEntity) s.createQuery("from JugadorEntity je where je.idJugador = ?").setInteger(0, partido.getParejas().get(1).getJugador1().getId()).uniqueResult();
+			id2.setGrupo(g);
+			id2.setJugador(jugador21);
+			jugador12 = (JugadorEntity) s.createQuery("from JugadorEntity je where je.idJugador = ?").setInteger(0, partido.getParejas().get(0).getJugador2().getId()).uniqueResult();
+			id3.setGrupo(g);
+			id3.setJugador(jugador12);
+			jugador22 = (JugadorEntity) s.createQuery("from JugadorEntity je where je.idJugador = ?").setInteger(0, partido.getParejas().get(1).getJugador2().getId()).uniqueResult();
+			id4.setGrupo(g);
+			id4.setJugador(jugador22);
+			//SIGNIFICA QUE GANO LA PAREJA 1
+			if(partido.getParejaGanadora().getIdPareja().equals(partido.getParejas().get(0).getIdPareja())){
+				if(!exiteEnRaking(g.getIdGrupo(),jugador11.getIdJugador()) && !exiteEnRaking(g.getIdGrupo(),jugador12.getIdJugador())){
+					rkEntity1.setId(id);
+					rkEntity1.setPartidosGanados(1);
+					rkEntity1.setPartidosJugados(1);
+					rkEntity1.setPuntaje(5);
+					rkEntity2.setId(id2);
+					rkEntity2.setPartidosGanados(1);
+					rkEntity2.setPartidosJugados(1);
+					rkEntity2.setPuntaje(5);
+					s.saveOrUpdate(rkEntity1);
+					s.saveOrUpdate(rkEntity2);
+					return;
+				}
+				else{
+					rkEntity1.setId(id);
+					rkEntity1.setPartidosGanados(rkEntity1.getPartidosGanados() + 1);
+					rkEntity1.setPartidosJugados(rkEntity1.getPartidosJugados() + 1);
+					rkEntity1.setPuntaje(rkEntity1.getPuntaje() + 5);
+					rkEntity2.setId(id2);
+					rkEntity2.setPartidosGanados(1);
+					rkEntity2.setPartidosJugados(1);
+					rkEntity2.setPuntaje(5);
+					s.saveOrUpdate(rkEntity1);
+					s.saveOrUpdate(rkEntity2);
+					return;
+				}
+			}
+			else{
+				if(!exiteEnRaking(g.getIdGrupo(),jugador21.getIdJugador()) && !exiteEnRaking(g.getIdGrupo(),jugador22.getIdJugador())){
+					rkEntity3.setId(id3);
+					rkEntity3.setPartidosGanados(1);
+					rkEntity3.setPartidosJugados(1);
+					rkEntity3.setPuntaje(5);
+					rkEntity4.setId(id4);
+					rkEntity4.setPartidosGanados(1);
+					rkEntity4.setPartidosJugados(1);
+					rkEntity4.setPuntaje(5);
+					s.saveOrUpdate(rkEntity3);
+					s.saveOrUpdate(rkEntity4);
+					return;
+				}
+				else{
+					rkEntity3.setId(id3);
+					rkEntity3.setPartidosGanados(rkEntity1.getPartidosGanados() + 1);
+					rkEntity3.setPartidosJugados(rkEntity1.getPartidosJugados() + 1);
+					rkEntity3.setPuntaje(rkEntity1.getPuntaje() + 5);
+					rkEntity4.setId(id4);
+					rkEntity4.setPartidosGanados(1);
+					rkEntity4.setPartidosJugados(1);
+					rkEntity4.setPuntaje(5);
+					s.saveOrUpdate(rkEntity3);
+					s.saveOrUpdate(rkEntity4);
+					return;
+				}
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}finally{
+			s.close();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean exiteEnRaking(Integer idGrupo, Integer idJugador) {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session s = sf.openSession();
+		List<Integer> idGrupos = new ArrayList<Integer>();
+		s.beginTransaction();
+		try{
+			idGrupos = (List<Integer>) s.createSQLQuery("SELECT ID_GRUPO FROM RANKING_GRUPAL WHERE ID_GRUPO = ? AND ID_JUGADOR = ?)").setInteger(0, idGrupo).setInteger(1, idJugador).list();
+			if(idGrupos != null && idGrupos.size() >= 1){
+				s.getTransaction().commit();
+				s.close();
+				return true;
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
