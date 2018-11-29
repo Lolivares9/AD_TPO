@@ -335,12 +335,15 @@ public class Controlador {
 				turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
 			baza.agregarTurno(turno);	
 		}
-		else if (turno.getCarta() == null && turnoDTO.getCartaDTO() != null) {
+		else if (turno.getCarta() == null && turnoDTO.getCartaDTO() != null && turnoDTO.getCartaDTO().getIdCarta() != null) {
 			turno.setCarta(CartaDAO.getInstancia().obtenerCartaPorID(turnoDTO.getCartaDTO().getIdCarta()));
 		}
 		//En la web si no se canto nada, el envite actual llega null
 		if(turnoDTO.getEnviteActual() == null) {
 			turnoDTO.setEnviteActual(Envite.Nada);
+		}
+		if(turno.getEnviteJuego() != null && turnoDTO.getEnviteActual() != null && (turno.getEnviteJuego().getNumVal() > turnoDTO.getEnviteActual().getNumVal())){
+			turnoDTO.setEnviteActual(turno.getEnviteJuego());
 		}
 		turno.setearEnviteActual(turnoDTO.getEnviteActual());
 
@@ -378,6 +381,9 @@ public class Controlador {
 		for (Turno t : baza.getTurnos()){
 			if(t.getCarta() != null){
 				cartasJugadas ++;
+				if(t.getEnviteJuego() != null){
+					mayor = t.getEnviteJuego().getNumVal() > mayor.getNumVal() ? t.getEnviteJuego() : mayor;
+				}
 			}
 		}
 		
@@ -429,6 +435,7 @@ public class Controlador {
 			}
 			response.put("parejas", par);
 			response.put("idBaza", p.getChico().get(p.getNumeroChicoActual()-1).getManos().get(indiceMano).getBazas().get(numBazas).getIdBaza());
+
 			return response;
 		}
 		
@@ -528,5 +535,9 @@ public class Controlador {
 	public List<String> obtenerRakingPorPartidosGanados(){
 		List <String> ranking = PartidoDAO.getInstancia().rakingPorPartidosGanados();
 		return ranking;
+	}
+	
+	public List<String> obtenerJugadoresPorGrupo(String nombreGrupo){
+		return GrupoDAO.getInstancia().buscarJugadoresGrupo(nombreGrupo);
 	}
 }

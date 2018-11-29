@@ -10,13 +10,10 @@ import org.hibernate.SessionFactory;
 
 import entities.BazaEntity;
 import entities.ParejaEntity;
-import entities.PartidoEntity;
 import entities.TurnoEntity;
 import excepciones.BazaException;
-import excepciones.PartidoException;
 import hbt.HibernateUtil;
 import negocio.Baza;
-import negocio.Partido;
 import negocio.Turno;
 
 public class BazaDAO {

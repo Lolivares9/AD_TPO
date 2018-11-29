@@ -78,6 +78,7 @@ $(document).ready(function(){
 		envidoCantado = false;
 		enRondaEnvite = false;
 		enviteActual = "";
+		turnosBaza= 0;
 		
 		idBaza = detalleMap.get('idBaza');
 		
@@ -406,14 +407,14 @@ $(document).ready(function(){
 			data : infoJugada,
 			success: function(data){
 		    	var detallePartidoMap = new Map();
-		    	for (let key of Object.keys(data)) {
+		    	for (let key of Object.keys(data)){
 		    	    var value = data[key];
 		    	    detallePartidoMap.set(key, value);
 		    	}
 				actualizarDatos(detallePartidoMap); 	
 			},    
 			error: function() { 
-				buscarPartidoActualizado(data);
+				buscarPartidoActualizado();
 		    } 
 		});
 	}
@@ -475,6 +476,7 @@ $(document).ready(function(){
 				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + " cantó " + enviteTr + "</b> " + '<br /> ';
 				    		 if(jugador === apodoJug3){
 				    			 guardarJugada("", enviteTr); //El que canto es mi compañero, no canto nada
+				    			 enviteActual = enviteTr;
 				    			 verificarTurno();
 				    		 }else{
 					    		 enRondaEnvite = true;
@@ -486,6 +488,7 @@ $(document).ready(function(){
 				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + jugador + " cantó " + enviteTa + "</b> " + '<br /> ';
 				    		 if(jugador === apodoJug3){
 				    			 guardarJugada("", enviteTa); //El que canto es mi compañero, no canto nada
+				    			 enviteActual = enviteTa;
 				    			 verificarTurno();
 				    		 }else{
 								 enRondaEnvite = true;
@@ -533,11 +536,12 @@ $(document).ready(function(){
 				    	 var envite = detalleMap.get('envite')
 				    	 if(envite !== ''){
 				    		 _log.innerHTML =  _log.innerHTML  + "<b>" + "La pareja contraria cantó " + envite + "</b> " + '<br /> ';
-				    		 if(envite == "Querido"|| envite == "NoQuerido"){
+				    		 if(envite.indexOf("Querido") >= 0 || envite.indexOf("NoQuerido") >= 0 ){
 			    				 if(enviteActual.indexOf("Envido") >= 0){
 			    					 envidoCantado = true;
 			    					 enviteActual = "";
 			    				 }
+			    				 trucoCantado = true;
 				    			 enRondaEnvite = false;
 				    		 }else{
 				    			 enRondaEnvite == true;
@@ -618,8 +622,8 @@ $(document).ready(function(){
 							<input type="button" value="Falta Envido" id="FaltaEnvido" class="canto btn btn-inverse" data="Falta_Envido" style="display: inline-block;">
 							<!-- input type="button" value="Me voy al mazo" id="IrAlMazo" data="Mazo" class="btn"-->
 							<input type="button" value="Truco" id="Truco" class="cantot btn btn-primary" data="Truco" style="display: inline-block;">
-							<input type="button" value="Quiero re Truco" id="ReTruco" class="cantot btn btn-success" data="Re_Truco" style="display: inline-block;">
-							<input type="button" value="Quiero vale 4" id="Vale4" class="cantot btn btn-inverse" data="Vale_Cuatro" style="display: inline-block;">
+							<input type="button" value="Quiero re Truco" id="ReTruco" class="cantot btn btn-success" data="QuieroRetruco" style="display: inline-block;">
+							<input type="button" value="Quiero vale 4" id="Vale4" class="cantot btn btn-inverse" data="QuieroValeCuatro" style="display: inline-block;">
 							<input type="button" value="Quiero" id="Quiero" class="boton btn" data="Querido" style="display: inline-block;">
 							<input type="button" value="No Quiero" id="NoQuiero" class="boton btn" data="NoQuerido" style="display: inline-block;">
 					</fieldset>

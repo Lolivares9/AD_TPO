@@ -40,10 +40,13 @@ public enum Envite {
 	//Posibles estados del falta envido
 	
 	//Posibles estados del truco
+	QuieroRetruco(45),
 	Truco_Querido(51),
 	Truco_NoQuerido(50),
+	Truco_QuieroRetruco(43),
 	Truco_QuieroRetruco_Querido(53),
 	Truco_QuieroRetruco_NoQuerido(52),
+	Truco_QuieroRetruco_QuieroValeCuatro(44),
 	Truco_QuieroRetruco_QuieroValeCuatro_Querido(55),
 	Truco_QuieroRetruco_QuieroValeCuatro_NoQuerido(54),
 	//Posibles estados del truco
