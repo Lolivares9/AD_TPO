@@ -308,4 +308,14 @@ public class BusinessDelegate {
 		}
 		return null;
 	}
+	
+	public List<String> traerJugadoresGrupo(String nombreGrupo) {
+		try {
+			List <String> apodoJugadores = ir.traerJugadoresGrupo(nombreGrupo);
+			return apodoJugadores;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

@@ -297,6 +297,7 @@ public class GrupoDAO {
 		return false;
 	}
 	
+
 	@SuppressWarnings("unchecked")
 	public List<String> buscarJugadoresGrupo(String nombreGrupo){
 		SessionFactory sf = HibernateUtil.getSessionFactory();
