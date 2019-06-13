@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controlador.Controlador;
+import dao.ClienteDAO;
 import dao.JugadorDAO;
 import dao.ParejaDAO;
 import dao.PartidoDAO;
 import dto.PartidoDTO;
 import dto.TurnoDTO;
+import entities.ClienteEntity;
+import entities.EmpleadoEntity;
 import enums.Categoria;
 import enums.Envite;
 import excepciones.CartaException;
@@ -34,7 +37,15 @@ public class TestHibernate {
 	*/
 	
 	public static void main(String[] args) throws JugadorException, ParejaException, PartidoException, CartaException, ParseException, GrupoException {
-		iniciarPartido();
+		//iniciarPartido();
+		List<EmpleadoEntity> empleados = new ArrayList<EmpleadoEntity>();
+		EmpleadoEntity e1 = new EmpleadoEntity();
+		EmpleadoEntity e2 = new EmpleadoEntity();
+		empleados.add(e1);
+		empleados.add(e2);
+		ClienteEntity c = new ClienteEntity();
+		c.setEmpleados(empleados);
+		ClienteDAO.getInstancia().guardar(c);
 	}		
 	
 
@@ -78,10 +89,10 @@ public class TestHibernate {
 				TurnoDTO tj2 = new TurnoDTO(null, pareja2Jug1.toDTO(), Envite.Nada, cartasP2J1.get(nroTurno).toDTO());
 				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj2);
 				
-				TurnoDTO tj3 = new TurnoDTO(null, pareja1Jug2.toDTO(), Envite.Nada, cartasP1J2.get(nroTurno).toDTO());
+				TurnoDTO tj3 = new TurnoDTO(null, pareja1Jug2.toDTO(), Envite.Envido, cartasP1J2.get(nroTurno).toDTO());
 				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj3);
 				
-				TurnoDTO tj4 = new TurnoDTO(null, pareja2Jug2.toDTO(), Envite.Nada, cartasP2J2.get(nroTurno).toDTO());
+				TurnoDTO tj4 = new TurnoDTO(null, pareja2Jug2.toDTO(),Envite.EnvidoEnvido_Querido, cartasP2J2.get(nroTurno).toDTO());
 				Controlador.getInstancia().actualizarPartido(p.getIdPartido(), tj4);
 				
 				p = PartidoDAO.getInstancia().buscarPartidoPorID(pdto.getIdPartido());

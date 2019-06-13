@@ -4,6 +4,8 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import entities.BazaEntity;
 import entities.CartaEntity;
 import entities.ChicoEntity;
+import entities.ClienteEntity;
+import entities.EmpleadoEntity;
 import entities.GrupoEntity;
 import entities.JugadorEntity;
 import entities.ManoEntity;
@@ -23,17 +25,19 @@ public class HibernateUtil {
 	        try
 	        {
 	        	AnnotationConfiguration config = new AnnotationConfiguration();
-	         	config.addAnnotatedClass(BazaEntity.class);
-	         	config.addAnnotatedClass(CartaEntity.class);
-	         	config.addAnnotatedClass(ChicoEntity.class);
-	         	config.addAnnotatedClass(GrupoEntity.class);
-	         	config.addAnnotatedClass(JugadorEntity.class);
-	         	config.addAnnotatedClass(ManoEntity.class);
-	         	config.addAnnotatedClass(ParejaEntity.class);
-	         	config.addAnnotatedClass(PartidoEntity.class);
-	         	config.addAnnotatedClass(RankingGrupalEntity.class);
-	         	config.addAnnotatedClass(RankingGrupalPK.class);
-	         	config.addAnnotatedClass(TurnoEntity.class);
+//	         	config.addAnnotatedClass(BazaEntity.class);
+	         	config.addAnnotatedClass(ClienteEntity.class);
+	         	config.addAnnotatedClass(EmpleadoEntity.class);
+//	         	config.addAnnotatedClass(CartaEntity.class);
+//	         	config.addAnnotatedClass(ChicoEntity.class);
+//	         	config.addAnnotatedClass(GrupoEntity.class);
+//	         	config.addAnnotatedClass(JugadorEntity.class);
+//	         	config.addAnnotatedClass(ManoEntity.class);
+//	         	config.addAnnotatedClass(ParejaEntity.class);
+//	         	config.addAnnotatedClass(PartidoEntity.class);
+//	         	config.addAnnotatedClass(RankingGrupalEntity.class);
+//	         	config.addAnnotatedClass(RankingGrupalPK.class);
+//	         	config.addAnnotatedClass(TurnoEntity.class);
 	             sessionFactory = config.buildSessionFactory();
 	        }
 	        catch (Throwable ex)
